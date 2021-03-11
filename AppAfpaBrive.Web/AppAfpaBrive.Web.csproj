@@ -27,7 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\Stagiaire\" />
     <Folder Include="ModelesOffice\" />
+    <Folder Include="Views\Stagiaire\" />
   </ItemGroup>
 
 </Project>
