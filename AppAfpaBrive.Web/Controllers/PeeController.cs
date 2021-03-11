@@ -23,7 +23,7 @@ namespace AppAfpaBrive.Web.Controllers
 
         public IActionResult ValidationStage()
         {
-            return View();
+            return View(_peeLayer.TestRetour());
         }
     }
 }

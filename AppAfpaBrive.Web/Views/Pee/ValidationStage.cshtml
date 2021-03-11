@@ -4,10 +4,12 @@
 @{
 }
 @model AppAfpaBrive.BOL.Pee
-@{ 
+@{
     ViewData["Title"] = "Entreprise";
 }
 
 <h1>@ViewData["Title"]</h1>
-<p><a asp-action="Retour">Retour</a><a asp-action="Suivant">Suivant</a></p>
+@await Html.PartialAsync("_EntreprisePartial", Model.IdEntrepriseNavigation)
+<p><a asp-action="Retour">Retour</a></p>
+<p><a asp-action="Suivant">Suivant</a></p>
 

@@ -1,0 +1,37 @@
+﻿@model AppAfpaBrive.BOL.Entreprise
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm text-center">
+            <h2>Récapitulatif</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm text-left">
+            <h3>Entreprise</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm col-lg-6">
+            <p>@Html.DisplayNameFor(model => model.NumeroSiret) : @Html.DisplayFor(item => item.NumeroSiret)</p>
+        </div>
+        <div class="col-sm col-lg-6">
+            <p>@Html.DisplayNameFor(model => model.RaisonSociale) : @Html.DisplayFor(item => item.RaisonSociale)</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.MailEntreprise) : @Html.DisplayFor(item => item.MailEntreprise)</p></div>
+        <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.TelEntreprise) : @Html.DisplayFor(item => item.TelEntreprise)</p></div>
+    </div>
+    <div class="row">
+        <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.Ligne1Adresse) : @Html.DisplayFor(item => item.Ligne1Adresse)</p></div>
+        <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.Ligne2Adresse) : @Html.DisplayFor(item => item.Ligne2Adresse)</p></div>
+    </div>
+    <div class="row">
+        <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.Ligne3Adresse) : @Html.DisplayFor(item => item.Ligne3Adresse)</p></div>
+        <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.Ville) : @Html.DisplayFor(item => item.CodePostal) @Html.DisplayFor(item => item.Ville)</p></div>
+    </div>
+    <div class="row">
+        <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.Idpays2Navigation) : @Html.DisplayFor(item=>item.Idpays2Navigation.LibellePays)</p></div>
+    </div>
+</div>
