@@ -24,12 +24,17 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         public IActionResult Index()
         {
             IEnumerable<BOL.ProduitFormation> listProduitFormations = _db.ProduitFormations.OrderBy(x => x.LibelleProduitFormation);
+            for(int i=0; i < listProduitFormations.Count(); i++)
+            {
+              listProduitFormations = _db.ProduitFormations.Take(20);
+            }
             return View(listProduitFormations);
         }
 
         // GET: ProduitFormation/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(string Libelle)
         {
+
             return View();
         }
 
