@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -14,7 +15,7 @@ namespace AppAfpaBrive.BOL
             DestinataireEnquetes = new HashSet<DestinataireEnquete>();
             Pees = new HashSet<Pee>();
         }
-
+        
         public string MatriculeBeneficiaire { get; set; }
         public int CodeTitreCivilite { get; set; }
         public string NomBeneficiaire { get; set; }

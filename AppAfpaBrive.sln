@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppAfpaBrive.BOL", "AppAfpa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppAfpaBrive.DAL", "AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj", "{685765B5-0658-4CBC-9C58-0FDA0CB58014}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Projet_Test", "Projet_Test\Projet_Test.csproj", "{BD402F3E-B704-43A3-AB7F-87EDE4D04D14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{685765B5-0658-4CBC-9C58-0FDA0CB58014}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{685765B5-0658-4CBC-9C58-0FDA0CB58014}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{685765B5-0658-4CBC-9C58-0FDA0CB58014}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD402F3E-B704-43A3-AB7F-87EDE4D04D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD402F3E-B704-43A3-AB7F-87EDE4D04D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD402F3E-B704-43A3-AB7F-87EDE4D04D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD402F3E-B704-43A3-AB7F-87EDE4D04D14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

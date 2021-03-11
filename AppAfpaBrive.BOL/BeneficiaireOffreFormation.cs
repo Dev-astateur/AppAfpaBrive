@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -7,8 +8,11 @@ namespace AppAfpaBrive.BOL
 {
     public partial class BeneficiaireOffreFormation
     {
+        
         public string MatriculeBeneficiaire { get; set; }
+        
         public int IdOffreFormation { get; set; }
+        
         public string Idetablissement { get; set; }
         public DateTime DateEntreeBeneficiaire { get; set; }
         public DateTime? DateSortieBeneficiaire { get; set; }
