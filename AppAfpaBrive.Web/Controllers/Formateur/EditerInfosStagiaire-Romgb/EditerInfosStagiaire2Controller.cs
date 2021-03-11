@@ -24,7 +24,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         // GET: EditerInfosStagiaire2Controller/Create
         public ActionResult Create()
         {
-            return View();
+                return this.View();     
         }
 
         // POST: EditerInfosStagiaire2Controller/Create

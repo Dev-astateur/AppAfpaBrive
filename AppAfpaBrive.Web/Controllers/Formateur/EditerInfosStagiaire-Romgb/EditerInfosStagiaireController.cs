@@ -32,9 +32,16 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
+            string matricule = HttpContext.Request.Query["term"].ToString();
+            
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (matricule == null || matricule.Length < 8)
+                {
+                    return View();
+                }
+                return RedirectToAction("Edit", "EditerInfosStagiaire2");
+
             }
             catch
             {
