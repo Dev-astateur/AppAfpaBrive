@@ -1,4 +1,5 @@
-﻿using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -37,11 +38,22 @@ namespace AppAfpaBrive.Web.Controllers
         // GET: EntrepriseController/ListeEntreprise
         public ActionResult ListeEntreprise()
         {
+           
             return View();
         }
-        // GET: EntrepriseController/CreerEntreprise
+        // GET: EntrepriseController/creerEntreprise
+        [HttpGet]
         public ActionResult CreerEntreprise()
+        
         {
+            return View();
+        }
+        // POST: EntrepriseController/creerEntreprise
+        [HttpPost]
+        public ActionResult CreerEntreprise(Entreprise entreprise)
+        {
+            _dbContext.Entreprises.Add(entreprise);
+            _dbContext.SaveChanges();
             return View();
         }
 
