@@ -7,11 +7,11 @@ using AppAfpaBrive.DAL;
 
 namespace AppAfpaBrive.Web.Models.Layout
 {
-    public class Pee_Layer
+    public class PeeLayer
     {
         private readonly AFPANADbContext _dbContext = null;
 
-        public Pee_Layer (AFPANADbContext context) 
+        public PeeLayer (AFPANADbContext context) 
         {
             _dbContext = context;
         }
