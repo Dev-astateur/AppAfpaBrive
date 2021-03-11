@@ -47,16 +47,16 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // POST: ProduitFormation/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(BOL.ProduitFormation obj)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _db.ProduitFormations.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return this.View(obj);
+            
         }
 
         // GET: ProduitFormation/Edit/5
