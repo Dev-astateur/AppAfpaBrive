@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AppAfpaBrive.DAL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,18 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {
     public class EditerInfosStagiaireController : Controller
     {
-        // GET: EditerInfosStagiaireController
-        public ActionResult Index()
+        private AFPANADbContext _context = null;
+        public EditerInfosStagiaireController(AFPANADbContext context)
         {
-            return View();
+            this._context = context;
+        }
+
+        // GET: EditerInfosStagiaireController
+        public ActionResult ListeOffreFormation()
+        {
+            this.ViewBag.MonTitre = "ListeOffreFormation";           
+            var query = _context.OffreFormations.ToList();
+            return View(query);
         }
 
         // GET: EditerInfosStagiaireController/Details/5
@@ -33,13 +42,19 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         public ActionResult Create(IFormCollection collection)
         {
             string matricule = HttpContext.Request.Query["term"].ToString();
+
+
+            if (ModelState.IsValid)
+            {
+                //on enregistre en bdd
+            }
+             // Sinon on ne fait rien
             
             try
             {
-                if (matricule == null || matricule.Length < 8)
-                {
-                    return View();
-                }
+                
+                  //  return View();
+                
                 return RedirectToAction("Edit", "EditerInfosStagiaire2");
 
             }

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<AppAfpaBrive.BOL.OffreFormation>
+
+@{
+    ViewData["Title"] = "ListeOffreFormation";
+    List<AppAfpaBrive.BOL.OffreFormation> listeOffreFormations = ViewBag.MaListe;
+    var listeItemOffreFormation = listeOffreFormations.Select(o => o.LibelleOffreFormation);
+}
+
+<h1>Je recherche un bénéficiaire pour pouvoir mettre à jour ses informations</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LibelleOffreFormation)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.MatriculeCollaborateurAfpaNavigation)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LibelleOffreFormation)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.MatriculeCollaborateurAfpaNavigation.MatriculeCollaborateurAfpa)
+            </td>*@
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

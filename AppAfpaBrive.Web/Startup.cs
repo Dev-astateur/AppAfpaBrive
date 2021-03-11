@@ -81,13 +81,12 @@ namespace AppAfpaBrive.Web
                 endpoints.MapControllerRoute(
                    name: "editstagiaire1",
                    pattern: "edition-stagiaire",
-                   defaults: new { controller = "EditerInfosStagiaire", action = "Index" });
+                   defaults: new { controller = "EditerInfosStagiaire", action = "ListeOffreFormation" });
 
                 endpoints.MapControllerRoute(
                    name: "editstagiaire",
                    pattern: "edition-stagiaire2",
                    defaults: new { controller = "EditerInfosStagiaire2", action = "Edit" });
-
             });
         }
     }
