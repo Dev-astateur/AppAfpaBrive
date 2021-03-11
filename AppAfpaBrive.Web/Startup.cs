@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using AppAfpaBrive.Web.Utilitaires;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace AppAfpaBrive.Web
 {
@@ -39,10 +41,15 @@ namespace AppAfpaBrive.Web
                     assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName)));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddSingleton<IFileProvider>(
+           new PhysicalFileProvider(
+               Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddTransient<IEmailSender, SendinBlueEmailSender>();
+            services.AddMvc();
            
         }
 

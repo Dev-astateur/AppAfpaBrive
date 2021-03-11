@@ -10,16 +10,29 @@ namespace AppAfpaBrive.Web.Controllers
 {
     public class FileUploadController : Controller
     {
-       
+        protected string path = "";
 
-        [HttpPost("FileUpload")]
-        public async Task<IActionResult> Index(IFormFile file, string path)
+
+        public FileUploadController()
         {
-            var filePath = path;
+            path = "./Data/Documents";
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Index(IFormFile file)
+        {
+            var filePath = path + "/" + file.FileName;
+
             if (file.Length > 0)
+
             {
-                
-                using(var stream = new FileStream(path, FileMode.Create))
+                using(var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }

@@ -27,8 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\ExtraireInformationStagiaireController\" />
+    <Folder Include="Data\Documents\" />
     <Folder Include="ModelesOffice\" />
-    <Folder Include="Models\FileUploadModels\" />
   </ItemGroup>
 
 </Project>
