@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Convention\" />
     <Folder Include="ModelesOffice\" />
     <Folder Include="Models\Layer\" />
   </ItemGroup>
