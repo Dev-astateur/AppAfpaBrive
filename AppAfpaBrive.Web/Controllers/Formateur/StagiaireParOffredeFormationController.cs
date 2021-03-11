@@ -19,9 +19,12 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
         // GET: StagiaireParOffredeFormationController
         public ActionResult ListeStagiaireParOffreFormation()
         {
-            this.ViewBag.MonTitre = "StagiaireParOffreDeFormation";
-            return View();
+            this.ViewBag.MonTitre = "Liste Stagiaire Par OffreDeFormation";
+            var query = _AFPANADbContext.Beneficiaires.ToList();
+            
+            return View(query);
         }
+        
 
         // GET: StagiaireParOffredeFormationController/Details/5
         public ActionResult Details(int id)

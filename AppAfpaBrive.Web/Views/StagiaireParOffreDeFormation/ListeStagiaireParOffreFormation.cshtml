@@ -2,12 +2,15 @@
 
 @{
     ViewData["Title"] = "StagiaireParOffreDeFormation";
+    List<AppAfpaBrive.BOL.OffreFormation> listeOffreFormations = ViewBag.MaList;
+    var liste = listeOffreFormations.Select(o => o.LibelleOffreFormation).ToList();
+
 }
 
 <h1 class="text-center">@ViewBag.MonTitre</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    
 </p>
 <table class="table">
     <thead>
@@ -50,11 +53,7 @@
                 @Html.DisplayFor(modelItem => item.MailingAutorise)
             </td>
             
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MatriculeBeneficiaire">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MatriculeBeneficiaire">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MatriculeBeneficiaire">Delete</a>
-            </td>
+           
         </tr>
 }
     </tbody>
