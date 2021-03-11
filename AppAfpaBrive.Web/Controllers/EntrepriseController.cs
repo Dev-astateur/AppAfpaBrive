@@ -35,10 +35,16 @@ namespace AppAfpaBrive.Web.Controllers
             return View();
         }
         // GET: EntrepriseController/ListeEntreprise
-        public ActionResult ListEntreprise()
+        public ActionResult ListeEntreprise()
         {
             return View();
         }
+        // GET: EntrepriseController/CreerEntreprise
+        public ActionResult CreerEntreprise()
+        {
+            return View();
+        }
+
 
         // POST: EntrepriseController/Create
         [HttpPost]
