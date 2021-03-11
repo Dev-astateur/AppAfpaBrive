@@ -1,0 +1,89 @@
+﻿@model IQueryable<AppAfpaBrive.BOL.Pee>
+@using AppAfpaBrive.BOL;
+@using GridMvc.Html;
+@using Microsoft.EntityFrameworkCore;
+@{
+    ViewData["Title"] = "AfficheBeneficiairePee";
+    Entreprise entreprise = new Entreprise();
+    PeriodePee periodePee = new PeriodePee();
+    Pee pee = new AppAfpaBrive.BOL.Pee();
+    Beneficiaire beneficiaire = new AppAfpaBrive.BOL.Beneficiaire();
+    pee.MatriculeBeneficiaireNavigation = beneficiaire;
+    //List<AppAfpaBrive.BOL.Pee> pees = new List<AppAfpaBrive.BOL.Pee>();
+    var listPee = Model.Select(S => S.MatriculeBeneficiaireNavigation.Pees).ToList();
+    
+}
+
+<h4>Pee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+       
+    </div>
+</div>
+
+<div>
+    <table id="myTable" class="table table-bordered table-hover ">
+        <thead class="thead-light">
+            <tr>
+
+                <th>Nom Beneficiaire</th>
+                <th>Prénom Beneficiaire</th>
+                @*<th>Entreprise d'accueil</th>*@
+
+                @if (Model != null && listPee.Count() < 1)
+                {
+                    foreach (var data in listPee)
+                    {
+                        foreach (var item in data)
+                        {
+                            <th>Pee</th>
+                        }
+
+
+                    }
+
+                }
+                else
+                {
+                    <th>Pee</th>
+                }
+            </tr>
+        </thead>
+        @if (Model != null)
+        {
+
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</td>
+
+
+                    @if (Model != null)
+                    {
+                        @foreach (var itemPee in item.MatriculeBeneficiaireNavigation.Pees)
+                        {
+                            <td>
+                                @Html.ActionLink($"Convention_{item.MatriculeBeneficiaire}",
+                                       "TeleWord",
+                                       new { id = itemPee.IdPee },
+                                       new { @class = "btn btn-primary border" }
+                                      )
+                            </td>
+
+
+
+                        }
+
+                    }
+
+
+                </tr>
+            }
+        }
+
+    </table>
+
+</div>
+
