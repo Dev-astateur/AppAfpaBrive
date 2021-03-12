@@ -97,24 +97,33 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         }
 
         // GET: ProduitFormation/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int? id)
         {
-            return View();
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var obj = _db.ProduitFormations.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
         }
 
         // POST: ProduitFormation/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeletePost(int? id)
         {
-            try
+            var obj = _db.ProduitFormations.Find(id);
+            if(obj == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
+            _db.ProduitFormations.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

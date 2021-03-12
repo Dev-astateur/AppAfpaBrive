@@ -1,0 +1,56 @@
+﻿@model AppAfpaBrive.BOL.ProduitFormation
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3> Etes vous sur de vouloir supprimer ce produit de formation ? </h3>
+<div>
+    <h4>ProduitFormation</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CodeProduitFormation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CodeProduitFormation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NiveauFormation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NiveauFormation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LibelleProduitFormation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LibelleProduitFormation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LibelleCourtFormation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LibelleCourtFormation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FormationContinue)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FormationContinue)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FormationDiplomante)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FormationDiplomante)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
