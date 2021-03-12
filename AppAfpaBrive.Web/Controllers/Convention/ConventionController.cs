@@ -4,19 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppAfpaBrive.DAL;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
     public class ConventionController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public ConventionController(ApplicationDbContext db)
-        {
-            _db = db;
-        }
+        
 
         public IActionResult Index()
         {
+            
             return View();
         }
 
