@@ -10,17 +10,20 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
 {
     public class StagiaireParOffredeFormationController : Controller
     {
-        private readonly AFPANADbContext _AFPANADbContext = null;
+        private BeneficiaireLayer _beneficiaireLayer = null;
+        private AFPANADbContext _aFPANADbContext = null;
+
 
         public StagiaireParOffredeFormationController (AFPANADbContext context)
         {
-            this._AFPANADbContext = context;
+          _beneficiaireLayer  = new BeneficiaireLayer(context)  ;
+            
         }
         // GET: StagiaireParOffredeFormationController
         public ActionResult ListeStagiaireParOffreFormation()
         {
             this.ViewBag.MonTitre = "Liste Stagiaire Par OffreDeFormation";
-            var query = _AFPANADbContext.Beneficiaires.ToList();
+          var query =_beneficiaireLayer.GetAllByOffredeFormation();
             
             return View(query);
         }
