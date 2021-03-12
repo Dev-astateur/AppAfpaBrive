@@ -1,0 +1,45 @@
+﻿@model IEnumerable<AppAfpaBrive.BOL.BeneficiaireOffreFormation>
+    <form>
+
+
+        <div>
+            @if (Model.Count() > 0)
+            {
+                <table class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                Offre de formation
+                            </th>
+                            <th>
+                                Etablissement 
+                            </th>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var obj in Model)
+                        {
+                            <tr id="ligne">
+                                <td width="40%">@obj.IdOffreFormation</td>
+                                <td width="50%">@obj.Idetablissement</td>
+                                <td>
+                                    <a asp-controller="Convention" asp-action="Entreprise" class="btn btn-primary">
+                                        Créer une convention de stage
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p> Vous n'avez pas de formation.</p>
+            }
+
+        </div>
+    </form>
+
