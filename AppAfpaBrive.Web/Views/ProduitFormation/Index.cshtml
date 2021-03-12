@@ -7,12 +7,12 @@
         </div>
         <div class="col-6 text-right">
             <a asp-controller="ProduitFormation" asp-action="Create" class="btn btn-primary">
-                <i class="fas fa-plus-square"></i> &nbsp; Create New ProduitFormation
+                <i class="fas fa-plus-square"></i> &nbsp; Créer un nouveau Produit de Formation
             </a>
         </div>
         <div class="col-6">
-            <textarea placeholder="recherche par libelle de produit de formation" ></textarea>
-           <input id="btnRecherche" type="button" value="Recherche" />
+            <input asp-controller="ProduitFormation" asp-action="Details" placeholder="Mécanicien...." />
+            <input id="btnRecherche" type="button" value="Recherche" />
         </div>
     </div>
 
@@ -46,31 +46,39 @@
             <tbody>
                 @foreach (var obj in Model)
                 {
-                <tr id="ligne">
-                    <td width="10%">@obj.CodeProduitFormation</td>
-                    <td width="10%">@obj.NiveauFormation</td>
-                    <td width="30%">@obj.LibelleProduitFormation</td>
-                    <td width="30%">@obj.LibelleCourtFormation</td>
-                    <td width="10%">@obj.FormationContinue</td>
-                    <td width="10%">@obj.FormationDiplomante</td>
-                    <td>
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Category" asp-route-Id="@obj.CodeProduitFormation" asp-action="Edit" class="btn btn-primary">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <a asp-controller="Category" asp-route-Id="@obj.CodeProduitFormation" asp-action="Delete" class="btn btn-danger">
-                                <i class="fas fa-trash"></i> Delete
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+                    <tr id="ligne">
+                        <td width="10%">@obj.CodeProduitFormation</td>
+                        <td width="10%">@obj.NiveauFormation</td>
+                        <td width="30%">@obj.LibelleProduitFormation</td>
+                        <td width="30%">@obj.LibelleCourtFormation</td>
+                        <td width="10%">@obj.FormationContinue</td>
+                        <td width="10%">@obj.FormationDiplomante</td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="ProduitFormation" asp-route-Id="@obj.CodeProduitFormation" asp-action="Edit" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> modifier
+                                </a>
+                                <a asp-controller="ProduitFormation" asp-route-Id="@obj.CodeProduitFormation" asp-action="Delete" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> Supprimer
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
+        <div>
+            <button class="btn-primary" asp-action="Index"> previous  </button>
+            <button class="btn-primary" asp-action="Index"> next </button>
+        </div>
+
+
     }
     else
     {
-        <p> No Produit de Formation exists</p>
+        <p> Il n'y a pas de produits de formation</p>
     }
-
+   
 </div>
+
+

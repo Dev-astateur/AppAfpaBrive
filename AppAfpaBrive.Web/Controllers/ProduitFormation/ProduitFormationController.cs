@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using PagedList;
 
 
 namespace AppAfpaBrive.Web.Controllers.ProduitFormation
@@ -21,13 +22,20 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         }
 
         // GET: ProduitFormation
-        public IActionResult Index()
+        public IActionResult Index(int id =0)
         {
+        
             IEnumerable<BOL.ProduitFormation> listProduitFormations = _db.ProduitFormations.OrderBy(x => x.LibelleProduitFormation);
-            for(int i=0; i < listProduitFormations.Count(); i++)
+           
+            if (id != 0)
             {
-              listProduitFormations = _db.ProduitFormations.Take(20);
+                //for (int i = 0; i < listProduitFormations.Count(); i++)
+                //{
+                listProduitFormations = _db.ProduitFormations.Skip(20 * (id - 1)).Take(20);
+                //}
+                return View(listProduitFormations);
             }
+            listProduitFormations = _db.ProduitFormations.Take(20);
             return View(listProduitFormations);
         }
 
@@ -68,16 +76,15 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // POST: ProduitFormation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(BOL.ProduitFormation obj)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _db.ProduitFormations.Update(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return this.View(obj);
         }
 
         // GET: ProduitFormation/Delete/5
