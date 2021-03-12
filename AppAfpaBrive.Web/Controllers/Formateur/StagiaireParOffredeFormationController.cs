@@ -1,4 +1,5 @@
-﻿using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.DAL.Layers;
+using AppAfpaBrive.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,14 +12,13 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
     public class StagiaireParOffredeFormationController : Controller
     {
         private BeneficiaireLayer _beneficiaireLayer = null;
-        private AFPANADbContext _aFPANADbContext = null;
-
+      
 
         public StagiaireParOffredeFormationController (AFPANADbContext context)
         {
           _beneficiaireLayer  = new BeneficiaireLayer(context)  ;
             
-        }
+        } 
         // GET: StagiaireParOffredeFormationController
         public ActionResult ListeStagiaireParOffreFormation()
         {
