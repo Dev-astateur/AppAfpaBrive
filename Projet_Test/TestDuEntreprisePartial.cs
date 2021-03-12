@@ -23,9 +23,9 @@ namespace Projet_Test
         public void Test_Passage_Des_Données_A_La_Vue_True()
         {
             DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
-            builder.UseSqlServer()
+            builder.UseSqlServer("data source=localhost;initial catalog=AFPA_2021;integrated security=True;");
 
-            PeeController controleur = new PeeController(new AFPANADbContext());
+            PeeController controleur = new PeeController(new AFPANADbContext(builder.Options));
             var view = controleur.ValidationStage();
 
             Assert.IsInstanceOf<ViewResult>(view);
