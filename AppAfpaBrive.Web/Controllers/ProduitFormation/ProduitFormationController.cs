@@ -68,9 +68,18 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         }
 
         // GET: ProduitFormation/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if(id==null || id == 0)
+            {
+                return NotFound();
+            }
+            var obj = _db.ProduitFormations.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
         }
 
         // POST: ProduitFormation/Edit/5
