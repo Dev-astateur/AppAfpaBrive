@@ -11,6 +11,6 @@ namespace AppAfpaBrive.Web.Models.FileUploadModels
     {
         [FileAttribute]
         [DataType(DataType.Upload)]
-        public IFormFile uploaded {get; set;}
+        public IFormFile Uploaded { set; get; }
     }
 }

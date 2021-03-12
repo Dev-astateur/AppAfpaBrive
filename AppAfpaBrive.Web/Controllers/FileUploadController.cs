@@ -27,20 +27,25 @@ namespace AppAfpaBrive.Web.Controllers
 
       
         [HttpPost]
-        public async Task<IActionResult> Index(FileModel file)
+        public async Task<IActionResult> Index([FromForm]FileModel postedFile)
         {
-            var filePath = path + "/" + file.uploaded.FileName;
-
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.uploaded.CopyToAsync(stream);
-            }
 
             if (ModelState.IsValid)
             {
-                return Ok(new { file.uploaded.Length, filePath });
+                var filePath = path + "/" + postedFile.Uploaded.FileName;
+
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await postedFile.Uploaded.CopyToAsync(stream);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    return Ok(new { postedFile.Uploaded.Length, filePath });
+                }
             }
+            
 
             return View();
         }

@@ -23,20 +23,20 @@ namespace AppAfpaBrive.Web.Models.FileUploadModels
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             
-            if(!(value is IFormFile) || value is null)
+            if(value is null)
             {
                 return new ValidationResult("Merci de choisir un fichier valide");
             }
             else 
             {
-                var file = value as IFormFile;
-                string extension = System.IO.Path.GetExtension(file.FileName);
+                var file = value as FileModel;
+                string extension = System.IO.Path.GetExtension(file.Uploaded.FileName);
                 if(!FileTypes.Contains(extension))
                 {
                     return new ValidationResult($"L'extension {extension} n'est pas prise en charge");
                 }
 
-                if(file.Length == 0)
+                if(file.Uploaded.Length == 0)
                 {
                     return new ValidationResult("Le fichier ne doit pas être vide");
                 }
