@@ -8,7 +8,6 @@
     ViewData["Title"] = "Entreprise";
 }
 
-<h1>@ViewData["Title"]</h1>
 @await Html.PartialAsync("_EntreprisePartial", Model.IdEntrepriseNavigation)
 <p><a asp-action="Retour">Retour</a></p>
 <p><a asp-action="Suivant">Suivant</a></p>
