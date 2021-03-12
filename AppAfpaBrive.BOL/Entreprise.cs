@@ -25,10 +25,12 @@ namespace AppAfpaBrive.BOL
         public string Ligne1Adresse { get; set; }
         public string Ligne2Adresse { get; set; }
         public string Ligne3Adresse { get; set; }
+        [Display(Name = "Code Poastal")]
         public string CodePostal { get; set; }
+        [Display(Name = "Ville")]
         public string Ville { get; set; }
         public string Idpays2 { get; set; }
-
+        [Display(Name ="Pays")]
         public virtual Pay Idpays2Navigation { get; set; }
         public virtual ICollection<Contrat> Contrats { get; set; }
     }
