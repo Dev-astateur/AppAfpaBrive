@@ -3,28 +3,14 @@
 @{
     ViewData["Title"] = "ListeEntreprise";
 }
-<div class="row">
-    <div class="col-md-12">
-        <h1>Liste des entreprises ayant accueillit des stagiaires</h1>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-group">
-            <label class="control-label">Numéro de département</label>
-            <input class="form-control" />
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group">
-            <label class="control-label">Famille de metier ROME</label>
-            <input class="form-control" />
-        </div>
-    </div>
-</div>
-<div class="form-group">
-    <input type="submit" value="Rechercher" class="btn btn-primary" />
-</div>
+
+<form asp-controller="EntrepriseController" asp-action="ListeEntreprise">
+    <p>
+        <input type="search" placeholder="entrez n° de département" value=" @ViewData["GetEmployeedetails"]" name="departement"/>
+        <input type="submit" value="Rechercher" class="btn btn-primary"/>
+    </p>
+</form>
+
 
 <table class="table">
     <thead>

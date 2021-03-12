@@ -19,5 +19,9 @@ namespace AppAfpaBrive.DAL.Layers
         {
             return _context.Entreprises.ToList();
         }
+        public List<Entreprise> GetEntreprisesByDepartement(string dep)
+        {
+            return _context.Entreprises.Where(e => e.CodePostal.Contains(dep)).ToList();
+        }
     }
 }

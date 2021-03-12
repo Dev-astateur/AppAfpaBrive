@@ -45,14 +45,31 @@ namespace AppAfpaBrive.Web.Controllers
             List<Entreprise> ListEntreprise = _layer.GetAllEntreprise();
             return View(ListEntreprise);
         }
+        // GET: EntrepriseController/ListeEntreprise
+       
+        public async Task<IActionResult> ListeEntreprise(string departement)
+        {
+            ViewData["GetEmployeedetails"] = departement;
+            var query = _layer.GetAllEntreprise();
+            if (String.IsNullOrEmpty(departement))
+            {
+                query = _layer.GetEntreprisesByDepartement(departement);
+            }
+            return View(query.ToList());
+        }
+
+
         // GET: EntrepriseController/creerEntreprise
         [HttpGet]
         public ActionResult CreerEntreprise()
         {
-            List<Pay> Liste = _dbContext.Pays.ToList();
-             ViewBag.MaList = Liste;
+            //List<Pay> Liste = _dbContext.Pays.ToList();
+            // ViewBag.MaList = Liste;
             return View();
         }
+      
+            
+
         // POST: EntrepriseController/creerEntreprise
         [HttpPost]
         public ActionResult CreerEntreprise(Entreprise entreprise)
