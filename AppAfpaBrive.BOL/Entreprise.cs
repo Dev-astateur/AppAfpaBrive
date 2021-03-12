@@ -30,7 +30,6 @@ namespace AppAfpaBrive.BOL
         [Display(Name = "Ville")]
         public string Ville { get; set; }
         public string Idpays2 { get; set; }
-        [Display(Name ="Pays")]
         public virtual Pay Idpays2Navigation { get; set; }
         public virtual ICollection<Contrat> Contrats { get; set; }
     }
