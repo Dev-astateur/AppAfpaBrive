@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AppAfpaBrive.Web.Models.FileUploadModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,21 +25,24 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
 
+      
         [HttpPost]
-        public async Task<IActionResult> Index(IFormFile file)
+        public async Task<IActionResult> Index(FileModel file)
         {
-            var filePath = path + "/" + file.FileName;
+            var filePath = path + "/" + file.uploaded.FileName;
 
-            if (file.Length > 0)
 
+            using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                using(var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
+                await file.uploaded.CopyToAsync(stream);
             }
 
-            return Ok(new { file.Length, filePath});
+            if (ModelState.IsValid)
+            {
+                return Ok(new { file.uploaded.Length, filePath });
+            }
+
+            return View();
         }
     }
 }
