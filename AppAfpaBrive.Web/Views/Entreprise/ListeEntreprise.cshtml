@@ -3,87 +3,96 @@
 @{
     ViewData["Title"] = "ListeEntreprise";
 }
+<div class="row">
+    <div class="col-md-12">
+        <h1>Liste des entreprises ayant accueillit des stagiaires</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Numéro de département</label>
+            <input class="form-control" />
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Famille de metier ROME</label>
+            <input class="form-control" />
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <input type="submit" value="Rechercher" class="btn btn-primary" />
+</div>
 
-<h1>ListeEntreprise</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RaisonSociale)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumeroSiret)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MailEntreprise)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TelEntreprise)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ligne1Adresse)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ligne2Adresse)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ligne3Adresse)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CodePostal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ville)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Idpays2Navigation)
-            </th>
-            <th></th>
-        </tr>
+        <div class="row">
+            <tr>
+
+                <div class="col-md-3">
+                    <th>
+                        @Html.DisplayNameFor(model => model.RaisonSociale)
+                    </th>
+                </div>
+                <div class="col-md-3">
+                    <th>
+                        @Html.DisplayNameFor(model => model.MailEntreprise)
+                    </th>
+                </div>
+                <div class="col-md-3">
+                    <th>
+                        @Html.DisplayNameFor(model => model.TelEntreprise)
+                    </th>
+                </div>
+                <div class="col-md-3">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Ville)
+                    </th>
+                </div>
+
+            </tr>
+        </div>
+
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RaisonSociale)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumeroSiret)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MailEntreprise)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TelEntreprise)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ligne1Adresse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ligne2Adresse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ligne3Adresse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CodePostal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ville)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Idpays2Navigation.Idpays2)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdEntreprise">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdEntreprise">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdEntreprise">Delete</a>
-            </td>
-        </tr>
-}
+
+        @foreach (var item in Model)
+        {
+            <div class="row">
+                <tr>
+                    <div class="col-md-3">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RaisonSociale)
+                        </td>
+                    </div>
+                    <div class="col-md-3">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MailEntreprise)
+                        </td>
+                    </div>
+                    <div class="col-md-3">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TelEntreprise)
+                        </td>
+                    </div>
+                    <div class="col-md-3">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ville)
+                        </td>
+                    </div>
+                    @*
+
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.IdEntreprise">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.IdEntreprise">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.IdEntreprise">Delete</a>
+                        </td>*@
+                </tr>
+            </div>
+        }
+
     </tbody>
 </table>

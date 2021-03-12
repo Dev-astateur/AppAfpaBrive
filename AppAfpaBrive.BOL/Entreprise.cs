@@ -23,7 +23,6 @@ namespace AppAfpaBrive.BOL
         public string Ligne3Adresse { get; set; }
         public string CodePostal { get; set; }
         public string Ville { get; set; }
-        [NotMapped]
         public string Idpays2 { get; set; }
 
         public virtual Pay Idpays2Navigation { get; set; }

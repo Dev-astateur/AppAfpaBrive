@@ -1,5 +1,6 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using AppAfpaBrive.DAL.Layers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,10 +13,12 @@ namespace AppAfpaBrive.Web.Controllers
     public class EntrepriseController : Controller
     {
         private readonly AFPANADbContext _dbContext;
+        private readonly EntrepriseLayer _layer;
 
-        public EntrepriseController (AFPANADbContext Db)
+        public EntrepriseController(AFPANADbContext Db)
         {
-            _dbContext = Db;
+           
+            _layer = new EntrepriseLayer(Db);
         }
 
         // GET: EntrepriseController
@@ -38,20 +41,23 @@ namespace AppAfpaBrive.Web.Controllers
         // GET: EntrepriseController/ListeEntreprise
         public ActionResult ListeEntreprise()
         {
-           
-            return View();
+            //  List<Entreprise> ListEntreprise = _dbContext.Entreprises.ToList();
+            List<Entreprise> ListEntreprise = _layer.GetAllEntreprise();
+            return View(ListEntreprise);
         }
         // GET: EntrepriseController/creerEntreprise
         [HttpGet]
         public ActionResult CreerEntreprise()
-        
         {
+            List<Pay> Liste = _dbContext.Pays.ToList();
+             ViewBag.MaList = Liste;
             return View();
         }
         // POST: EntrepriseController/creerEntreprise
         [HttpPost]
         public ActionResult CreerEntreprise(Entreprise entreprise)
         {
+
             _dbContext.Entreprises.Add(entreprise);
             _dbContext.SaveChanges();
             return View();
