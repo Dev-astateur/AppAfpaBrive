@@ -25,7 +25,7 @@ namespace AppAfpaBrive.BOL
         public string Ligne1Adresse { get; set; }
         public string Ligne2Adresse { get; set; }
         public string Ligne3Adresse { get; set; }
-        [Display(Name = "Code Poastal")]
+        [Display(Name = "Code Postal")]
         public string CodePostal { get; set; }
         [Display(Name = "Ville")]
         public string Ville { get; set; }
