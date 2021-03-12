@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AppAfpaBrive.DAL.Layer
+namespace AppAfpaBrive.DAL.Layers
 {
     public class PaysLayer
     {

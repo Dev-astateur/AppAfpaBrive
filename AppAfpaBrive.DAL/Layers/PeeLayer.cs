@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.Web.Models.Layout
+namespace AppAfpaBrive.DAL.Layers
 {
     public class PeeLayer
     {

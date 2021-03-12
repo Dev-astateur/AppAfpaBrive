@@ -1,5 +1,4 @@
 ﻿using AppAfpaBrive.DAL;
-using AppAfpaBrive.Web.Models.Layout;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,9 +10,12 @@ namespace AppAfpaBrive.Web.Controllers
     public class PeeController : Controller
     {
         private readonly PeeLayer _peeLayer = null;
+        private readonly PaysLayer _paysLayer = null;
+
         public PeeController ( AFPANADbContext context )
         {
             _peeLayer = new PeeLayer(context);
+            _paysLayer = new 
         }
 
         public IActionResult Index()
@@ -23,7 +25,7 @@ namespace AppAfpaBrive.Web.Controllers
 
         public IActionResult ValidationStage()
         {
-            return View(_peeLayer.TestRetour());
+            return View();
         }
     }
 }
