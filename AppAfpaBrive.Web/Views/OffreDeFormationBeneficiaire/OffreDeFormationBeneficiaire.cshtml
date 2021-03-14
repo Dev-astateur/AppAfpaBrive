@@ -1,0 +1,69 @@
+﻿@model IEnumerable<AppAfpaBrive.BOL.OffreFormation>
+
+@{
+    ViewData["Title"] = "OffreDeFormationBeneficiaire";
+}
+
+<h1>OffreDeFormationBeneficiaire</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LibelleOffreFormation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LibelleReduitOffreFormation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateDebutOffreFormation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateFinOffreFormation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodeProduitFormationNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdEtablissementNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MatriculeCollaborateurAfpaNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LibelleOffreFormation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LibelleReduitOffreFormation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateDebutOffreFormation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateFinOffreFormation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodeProduitFormationNavigation.LibelleProduitFormation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdEtablissementNavigation.IdEtablissement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MatriculeCollaborateurAfpaNavigation.MatriculeCollaborateurAfpa)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
