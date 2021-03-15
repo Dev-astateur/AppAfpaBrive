@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.BOL;
-
+using AppAfpaBrive.Web.ModelView;
 
 namespace AppAfpaBrive.Web.Controllers.Formateur
 {
@@ -26,12 +26,17 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
         // GET: StagiaireParOffredeFormationController
         public ActionResult OffreDeFormationBeneficiaire()
         {
+            
             this.ViewBag.MonTitre = "OffreDeFormationBeneficiaire";
 
             var query = _offreDeFormationLayer.GetByMatriculeCollaborateurAFPA("96GB011");
-            query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAllByOffreFormation(1);
-
-            return View(query);
+           query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAllByOffreFormation(1);
+            OffreFormationModelView model = new OffreFormationModelView(query);
+            foreach (var item in query.BeneficiaireOffreFormations)
+            {
+                model.BeneficiaireOffreFormations.Add(item);
+            }
+            return View(model);
         }
         // GET: OffreDeFormationBeneficiaireController
         public ActionResult Index()
