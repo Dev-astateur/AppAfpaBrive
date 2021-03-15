@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.WebPages.Html;
 
 namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {
@@ -15,9 +16,11 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         private readonly StagiaireLayer _stagiaireLayer;
         private readonly OffreFormationLayer _offreFormation;
 
+
         public EditerInfosStagiaireController(AFPANADbContext context)
         {
             _offreFormation = new OffreFormationLayer(context);
+            _stagiaireLayer = new StagiaireLayer(context);
         }
 
         //public StagiaireLayer(AFPANADbContext context)
@@ -29,16 +32,40 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         //    this _context = context;
         //}
 
-        // GET: EditerInfosStagiaireController
+        //GET: EditerInfosStagiaireController
         public ActionResult ListeOffreFormation()
         {
-            this.ViewBag.MonTitre = "ListeOffreFormation";           
-            var query = _offreFormation.GetAllOffreFormation().ToList();
+            this.ViewBag.MonTitre = "ListeOffreFormation";
+            var query = _offreFormation.GetAllOffreFormation();
+
+            List<SelectListItem> listeOffreFormation = new List<SelectListItem>();
+
+            foreach (var item in query)
+            {
+                SelectListItem selectListItem = new SelectListItem();
+                selectListItem.Value = item.IdOffreFormation.ToString();
+                selectListItem.Text = item.LibelleOffreFormation;
+                listeOffreFormation.Add(selectListItem);
+                ViewBag.DropDownListItems = listeOffreFormation;
+            }
             return View(query);
         }
 
-        // GET: EditerInfosStagiaireController/Details/5
+        //public ActionResult Create()
+        //{
+        //    this.ViewBag.MonTitre = "Create";
+        //    var query = _offreFormation.GetAllOffreFormation().ToList();
+        //    return View(query);
+        //}
+
+        //// GET: EditerInfosStagiaireController/Details/5
         public ActionResult Details(int id)
+        {
+            return View();
+        }
+
+        // GET: EditerInfosStagiaireController/Details/5
+        public ActionResult Details()
         {
             return View();
         }

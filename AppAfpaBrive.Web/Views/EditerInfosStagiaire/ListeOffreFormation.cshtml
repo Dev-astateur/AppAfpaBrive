@@ -1,20 +1,15 @@
 ﻿@model IEnumerable<AppAfpaBrive.BOL.OffreFormation>
+@*@model IEnumerable<AppAfpaBrive.Web.ModelView.OffreDeFormation>*@
 
 @{
     ViewData["Title"] = "ListeOffreFormation";
     //List<AppAfpaBrive.BOL.OffreFormation> listeOffreFormations = ViewBag.MaListe;
-    //var listeItemOffreFormation = listeOffreFormations.Select(o => o.LibelleOffreFormation).ToList();
+    //var listeItemOffreFormation = listeOffreFormations.Select(o => new SelectListItem() { Text = o.LibelleOffreFormation, Value = o.IdOffreFormation.ToString()});
 }
 
-<h2>Je recherche un bénéficiaire pour pouvoir mettre à jour ses informations</h2>
+<h2>Sélectionnez une offre de formation</h2>
 
-<form>
 
-</form>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -22,26 +17,32 @@
                 @Html.DisplayNameFor(model => model.LibelleOffreFormation)
             </th>
             @*<th>
-                @Html.DisplayNameFor(model => model.MatriculeCollaborateurAfpaNavigation)
-            </th>*@
-            <th></th>
+                    @Html.DisplayNameFor(model => model.BeneficiaireOffreFormations)
+                </th>*@
+
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LibelleOffreFormation)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.MatriculeCollaborateurAfpaNavigation.MatriculeCollaborateurAfpa)
-            </td>*@
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                        @Html.DisplayFor(modelItem => item.LibelleOffreFormation)
+                    </td>
+                @*<td>
+                        @Html.DropDownListFor(modelItem => item.LibelleOffreFormation, new SelectList(Model.LibelleOffreFormation, "Value", "Text"), htmlAttributes: new { @class = "form-control", id = "OffreDeFormation" })
+                        @Html.ValidationMessageFor(x => x.LibelleOffreFormation, "", new { @class = "text-danger" });
+                    </td>*@
+                <div class>
+
+                </div>
+                <td>
+                    <div class="form-group">
+                        <a type="submit" value="Select" class="btn btn-primary" asp-route-id="@item.BeneficiaireOffreFormations" asp-controller="EditerInfosStagiaire2" asp-action="Edit">Séléctionner</a>
+                        <a type="submit" value="Menu" class="btn btn-danger" asp-controller="EditerInfosStagiaire2" asp-action="Edit">Revenir au menu principal</a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

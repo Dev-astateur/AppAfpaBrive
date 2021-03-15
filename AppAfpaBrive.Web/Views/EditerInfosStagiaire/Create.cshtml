@@ -1,0 +1,70 @@
+﻿@model AppAfpaBrive.BOL.OffreFormation
+
+@{
+    ViewData["Title"] = "Create";
+
+        List<AppAfpaBrive.BOL.OffreFormation> listeOffreFormations = ViewBag.MaListe;
+        var listeItemOffreFormation = listeOffreFormations.Select(o => new SelectListItem() { Text = o.LibelleOffreFormation, Value = o.IdOffreFormation.ToString()});
+    
+}
+
+<h1>Create</h1>
+
+<h4>OffreFormation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdOffreFormation" class="control-label"></label>
+                <input asp-for="IdOffreFormation" class="form-control" />
+                <span asp-validation-for="IdOffreFormation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdEtablissement" class="control-label"></label>
+                <input asp-for="IdEtablissement" class="form-control" />
+                <span asp-validation-for="IdEtablissement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MatriculeCollaborateurAfpa" class="control-label"></label>
+                <input asp-for="MatriculeCollaborateurAfpa" class="form-control" />
+                <span asp-validation-for="MatriculeCollaborateurAfpa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodeProduitFormation" class="control-label"></label>
+                <input asp-for="CodeProduitFormation" class="form-control" />
+                <span asp-validation-for="CodeProduitFormation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LibelleOffreFormation" class="control-label"></label>
+                <select asp-for="LibelleOffreFormation" class="form-control" asp-items="listeItemOffreFormation.ToList()" ></select>
+                <input asp-for="LibelleOffreFormation" class="form-control" />
+                <span asp-validation-for="LibelleOffreFormation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LibelleReduitOffreFormation" class="control-label"></label>
+                <input asp-for="LibelleReduitOffreFormation" class="form-control" />
+                <span asp-validation-for="LibelleReduitOffreFormation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateDebutOffreFormation" class="control-label"></label>
+                <input asp-for="DateDebutOffreFormation" class="form-control" />
+                <span asp-validation-for="DateDebutOffreFormation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateFinOffreFormation" class="control-label"></label>
+                <input asp-for="DateFinOffreFormation" class="form-control" />
+                <span asp-validation-for="DateFinOffreFormation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

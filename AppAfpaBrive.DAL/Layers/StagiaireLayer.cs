@@ -20,7 +20,10 @@ namespace AppAfpaBrive.DAL.Layers
         {
             return _context.Beneficiaires.ToList();
         }
-
+        public Beneficiaire FinByMatricule(string matricule)
+        {
+            return _context.Beneficiaires.Find(new object[] { matricule });
+        }
         //Methode pour aller chercher les stagiaires par offre de formation
         //public List<Beneficiaire> GetBeneficaireByOffreFormation(string query)
         //{

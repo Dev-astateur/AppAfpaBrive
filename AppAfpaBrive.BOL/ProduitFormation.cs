@@ -21,6 +21,7 @@ namespace AppAfpaBrive.BOL
         public bool FormationDiplomante { get; set; }
 
         public virtual ICollection<OffreFormation> OffreFormations { get; set; }
+
         public virtual ICollection<ProduitFormationAppellationRome> ProduitFormationAppellationRomes { get; set; }
     }
 }

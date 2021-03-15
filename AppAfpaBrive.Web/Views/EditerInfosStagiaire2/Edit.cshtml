@@ -4,9 +4,8 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Stagiaire</h1>
 
-<h4>Beneficiaire</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,69 +13,68 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MatriculeBeneficiaire" />
             <div class="form-group">
-                <label asp-for="CodeTitreCivilite" class="control-label"></label>
+                <label asp-for="CodeTitreCivilite" class="control-label">Civilité</label>
                 <select asp-for="CodeTitreCivilite" class="form-control" asp-items="ViewBag.CodeTitreCivilite"></select>
                 <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NomBeneficiaire" class="control-label"></label>
+                <label asp-for="NomBeneficiaire" class="control-label">Nom</label>
                 <input asp-for="NomBeneficiaire" class="form-control" />
                 <span asp-validation-for="NomBeneficiaire" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PrenomBeneficiaire" class="control-label"></label>
+                <label asp-for="PrenomBeneficiaire" class="control-label">Prénom</label>
                 <input asp-for="PrenomBeneficiaire" class="form-control" />
                 <span asp-validation-for="PrenomBeneficiaire" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateNaissanceBeneficiaire" class="control-label"></label>
+                <label asp-for="DateNaissanceBeneficiaire" class="control-label">Date de naissance</label>
                 <input asp-for="DateNaissanceBeneficiaire" class="form-control" />
                 <span asp-validation-for="DateNaissanceBeneficiaire" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MailBeneficiaire" class="control-label"></label>
+                <label asp-for="MailBeneficiaire" class="control-label">Email</label>
                 <input asp-for="MailBeneficiaire" class="form-control" />
                 <span asp-validation-for="MailBeneficiaire" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TelBeneficiaire" class="control-label"></label>
+                <label asp-for="TelBeneficiaire" class="control-label">Téléphone</label>
                 <input asp-for="TelBeneficiaire" class="form-control" />
                 <span asp-validation-for="TelBeneficiaire" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Ligne1Adresse" class="control-label"></label>
+                <label asp-for="Ligne1Adresse" class="control-label">Adresse</label>
                 <input asp-for="Ligne1Adresse" class="form-control" />
                 <span asp-validation-for="Ligne1Adresse" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Ligne2Adresse" class="control-label"></label>
+                <label asp-for="Ligne2Adresse" class="control-label">Adresse (ligne 2)</label>
                 <input asp-for="Ligne2Adresse" class="form-control" />
                 <span asp-validation-for="Ligne2Adresse" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Ligne3Adresse" class="control-label"></label>
+                <label asp-for="Ligne3Adresse" class="control-label">Adresse (ligne 3)</label>
                 <input asp-for="Ligne3Adresse" class="form-control" />
                 <span asp-validation-for="Ligne3Adresse" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CodePostal" class="control-label"></label>
+                <label asp-for="CodePostal" class="control-label">Code postal</label>
                 <input asp-for="CodePostal" class="form-control" />
                 <span asp-validation-for="CodePostal" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Ville" class="control-label"></label>
+                <label asp-for="Ville" class="control-label">Ville</label>
                 <input asp-for="Ville" class="form-control" />
                 <span asp-validation-for="Ville" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdPays2" class="control-label"></label>
+                <label asp-for="IdPays2" class="control-label">Id pays</label>
                 <input asp-for="IdPays2" class="form-control" />
                 <span asp-validation-for="IdPays2" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Enregistrer" class="btn btn-primary" />
-                @*<input type="submit" value="Annuler" class="btn btn-primary" />
-                <input type="submit" value="Sauvegarder" class="btn btn-primary" />*@
+                <input type="submit" value="Annuler" class="btn btn-danger" asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation" />
+                <input type="submit" value="Enregistrer" class="btn btn-success" />
             </div>
         </form>
     </div>

@@ -29,7 +29,6 @@
   <ItemGroup>
     <Folder Include="Controllers\Stagiaire\" />
     <Folder Include="ModelesOffice\" />
-    <Folder Include="ModelView\" />
     <Folder Include="Views\Formateur\" />
     <Folder Include="Views\Stagiaire\" />
   </ItemGroup>
