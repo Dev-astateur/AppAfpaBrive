@@ -13,7 +13,7 @@
 @foreach (var item in Model.BeneficiaireOffreFormations) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaire)
+                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)
@@ -25,9 +25,7 @@
                 @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailingAutorise)
             </td>
             
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+             
            
         </tr>
 }

@@ -49,5 +49,35 @@ namespace Projet_Test
             Assert.IsInstanceOf<List<Beneficiaire>>(view.Model);
             
         }
+        [Test]
+        public void TestOffreDeFormationBeneficiaireControllerRenvoieView()
+        {
+            DbContextOptionsBuilder<AFPANADbContext> optionsBuilder = new DbContextOptionsBuilder<AFPANADbContext>();
+            string path = Directory.GetCurrentDirectory();
+
+            optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
+            AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
+            OffreDeFormationBeneficiaireController controller = new OffreDeFormationBeneficiaireController(contexte);
+
+            var result = controller.OffreDeFormationBeneficiaire();
+
+            Assert.IsInstanceOf<ViewResult>(result);
+
+        }
+        [Test]
+        public void TestOffreDeFormationBeneficiaireControllerRenvoieOffreFormation()
+        {
+            DbContextOptionsBuilder<AFPANADbContext> optionsBuilder = new DbContextOptionsBuilder<AFPANADbContext>();
+            string path = Directory.GetCurrentDirectory();
+
+            optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
+            AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
+            OffreDeFormationBeneficiaireController controller = new OffreDeFormationBeneficiaireController(contexte);
+
+            var result = controller.OffreDeFormationBeneficiaire();
+            ViewResult view = result as ViewResult;
+
+            Assert.IsInstanceOf<OffreFormation>(view.Model);
+        }
     }
 }

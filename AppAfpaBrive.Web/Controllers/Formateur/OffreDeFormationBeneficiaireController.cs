@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.BOL;
 
+
 namespace AppAfpaBrive.Web.Controllers.Formateur
 {
     public class OffreDeFormationBeneficiaireController : Controller

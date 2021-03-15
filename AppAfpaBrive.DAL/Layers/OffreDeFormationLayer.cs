@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,8 +19,10 @@ namespace AppAfpaBrive.DAL.Layers
         #region Methode publique
         public BOL.OffreFormation GetByMatriculeCollaborateurAFPA(string idCollaborateurAFPA)
         {
-            
-            return _context.OffreFormations.Where(b => b.MatriculeCollaborateurAfpa == idCollaborateurAFPA).FirstOrDefault();
+            return _context.OffreFormations.Where(a => a.MatriculeCollaborateurAfpa == idCollaborateurAFPA)
+                .Include(e => e.BeneficiaireOffreFormations).ThenInclude(a => a.MatriculeBeneficiaireNavigation)
+               .FirstOrDefault();
+           // return _context.OffreFormations.Where(b => b.MatriculeCollaborateurAfpa == idCollaborateurAFPA).FirstOrDefault();
                 
         }
         #endregion
