@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
-using PagedList;
+
 
 
 namespace AppAfpaBrive.Web.Controllers.ProduitFormation
