@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AppAfpaBrive.BOL.OffreFormation>
+﻿@model AppAfpaBrive.BOL.OffreFormation
 
 @{
     ViewData["Title"] = "OffreDeFormationBeneficiaire";
@@ -35,34 +35,25 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.BeneficiaireOffreFormations) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.LibelleOffreFormation)
+                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LibelleReduitOffreFormation)
+                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateDebutOffreFormation)
+                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailBeneficiaire)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateFinOffreFormation)
+                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailingAutorise)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CodeProduitFormationNavigation.LibelleProduitFormation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdEtablissementNavigation.IdEtablissement)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatriculeCollaborateurAfpaNavigation.MatriculeCollaborateurAfpa)
-            </td>
-            <td>
+            
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+           
         </tr>
 }
     </tbody>

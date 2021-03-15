@@ -16,13 +16,13 @@ namespace AppAfpaBrive.DAL.Layers
         }
         #endregion
         #region Methode publique
-        //public IEnumerable<BOL.BeneficiaireOffreFormation> GetAllByOffredeFormation()
-        //{
-        //    //return _context.OffreFormations
-        //    //    .Where(o => o.MatriculeCollaborateurAfpaNavigation.MatriculeCollaborateurAfpa == "96GB011");
-        //    //    .Select(o => o.BeneficiaireOffreFormations.Where(e => e.IdOffreFormation == 1)).ToList();
+        public BOL.OffreFormation GetAllByOffredeFormation()
+        {
+            return _context.OffreFormations.Where(b => b.MatriculeCollaborateurAfpa == "96GB011").FirstOrDefault();
+                
+                
 
-        //}
+        }
         #endregion
     }
 }
