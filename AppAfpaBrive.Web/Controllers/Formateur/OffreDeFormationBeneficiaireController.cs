@@ -6,24 +6,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppAfpaBrive.BOL;
 
 namespace AppAfpaBrive.Web.Controllers.Formateur
 {
     public class OffreDeFormationBeneficiaireController : Controller
     {
-        private OffreDeFormationBeneficiareLayer _offreDeFormationBeneficiaireLayer;
+        private OffreDeFormationLayer _offreDeFormationLayer;
+        private BeneficiaireOffreFormationLayer _beneficiaireOffreFormationLayer;
 
 
         public OffreDeFormationBeneficiaireController(AFPANADbContext context)
         {
-            _offreDeFormationBeneficiaireLayer = new OffreDeFormationBeneficiareLayer(context);
+            _offreDeFormationLayer = new OffreDeFormationLayer(context);
+            _beneficiaireOffreFormationLayer = new BeneficiaireOffreFormationLayer(context);
 
         }
         // GET: StagiaireParOffredeFormationController
         public ActionResult OffreDeFormationBeneficiaire()
         {
             this.ViewBag.MonTitre = "OffreDeFormationBeneficiaire";
-            var query = _offreDeFormationBeneficiaireLayer.GetAllByOffredeFormation();
+
+            var query = _offreDeFormationLayer.GetByMatriculeCollaborateurAFPA("96GB011");
+            query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAllByOffreFormation(1);
 
             return View(query);
         }

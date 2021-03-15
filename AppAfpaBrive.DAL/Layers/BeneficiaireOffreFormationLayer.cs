@@ -5,24 +5,21 @@ using System.Text;
 
 namespace AppAfpaBrive.DAL.Layers
 {
-    public class OffreDeFormationBeneficiareLayer
+    public class BeneficiaireOffreFormationLayer
     {
         private readonly AFPANADbContext _context;
-
         #region Constructeur
-        public OffreDeFormationBeneficiareLayer(AFPANADbContext context)
+        public BeneficiaireOffreFormationLayer(AFPANADbContext context)
         {
             this._context = context;
         }
         #endregion
         #region Methode publique
-        public BOL.OffreFormation GetAllByOffredeFormation()
+        public ICollection <BOL.BeneficiaireOffreFormation> GetAllByOffreFormation(int id)
         {
-            return _context.OffreFormations.Where(b => b.MatriculeCollaborateurAfpa == "96GB011").FirstOrDefault();
-                
-                
-
+            return _context.BeneficiaireOffreFormations.Where(e => e.IdOffreFormation == id).ToList();
         }
         #endregion
     }
+
 }

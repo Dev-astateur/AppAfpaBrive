@@ -8,37 +8,12 @@
 
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.LibelleOffreFormation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LibelleReduitOffreFormation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateDebutOffreFormation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateFinOffreFormation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CodeProduitFormationNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdEtablissementNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MatriculeCollaborateurAfpaNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+    
     <tbody>
 @foreach (var item in Model.BeneficiaireOffreFormations) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)
+                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaire)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)

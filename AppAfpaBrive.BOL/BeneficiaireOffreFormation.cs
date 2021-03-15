@@ -20,5 +20,7 @@ namespace AppAfpaBrive.BOL
         public virtual CodeResultatCertification CertifieNavigation { get; set; }
         public virtual OffreFormation Id { get; set; }
         public virtual Beneficiaire MatriculeBeneficiaireNavigation { get; set; }
+
     }
+
 }
