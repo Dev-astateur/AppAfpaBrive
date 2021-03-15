@@ -17,23 +17,21 @@ namespace AppAfpaBrive.Web.ModelView
 
         public OffreFormationModelView( OffreFormation offreFormation)
         {
-            //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
-            //CampagneMails = new HashSet<CampagneMail>();
+            if ( offreFormation is not null )
+            {
+                //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+                //CampagneMails = new HashSet<CampagneMail>();
 
-            IdOffreFormation = offreFormation.IdOffreFormation;
-            IdEtablissement = offreFormation.IdEtablissement;
-            MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
-            CodeProduitFormation = offreFormation.CodeProduitFormation;
-            LibelleOffreFormation = offreFormation.LibelleOffreFormation;
-            LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
-            DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
-            DateFinOffreFormation = offreFormation.DateFinOffreFormation;
-            //Pees = new HashSet<PeeModelView>();
-            //foreach(Pee item in offreFormation.Pees)
-            //{
-            //    Pees.Add(new PeeModelView(item));
-            //}
-
+                IdOffreFormation = offreFormation.IdOffreFormation;
+                IdEtablissement = offreFormation.IdEtablissement;
+                MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
+                CodeProduitFormation = offreFormation.CodeProduitFormation;
+                LibelleOffreFormation = offreFormation.LibelleOffreFormation;
+                LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
+                DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
+                DateFinOffreFormation = offreFormation.DateFinOffreFormation;
+            }
+            
         }
 
         public int IdOffreFormation { get; set; }

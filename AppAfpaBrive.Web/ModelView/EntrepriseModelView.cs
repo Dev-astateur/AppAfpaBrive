@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppAfpaBrive.BOL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,6 +12,22 @@ namespace AppAfpaBrive.Web.ModelView
         public EntrepriseModelView()
         {
             
+        }
+
+        public EntrepriseModelView(Entreprise entreprise)
+        {
+            IdEntreprise = entreprise.IdEntreprise;
+            RaisonSociale = entreprise.RaisonSociale;
+            NumeroSiret = entreprise.NumeroSiret;
+            MailEntreprise = entreprise.MailEntreprise;
+            TelEntreprise = entreprise.TelEntreprise;
+            Ligne1Adresse = entreprise.Ligne1Adresse;
+            Ligne2Adresse = entreprise.Ligne2Adresse;
+            Ligne3Adresse = entreprise.Ligne3Adresse;
+            CodePostal = entreprise.CodePostal;
+            Ville = entreprise.Ville;
+            Idpays2 = entreprise.Idpays2;
+            Idpays2Navigation = new PaysViewModel(entreprise.Idpays2Navigation);
         }
 
         public int IdEntreprise { get; set; }

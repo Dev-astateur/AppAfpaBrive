@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppAfpaBrive.BOL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,6 +12,18 @@ namespace AppAfpaBrive.Web.ModelView
         public PaysViewModel()
         {
             Entreprises = new HashSet<EntrepriseModelView>();
+        }
+
+        public PaysViewModel( Pay pay )
+        {
+            Entreprises = new HashSet<EntrepriseModelView>();
+            if ( pay is not null )
+            {
+                Idpays2 = pay.Idpays2;
+                Idpays3 = pay.Idpays3;
+                IdpaysNum = pay.IdpaysNum;
+                LibellePays = pay.LibellePays;
+            }
         }
 
         public string Idpays2 { get; set; }

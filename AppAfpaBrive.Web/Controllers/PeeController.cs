@@ -24,6 +24,7 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public IActionResult Index(string id)
         {
+            this.ViewBag.Titre = "Periode en entreprise à valider";
             IEnumerable<Pee> pees = _peeLayer.GetPeeByMatriculeCollaborateurAfpa(id);
             List<PeeModelView> peesModelView = new List<PeeModelView>();
 
@@ -35,7 +36,12 @@ namespace AppAfpaBrive.Web.Controllers
             return View(peesModelView);
         }
 
-        public IActionResult ValidationStage()
+        /// <summary>
+        /// IAction qui suit le système de validation
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult SuivantEntreprise(int id)
         {
             // données pour les tests faudra changé tous cela
             Pay pays1 = _paysLayer.GetPaysById("US");
@@ -52,12 +58,10 @@ namespace AppAfpaBrive.Web.Controllers
                 Idpays2 = pays1.Idpays2,
                 Idpays2Navigation = pays1
             };
-
-            return View(new Pee()
-            {
-                IdEntreprise = entreprise.IdEntreprise,
-                //IdEntrepriseNavigation = entreprise
-            });
+            Pee pee = _peeLayer.GetPeeByIdPee(id);
+            PeeModelView peeModelView = new PeeModelView(pee);
+            peeModelView.IdEntrepriseNavigation = new EntrepriseModelView(entreprise);
+            return View(peeModelView);
         }
     }
 }

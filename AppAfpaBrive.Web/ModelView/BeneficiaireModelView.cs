@@ -18,6 +18,22 @@ namespace AppAfpaBrive.Web.ModelView
 
         public BeneficiaireModelView( Beneficiaire beneficiaire  )
         {
+            MailBeneficiaire = beneficiaire.MatriculeBeneficiaire;
+            CodeTitreCivilite = beneficiaire.CodeTitreCivilite;
+            NomBeneficiaire = beneficiaire.NomBeneficiaire;
+            PrenomBeneficiaire = beneficiaire.PrenomBeneficiaire;
+            DateNaissanceBeneficiaire = beneficiaire.DateNaissanceBeneficiaire;
+            MailBeneficiaire = beneficiaire.MailBeneficiaire;
+            TelBeneficiaire = beneficiaire.TelBeneficiaire;
+            Ligne1Adresse = beneficiaire.Ligne1Adresse;
+            Ligne2Adresse = beneficiaire.Ligne2Adresse;
+            Ligne3Adresse = beneficiaire.Ligne3Adresse;
+            CodePostal = beneficiaire.CodePostal;
+            Ville = beneficiaire.Ville;
+            UserId = beneficiaire.UserId;
+            IdPays2 = beneficiaire.IdPays2;
+            PathPhoto = beneficiaire.PathPhoto;
+            MailingAutorise = beneficiaire.MailingAutorise;
             //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
             Contrats = new HashSet<ContratModelView>();
             //DestinataireEnquetes = new HashSet<DestinataireEnquete>();

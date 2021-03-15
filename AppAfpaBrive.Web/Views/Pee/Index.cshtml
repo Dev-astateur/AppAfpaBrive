@@ -4,24 +4,27 @@
     ViewData["Title"] = "Periode en entreprise à valider";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h3>@ViewBag.Titre</h3>
 <div class="container">
     <div class="row">
-        <div class="col-12 col-md-3">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
+        <div class="col-md-3">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
         <div class="col-md-3">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
-        <div class="col-md-3">@Html.DisplayNameFor(model => model.IdPee)</div>
         <div class="col-md-3">@Html.DisplayNameFor(model => model.IdTuteurNavigation.NomProfessionnel)</div>
+        <div class="col-md-3">Validation</div>
     </div>
     @foreach (var item in Model)
     {
+    <a asp-action="SuivantEntreprise" asp-route-id="@item.IdPee">
         <div class="row">
-            <div class="col-12 col-md-3">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
+            <div class="col-md-3">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
             <div class="col-md-3">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
-            <div class="col-md-3">@Html.DisplayFor(modelItem => item.IdPee)</div>
             <div class="col-md-3">@Html.DisplayFor(modelItem => item.IdTuteurNavigation.NomProfessionnel)</div>
+            <div class="col-md-3"><a asp-action="SuivantEntreprise" asp-route-id="@item.IdPee">coucou</a></div>
         </div>
+    </a>
     }
 </div>
+
         @*<table class="table">
                 <thead>
                     <tr>

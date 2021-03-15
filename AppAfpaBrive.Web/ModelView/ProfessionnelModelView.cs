@@ -16,11 +16,14 @@ namespace AppAfpaBrive.Web.ModelView
 
         public ProfessionnelModelView( Professionnel professionnel)
         {
-            IdProfessionnel = professionnel.IdProfessionnel;
-            NomProfessionnel = professionnel.NomProfessionnel;
-            PrenomProfessionnel = professionnel.PrenomProfessionnel;
-            CodeTitreCiviliteProfessionnel = professionnel.CodeTitreCiviliteProfessionnel;
-
+            if ( professionnel is not null )
+            {
+                IdProfessionnel = professionnel.IdProfessionnel;
+                NomProfessionnel = professionnel.NomProfessionnel;
+                PrenomProfessionnel = professionnel.PrenomProfessionnel;
+                CodeTitreCiviliteProfessionnel = professionnel.CodeTitreCiviliteProfessionnel;
+            } 
+            
             //PeeIdResponsableJuridiqueNavigations = new HashSet<PeeModelView>();
             //foreach(Pee item in professionnel.PeeIdResponsableJuridiqueNavigations)
             //{
