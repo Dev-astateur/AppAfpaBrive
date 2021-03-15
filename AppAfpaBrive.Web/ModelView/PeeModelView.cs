@@ -7,7 +7,7 @@ namespace AppAfpaBrive.Web.ModelView
 {
     public class PeeModelView
     {
-        public PeeModelViewe()
+        public PeeModelView()
         {
             //PeriodePees = new HashSet<PeriodePee>();
         }
@@ -20,8 +20,8 @@ namespace AppAfpaBrive.Web.ModelView
         public int IdOffreFormation { get; set; }
         public string IdEtablissement { get; set; }
 
-        public virtual EntrepriseModelView IdEntrepriseNavigation { get; set; }
-        public virtual OffreFormation Id { get; set; }
+        //public virtual EntrepriseModelView IdEntrepriseNavigation { get; set; }
+        public virtual OffreFormationModelView Id { get; set; }
         //public virtual Professionnel IdResponsableJuridiqueNavigation { get; set; }
         //public virtual Professionnel IdTuteurNavigation { get; set; }
         public virtual BeneficiaireModelView MatriculeBeneficiaireNavigation { get; set; }

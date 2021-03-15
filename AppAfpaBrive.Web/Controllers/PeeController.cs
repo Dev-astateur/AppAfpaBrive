@@ -20,10 +20,11 @@ namespace AppAfpaBrive.Web.Controllers
             _paysLayer = new PaysLayer(context);    //-- pour test
         }
 
-        [HttpGet]
+        [HttpGet(Name = "id")]
         public IActionResult Index(string idMatriculeCollabaorateurAfpa)
         {
             IEnumerable<Pee> pees = _peeLayer.GetPeeByMatriculeCollaborateurAfpa(idMatriculeCollabaorateurAfpa);
+            
             return View(pees);
         }
 
@@ -48,7 +49,7 @@ namespace AppAfpaBrive.Web.Controllers
             return View(new Pee()
             {
                 IdEntreprise = entreprise.IdEntreprise,
-                IdEntrepriseNavigation = entreprise
+                //IdEntrepriseNavigation = entreprise
             });
         }
     }

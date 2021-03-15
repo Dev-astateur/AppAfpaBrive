@@ -9,7 +9,7 @@ namespace AppAfpaBrive.Web.ModelView
     {
         public ContratModelView()
         {
-            DestinataireEnquetes = new HashSet<DestinataireEnquete>();
+            //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
         }
 
         public int IdContrat { get; set; }
@@ -24,8 +24,8 @@ namespace AppAfpaBrive.Web.ModelView
         public string LibelleFonction { get; set; }
 
         public virtual EntrepriseModelView IdEntrepriseNavigation { get; set; }
-        public virtual Beneficiaire MatriculeBeneficiaireNavigation { get; set; }
-        public virtual TypeContrat TypeContratNavigation { get; set; }
-        public virtual ICollection<DestinataireEnquete> DestinataireEnquetes { get; set; }
+        public virtual BeneficiaireModelView MatriculeBeneficiaireNavigation { get; set; }
+        //public virtual TypeContrat TypeContratNavigation { get; set; }
+        //public virtual ICollection<DestinataireEnquete> DestinataireEnquetes { get; set; }
     }
 }

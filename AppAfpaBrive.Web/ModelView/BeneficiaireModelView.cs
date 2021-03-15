@@ -32,7 +32,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string PathPhoto { get; set; }
         public bool? MailingAutorise { get; set; }
 
-        public virtual TitreCivilite CodeTitreCiviliteNavigation { get; set; }
+        //public virtual TitreCivilite CodeTitreCiviliteNavigation { get; set; }
         //public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
         public virtual ICollection<ContratModelView> Contrats { get; set; }
         //public virtual ICollection<DestinataireEnquete> DestinataireEnquetes { get; set; }

@@ -31,7 +31,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string Ville { get; set; }
         public string Idpays2 { get; set; }
         public virtual PaysViewModel Idpays2Navigation { get; set; }
-        public virtual ICollection<ContratViewModel> Contrats { get; set; }
+        public virtual ICollection<ContratModelView> Contrats { get; set; }
 
     }
 }
