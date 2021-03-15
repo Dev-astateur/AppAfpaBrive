@@ -19,7 +19,8 @@ namespace AppAfpaBrive.DAL.Layers
 
         public IEnumerable<Pee> GetPeeByMatriculeCollaborateurAfpa(string idMatricule)
         {
-            return _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule).Include(e => e.Id)
+            return _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule)
+                .Include(e => e.Id)
                 .Include(e => e.IdTuteurNavigation)
                 .Include(e => e.MatriculeBeneficiaireNavigation)
                 .Include(e => e.IdResponsableJuridiqueNavigation);

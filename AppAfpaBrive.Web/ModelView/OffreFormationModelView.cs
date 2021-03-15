@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppAfpaBrive.BOL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,27 @@ namespace AppAfpaBrive.Web.ModelView
             //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
             //CampagneMails = new HashSet<CampagneMail>();
             Pees = new HashSet<PeeModelView>();
+        }
+
+        public OffreFormationModelView( OffreFormation offreFormation)
+        {
+            //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+            //CampagneMails = new HashSet<CampagneMail>();
+
+            IdOffreFormation = offreFormation.IdOffreFormation;
+            IdEtablissement = offreFormation.IdEtablissement;
+            MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
+            CodeProduitFormation = offreFormation.CodeProduitFormation;
+            LibelleOffreFormation = offreFormation.LibelleOffreFormation;
+            LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
+            DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
+            DateFinOffreFormation = offreFormation.DateFinOffreFormation;
+            //Pees = new HashSet<PeeModelView>();
+            //foreach(Pee item in offreFormation.Pees)
+            //{
+            //    Pees.Add(new PeeModelView(item));
+            //}
+
         }
 
         public int IdOffreFormation { get; set; }

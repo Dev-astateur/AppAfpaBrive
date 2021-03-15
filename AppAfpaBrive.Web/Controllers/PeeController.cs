@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.DAL.Layers;
+using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,14 @@ namespace AppAfpaBrive.Web.Controllers
         public IActionResult Index(string id)
         {
             IEnumerable<Pee> pees = _peeLayer.GetPeeByMatriculeCollaborateurAfpa(id);
-            return View(pees);
+            List<PeeModelView> peesModelView = new List<PeeModelView>();
+
+            foreach (Pee item in pees )
+            {
+                peesModelView.Add(new PeeModelView(item));
+            }
+
+            return View(peesModelView);
         }
 
         public IActionResult ValidationStage()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppAfpaBrive.BOL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,14 @@ namespace AppAfpaBrive.Web.ModelView
     public class BeneficiaireModelView
     {
         public BeneficiaireModelView()
+        {
+            //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+            Contrats = new HashSet<ContratModelView>();
+            //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
+            Pees = new HashSet<PeeModelView>();
+        }
+
+        public BeneficiaireModelView( Beneficiaire beneficiaire  )
         {
             //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
             Contrats = new HashSet<ContratModelView>();
