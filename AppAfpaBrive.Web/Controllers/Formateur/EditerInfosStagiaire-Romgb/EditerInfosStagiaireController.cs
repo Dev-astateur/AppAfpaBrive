@@ -1,4 +1,5 @@
 ﻿using AppAfpaBrive.DAL;
+using AppAfpaBrive.DAL.Layers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,16 +12,28 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
     public class EditerInfosStagiaireController : Controller
     {
         private AFPANADbContext _context = null;
+        private readonly StagiaireLayer _stagiaireLayer;
+        private readonly OffreFormationLayer _offreFormation;
+
         public EditerInfosStagiaireController(AFPANADbContext context)
         {
-            this._context = context;
+            _offreFormation = new OffreFormationLayer(context);
         }
+
+        //public StagiaireLayer(AFPANADbContext context)
+        //{
+        //    _stagiaireLayer = new StagiaireLayer(context);
+        //}
+        //public EditerInfosStagiaireController(AFPANADbContext context)
+        //{
+        //    this _context = context;
+        //}
 
         // GET: EditerInfosStagiaireController
         public ActionResult ListeOffreFormation()
         {
             this.ViewBag.MonTitre = "ListeOffreFormation";           
-            var query = _context.OffreFormations.ToList();
+            var query = _offreFormation.GetAllOffreFormation().ToList();
             return View(query);
         }
 
