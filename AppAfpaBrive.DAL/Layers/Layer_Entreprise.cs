@@ -12,7 +12,7 @@ namespace AppAfpaBrive.DAL.Layer
             _db = context;
         }
 
-        public IEnumerable<Entreprise> get_Formation(string Siret)
+        public IEnumerable<Entreprise> get_Entreprise(string Siret)
         {
             return _db.Entreprises.Where(x=>x.NumeroSiret == Siret).ToList();
         }
