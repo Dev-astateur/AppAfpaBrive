@@ -55,10 +55,16 @@ namespace AppAfpaBrive.Web.Controllers
            
             ViewData["GetEmployeedetails"] = departement;
             var query = _layer.GetAllEntreprise();
+            //if (!String.IsNullOrEmpty(departement))
+            //{
+            //    query = _layer.GetEntreprisesByDepartement(departement);
+            //}
             if (!String.IsNullOrEmpty(departement))
             {
-                query = _layer.GetEntreprisesByDepartement(departement);
+                _layer.GetEntrepriseByProduitFormation(departement);
             }
+
+            
             //else if (!String.IsNullOrEmpty(formation))
             //{
             //    query = _layer.GetEntreprisesByDepartement(departement);
