@@ -20,15 +20,17 @@ namespace AppAfpaBrive.Web.Controllers
             _paysLayer = new PaysLayer(context);    //-- pour test
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(string idMatriculeCollabaorateurAfpa)
         {
-            return View();
+            IEnumerable<Pee> pees = _peeLayer.GetPeeByMatriculeCollaborateurAfpa(idMatriculeCollabaorateurAfpa);
+            return View(pees);
         }
 
         public IActionResult ValidationStage()
         {
+            // données pour les tests faudra changé tous cela
             Pay pays1 = _paysLayer.GetPaysById("US");
-
             Entreprise entreprise = new Entreprise()
             {
                 IdEntreprise = 1,

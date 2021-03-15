@@ -16,6 +16,9 @@ namespace AppAfpaBrive.DAL.Layers
             _dbContext = context;
         }
 
-
+        public IEnumerable<Pee> GetPeeByMatriculeCollaborateurAfpa(string idMAtricule)
+        {
+            return _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMAtricule).ToList();
+        }
     }
 }

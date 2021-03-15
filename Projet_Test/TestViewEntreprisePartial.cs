@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 namespace Projet_Test
 {
-    class TestDuEntreprisePartial
+    class TestViewEntreprisePartial
     {
         [SetUp]
         public void Setup ()
@@ -38,11 +38,23 @@ namespace Projet_Test
             DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
             builder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;", assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName));
 
-
             PeeController controleur = new PeeController(new AFPANADbContext(builder.Options));
             var view = controleur.ValidationStage();
             ViewResult viewResult = view as ViewResult;
             Assert.IsInstanceOf<AppAfpaBrive.BOL.Pee>(viewResult.Model);
+        }
+
+        [Test]
+        public void Test_Sur_Data_Entreprise_A_La_Vue_True ()
+        {
+            DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
+            builder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;", assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName));
+
+            PeeController controleur = new PeeController(new AFPANADbContext(builder.Options));
+            var view = controleur.ValidationStage();
+            ViewResult viewResult = view as ViewResult;
+            AppAfpaBrive.BOL.Pee pee = viewResult.Model as AppAfpaBrive.BOL.Pee;
+            Assert.IsInstanceOf<AppAfpaBrive.BOL.Entreprise>(pee.IdEntrepriseNavigation);
         }
     }
 }
