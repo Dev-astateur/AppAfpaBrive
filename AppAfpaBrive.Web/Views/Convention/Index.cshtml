@@ -24,7 +24,7 @@
                                 <td width="40%">@obj.Formation</td>
                                 <td width="50%">@obj.Etablissement</td>
                                 <td>
-                                    <a asp-controller="Convention" asp-action="Entreprise" class="btn btn-primary">
+                                    <a asp-controller="Convention" asp-action="Entreprise" asp-route-Id="@obj.IdFormation" class="btn btn-primary">
                                         Créer une convention de stage
                                     </a>
                                 </td>
