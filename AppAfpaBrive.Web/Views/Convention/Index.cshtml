@@ -1,7 +1,5 @@
-﻿@model IEnumerable<AppAfpaBrive.BOL.BeneficiaireOffreFormation>
+﻿@model List<AppAfpaBrive.Web.Models.Creation_convention>
     <form>
-
-
         <div>
             @if (Model.Count() > 0)
             {
@@ -23,8 +21,8 @@
                         @foreach (var obj in Model)
                         {
                             <tr id="ligne">
-                                <td width="40%">@obj.IdOffreFormation</td>
-                                <td width="50%">@obj.Idetablissement</td>
+                                <td width="40%">@obj.Formation</td>
+                                <td width="50%">@obj.Etablissement</td>
                                 <td>
                                     <a asp-controller="Convention" asp-action="Entreprise" class="btn btn-primary">
                                         Créer une convention de stage
