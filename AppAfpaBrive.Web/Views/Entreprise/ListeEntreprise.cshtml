@@ -1,15 +1,23 @@
-﻿@model IEnumerable<AppAfpaBrive.BOL.Entreprise>
+﻿@model List<AppAfpaBrive.Web.ModelView.EntrepriseListViewModel>
 
 @{
     ViewData["Title"] = "ListeEntreprise";
 }
-
-<form asp-controller="EntrepriseController" asp-action="ListeEntreprise">
+<h2>Entrez les deux chiffres du département: </h2>
+<form asp-controller="Entreprise" asp-action="ListeEntreprise">
     <p>
-        <input type="search" placeholder="entrez n° de département" value=" @ViewData["GetEmployeedetails"]" name="departement"/>
-        <input type="submit" value="Rechercher" class="btn btn-primary"/>
+        <input type="search" placeholder=" département" value=" @ViewData["GetEmployeedetails"]" name="departement" />
+        <input type="submit" value="Rechercher" class="btn btn-primary" />
     </p>
 </form>
+<h2>Entrez l'intitulé de l'offre de formation: </h2>
+    <form asp-controller="Entreprise" asp-action="ListeEntreprise">
+        <p>
+            <input type="search" placeholder=" formation" value=" @ViewData["GetEmployeedetails"]" name="formation" />
+            <input type="submit" value="Rechercher" class="btn btn-primary" />
+        </p>
+    </form>
+
 
 
 <table class="table">
@@ -19,22 +27,22 @@
 
                 <div class="col-md-3">
                     <th>
-                        @Html.DisplayNameFor(model => model.RaisonSociale)
+                        Raison sociale
                     </th>
                 </div>
                 <div class="col-md-3">
                     <th>
-                        @Html.DisplayNameFor(model => model.MailEntreprise)
+                        E-Mail
                     </th>
                 </div>
                 <div class="col-md-3">
                     <th>
-                        @Html.DisplayNameFor(model => model.TelEntreprise)
+                        Téléphone
                     </th>
                 </div>
                 <div class="col-md-3">
                     <th>
-                        @Html.DisplayNameFor(model => model.Ville)
+                        Ville
                     </th>
                 </div>
 

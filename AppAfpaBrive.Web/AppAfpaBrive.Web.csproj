@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="ModelesOffice\" />
-    <Folder Include="Modele de vue\" />
   </ItemGroup>
 
 </Project>

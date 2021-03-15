@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.DAL.Layers;
+using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -39,23 +40,41 @@ namespace AppAfpaBrive.Web.Controllers
             return View();
         }
         // GET: EntrepriseController/ListeEntreprise
-        public ActionResult ListeEntreprise()
+        //[HttpGet]
+        //public ActionResult ListeEntreprise()       
+        //{
+        //    //  List<Entreprise> ListEntreprise = _dbContext.Entreprises.ToList();
+        //    IEnumerable<Entreprise> ListEntreprise = _layer.GetAllEntreprise();
+        //    return View(ListEntreprise.ToList());
+        //}
+        //// GET: EntrepriseController/ListeEntreprise
+        //[HttpGet]
+        public async Task<IActionResult> ListeEntreprise(string departement, string formation)
         {
-            //  List<Entreprise> ListEntreprise = _dbContext.Entreprises.ToList();
-            List<Entreprise> ListEntreprise = _layer.GetAllEntreprise();
-            return View(ListEntreprise);
-        }
-        // GET: EntrepriseController/ListeEntreprise
-       
-        public async Task<IActionResult> ListeEntreprise(string departement)
-        {
+           List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
+           
             ViewData["GetEmployeedetails"] = departement;
             var query = _layer.GetAllEntreprise();
-            if (String.IsNullOrEmpty(departement))
+            if (!String.IsNullOrEmpty(departement))
             {
                 query = _layer.GetEntreprisesByDepartement(departement);
             }
-            return View(query.ToList());
+            //else if (!String.IsNullOrEmpty(formation))
+            //{
+            //    query = _layer.GetEntreprisesByDepartement(departement);
+            //}
+            foreach (var entreprise in query)
+            {
+                EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel();
+                entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
+                entrepriseModel.Ville = entreprise.Ville;
+                entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
+                entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
+                ListentrepriseListViewModel.Add(entrepriseModel);
+            }
+           
+           // return View( query);
+            return View(ListentrepriseListViewModel);
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using AppAfpaBrive.BOL;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,16 @@ namespace AppAfpaBrive.DAL.Layers
         }
         public List<Entreprise> GetEntreprisesByDepartement(string dep)
         {
-            return _context.Entreprises.Where(e => e.CodePostal.Contains(dep)).ToList();
+            return _context.Entreprises.Where(e => e.CodePostal.StartsWith(dep)).ToList();
         }
+        public List<Entreprise> GetEntrepriseByProduitFormation(string offre)
+        {
+            var query = _context.OffreFormations.GroupJoin()
+                                                
+                                                
+            var x = _context.OffreFormations.Select(x => x.Pees.
+        }
+
+
     }
 }
