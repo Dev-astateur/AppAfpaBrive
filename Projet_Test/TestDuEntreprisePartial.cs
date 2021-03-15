@@ -23,7 +23,8 @@ namespace Projet_Test
         public void Test_Passage_Des_Données_A_La_Vue_True()
         {
             DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
-            builder.UseSqlServer("data source=localhost;initial catalog=AFPA_2021;integrated security=True;");
+            builder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;", assembly=>assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName));
+
 
             PeeController controleur = new PeeController(new AFPANADbContext(builder.Options));
             var view = controleur.ValidationStage();

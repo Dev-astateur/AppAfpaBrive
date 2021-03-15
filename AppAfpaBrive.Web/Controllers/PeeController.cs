@@ -27,7 +27,7 @@ namespace AppAfpaBrive.Web.Controllers
 
         public IActionResult ValidationStage()
         {
-            Pay pays = _paysLayer.GetPaysById("US");
+            Pay pays1 = _paysLayer.GetPaysById("US");
 
             Entreprise entreprise = new Entreprise()
             {
@@ -39,8 +39,8 @@ namespace AppAfpaBrive.Web.Controllers
                 CodePostal = "CA 95014",
                 TelEntreprise = "1 408 996–1010",
                 MailEntreprise = "apple@apple.com",
-                Idpays2 = pays.Idpays2,
-                Idpays2Navigation = pays
+                Idpays2 = pays1.Idpays2,
+                Idpays2Navigation = pays1
             };
 
             return View(new Pee()
