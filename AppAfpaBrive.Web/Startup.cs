@@ -74,6 +74,25 @@ namespace AppAfpaBrive.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute
+                (
+                    name: "listestagiaire",
+                    pattern: "liste-soumissionnaires",
+                    defaults: new
+                    {
+                        controller = "StagiaireParOffredeFormation",
+                        action = "ListeStagiaireParOffreFormation"
+                    }
+                    );
+                endpoints.MapControllerRoute(
+                    name: "offreFormation",
+                    pattern: "liste-offreFormation",
+                    defaults: new
+                    {
+                        controller = "OffreDeFormationBeneficiaireController",
+                        action = "OffreDeFormationBeneficiaire"
+                    }
+                    );
                 endpoints.MapRazorPages();
                 endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
                 endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));

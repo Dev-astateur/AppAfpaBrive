@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppAfpaBrive.BOL;
 
 namespace AppAfpaBrive.Web.ModelView
 {
@@ -18,20 +19,19 @@ namespace AppAfpaBrive.Web.ModelView
         public OffreFormationModelView( OffreFormation offreFormation)
         {
             if ( offreFormation is not null )
-            {
-                //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
-                //CampagneMails = new HashSet<CampagneMail>();
+        {
+            IdOffreFormation = offreFormation.IdOffreFormation;
+            IdEtablissement = offreFormation.IdEtablissement;
+            MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
+            CodeProduitFormation = offreFormation.CodeProduitFormation;
+            LibelleOffreFormation = offreFormation.LibelleOffreFormation;
+            LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
+            DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
+            DateFinOffreFormation = offreFormation.DateFinOffreFormation;
+            CodeProduitFormation = offreFormation.CodeProduitFormation;
+            BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
 
-                IdOffreFormation = offreFormation.IdOffreFormation;
-                IdEtablissement = offreFormation.IdEtablissement;
-                MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
-                CodeProduitFormation = offreFormation.CodeProduitFormation;
-                LibelleOffreFormation = offreFormation.LibelleOffreFormation;
-                LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
-                DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
-                DateFinOffreFormation = offreFormation.DateFinOffreFormation;
-            }
-            
+          
         }
 
         public int IdOffreFormation { get; set; }
@@ -51,3 +51,7 @@ namespace AppAfpaBrive.Web.ModelView
         public virtual ICollection<PeeModelView> Pees { get; set; }
     }
 }
+
+
+
+
