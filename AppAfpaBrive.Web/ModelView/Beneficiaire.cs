@@ -13,6 +13,11 @@ namespace AppAfpaBrive.Web.ModelView
         public int CodeTitreCivilite { get; set; }
 
         [Required]
+        [Display(Name = "Matricule du bénéficiaire")]
+        public string MatriculeBeneficiaire { get; set; }
+
+
+        [Required]
         [Display(Name = "Nom du bénéficiaire")]
         public string NomBeneficiaire { get; set; }
 

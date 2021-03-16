@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.WebPages.Html;
@@ -12,7 +13,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {
     public class EditerInfosStagiaireController : Controller
     {
-        private AFPANADbContext _context = null;
+        //private AFPANADbContext _context = null;
         private readonly StagiaireLayer _stagiaireLayer;
         private readonly OffreFormationLayer _offreFormation;
 
@@ -32,23 +33,22 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         //    this _context = context;
         //}
 
+        //Remplir DropDown
+        private void RemplirListOffreFormation()
+        {
+
+        }
+
         //GET: EditerInfosStagiaireController
-        public ActionResult ListeOffreFormation()
+        public async Task<ActionResult> ListeOffreFormation(string tbRechercherOFormation)
         {
             this.ViewBag.MonTitre = "ListeOffreFormation";
-            var query = _offreFormation.GetAllOffreFormation();
+            //var query = _offreFormation.GetAllOffreFormation();
+            //var query3 = _offreFormation.GetOffreFormationStartsWith(tbRechercherOFormation);
+            var query2 = _offreFormation.GetOffreFormationByContains(tbRechercherOFormation);
+            //var query3 = _stagiaireLayer.GetAllStagiaires();
 
-            List<SelectListItem> listeOffreFormation = new List<SelectListItem>();
-
-            foreach (var item in query)
-            {
-                SelectListItem selectListItem = new SelectListItem();
-                selectListItem.Value = item.IdOffreFormation.ToString();
-                selectListItem.Text = item.LibelleOffreFormation;
-                listeOffreFormation.Add(selectListItem);
-                ViewBag.DropDownListItems = listeOffreFormation;
-            }
-            return View(query);
+            return View(query2);
         }
 
         //public ActionResult Create()
@@ -59,9 +59,14 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         //}
 
         //// GET: EditerInfosStagiaireController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var obj = _stagiaireLayer.GetBeneficiaireParOffreDeFormation();
+            return View(obj);
         }
 
         // GET: EditerInfosStagiaireController/Details/5

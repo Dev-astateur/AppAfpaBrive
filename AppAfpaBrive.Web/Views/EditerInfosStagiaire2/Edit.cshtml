@@ -12,10 +12,38 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MatriculeBeneficiaire" />
-            <div class="form-group">
-                <label asp-for="CodeTitreCivilite" class="control-label">Civilité</label>
-                <select asp-for="CodeTitreCivilite" class="form-control" asp-items="ViewBag.CodeTitreCivilite"></select>
-                <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
+            <div class="form-group form-check">
+                <div>
+                    <label class="form-check-label">
+                        <input type="radio" name="Civilite" class="form-check-input" value="true Monsieur" asp-for="CodeTitreCivilite" />Monsieur</input> @Html.DisplayFor(model => model.CodeTitreCivilite)
+                    </label>
+
+                </div>
+                <div>
+                    <label class="form-check-label">
+                        <input type="radio" name="Civilite" class="form-check-input" value="true" asp-for="CodeTitreCivilite" />Madame</input> @Html.DisplayFor(model => model.CodeTitreCivilite)
+                    </label>
+                </div>
+                <div>
+                    <label class="form-check-label">
+                        <input type="radio" name="Civilite" class="form-check-input" value="true" asp-for="CodeTitreCivilite" />Mademoiselle</input> @Html.DisplayFor(model => model.CodeTitreCivilite)
+                    </label>
+                </div>
+                
+                @*<select asp-for="CodeTitreCivilite" class="form-control" asp-items="ViewBag.CodeTitreCivilite"></select>
+        <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>*@
+
+                @*@Html.RadioButtonFor(model => model.CodeTitreCivilite, "1", Model.CodeTitreCivilite == '1' ? new { @Checked = "checked" } : null) Monsieur*@
+                @*@Html.RadioButtonFor(
+        settings =>
+        {
+            settings.CodeTitreCivilite = 1;
+
+            settings.CodeTitreCivilite.Items.Add("Yes, this time only");
+            settings.CodeTitreCivilite.Items.Add("No, not this time");
+            settings.CodeTitreCivilite.Items.Add("Yes, always");
+
+        })*@
             </div>
             <div class="form-group">
                 <label asp-for="NomBeneficiaire" class="control-label">Nom</label>
