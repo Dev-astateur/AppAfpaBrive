@@ -29,7 +29,7 @@ namespace AppAfpaBrive.Web.ModelView
                 DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
                 DateFinOffreFormation = offreFormation.DateFinOffreFormation;
                 CodeProduitFormation = offreFormation.CodeProduitFormation;
-                //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+                BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
 
 
             }
@@ -47,7 +47,7 @@ namespace AppAfpaBrive.Web.ModelView
         //public virtual ProduitFormation CodeProduitFormationNavigation { get; set; }
         //public virtual Etablissement IdEtablissementNavigation { get; set; }
         //public virtual CollaborateurAfpa MatriculeCollaborateurAfpaNavigation { get; set; }
-        //public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
+        public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
         //public virtual ICollection<CampagneMail> CampagneMails { get; set; }
         public virtual ICollection<PeeModelView> Pees { get; set; }
     }

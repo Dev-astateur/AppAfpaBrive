@@ -5,24 +5,31 @@
     //List<AppAfpaBrive.BOL.OffreFormation> listeOffreFormations = ViewBag.MaListe;
     //var listeItemOffreFormation = listeOffreFormations.Select(o => new SelectListItem() { Text = o.LibelleOffreFormation, Value = o.IdOffreFormation.ToString()});
 }
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tbRechercherOFormation').autocomplete({
+                source: '/api/chargerlibelleformation/search'
+            });
+        });
+    </script>
+</head>
+</html>
 
-<h2 style="color:#0044ff">Sélectionnez une offre de formation</h2>
-
+<h2>Sélectionnez une offre de formation</h2>
 
 <div class="form-group">
     <form asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation">
         <div class="row">
             <div class="col-md-6">
-                <input type="text" name="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
+                <input type="text" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
             </div>
-            <div class="col-md-6">
-                <a type="submit" value="Menu" class="btn btn-danger" asp-controller="EditerInfosStagiaire2" asp-action="Edit">Revenir au menu principal</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <input type="submit" value="Rechercher" class="btn btn-primary">
-            </div>  
         </div>
     </form>
 </div>
@@ -56,3 +63,4 @@
     <form asp-controller="EditerInfosStagiaires" asp-action="Details">
     </form>
 </div>
+

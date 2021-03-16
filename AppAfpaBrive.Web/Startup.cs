@@ -43,7 +43,7 @@ namespace AppAfpaBrive.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddTransient<IEmailSender, SendinBlueEmailSender>();
-           
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +53,7 @@ namespace AppAfpaBrive.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
-               
+
             }
             else
             {
@@ -95,7 +95,7 @@ namespace AppAfpaBrive.Web
                     );
                 endpoints.MapRazorPages();
                 endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
-                endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
+                endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
 
                 endpoints.MapControllerRoute(
                    name: "editstagiaire1",
@@ -105,7 +105,7 @@ namespace AppAfpaBrive.Web
                 endpoints.MapControllerRoute(
                    name: "editstagiaire",
                    pattern: "edition-stagiaire2",
-                   defaults: new { controller = "EditerInfosStagiaire2", action = "Edit" });
+                   defaults: new { controller = "EditerInfosStagiaire2", action = "Edit" });             
             });
         }
     }

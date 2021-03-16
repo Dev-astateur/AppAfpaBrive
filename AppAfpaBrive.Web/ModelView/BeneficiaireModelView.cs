@@ -18,7 +18,7 @@ namespace AppAfpaBrive.Web.ModelView
         }
             
         public BeneficiaireModelView( Beneficiaire beneficiaire  )
-        {
+        { 
             MailBeneficiaire = beneficiaire.MatriculeBeneficiaire;
             CodeTitreCivilite = beneficiaire.CodeTitreCivilite;
             NomBeneficiaire = beneficiaire.NomBeneficiaire;
@@ -35,7 +35,7 @@ namespace AppAfpaBrive.Web.ModelView
             IdPays2 = beneficiaire.IdPays2;
             PathPhoto = beneficiaire.PathPhoto;
             MailingAutorise = beneficiaire.MailingAutorise;
-            //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+            BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
             Contrats = new HashSet<ContratModelView>();
             //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
             Pees = new HashSet<PeeModelView>();
@@ -62,7 +62,7 @@ namespace AppAfpaBrive.Web.ModelView
         public bool? MailingAutorise { get; set; }
 
         //public virtual TitreCivilite CodeTitreCiviliteNavigation { get; set; }
-        //public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
+        public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
         public virtual ICollection<ContratModelView> Contrats { get; set; }
         //public virtual ICollection<DestinataireEnquete> DestinataireEnquetes { get; set; }
         public virtual ICollection<PeeModelView> Pees { get; set; }
