@@ -47,13 +47,14 @@ namespace AppAfpaBrive.Web.Controllers
         //    IEnumerable<Entreprise> ListEntreprise = _layer.GetAllEntreprise();
         //    return View(ListEntreprise.ToList());
         //}
-        //// GET: EntrepriseController/ListeEntreprise
+        // GET: EntrepriseController/ListeEntreprise
         //[HttpGet]
         public async Task<IActionResult> ListeEntreprise(string departement, string formation)
         {
            List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
            
-            ViewData["GetEmployeedetails"] = departement;
+            ViewData["GetDepartement"] = departement;
+            ViewData["GetProduitForm"] = formation;
             var query = _layer.GetAllEntreprise();
             //if (!String.IsNullOrEmpty(departement))
             //{
@@ -61,14 +62,14 @@ namespace AppAfpaBrive.Web.Controllers
             //}
             if (!String.IsNullOrEmpty(departement))
             {
-                _layer.GetEntrepriseByProduitFormation(departement);
+                query=_layer.GetEntreprisesByDepartement(departement);
             }
 
             
-            //else if (!String.IsNullOrEmpty(formation))
-            //{
-            //    query = _layer.GetEntreprisesByDepartement(departement);
-            //}
+            else if (!String.IsNullOrEmpty(formation))
+            {
+                query = _layer.GetEntrepriseByProduitFormation(formation);
+            }
             foreach (var entreprise in query)
             {
                 EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel();

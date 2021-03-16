@@ -6,17 +6,17 @@
 <h2>Entrez les deux chiffres du département: </h2>
 <form asp-controller="Entreprise" asp-action="ListeEntreprise">
     <p>
-        <input type="search" placeholder=" département" value=" @ViewData["GetEmployeedetails"]" name="departement" />
+        <input type="search" placeholder=" département" value=" @ViewData["GetDepartement"]" name="departement" />
+        <input type="submit" value="Rechercher" class="btn btn-primary" />
+    </p>
+    @*</form>*@
+    <h2>Entrez l'intitulé de l'offre de formation: </h2>
+    @*<form asp-controller="Entreprise" asp-action="ListeEntreprise">*@
+    <p>
+        <input type="search" placeholder=" formation" value=" @ViewData["GetProduitForm"]" name="formation" />
         <input type="submit" value="Rechercher" class="btn btn-primary" />
     </p>
 </form>
-<h2>Entrez l'intitulé de l'offre de formation: </h2>
-    <form asp-controller="Entreprise" asp-action="ListeEntreprise">
-        <p>
-            <input type="search" placeholder=" formation" value=" @ViewData["GetEmployeedetails"]" name="formation" />
-            <input type="submit" value="Rechercher" class="btn btn-primary" />
-        </p>
-    </form>
 
 
 
