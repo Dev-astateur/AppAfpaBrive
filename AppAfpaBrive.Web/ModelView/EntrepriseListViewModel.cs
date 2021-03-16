@@ -1,21 +1,21 @@
-﻿using System;
+﻿using AppAfpaBrive.BOL;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace AppAfpaBrive.BOL
+namespace AppAfpaBrive.Web.ModelView
 {
-    public partial class Entreprise
+    public class EntrepriseListViewModel
     {
-        public Entreprise()
+        public EntrepriseListViewModel()
         {
             Contrats = new HashSet<Contrat>();
-            EntrepriseProfessionnels  = new HashSet<EntrepriseProfessionnel>();
-            Pees = new HashSet<Pee>();
         }
 
         public int IdEntreprise { get; set; }
+        [Display(Name="Raison sociale")]
         public string RaisonSociale { get; set; }
         public string NumeroSiret { get; set; }
         public string MailEntreprise { get; set; }
@@ -27,9 +27,8 @@ namespace AppAfpaBrive.BOL
         public string Ville { get; set; }
         public string Idpays2 { get; set; }
 
-        public virtual Pays Idpays2Navigation { get; set; }
-        public virtual ICollection<EntrepriseProfessionnel> EntrepriseProfessionnels { get; set; }
+        public virtual Pay Idpays2Navigation { get; set; }
         public virtual ICollection<Contrat> Contrats { get; set; }
-        public virtual ICollection<Pee> Pees { get; set; }
+
     }
 }
