@@ -10,6 +10,8 @@ namespace AppAfpaBrive.BOL
         public Entreprise()
         {
             Contrats = new HashSet<Contrat>();
+            EntrepriseProfessionnels  = new HashSet<EntrepriseProfessionnel>();
+            Pees = new HashSet<Pee>();
         }
 
         public int IdEntreprise { get; set; }
@@ -24,7 +26,9 @@ namespace AppAfpaBrive.BOL
         public string Ville { get; set; }
         public string Idpays2 { get; set; }
 
-        public virtual Pay Idpays2Navigation { get; set; }
+        public virtual Pays Idpays2Navigation { get; set; }
+        public virtual ICollection<EntrepriseProfessionnel> EntrepriseProfessionnels { get; set; }
         public virtual ICollection<Contrat> Contrats { get; set; }
+        public virtual ICollection<Pee> Pees { get; set; }
     }
 }

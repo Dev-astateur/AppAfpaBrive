@@ -4,14 +4,16 @@ using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppAfpaBrive.DAL.Migrations
 {
     [DbContext(typeof(AFPANADbContext))]
-    partial class AFPANADbContextModelSnapshot : ModelSnapshot
+    [Migration("20210312090300_EntrepriseProfessionnelFK")]
+    partial class EntrepriseProfessionnelFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +60,7 @@ namespace AppAfpaBrive.DAL.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(10)");
 
-                    b.Property<int?>("CodeTitreCivilite")
+                    b.Property<int>("CodeTitreCivilite")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DateNaissanceBeneficiaire")
@@ -130,9 +132,7 @@ namespace AppAfpaBrive.DAL.Migrations
 
                     b.HasKey("MatriculeBeneficiaire");
 
-                    b.HasIndex(new[] { "CodeTitreCivilite" }, "IX_Beneficiaire_CodeTitreCivilite");
-
-                    b.HasIndex(new[] { "IdPays2" }, "IX_Beneficiaire_Idpays2");
+                    b.HasIndex("CodeTitreCivilite");
 
                     b.ToTable("Beneficiaire");
                 });
@@ -776,7 +776,7 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.ToTable("OffreFormation");
                 });
 
-            modelBuilder.Entity("AppAfpaBrive.BOL.Pays", b =>
+            modelBuilder.Entity("AppAfpaBrive.BOL.Pay", b =>
                 {
                     b.Property<string>("Idpays2")
                         .HasMaxLength(2)
@@ -813,9 +813,6 @@ namespace AppAfpaBrive.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("numeric(18,0)")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Etat")
-                        .HasColumnType("int");
 
                     b.Property<int>("IdEntreprise")
                         .HasColumnType("int");
@@ -1146,16 +1143,10 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.HasOne("AppAfpaBrive.BOL.TitreCivilite", "CodeTitreCiviliteNavigation")
                         .WithMany("Beneficiaires")
                         .HasForeignKey("CodeTitreCivilite")
-                        .HasConstraintName("FK_Beneficiaire_TitreCivilite");
-
-                    b.HasOne("AppAfpaBrive.BOL.Pays", "PaysNavigation")
-                        .WithMany("Beneficiaires")
-                        .HasForeignKey("IdPays2")
-                        .HasConstraintName("FK_Beneficiaire_Pays");
+                        .HasConstraintName("FK_Beneficiaire_TitreCivilite")
+                        .IsRequired();
 
                     b.Navigation("CodeTitreCiviliteNavigation");
-
-                    b.Navigation("PaysNavigation");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.BeneficiaireOffreFormation", b =>
@@ -1286,7 +1277,7 @@ namespace AppAfpaBrive.DAL.Migrations
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Entreprise", b =>
                 {
-                    b.HasOne("AppAfpaBrive.BOL.Pays", "Idpays2Navigation")
+                    b.HasOne("AppAfpaBrive.BOL.Pay", "Idpays2Navigation")
                         .WithMany("Entreprises")
                         .HasForeignKey("Idpays2")
                         .HasConstraintName("FK_Entreprise_Pays")
@@ -1298,13 +1289,13 @@ namespace AppAfpaBrive.DAL.Migrations
             modelBuilder.Entity("AppAfpaBrive.BOL.EntrepriseProfessionnel", b =>
                 {
                     b.HasOne("AppAfpaBrive.BOL.Entreprise", "IdEntrepriseNavigation")
-                        .WithMany("EntrepriseProfessionnels")
+                        .WithMany()
                         .HasForeignKey("IdEntreprise")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AppAfpaBrive.BOL.Professionnel", "IdProfessionnelNavigation")
-                        .WithMany("EntrepriseProfessionnels")
+                        .WithMany()
                         .HasForeignKey("IdProfessionnel")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1541,8 +1532,6 @@ namespace AppAfpaBrive.DAL.Migrations
                 {
                     b.Navigation("Contrats");
 
-                    b.Navigation("EntrepriseProfessionnels");
-
                     b.Navigation("Pees");
                 });
 
@@ -1576,10 +1565,8 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Navigation("Pees");
                 });
 
-            modelBuilder.Entity("AppAfpaBrive.BOL.Pays", b =>
+            modelBuilder.Entity("AppAfpaBrive.BOL.Pay", b =>
                 {
-                    b.Navigation("Beneficiaires");
-
                     b.Navigation("Entreprises");
                 });
 
@@ -1602,8 +1589,6 @@ namespace AppAfpaBrive.DAL.Migrations
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Professionnel", b =>
                 {
-                    b.Navigation("EntrepriseProfessionnels");
-
                     b.Navigation("PeeIdResponsableJuridiqueNavigations");
 
                     b.Navigation("PeeIdTuteurNavigations");
