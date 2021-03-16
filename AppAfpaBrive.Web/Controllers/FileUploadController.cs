@@ -50,7 +50,7 @@ namespace AppAfpaBrive.Web.Controllers
 
                     if (Response.Done)
                     {
-                        return Ok(new { Response = Response });
+                        return View(viewName: "Index");
                     }
                     else
                     {

@@ -12,8 +12,7 @@ namespace AppAfpaBrive.Web.Models
     public class FilesModel 
     {
 
-        public int Size { get; set;}
-
+      
         [AllowedExtension(new string[] { ".xls", ".xlsx"}, ErrorMessage ="Format de fichier invalide")]
         [Required(ErrorMessage = "Please select a file.")]
         [Display(Name = "file")]
