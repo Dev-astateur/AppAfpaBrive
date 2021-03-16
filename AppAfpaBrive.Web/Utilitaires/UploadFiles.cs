@@ -34,13 +34,14 @@ namespace AppAfpaBrive.Web.Utilitaires
         {
             foreach (var file in listFile)
             {
-                if (!File.Exists($"{path} +/{file.FileName}"))
+                if (!File.Exists($"{path}/{file.FileName}"))
                 {
                     return false;
                 }
             }
             return true;
         }
+
 
         /// <summary>
         /// Upload le fichier cible. Retourne un InfoUpload
