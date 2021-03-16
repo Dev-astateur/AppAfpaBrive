@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="sib_api_v3_sdk" Version="3.2.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +32,7 @@
     <Folder Include="ModelesOffice\" />
     <Folder Include="Views\Formateur\" />
     <Folder Include="Views\Stagiaire\" />
+    <Folder Include="Models\Layer\" />
   </ItemGroup>
 
 </Project>

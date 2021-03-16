@@ -13,5 +13,7 @@ namespace AppAfpaBrive.BOL
         public string TelephonePro { get; set; }
         public bool? Actif { get; set; }
         public string Fonction { get; set; }
+        public virtual Entreprise IdEntrepriseNavigation { get; set; }
+        public virtual Professionnel IdProfessionnelNavigation { get; set; }
     }
 }

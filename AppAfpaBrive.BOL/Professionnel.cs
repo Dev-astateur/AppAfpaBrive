@@ -10,6 +10,7 @@ namespace AppAfpaBrive.BOL
         public Professionnel()
         {
             PeeIdResponsableJuridiqueNavigations = new HashSet<Pee>();
+            EntrepriseProfessionnels = new HashSet<EntrepriseProfessionnel>();
             PeeIdTuteurNavigations = new HashSet<Pee>();
         }
 
@@ -20,5 +21,6 @@ namespace AppAfpaBrive.BOL
 
         public virtual ICollection<Pee> PeeIdResponsableJuridiqueNavigations { get; set; }
         public virtual ICollection<Pee> PeeIdTuteurNavigations { get; set; }
+        public virtual ICollection<EntrepriseProfessionnel> EntrepriseProfessionnels { get; set; }
     }
 }

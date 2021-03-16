@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class OffreFormation
+    public partial class OffreFormation : EntityBase
     {
         public OffreFormation()
         {

@@ -1,0 +1,14 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model AppAfpaBrive.Web.ModelView.PeeModelView
+@{
+    ViewData["Title"] = "Entreprise";
+}
+
+@await Html.PartialAsync("_EntreprisePartial", Model.IdEntrepriseNavigation)
+<p><a asp-action="Index" asp-route-id="@Model.Id.MatriculeCollaborateurAfpa">Retour</a></p>
+<p><a asp-action="Suivant" asp-route-id="@Model.IdPee">Suivant</a></p>
+

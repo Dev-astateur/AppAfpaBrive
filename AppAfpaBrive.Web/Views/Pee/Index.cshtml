@@ -1,0 +1,24 @@
+﻿@model IEnumerable<AppAfpaBrive.Web.ModelView.PeeModelView>
+
+@{
+    ViewData["Title"] = "Periode en entreprise à valider";
+}
+
+<h3>@ViewBag.Titre</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
+        <div class="col-md-4">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
+        <div class="col-md-4">@Html.DisplayNameFor(model => model.IdTuteurNavigation.NomProfessionnel)</div>
+    </div>
+    @foreach (var item in Model)
+    {
+    <a asp-action="SuivantEntreprise" asp-route-id="@item.IdPee">
+        <div class="row">
+            <div class="col-md-4">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
+            <div class="col-md-4">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
+            <div class="col-md-4">@Html.DisplayFor(modelItem => item.IdTuteurNavigation.NomProfessionnel)</div>
+        </div>
+    </a>
+    }
+</div>

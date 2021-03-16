@@ -11,6 +11,7 @@ namespace AppAfpaBrive.DAL
     {
         public AFPANADbContext()
         {
+           ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public AFPANADbContext(DbContextOptions<AFPANADbContext> options)
@@ -36,7 +37,7 @@ namespace AppAfpaBrive.DAL
         public virtual DbSet<EvenementDocument> EvenementDocuments { get; set; }
         public virtual DbSet<FamilleMetierRome> FamilleMetierRomes { get; set; }
         public virtual DbSet<OffreFormation> OffreFormations { get; set; }
-        public virtual DbSet<Pay> Pays { get; set; }
+        public virtual DbSet<Pays> Pays { get; set; }
         public virtual DbSet<Pee> Pees { get; set; }
         public virtual DbSet<PeriodePee> PeriodePees { get; set; }
         public virtual DbSet<PeriodePeeEvenement> PeriodePeeEvenements { get; set; }
@@ -94,6 +95,9 @@ namespace AppAfpaBrive.DAL
                 entity.HasKey(e => e.MatriculeBeneficiaire);
 
                 entity.ToTable("Beneficiaire");
+
+                entity.HasIndex(e => e.CodeTitreCivilite, "IX_Beneficiaire_CodeTitreCivilite");
+                entity.HasIndex(e => e.IdPays2, "IX_Beneficiaire_Idpays2");
 
                 entity.Property(e => e.MatriculeBeneficiaire)
                     .HasMaxLength(8)
@@ -162,7 +166,11 @@ namespace AppAfpaBrive.DAL
                     .HasForeignKey(d => d.CodeTitreCivilite)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Beneficiaire_TitreCivilite");
-            });
+                entity.HasOne(d => d.PaysNavigation)
+                     .WithMany(p => p.Beneficiaires)
+                     .HasForeignKey(d => d.IdPays2)
+                     .HasConstraintName("FK_Beneficiaire_Pays");
+            }); 
 
             modelBuilder.Entity<BeneficiaireOffreFormation>(entity =>
             {
@@ -733,7 +741,7 @@ namespace AppAfpaBrive.DAL
                     .HasConstraintName("FK_OffreFormation_CollaborateurAfpa");
             });
 
-            modelBuilder.Entity<Pay>(entity =>
+            modelBuilder.Entity<Pays>(entity =>
             {
                 entity.HasKey(e => e.Idpays2);
 
