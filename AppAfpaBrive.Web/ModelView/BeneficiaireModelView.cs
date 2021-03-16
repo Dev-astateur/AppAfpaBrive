@@ -42,7 +42,7 @@ namespace AppAfpaBrive.Web.ModelView
         }
         [Display(Name ="Matricule du stagiaire")]
         public string MatriculeBeneficiaire { get; set; }
-        public int CodeTitreCivilite { get; set; }
+        public int? CodeTitreCivilite { get; set; }
         [Display(Name ="Nom du stagiaire")]
         public string NomBeneficiaire { get; set; }
         [Display(Name ="Prénom du stagiaire")]
