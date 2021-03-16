@@ -60,13 +60,20 @@ namespace AppAfpaBrive.Web.Controllers
             //{
             //    query = _layer.GetEntreprisesByDepartement(departement);
             //}
-            if (!String.IsNullOrEmpty(departement))
+
+            if (!String.IsNullOrEmpty(departement)&& (!String.IsNullOrEmpty(formation)))
             {
-                query=_layer.GetEntreprisesByDepartement(departement);
+                query =_layer.GetEntrepriseByDepartementEtOffre(formation, departement);
             }
 
-            
-            else if (!String.IsNullOrEmpty(formation))
+
+            else if (!String.IsNullOrEmpty(departement)&& String.IsNullOrEmpty(formation))
+            {
+                query = _layer.GetEntreprisesByDepartement(departement);
+            }
+
+
+            else if (!String.IsNullOrEmpty(formation)&& (String.IsNullOrEmpty(departement)))
             {
                 query = _layer.GetEntrepriseByProduitFormation(formation);
             }
@@ -80,7 +87,7 @@ namespace AppAfpaBrive.Web.Controllers
                 ListentrepriseListViewModel.Add(entrepriseModel);
             }
            
-           // return View( query);
+           
             return View(ListentrepriseListViewModel);
         }
 

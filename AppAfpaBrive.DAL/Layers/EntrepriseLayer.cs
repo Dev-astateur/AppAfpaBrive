@@ -24,6 +24,57 @@ namespace AppAfpaBrive.DAL.Layers
         {
             return _context.Entreprises.Where(e => e.CodePostal.StartsWith(dep)).ToList();
         }
+        public List<Entreprise> GetEntrepriseByDepartementEtOffre(string offre, string departement)
+        {
+            List<Entreprise> query = _context.ProduitFormations
+                                           .Where(pro => pro.LibelleProduitFormation.Contains(offre))
+                                            .Join(_context.OffreFormations
+                                           , p => p.CodeProduitFormation
+                                           , o => o.CodeProduitFormation
+                                           , (p, o) => new
+                                           {
+                                               idoffre = o.IdOffreFormation
+                                           })
+                                           .Join(_context.Pees
+                                           , o => o.idoffre
+                                           , p => p.IdOffreFormation
+                                           , (o, pee) => new
+                                           {
+                                               matriculeBenef = pee.MatriculeBeneficiaire
+                                           })
+                                           .Join(_context.Beneficiaires,
+                                           p => p.matriculeBenef
+                                           , bene => bene.MatriculeBeneficiaire,
+                                           (bene, pee) => new
+                                           {
+                                               matriculeBenef = pee.MatriculeBeneficiaire
+                                           })
+                                           .Join(_context.Contrats
+                                           , b => b.matriculeBenef
+                                           , c => c.MatriculeBeneficiaire
+                                           , (b, c) => new
+                                           {
+
+                                               idEntrepretrise = c.IdEntreprise
+                                           })
+                                           .Join(_context.Entreprises,
+                                           c => c.idEntrepretrise
+                                           , ent => ent.IdEntreprise
+                                           , (c, e) => new Entreprise
+                                           {
+                                               IdEntreprise = e.IdEntreprise,
+                                               RaisonSociale = e.RaisonSociale,
+                                               NumeroSiret = e.NumeroSiret,
+                                               MailEntreprise = e.MailEntreprise,
+                                               TelEntreprise = e.TelEntreprise,
+                                               Ligne1Adresse = e.Ligne1Adresse,
+                                               CodePostal = e.CodePostal,
+                                               Ville = e.Ville,
+                                               Idpays2 = e.Idpays2
+                                           }).Where(e => e.CodePostal.StartsWith(departement)).ToList();
+            return query;
+
+        }
         public List<Entreprise> GetEntrepriseByProduitFormation(string offre)
         {
             //var query = _context.Entreprises.Join(_context.Contrats
