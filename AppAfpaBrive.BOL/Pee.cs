@@ -21,6 +21,7 @@ namespace AppAfpaBrive.BOL
         public string IdEtablissement { get; set; }
         public int Etat { get; set; }
 
+        //public virtual Entreprise IdEntrepriseNavigation { get; set; }
         public virtual OffreFormation Id { get; set; }
         public virtual Professionnel IdResponsableJuridiqueNavigation { get; set; }
         public virtual Entreprise IdEntrepriseNavigation { get; set; }
