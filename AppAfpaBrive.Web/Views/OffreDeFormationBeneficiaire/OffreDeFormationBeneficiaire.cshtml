@@ -6,35 +6,39 @@
 }
 
 <h1>OffreDeFormationBeneficiaire</h1>
-
-<div class="form-group">
-    <label>Offre de formation:</label>
-    @Html.DropDownListFor(m => m.IdOffreFormation, new SelectList(Model.OffreFormations, "IdOffreFormation", "LibelleOffreFormation"))
-
-</div>
+<form asp-controller="OffreDeFormationBeneficiaire" asp-action="OffreDeFormationBeneficiaire">
 
 
-<table class="table">
-    
-    <tbody>
-@foreach (var item in Model.BeneficiaireOffreFormations) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailBeneficiaire)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailingAutorise)
-            </td>
-            
-             
-           
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="form-group">
+        <label>Offre de formation:</label>
+        @Html.DropDownListFor(m => m.IdOffreFormation, new SelectList(Model.OffreFormations, "IdOffreFormation", "LibelleOffreFormation"))
+    <button type="submit" class="btn btn-primary" value="">Choisir</button>
+    </div>
+
+
+    <table class="table">
+
+        <tbody>
+            @foreach (var item in Model.BeneficiaireOffreFormations)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailBeneficiaire)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailingAutorise)
+                    </td>
+
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>

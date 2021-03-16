@@ -24,21 +24,26 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
 
         }
         // GET: StagiaireParOffredeFormationController
+        //[HttpPost]
         public ActionResult OffreDeFormationBeneficiaire()
         {
             
             this.ViewBag.MonTitre = "OffreDeFormationBeneficiaire";
 
             var query = _offreDeFormationLayer.GetByMatriculeCollaborateurAFPA("96GB011");
-            query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAll();
+           
             OffreFormationSpecifiqueModelView model = new OffreFormationSpecifiqueModelView(query);
+            int selectedvalue = model.IdOffreFormation;
+            query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAllByOffreFormation(selectedvalue);
             model.AlimenterListeOffreFormations(_offreDeFormationLayer.GetAllbyMatricule("96GB011"));
+            
 
 
             foreach (var item in query.BeneficiaireOffreFormations)
             {
                 model.BeneficiaireOffreFormations.Add(item);
             }
+            var selectedValue = model.IdOffreFormation;
             
             return View(model);
         }
