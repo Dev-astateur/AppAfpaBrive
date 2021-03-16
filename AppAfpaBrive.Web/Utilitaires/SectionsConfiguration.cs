@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AppAfpaBrive.Web.Utilitaires
 {
-    
+
     public class MailerSettings
     {
         public string NameFrom { get; set; }
