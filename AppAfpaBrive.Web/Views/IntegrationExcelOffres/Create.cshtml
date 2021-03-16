@@ -1,0 +1,33 @@
+﻿@model AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre.IntegrationExcelOffreCreate
+<center><h3>Intégrer une offre</h3></center>
+<div class="form-horizontal">  
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="CodeProduitFormation" class="control-label"></label>
+            <input asp-for="CodeProduitFormation" class="form-control" />
+            <span asp-validation-for="CodeProduitFormation" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="MatriculeCollaborateurAfpa" class="control-label"></label>
+            <input asp-for="MatriculeCollaborateurAfpa" class="form-control" />
+            <span asp-validation-for="MatriculeCollaborateurAfpa" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PathFileIntegration" class="control-label"></label>
+            <input asp-for="PathFileIntegration" class="form-control" />
+            <span asp-validation-for="PathFileIntegration" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+
+            <input type="submit" value="Intégrer" class="btn btn-default" />
+
+        </div>
+    </form>
+</div>
+<hr />
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+}

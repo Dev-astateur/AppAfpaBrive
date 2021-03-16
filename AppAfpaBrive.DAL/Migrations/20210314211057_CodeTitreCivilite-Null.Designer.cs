@@ -4,14 +4,16 @@ using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppAfpaBrive.DAL.Migrations
 {
     [DbContext(typeof(AFPANADbContext))]
-    partial class AFPANADbContextModelSnapshot : ModelSnapshot
+    [Migration("20210314211057_CodeTitreCivilite-Null")]
+    partial class CodeTitreCiviliteNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,6 +109,9 @@ namespace AppAfpaBrive.DAL.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("PaysNavigationIdpays2")
+                        .HasColumnType("char(2)");
+
                     b.Property<string>("PrenomBeneficiaire")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -130,9 +135,9 @@ namespace AppAfpaBrive.DAL.Migrations
 
                     b.HasKey("MatriculeBeneficiaire");
 
-                    b.HasIndex(new[] { "CodeTitreCivilite" }, "IX_Beneficiaire_CodeTitreCivilite");
+                    b.HasIndex("CodeTitreCivilite");
 
-                    b.HasIndex(new[] { "IdPays2" }, "IX_Beneficiaire_Idpays2");
+                    b.HasIndex("PaysNavigationIdpays2");
 
                     b.ToTable("Beneficiaire");
                 });
@@ -814,9 +819,6 @@ namespace AppAfpaBrive.DAL.Migrations
                         .HasColumnType("numeric(18,0)")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Etat")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdEntreprise")
                         .HasColumnType("int");
 
@@ -1150,8 +1152,7 @@ namespace AppAfpaBrive.DAL.Migrations
 
                     b.HasOne("AppAfpaBrive.BOL.Pays", "PaysNavigation")
                         .WithMany("Beneficiaires")
-                        .HasForeignKey("IdPays2")
-                        .HasConstraintName("FK_Beneficiaire_Pays");
+                        .HasForeignKey("PaysNavigationIdpays2");
 
                     b.Navigation("CodeTitreCiviliteNavigation");
 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class BeneficiaireOffreFormation
+    public partial class BeneficiaireOffreFormation :EntityBase
     {
         public string MatriculeBeneficiaire { get; set; }
         public int IdOffreFormation { get; set; }
