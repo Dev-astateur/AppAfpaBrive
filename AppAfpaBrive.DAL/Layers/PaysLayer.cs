@@ -15,7 +15,7 @@ namespace AppAfpaBrive.DAL.Layers
             _context = context;
         }
 
-        public Pay GetPaysById(string idPays)
+        public Pays GetPaysById(string idPays)
         {
             return _context.Pays.Find(idPays);
         }

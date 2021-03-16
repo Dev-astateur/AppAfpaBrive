@@ -20,7 +20,7 @@ namespace AppAfpaBrive.Web.ModelView
         public BeneficiaireModelView( Beneficiaire beneficiaire  )
         {
             MailBeneficiaire = beneficiaire.MatriculeBeneficiaire;
-            CodeTitreCivilite = beneficiaire.CodeTitreCivilite;
+            CodeTitreCivilite = (int)beneficiaire.CodeTitreCivilite;
             NomBeneficiaire = beneficiaire.NomBeneficiaire;
             PrenomBeneficiaire = beneficiaire.PrenomBeneficiaire;
             DateNaissanceBeneficiaire = beneficiaire.DateNaissanceBeneficiaire;

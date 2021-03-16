@@ -3,25 +3,32 @@
 @{
     ViewData["Title"] = "ListeEntreprise";
 }
-<div class="container">
-    <div class="row">
-        <form asp-controller="Entreprise" asp-action="ListeEntreprise">
-            <div class="col-md-12">
-                <h2>Recherche par numéro de département: </h2>
+<form asp-controller="Entreprise" asp-action="ListeEntreprise">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-4">
+                <p>Recherche par numéro de département: </p>
                 <p>
                     <input type="search" placeholder=" département" value="@ViewData["GetDepartement"]" name="departement" />
+
                 </p>
             </div>
-            <div class="col-md-12">
-                <h2>Recherche par l'intitulé de l'offre de formation: </h2>
+            <div class="col-sm-4">
+                <p>Recherche par l'intitulé de l'offre de formation: </p>
                 <p>
-                    <input type="search" placeholder=" formation" value="@ViewData["GetProduitForm"]" name="formation" /></br></br>
-                    <input type="submit" value="Rechercher" class="btn btn-primary" />
+                    <input type="search" placeholder=" formation" value="@ViewData["GetProduitForm"]" name="formation" />
+                   
+
                 </p>
             </div>
-        </form>
-    </div>
-</div>
+            <div class="col-sm-4">
+                <input type="submit" value="Rechercher" class="btn btn-primary" />
+            </div>
+
+            </div>
+        </div>
+</form>
 
 
 <table class="table">
@@ -80,13 +87,13 @@
                             @Html.DisplayFor(modelItem => item.Ville)
                         </td>
                     </div>
-                    @*
+                    
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.IdEntreprise">Edit</a> |
                             <a asp-action="Details" asp-route-id="@item.IdEntreprise">Details</a> |
                             <a asp-action="Delete" asp-route-id="@item.IdEntreprise">Delete</a>
                         </td>
-                    *@
+                    
                 </tr>
             </div>
         }

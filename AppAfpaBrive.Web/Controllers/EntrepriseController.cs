@@ -20,6 +20,7 @@ namespace AppAfpaBrive.Web.Controllers
         {
            
             _layer = new EntrepriseLayer(Db);
+            _dbContext = new AFPANADbContext();
         }
 
         // GET: EntrepriseController
@@ -39,14 +40,7 @@ namespace AppAfpaBrive.Web.Controllers
         {
             return View();
         }
-        // GET: EntrepriseController/ListeEntreprise
-        //[HttpGet]
-        //public ActionResult ListeEntreprise()       
-        //{
-        //    //  List<Entreprise> ListEntreprise = _dbContext.Entreprises.ToList();
-        //    IEnumerable<Entreprise> ListEntreprise = _layer.GetAllEntreprise();
-        //    return View(ListEntreprise.ToList());
-        //}
+       
         // GET: EntrepriseController/ListeEntreprise
         //[HttpGet]
         public async Task<IActionResult> ListeEntreprise(string departement, string formation)
@@ -96,7 +90,7 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public ActionResult CreerEntreprise()
         {
-            //List<Pay> Liste = _dbContext.Pays.ToList();
+            //List<Pays> Liste = _layer.GetAllPays().ToList();
             // ViewBag.MaList = Liste;
             return View();
         }
@@ -108,11 +102,23 @@ namespace AppAfpaBrive.Web.Controllers
         public ActionResult CreerEntreprise(Entreprise entreprise)
         {
 
-            _dbContext.Entreprises.Add(entreprise);
-            _dbContext.SaveChanges();
+            try
+            {
+                _dbContext.Entreprises.Add(entreprise);
+                _dbContext.SaveChanges();
+                return RedirectToAction("ListeEntreprise", "Entreprise");
+            }
+            catch
+            {
+                return View();
+            }
+           
+        }
+        [HttpGet]
+        public ActionResult SupprimerEntreprise()
+        {
             return View();
         }
-
 
         // POST: EntrepriseController/Create
         [HttpPost]

@@ -16,22 +16,23 @@ namespace AppAfpaBrive.Web.ModelView
             Pees = new HashSet<PeeModelView>();
         }
 
-        public OffreFormationModelView( OffreFormation offreFormation)
+        public OffreFormationModelView(OffreFormation offreFormation)
         {
-            if ( offreFormation is not null )
-        {
-            IdOffreFormation = offreFormation.IdOffreFormation;
-            IdEtablissement = offreFormation.IdEtablissement;
-            MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
-            CodeProduitFormation = offreFormation.CodeProduitFormation;
-            LibelleOffreFormation = offreFormation.LibelleOffreFormation;
-            LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
-            DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
-            DateFinOffreFormation = offreFormation.DateFinOffreFormation;
-            CodeProduitFormation = offreFormation.CodeProduitFormation;
-            BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+            if (offreFormation is not null)
+            {
+                IdOffreFormation = offreFormation.IdOffreFormation;
+                IdEtablissement = offreFormation.IdEtablissement;
+                MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
+                CodeProduitFormation = offreFormation.CodeProduitFormation;
+                LibelleOffreFormation = offreFormation.LibelleOffreFormation;
+                LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
+                DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
+                DateFinOffreFormation = offreFormation.DateFinOffreFormation;
+                CodeProduitFormation = offreFormation.CodeProduitFormation;
+                BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
 
-          
+
+            }
         }
 
         public int IdOffreFormation { get; set; }
@@ -46,7 +47,7 @@ namespace AppAfpaBrive.Web.ModelView
         //public virtual ProduitFormation CodeProduitFormationNavigation { get; set; }
         //public virtual Etablissement IdEtablissementNavigation { get; set; }
         //public virtual CollaborateurAfpa MatriculeCollaborateurAfpaNavigation { get; set; }
-        //public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
+        public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
         //public virtual ICollection<CampagneMail> CampagneMails { get; set; }
         public virtual ICollection<PeeModelView> Pees { get; set; }
     }
