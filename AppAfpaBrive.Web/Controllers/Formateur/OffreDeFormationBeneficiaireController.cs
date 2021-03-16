@@ -31,11 +31,15 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
 
             var query = _offreDeFormationLayer.GetByMatriculeCollaborateurAFPA("96GB011");
             query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAll();
-            OffreFormationModelView model = new OffreFormationModelView(query);
+            OffreFormationSpecifiqueModelView model = new OffreFormationSpecifiqueModelView(query);
+            model.AlimenterListeOffreFormations(_offreDeFormationLayer.GetAllbyMatricule("96GB011"));
+
+
             foreach (var item in query.BeneficiaireOffreFormations)
             {
                 model.BeneficiaireOffreFormations.Add(item);
             }
+            
             return View(model);
         }
         // GET: OffreDeFormationBeneficiaireController

@@ -25,6 +25,12 @@ namespace AppAfpaBrive.DAL.Layers
            // return _context.OffreFormations.Where(b => b.MatriculeCollaborateurAfpa == idCollaborateurAFPA).FirstOrDefault();
                 
         }
+        public ICollection<BOL.OffreFormation> GetAllbyMatricule(string idCollaborateurAFPA)
+        {
+            return _context.OffreFormations.Where(a => a.MatriculeCollaborateurAfpa == idCollaborateurAFPA).ToList();
+               
+        }
+        
         #endregion
     }
 }
