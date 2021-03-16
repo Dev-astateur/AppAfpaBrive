@@ -16,5 +16,11 @@ namespace AppAfpaBrive.DAL.Layer
         {
             return _db.BeneficiaireOffreFormations.Where(x => x.MatriculeBeneficiaire == matricule).ToList();
         }
+        public IEnumerable<BeneficiaireOffreFormation> GetIdetablissemnt(string matricule,int Idformation)
+        {
+            return _db.BeneficiaireOffreFormations.
+                Where(x => x.MatriculeBeneficiaire == matricule && x.IdOffreFormation==Idformation).ToList();
+        }
+
     }
 }

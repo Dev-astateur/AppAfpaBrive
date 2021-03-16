@@ -50,24 +50,37 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 };
                 obj.Add(convention);
             }
+            Creation_convention Session_Convention = new Creation_convention
+            {
+                Idmatricule = "azerty12"
+            };
+            var str = JsonConvert.SerializeObject(Session_Convention);
+            HttpContext.Session.SetString("convention", str);
             return View(obj);
         }
 
         // post index
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Index(Creation_convention convention)
-        {
-            var str = JsonConvert.SerializeObject(convention);
-            HttpContext.Session.SetString("convention", str);
-            return RedirectToAction("Entreprise");
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Index(Creation_convention convention)
+        //{
+        //    var str = JsonConvert.SerializeObject(convention);
+        //    HttpContext.Session.SetString("convention", str);
+        //    return RedirectToAction("Entreprise");
+        //}
 
         // get Entreprise
-        public IActionResult Entreprise(int? id)
+        public IActionResult Entreprise(int id)
         {
-            var str = HttpContext.Session.GetString("convention");
-            var obj = JsonConvert.DeserializeObject<Creation_convention>(str);
+            string str = HttpContext.Session.GetString("convention");
+            Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+
+            convention.Formation = _Produit_Formation.Get_Formation_Nom(id).FirstOrDefault();
+            convention.IdFormation = id;
+            convention.IdEtablissement = _beneficiaireOffre.GetIdetablissemnt(convention.Idmatricule, id).FirstOrDefault().Idetablissement;
+            convention.Etablissement = _Etablissement.Get_Etablissement_Nom(convention.IdEtablissement).FirstOrDefault().NomEtablissement;
+            var obj = JsonConvert.SerializeObject(convention);
+            HttpContext.Session.SetString("convention", obj);
             return View();
         }
 

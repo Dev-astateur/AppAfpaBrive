@@ -7,6 +7,7 @@ namespace AppAfpaBrive.Web.Models
 {
     public class Creation_convention
     {
+        private string _matricule;
         private string _idEtablissement;
         private string _etablissement;
         private int _idFormation;
@@ -26,5 +27,6 @@ namespace AppAfpaBrive.Web.Models
         public string ResponsableJuridique { get => _responsableJuridique; set => _responsableJuridique = value; }
         public string Tureur { get => _tureur; set => _tureur = value; }
         public string Formation { get => _formation; set => _formation = value; }
+        public string Matricule { get => _matricule; set => _matricule = value; }
     }
 }
