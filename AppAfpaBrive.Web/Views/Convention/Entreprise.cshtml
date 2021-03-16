@@ -13,7 +13,7 @@
                         <label asp-for="NumeroSiret"> Siret</label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="NumeroSiret" class="form-control" />
+                        <input asp-for="NumeroSiret" id="Siret" class="form-control" />
                         <span class="text-danger"></span>
                     </div>
 
@@ -25,6 +25,9 @@
                             <input type="submit" class="btn btn-info w-100" value="Update" />
                         </div>
                         <div class="col">
+                            <a asp-action="Entreprise_creation" id="Valider" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Ajouter entreprise</a>
+                        </div>
+                        <div class="col">
                             <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
                         </div>
                     </div>
@@ -34,3 +37,28 @@
     </div>
 
 </form>
+
+<script>
+
+
+    var eve = document.getElementById("Valider")
+    eve.addEventListener("click", function () {
+
+        var siret = document.getElementById("Siret").value
+        var total = 0
+        for (let index = 0; index < siret.length; index++) {
+            const element = siret[index]
+            var x = parseInt(siret[index])
+            if (index % 2 == 0) {
+                x = x * 2
+            }
+            if (x > 9) {
+                x = x.toString()
+                total += parseInt(x[0]) + parseInt(x[1])
+            }
+            else {
+                total += x
+            }
+        }
+    })
+</script>

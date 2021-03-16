@@ -11,8 +11,8 @@ namespace AppAfpaBrive.Web.Models
         private string _etablissement;
         private int _idFormation;
         private string _idmatricule;
-        private string _dateDebut;
-        private string _datefin;
+        private DateTime _dateDebut;
+        private DateTime? _datefin;
         private string _responsableJuridique;
         private string _tureur;
         private string _formation;
@@ -21,8 +21,8 @@ namespace AppAfpaBrive.Web.Models
         public string Etablissement { get => _etablissement; set => _etablissement = value; }
         public int IdFormation { get => _idFormation; set => _idFormation = value; }
         public string Idmatricule { get => _idmatricule; set => _idmatricule = value; }
-        public string DateDebut { get => _dateDebut; set => _dateDebut = value; }
-        public string Datefin { get => _datefin; set => _datefin = value; }
+        public DateTime DateDebut { get => _dateDebut; set => _dateDebut = value; }
+        public DateTime? Datefin { get => _datefin; set => _datefin = value; }
         public string ResponsableJuridique { get => _responsableJuridique; set => _responsableJuridique = value; }
         public string Tureur { get => _tureur; set => _tureur = value; }
         public string Formation { get => _formation; set => _formation = value; }

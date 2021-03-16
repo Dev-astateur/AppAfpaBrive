@@ -1,43 +1,56 @@
 ﻿@model List<AppAfpaBrive.Web.Models.Creation_convention>
-    <form>
-        <div>
-            @if (Model.Count() > 0)
-            {
-                <table class="table table-bordered table-striped" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>
-                                Offre de formation
-                            </th>
-                            <th>
-                                Etablissement 
-                            </th>
-                            <th>
+<form method="post">
+    <div>
+        @if (Model.Count() > 0)
+        {
+            <table class="table table-bordered table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            Offre de formation
+                        </th>
+                        <th>
+                            Etablissement
+                        </th>
+                        <th>
+                            Date de début de formation
+                        </th>
+                        <th>
+                            Date de fin de formation
+                        </th>
 
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var obj in Model)
-                        {
-                            <tr id="ligne">
-                                <td width="40%">@obj.Formation</td>
-                                <td width="50%">@obj.Etablissement</td>
-                                <td>
-                                    <a asp-controller="Convention" asp-action="Entreprise" asp-route-Id="@obj.IdFormation" class="btn btn-primary">
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var obj in Model)
+                    {
+                        <tr id="ligne">
+                            <td width="20%">@obj.Formation</td>
+                            <td width="20%">@obj.Etablissement</td>
+                            <td width="20%">@obj.DateDebut</td>
+                            <td width="20%">@obj.Datefin @if (obj.Datefin is null) { 
+                                <p> Date inconnue</p>
+                            }</td>
+
+                            <td>
+                                <div class="col">
+                                    <input type="submit" class="btn btn-info w-100" value="Creer un convention de stage" />
+                                </div>
+                                @*<a asp-controller="Convention" asp-action="Entreprise" asp-route-Id="@obj.IdFormation" class="btn btn-primary">
                                         Créer une convention de stage
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <p> Vous n'avez pas de formation.</p>
-            }
-
-        </div>
-    </form>
-
+                                    </a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p> Vous n'avez pas de formation.</p>
+        }
+    </div>
+</form>

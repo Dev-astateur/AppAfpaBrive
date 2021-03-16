@@ -11,6 +11,7 @@ using System.Diagnostics;
 using AppAfpaBrive.Web.Models;
 using System.Web.Providers.Entities;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
@@ -28,6 +29,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _Entreprise = new Layer_Entreprise(context);
         }
 
+        // get index
         public IActionResult Index()
         {
             this.HttpContext.Session.SetString("matricule", "azerty12");
@@ -41,6 +43,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     IdFormation = item.IdOffreFormation,
                     Idmatricule = item.MatriculeBeneficiaire,
                     IdEtablissement = item.Idetablissement,
+                    DateDebut = item.DateEntreeBeneficiaire,
+                    Datefin = item.DateSortieBeneficiaire,
                     Etablissement = _Etablissement.Get_Etablissement_Nom(item.Idetablissement).FirstOrDefault().NomEtablissement,
                     Formation = _Produit_Formation.Get_Formation_Nom(item.IdOffreFormation).FirstOrDefault()
                 };
@@ -49,10 +53,21 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             return View(obj);
         }
 
+        // post index
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(Creation_convention convention)
+        {
+            var str = JsonConvert.SerializeObject(convention);
+            HttpContext.Session.SetString("convention", str);
+            return RedirectToAction("Entreprise");
+        }
+
         // get Entreprise
         public IActionResult Entreprise(int? id)
         {
-            
+            var str = HttpContext.Session.GetString("convention");
+            var obj = JsonConvert.DeserializeObject<Creation_convention>(str);
             return View();
         }
 
@@ -78,6 +93,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get Entreprise_Recap
         public IActionResult Entreprise_Recap()
         {
+            
             Entreprise obj = _Entreprise.get_Entreprise(this.HttpContext.Session.GetString("Siret"))
                 .FirstOrDefault();
             return View(obj);
@@ -96,8 +112,15 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [ValidateAntiForgeryToken]
         public IActionResult Entreprise_creation(Entreprise entreprise)
         {
-
-            return View();
+            if (ModelState.IsValid)
+            {
+                if (entreprise is null)
+                {
+                    return View(entreprise);
+                }
+                return RedirectToAction("Entreprise_Recap");
+            }
+            return View(entreprise);
         }
     }
 }
