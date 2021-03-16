@@ -47,7 +47,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         }
 
         // GET: ProduitFormation/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -57,6 +57,14 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         [ValidateAntiForgeryToken]
         public IActionResult Create(BOL.ProduitFormation obj)
         {
+
+            //if ((obj.FormationContinue == false && obj.FormationDiplomante == false) ||
+            //(obj.FormationDiplomante == true && obj.FormationContinue == true))
+            //{
+            //    ModelState.AddModelError("Error", "Vous devez selectionner une seule option");
+            //}
+            
+            
             if (ModelState.IsValid)
             {
                 _db.ProduitFormations.Add(obj);
@@ -68,7 +76,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         }
 
         // GET: ProduitFormation/Edit/5
-        public ActionResult Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if(id==null || id == 0)
             {
@@ -85,8 +93,8 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // POST: ProduitFormation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(BOL.ProduitFormation obj)
-        {
+        public IActionResult Edit(BOL.ProduitFormation obj)
+        { 
             if (ModelState.IsValid)
             {
                 _db.ProduitFormations.Update(obj);
@@ -114,7 +122,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // POST: ProduitFormation/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePost(int? id)
+        public IActionResult Delete(int id)
         {
             var obj = _db.ProduitFormations.Find(id);
             if(obj == null)
