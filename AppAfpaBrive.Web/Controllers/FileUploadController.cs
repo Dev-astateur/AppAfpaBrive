@@ -1,4 +1,4 @@
-﻿using AppAfpaBrive.Web.Models.FileUploadModels;
+﻿
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -6,17 +6,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AppAfpaBrive.Web.Utilitaires;
+using AppAfpaBrive.Web.Models;
 
 namespace AppAfpaBrive.Web.Controllers
 {
     public class FileUploadController : Controller
     {
-        protected string path = "";
+
+
+        protected string Path { get; set; }
+        protected List<String> ExtensionAuthorisee { get; set; }
+
 
 
         public FileUploadController()
         {
-            path = "./Data/Documents";
+            Path = "./Data/Documents";
+            ExtensionAuthorisee = new List<string>()
+            {
+                ".xlsx",
+                ".xl"
+            };
         }
 
         public IActionResult Index()
@@ -25,29 +36,37 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
 
-      
+
         [HttpPost]
-        public async Task<IActionResult> Index(FileModel postedFile)
+        public IActionResult Upload(FilesModel uploadFile)
         {
 
             if (ModelState.IsValid)
             {
-                var filePath = path + "/" + postedFile.Uploaded.File.FileName;
-
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                var postedFile = uploadFile.file;
+                try
                 {
-                    await postedFile.Uploaded.File.CopyToAsync(stream);
+                    var Response = UploadFiles.UploadFile(postedFile, Path);
+
+                    if (Response.Done)
+                    {
+                        return Ok(new { Response = Response });
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+
                 }
-
-                if (ModelState.IsValid)
+                catch (Exception e)
                 {
-                    return Ok(new { postedFile.Uploaded.File.Length, filePath });
+                    Response.WriteAsync("<script>alert('" + e + "')</script>");
+                    return View(viewName: "Index");
                 }
             }
-            
 
-            return View();
+            return View(viewName: "Index");
+
         }
     }
 }

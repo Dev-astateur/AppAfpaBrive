@@ -1,22 +1,24 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AppAfpaBrive.Web.Models.FileUploadModels;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AppAfpaBrive.Web.Models.FileUploadModels
+namespace AppAfpaBrive.Web.Models
 {
-    public class FileModel
+    public class FilesModel 
     {
-        [FileAttribute]
+
+        public int Size { get; set;}
+
+        [AllowedExtension(new string[] { ".xls", ".xlsx"}, ErrorMessage ="Format de fichier invalide")]
+        [Required(ErrorMessage = "Please select a file.")]
+        [Display(Name = "file")]
         [DataType(DataType.Upload)]
-        public IFormFileWrapper Uploaded { get; set; }
-       
-        public class IFormFileWrapper
-        {
-           
-            public IFormFile File{ set; get; }
-        }
+        public IFormFile file { get; set; }
+        
     }
 }

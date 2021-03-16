@@ -2,20 +2,16 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model AppAfpaBrive.Web.Models.FileUploadModels.FileModel
-@{
 
-    @using (Html.BeginForm("Index", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@model AppAfpaBrive.Web.Models.FilesModel;
 
 
-}
-
-<form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="Index">
+@*<form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="Upload">
 
     <div class="form-group">
         <div class="col-md-10">
             <p>Sélectionnez un ficher à importer</p>
-            <input asp-for="Uploaded" type="file" name="postedFile" />
+            <input type="file" name="uploadFile" asp-for="file" />
             <div asp-validation-summary="All" class="text-danger"></div>
 
         </div>
@@ -23,8 +19,23 @@
 
     <div class="form-group">
         <div class="col-md-10">
+            <span asp-validation-for="file" class="text-danger"></span>
             <input type="submit" value="Upload" />
         </div>
     </div>
 
+</form>*@
+
+<form method="post"
+      asp-action="Upload"
+      asp-controller="FileUpload"
+      enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input asp-for="file" />
+    <span asp-validation-for="file" class="text-danger"></span>
+    <input type="submit" value="Upload" />
 </form>
+
+
+
