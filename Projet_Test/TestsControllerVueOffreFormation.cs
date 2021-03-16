@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Projet_Test
 {
-    public class Tests
+    public class TestsControllerVueOffreFormation
     {
         [SetUp]
         public void Setup()
