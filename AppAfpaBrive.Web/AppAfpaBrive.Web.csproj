@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="ModelesOffice\" />
-    <Folder Include="Models\Layer\" />
   </ItemGroup>
 
 </Project>

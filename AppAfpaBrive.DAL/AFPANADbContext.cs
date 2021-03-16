@@ -49,7 +49,8 @@ namespace AppAfpaBrive.DAL
         public virtual DbSet<TypeContrat> TypeContrats { get; set; }
         public virtual DbSet<UniteOrganisationnelle> UniteOrganisationnelles { get; set; }
         public virtual DbSet<UniteOrganisationnelleChampProfessionnel> UniteOrganisationnelleChampProfessionnels { get; set; }
-
+        public virtual DbSet<InsetionTroisMois> InsetionTroisMois { get; set; }
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

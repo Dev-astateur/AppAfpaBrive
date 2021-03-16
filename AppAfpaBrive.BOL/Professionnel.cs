@@ -12,7 +12,7 @@ namespace AppAfpaBrive.BOL
             PeeIdResponsableJuridiqueNavigations = new HashSet<Pee>();
             PeeIdTuteurNavigations = new HashSet<Pee>();
         }
-
+        
         public int IdProfessionnel { get; set; }
         public string NomProfessionnel { get; set; }
         public string PrenomProfessionnel { get; set; }
