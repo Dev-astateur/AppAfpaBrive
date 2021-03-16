@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,11 +40,14 @@ namespace AppAfpaBrive.Web.ModelView
             //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
             Pees = new HashSet<PeeModelView>();
         }
-
+        [Display(Name ="Matricule du stagiaire")]
         public string MatriculeBeneficiaire { get; set; }
         public int CodeTitreCivilite { get; set; }
+        [Display(Name ="Nom du stagiaire")]
         public string NomBeneficiaire { get; set; }
+        [Display(Name ="Prénom du stagiaire")]
         public string PrenomBeneficiaire { get; set; }
+        [Display(Name ="Date de naissance")]
         public DateTime? DateNaissanceBeneficiaire { get; set; }
         public string MailBeneficiaire { get; set; }
         public string TelBeneficiaire { get; set; }

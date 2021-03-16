@@ -7,69 +7,18 @@
 <h3>@ViewBag.Titre</h3>
 <div class="container">
     <div class="row">
-        <div class="col-md-3">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
-        <div class="col-md-3">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
-        <div class="col-md-3">@Html.DisplayNameFor(model => model.IdTuteurNavigation.NomProfessionnel)</div>
-        <div class="col-md-3">Validation</div>
+        <div class="col-md-4">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
+        <div class="col-md-4">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
+        <div class="col-md-4">@Html.DisplayNameFor(model => model.IdTuteurNavigation.NomProfessionnel)</div>
     </div>
     @foreach (var item in Model)
     {
     <a asp-action="SuivantEntreprise" asp-route-id="@item.IdPee">
         <div class="row">
-            <div class="col-md-3">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
-            <div class="col-md-3">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
-            <div class="col-md-3">@Html.DisplayFor(modelItem => item.IdTuteurNavigation.NomProfessionnel)</div>
-            <div class="col-md-3"><a asp-action="SuivantEntreprise" asp-route-id="@item.IdPee">coucou</a></div>
+            <div class="col-md-4">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
+            <div class="col-md-4">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
+            <div class="col-md-4">@Html.DisplayFor(modelItem => item.IdTuteurNavigation.NomProfessionnel)</div>
         </div>
     </a>
     }
 </div>
-
-        @*<table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.IdEntreprise)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Id)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.IdResponsableJuridiqueNavigation)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.IdTuteurNavigation)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-            @foreach (var item in Model) {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IdEntreprise)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id.IdEtablissement)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IdResponsableJuridiqueNavigation.NomProfessionnel)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IdTuteurNavigation.NomProfessionnel)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MatriculeBeneficiaire)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.IdPee">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.IdPee">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.IdPee">Delete</a>
-                        </td>
-                    </tr>
-            }
-                </tbody>
-            </table>*@

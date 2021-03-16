@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,7 +39,9 @@ namespace AppAfpaBrive.Web.ModelView
         }
 
         public int IdProfessionnel { get; set; }
+        [Display(Name ="Nom du professionel")]
         public string NomProfessionnel { get; set; }
+        [Display(Name ="Prénom")]
         public string PrenomProfessionnel { get; set; }
         public int CodeTitreCiviliteProfessionnel { get; set; }
 
