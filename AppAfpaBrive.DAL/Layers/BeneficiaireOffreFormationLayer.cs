@@ -19,6 +19,10 @@ namespace AppAfpaBrive.DAL.Layers
         {
             return _context.BeneficiaireOffreFormations.Where(e => e.IdOffreFormation == id).ToList();
         }
+        public ICollection<BOL.BeneficiaireOffreFormation> GetAll()
+        {
+            return _context.BeneficiaireOffreFormations.ToList();
+        }
         #endregion
     }
 

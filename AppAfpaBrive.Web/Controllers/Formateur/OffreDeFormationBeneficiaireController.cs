@@ -30,7 +30,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
             this.ViewBag.MonTitre = "OffreDeFormationBeneficiaire";
 
             var query = _offreDeFormationLayer.GetByMatriculeCollaborateurAFPA("96GB011");
-           query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAllByOffreFormation(1);
+            query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAll();
             OffreFormationModelView model = new OffreFormationModelView(query);
             foreach (var item in query.BeneficiaireOffreFormations)
             {
