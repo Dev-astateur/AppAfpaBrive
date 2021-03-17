@@ -19,20 +19,16 @@ namespace AppAfpaBrive.DAL.Layers
 
         public IEnumerable<Pee> GetPeeByMatriculeCollaborateurAfpa(string idMatricule)
         {
-            return _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule)
+            return _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.Etat == 0)
                 .Include(e => e.Id)
-                .Include(e => e.IdTuteurNavigation)
-                .Include(e => e.MatriculeBeneficiaireNavigation)
-                .Include(e => e.IdResponsableJuridiqueNavigation);
+                .Include(e=>e.IdEntrepriseNavigation)
+                .Include(e => e.MatriculeBeneficiaireNavigation);
         }
 
         public Pee GetPeeByIdPee(int idPee)
         {
             return _dbContext.Pees.Where(e=>e.IdPee==idPee)
-                .Include(e => e.Id)
-                .Include(e => e.IdTuteurNavigation)
-                .Include(e => e.MatriculeBeneficiaireNavigation)
-                .Include(e => e.IdResponsableJuridiqueNavigation)
+                .Include(e=>e.IdEntrepriseNavigation).ThenInclude(e=>e.Idpays2Navigation)
                 .FirstOrDefault();
         }
     }

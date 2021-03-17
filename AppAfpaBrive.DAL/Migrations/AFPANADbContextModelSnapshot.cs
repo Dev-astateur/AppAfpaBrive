@@ -970,8 +970,8 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Property<int>("IdEntreprise")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdEntrepriseNavigationIdEntreprise")
-                        .HasColumnType("int");
+                    //b.Property<int?>("IdEntrepriseNavigationIdEntreprise")
+                    //    .HasColumnType("int");
 
                     b.Property<string>("IdEtablissement")
                         .IsRequired()
@@ -998,7 +998,7 @@ namespace AppAfpaBrive.DAL.Migrations
 
                     b.HasKey("IdPee");
 
-                    b.HasIndex("IdEntrepriseNavigationIdEntreprise");
+                    //b.HasIndex("IdEntrepriseNavigationIdEntreprise");
 
                     b.HasIndex("IdResponsableJuridique");
 
@@ -1591,7 +1591,7 @@ namespace AppAfpaBrive.DAL.Migrations
                 {
                     b.HasOne("AppAfpaBrive.BOL.Entreprise", "IdEntrepriseNavigation")
                         .WithMany("Pees")
-                        .HasForeignKey("IdEntrepriseNavigationIdEntreprise");
+                        .HasForeignKey("FK_Pee_Entreprise");
 
                     b.HasOne("AppAfpaBrive.BOL.Professionnel", "IdResponsableJuridiqueNavigation")
                         .WithMany("PeeIdResponsableJuridiqueNavigations")

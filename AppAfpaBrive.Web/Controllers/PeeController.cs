@@ -44,23 +44,8 @@ namespace AppAfpaBrive.Web.Controllers
         public IActionResult SuivantEntreprise(int id)
         {
             // données pour les tests faudra changé tous cela
-            Pay pays1 = _paysLayer.GetPaysById("US");
-            Entreprise entreprise = new Entreprise()
-            {
-                IdEntreprise = 1,
-                RaisonSociale = "Apple Distribution",
-                NumeroSiret = "FR18539565218",
-                Ligne1Adresse = "One Apple Park Way",
-                Ville = "Cupertino",
-                CodePostal = "CA 95014",
-                TelEntreprise = "1 408 996–1010",
-                MailEntreprise = "apple@apple.com",
-                Idpays2 = pays1.Idpays2,
-                Idpays2Navigation = pays1
-            };
             Pee pee = _peeLayer.GetPeeByIdPee(id);
             PeeModelView peeModelView = new PeeModelView(pee);
-            peeModelView.IdEntrepriseNavigation = new EntrepriseModelView(entreprise);
             return View(peeModelView);
         }
     }
