@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppAfpaBrive.BOL;
+
 
 namespace AppAfpaBrive.Web.ModelView
 {
@@ -18,19 +18,19 @@ namespace AppAfpaBrive.Web.ModelView
 
         public OffreFormationModelView( OffreFormation offreFormation)
         {
-            if ( offreFormation is not null )
-        {
-            IdOffreFormation = offreFormation.IdOffreFormation;
-            IdEtablissement = offreFormation.IdEtablissement;
-            MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
-            CodeProduitFormation = offreFormation.CodeProduitFormation;
-            LibelleOffreFormation = offreFormation.LibelleOffreFormation;
-            LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
-            DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
-            DateFinOffreFormation = offreFormation.DateFinOffreFormation;
-            CodeProduitFormation = offreFormation.CodeProduitFormation;
-            BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
-
+            if (offreFormation is not null)
+            {
+                IdOffreFormation = offreFormation.IdOffreFormation;
+                IdEtablissement = offreFormation.IdEtablissement;
+                MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
+                CodeProduitFormation = offreFormation.CodeProduitFormation;
+                LibelleOffreFormation = offreFormation.LibelleOffreFormation;
+                LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
+                DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
+                DateFinOffreFormation = offreFormation.DateFinOffreFormation;
+                CodeProduitFormation = offreFormation.CodeProduitFormation;
+                //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+            }
           
         }
 

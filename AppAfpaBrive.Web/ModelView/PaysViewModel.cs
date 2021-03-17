@@ -14,7 +14,7 @@ namespace AppAfpaBrive.Web.ModelView
             Entreprises = new HashSet<EntrepriseModelView>();
         }
 
-        public PaysViewModel( Pay pay )
+        public PaysViewModel( Pays pay )
         {
             Entreprises = new HashSet<EntrepriseModelView>();
             if ( pay is not null )
