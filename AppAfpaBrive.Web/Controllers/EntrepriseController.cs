@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -36,24 +37,53 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
         // GET: EntrepriseController/Create
-        public ActionResult Create()
+        [HttpGet]
+        public ActionResult ModifierEntreprise(int id)
         {
+            
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            var entreprise = _layer.GetEntrepriseById(id);
+            if (entreprise == null)
+            {
+                return NotFound();
+            }
+            EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel();
+            entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
+            entrepriseModel.Ville = entreprise.Ville;
+            entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
+            entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
+            entrepriseModel.NumeroSiret = entreprise.NumeroSiret;
+            entrepriseModel.IdEntreprise = entreprise.IdEntreprise;
+            entrepriseModel.Ligne1Adresse = entreprise.Ligne1Adresse;
+            return View(entrepriseModel);
+        }
+        [HttpPost]
+        public ActionResult ModifierEntreprise(Entreprise entreprise)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbContext.Entry(entreprise).State = EntityState.Modified;
+                _dbContext.SaveChanges();
+                return RedirectToAction("ListeEntreprisePourModification");
+            }
+           
             return View();
         }
-       
-        // GET: EntrepriseController/ListeEntreprise
-        //[HttpGet]
-        public async Task<IActionResult> ListeEntreprise(string departement, string formation)
+            // GET: EntrepriseController/ListeEntreprise
+            //[HttpGet]
+            public async Task<IActionResult> ListeEntreprise(string departement, string formation)
         {
+
            List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
            
             ViewData["GetDepartement"] = departement;
             ViewData["GetProduitForm"] = formation;
             var query = _layer.GetAllEntreprise();
-            //if (!String.IsNullOrEmpty(departement))
-            //{
-            //    query = _layer.GetEntreprisesByDepartement(departement);
-            //}
+           
+
 
             if (!String.IsNullOrEmpty(departement)&& (!String.IsNullOrEmpty(formation)))
             {
@@ -69,6 +99,7 @@ namespace AppAfpaBrive.Web.Controllers
 
             else if (!String.IsNullOrEmpty(formation)&& (String.IsNullOrEmpty(departement)))
             {
+                
                 query = _layer.GetEntrepriseByProduitFormation(formation);
             }
             foreach (var entreprise in query)
@@ -167,12 +198,21 @@ namespace AppAfpaBrive.Web.Controllers
             {
                 return NotFound();
             }
-            var query = _layer.GetEntrepriseById(id);
-            if (query == null)
+            var entreprise = _layer.GetEntrepriseById(id);
+            if (entreprise == null)
             {
                 return NotFound();
             }
-            return View(query);      
+            EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel();
+            entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
+            entrepriseModel.Ville = entreprise.Ville;
+            entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
+            entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
+            entrepriseModel.NumeroSiret = entreprise.NumeroSiret;
+            entrepriseModel.IdEntreprise = entreprise.IdEntreprise;
+            entrepriseModel.Ligne1Adresse = entreprise.Ligne1Adresse;
+
+            return View(entrepriseModel);      
         }
         public ActionResult SupprimerEntreprise (int id)
         {

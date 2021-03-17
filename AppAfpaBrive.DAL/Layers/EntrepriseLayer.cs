@@ -180,7 +180,7 @@ namespace AppAfpaBrive.DAL.Layers
             //                               }).ToList();
 
             List<Entreprise> query2 = _context.ProduitFormations
-                                          .Where(pro => pro.LibelleProduitFormation.Contains(offre))
+                                          .Where(pro => pro.LibelleProduitFormation.StartsWith(offre))
                                            .Join(_context.OffreFormations
                                           , p => p.CodeProduitFormation
                                           , o => o.CodeProduitFormation

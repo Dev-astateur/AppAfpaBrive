@@ -3,6 +3,23 @@
 @{
     ViewData["Title"] = "ListeEntreprise";
 }
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#productName').autocomplete({
+                source: '/api/AutoCompleteOffreFormationApi/search'
+            });
+        });
+    </script>
+</head>
+
+
 <form asp-controller="Entreprise" asp-action="ListeEntreprise">
     <div class="container">
         <div class="row">
@@ -11,13 +28,12 @@
                 <p>Recherche par numéro de département: </p>
                 <p>
                     <input type="search" placeholder=" département" value="@ViewData["GetDepartement"]" name="departement" />
-
                 </p>
             </div>
             <div class="col-sm-4">
                 <p>Recherche par l'intitulé de l'offre de formation: </p>
                 <p>
-                    <input type="search" placeholder=" formation" value="@ViewData["GetProduitForm"]" name="formation" />
+                    <input type="search" placeholder=" formation" value="@ViewData["GetProduitForm"]" name="formation" id="productName" />
                    
 
                 </p>
