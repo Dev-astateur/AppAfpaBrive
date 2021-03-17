@@ -165,7 +165,10 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get Professionel
         public IActionResult Professionel()
         {
-            var x = _pro.Get_Pro(5);
+            string str = this.HttpContext.Session.GetString("convention");
+            Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+            var pro = _pro.Get_Pro(convention.IdEntreprise);
+            ViewBag.professionel = pro;
             return View();
         }
     }
