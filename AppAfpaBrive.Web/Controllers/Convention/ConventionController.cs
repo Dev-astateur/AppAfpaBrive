@@ -32,8 +32,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get index
         public IActionResult Index()
         {
-            this.HttpContext.Session.SetString("matricule", "azerty12");
-            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations(this.HttpContext.Session.GetString("matricule"));
+            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations("azerty12");
             List<Creation_convention> obj = new List<Creation_convention>();
             
             foreach (var item in beneficiaires)
@@ -75,6 +74,11 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             string str = HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
 
+            if(id ==0)
+            {
+                id = convention.IdFormation;
+            }
+
             convention.Formation = _Produit_Formation.Get_Formation_Nom(id).FirstOrDefault();
             convention.IdFormation = id;
             convention.IdEtablissement = _beneficiaireOffre.GetIdetablissemnt(convention.Idmatricule, id).FirstOrDefault().Idetablissement;
@@ -94,9 +98,13 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 var entreprise = _Entreprise.get_Entreprise(obj.NumeroSiret).FirstOrDefault();
                 if(entreprise is null)
                 {
-                    return View(obj);
+                    return RedirectToAction("Entreprise_creation");
                 }
-                this.HttpContext.Session.SetString("Siret", obj.NumeroSiret);
+                string str = this.HttpContext.Session.GetString("convention");
+                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+                convention.Siret = obj.NumeroSiret;
+                str = JsonConvert.SerializeObject(convention);
+                HttpContext.Session.SetString("convention", str);
                 return RedirectToAction("Entreprise_Recap");
             }
             return View(obj);
@@ -106,9 +114,13 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get Entreprise_Recap
         public IActionResult Entreprise_Recap()
         {
-            
-            Entreprise obj = _Entreprise.get_Entreprise(this.HttpContext.Session.GetString("Siret"))
-                .FirstOrDefault();
+            string str = this.HttpContext.Session.GetString("convention");
+            Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+
+            Entreprise obj = _Entreprise.get_Entreprise(convention.Siret).FirstOrDefault();
+
+            str = JsonConvert.SerializeObject(convention);
+            HttpContext.Session.SetString("convention", str); 
             return View(obj);
         }
 
@@ -127,10 +139,15 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             if (ModelState.IsValid)
             {
-                if (entreprise is null)
-                {
-                    return View(entreprise);
-                }
+                string str = this.HttpContext.Session.GetString("convention");
+                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+
+                _Entreprise.Create_entreprise(entreprise);
+
+                convention.Siret = entreprise.NumeroSiret;
+                str = JsonConvert.SerializeObject(convention);
+                HttpContext.Session.SetString("convention", str);
+
                 return RedirectToAction("Entreprise_Recap");
             }
             return View(entreprise);

@@ -17,6 +17,7 @@ namespace AppAfpaBrive.Web.Models
         private string _responsableJuridique;
         private string _tureur;
         private string _formation;
+        private string _Siret;
 
         public string IdEtablissement { get => _idEtablissement; set => _idEtablissement = value; }
         public string Etablissement { get => _etablissement; set => _etablissement = value; }
@@ -28,5 +29,6 @@ namespace AppAfpaBrive.Web.Models
         public string Tureur { get => _tureur; set => _tureur = value; }
         public string Formation { get => _formation; set => _formation = value; }
         public string Matricule { get => _matricule; set => _matricule = value; }
+        public string Siret { get => _Siret; set => _Siret = value; }
     }
 }
