@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.ModelView;
 
 
 
@@ -22,7 +23,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         }
 
         // GET: ProduitFormation
-        public IActionResult Index(int id =0)
+        public IActionResult Index(int id=0 )
         {
         
             IEnumerable<BOL.ProduitFormation> listProduitFormations = _db.ProduitFormations.OrderBy(x => x.LibelleProduitFormation);
@@ -63,8 +64,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
             //{
             //    ModelState.AddModelError("Error", "Vous devez selectionner une seule option");
             //}
-            
-            
+            //else
             if (ModelState.IsValid)
             {
                 _db.ProduitFormations.Add(obj);
@@ -76,9 +76,9 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         }
 
         // GET: ProduitFormation/Edit/5
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if(id==null || id == 0)
+            if(id == 0)
             {
                 return NotFound();
             }
@@ -87,6 +87,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
             {
                 return NotFound();
             }
+            
             return View(obj);
         }
 
@@ -94,14 +95,14 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(BOL.ProduitFormation obj)
-        { 
+        {
             if (ModelState.IsValid)
             {
                 _db.ProduitFormations.Update(obj);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return this.View(obj);
+            return View(obj);
         }
 
         // GET: ProduitFormation/Delete/5
