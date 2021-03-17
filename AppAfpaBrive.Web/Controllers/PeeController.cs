@@ -22,11 +22,11 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string id)
+        public IActionResult ListePeeAValider(string id)
         {
             this.ViewBag.Titre = "Periode en entreprise à valider";
             IEnumerable<Pee> pees = _peeLayer.GetPeeByMatriculeCollaborateurAfpa(id);
-            List<PeeModelView> peesModelView = new List<PeeModelView>();
+            List<PeeModelView> peesModelView = new();
 
             foreach (Pee item in pees )
             {
@@ -47,6 +47,17 @@ namespace AppAfpaBrive.Web.Controllers
             Pee pee = _peeLayer.GetPeeByIdPee(id);
             PeeModelView peeModelView = new PeeModelView(pee);
             return View(peeModelView);
+        }
+
+        /// <summary>
+        /// Action d'enregistrement des remarques sur la période en entreprise
+        /// </summary>
+        /// <param name="id">id de Pee</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> SuivantRemarques(int id)
+        {
+            return View();
         }
     }
 }
