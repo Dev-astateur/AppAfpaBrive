@@ -19,15 +19,9 @@
                 minLength: 3
             });
         });
-        $(document).ready(function () {
-            // var bouton = $('#btnEdit');
-            // var table = $('tabStagiaire').DataTable();
-            $(document).click(function () {
-                var rrrrr = $('<input/>').attr({
-                    type: "button",
-                    id: "field",
-                    value: 'Editer'
-                });
+        $(document).ready(function () {         
+            $('#boutontest').click(function () {
+                $('#bodyID').empty();
                 //var x = addEventListener("click", function () {
                 var libelle = $('#tbRechercherOFormation').val(); // Nom de l'input où l'on va récuperer la value
                 if (libelle != '') {
@@ -46,7 +40,7 @@
                                         + "<td>" + item.nomBeneficiaire + "</td>"
                                         + "<td>" + item.prenomBeneficiaire + "</td>"
                                         + "<td>" + item.matriculeBeneficiaire + "</td>"
-                                    )
+                                        + "<td>" + "<input class=\"btn-primary\" value=\"test\" />" + "</td >" )
                                 })
                             })
 
@@ -73,7 +67,7 @@
     <form asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation">
         <div class="row">
             <div class="col-md-10 text-center w-auto ">
-                <input type="text" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
+                <input type="text" style="max-width:900px" width="400" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
             </div>
             <div>
                 <input type="button" id="boutontest" class="btn btn-primary" value="Recherche" />
@@ -114,7 +108,7 @@
 
         </tr>
     </thead>
-    <tbody>
+    <tbody id="bodyID">
         @foreach (var item in Model)
         {
             <tr>
