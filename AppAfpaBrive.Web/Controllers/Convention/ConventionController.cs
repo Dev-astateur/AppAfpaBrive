@@ -122,6 +122,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
 
             Entreprise obj = _Entreprise.get_Entreprise(convention.Siret).FirstOrDefault();
+            convention.Siret = obj.NumeroSiret;
+            convention.IdEntreprise = obj.IdEntreprise;
 
             str = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", str); 

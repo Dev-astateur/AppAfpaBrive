@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-md-8 p-2">
                         <input asp-for="NumeroSiret" class="form-control" />
-                        <span asp-validation-for="NumeroSiret" class="text-danger" ></span>
+                        <span asp-validation-for="NumeroSiret" class="text-danger"></span>
                     </div>
                     <div class="col-md-4 p-2">
                         <label asp-for="RaisonSociale"> Raison social</label>
@@ -46,6 +46,32 @@
                         <span asp-validation-for="Ligne1Adresse" class="text-danger"></span>
                     </div>
                     <div class="col-md-4 p-2">
+                        <label asp-for="Ligne2Adresse"> Adresse suite</label>
+                    </div>
+                    <div class="col-md-8 p-2">
+                        <input asp-for="Ligne2Adresse" class="form-control" />
+                    </div>
+                    <div class="col-md-4 p-2">
+                        <label asp-for="Ligne3Adresse"> Adresse suite</label>
+                    </div>
+                    <div class="col-md-8 p-2">
+                        <input asp-for="Ligne3Adresse" class="form-control" />
+                    </div>
+                    <div class="col-md-4 p-2">
+                        <label> Téléphone</label>
+                    </div>
+                    <div class="col-md-8 p-2">
+                        <input asp-for="TelEntreprise" class="form-control" />
+                        <span asp-validation-for="TelEntreprise" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 p-2">
+                        <label> mail</label>
+                    </div>
+                    <div class="col-md-8 p-2">
+                        <input asp-for="MailEntreprise" class="form-control" />
+                        <span asp-validation-for="MailEntreprise" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 p-2">
                         <label asp-for="Idpays2"> Pays</label>
                     </div>
                     <div class="col-md-8 p-2">
@@ -53,14 +79,14 @@
                         <span asp-validation-for="Idpays2" class="text-danger"></span>
                     </div>
                     @*<select id="ddlPays" >
-                            @foreach (var item in ViewBag.pays)
-                            {
-                                <option>
-                                    @item
-                                </option>
-                            }
+            @foreach (var item in ViewBag.pays)
+            {
+                <option>
+                    @item
+                </option>
+            }
 
-                        </select>*@
+        </select>*@
 
                 </div>
                 <div class="form-group row">
