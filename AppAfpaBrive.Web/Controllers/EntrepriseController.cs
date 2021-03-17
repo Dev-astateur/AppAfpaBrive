@@ -18,7 +18,6 @@ namespace AppAfpaBrive.Web.Controllers
 
         public EntrepriseController(AFPANADbContext Db)
         {
-           
             _layer = new EntrepriseLayer(Db);
         }
 

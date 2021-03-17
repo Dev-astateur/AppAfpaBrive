@@ -25,6 +25,7 @@ namespace AppAfpaBrive.Web.ModelView
                 IdEntreprise = pee.IdEntreprise;
                 IdOffreFormation = pee.IdOffreFormation;
                 IdEtablissement = pee.IdEtablissement;
+                Remarques = "";
                 Id = new OffreFormationModelView(pee.Id);
                 IdEntrepriseNavigation = new EntrepriseModelView(pee.IdEntrepriseNavigation);
                 MatriculeBeneficiaireNavigation = new BeneficiaireModelView(pee.MatriculeBeneficiaireNavigation);
@@ -40,6 +41,7 @@ namespace AppAfpaBrive.Web.ModelView
         public int IdEntreprise { get; set; }
         public int IdOffreFormation { get; set; }
         public string IdEtablissement { get; set; }
+        public string Remarques { get; set; }   // il n'existe pas dans la base pour le moment à rajouter par la suite
 
         public virtual EntrepriseModelView IdEntrepriseNavigation { get; set; }
         public virtual OffreFormationModelView Id { get; set; }

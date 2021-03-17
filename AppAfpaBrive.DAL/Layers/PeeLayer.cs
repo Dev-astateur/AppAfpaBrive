@@ -28,6 +28,7 @@ namespace AppAfpaBrive.DAL.Layers
         public Pee GetPeeByIdPee(int idPee)
         {
             return _dbContext.Pees.Where(e=>e.IdPee==idPee)
+                .Include(e => e.Id)
                 .Include(e=>e.IdEntrepriseNavigation).ThenInclude(e=>e.Idpays2Navigation)
                 .FirstOrDefault();
         }

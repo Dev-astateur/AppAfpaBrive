@@ -87,6 +87,42 @@ namespace AppAfpaBrive.Web.Controllers
 
             return View(viewName: "AfficheBeneficiairePee");
         }
+        [HttpGet]
+        public IActionResult ListePeeAValider(string id)
+        {
+            this.ViewBag.Titre = "Periode en entreprise à valider";
+            IEnumerable<Pee> pees = _peeLayer.GetPeeByMatriculeCollaborateurAfpa(id);
+        List<PeeModelView> peesModelView = new();
+
+            foreach (Pee item in pees )
+            {
+                peesModelView.Add(new PeeModelView(item));
+            }
+            return View(peesModelView);
+        }
+        /// <summary>
+        /// IAction qui suit le système de validation
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult SuivantEntreprise(int id)
+        {
+            // données pour les tests faudra changé tous cela
+            Pee pee = _peeLayer.GetPeeByIdPee(id);
+            PeeModelView peeModelView = new PeeModelView(pee);
+            return View(peeModelView);
+        }
+
+        /// <summary>
+        /// Action d'enregistrement des remarques sur la période en entreprise
+        /// </summary>
+        /// <param name="id">id de Pee</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> SuivantRemarques(int id)
+        {
+            return View();
+        }
 
        
     }
