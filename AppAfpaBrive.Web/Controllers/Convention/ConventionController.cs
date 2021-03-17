@@ -21,12 +21,14 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_Etablissement _Etablissement = null;
         private Layer_Code_Produit_Formation _Produit_Formation = null;
         private Layer_Entreprise _Entreprise = null;
+        private Layer_Pays _Pays = null;
         public ConventionController (AFPANADbContext context)
         {
             _beneficiaireOffre = new Layer_Offres_Formation(context);
             _Etablissement = new Layer_Etablissement(context);
             _Produit_Formation = new Layer_Code_Produit_Formation(context);
             _Entreprise = new Layer_Entreprise(context);
+            _Pays = new Layer_Pays(context);
         }
 
         // get index
