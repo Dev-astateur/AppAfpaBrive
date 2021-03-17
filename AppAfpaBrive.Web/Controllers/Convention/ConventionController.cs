@@ -167,7 +167,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-            var pro = _pro.Get_Pro(convention.IdEntreprise);
+            var pro =_pro.Get_Pro(convention.IdEntreprise);
             ViewBag.professionel = pro;
             return View();
         }

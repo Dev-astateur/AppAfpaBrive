@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AppAfpaBrive.BOL;
 
 namespace AppAfpaBrive.DAL.Layer
 {
@@ -11,12 +12,22 @@ namespace AppAfpaBrive.DAL.Layer
             _db = context;
         }
 
-        public IQueryable<string> Get_Pro(int identreprise)
+        public List<List<string>> Get_Pro(int identreprise)
         {
-            var x =_db.EntrepriseProfessionnels.Join(_db.Professionnels, x => x.IdProfessionnel, x => x.IdProfessionnel,
-                (x, y) => new { x.IdEntreprise, x.IdProfessionnel, y.NomProfessionnel, y.PrenomProfessionnel })
-                .Where(x => x.IdEntreprise == identreprise).ToList();
-            return (IQueryable<string>)x;
+            var x = _db.Professionnels.Join(_db.EntrepriseProfessionnels, x => x.IdProfessionnel, x => x.IdProfessionnel,
+                (x, y) => new { x.NomProfessionnel, x.PrenomProfessionnel, y.IdProfessionnel, y.IdEntreprise })
+                .Where(x => x.IdEntreprise == identreprise).ToArray();
+            
+            List<List<string>> listedeliste = new List<List<string>>();
+            foreach (var item in x)
+            {
+                List<string> list = new List<string>();
+                list.Add(item.IdProfessionnel.ToString());
+                list.Add(item.PrenomProfessionnel);
+                list.Add(item.NomProfessionnel);
+                listedeliste.Add(list);
+            }
+            return listedeliste;
         }
     }
 
