@@ -19,9 +19,10 @@ namespace AppAfpaBrive.Web.Controllers
 {
     public class PeeController : Controller
     {
+        #region champ privé
         private readonly PeeLayer _peeLayer = null;
         private readonly PaysLayer _paysLayer = null;
-
+        private readonly AFPANADbContext _dbContext;
         private readonly IConfiguration _config;
 
         private readonly IHostEnvironment _env;
@@ -33,7 +34,7 @@ namespace AppAfpaBrive.Web.Controllers
 
         {
 
-            //_dbContext = context;
+            _dbContext = context;
 
             _config = config;
 
@@ -48,12 +49,6 @@ namespace AppAfpaBrive.Web.Controllers
         {
            
             return View();
-        }
-
-
-        [HttpGet]
-        {
-            
         }
         
         public IActionResult AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
