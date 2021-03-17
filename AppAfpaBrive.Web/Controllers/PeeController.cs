@@ -23,11 +23,9 @@ namespace AppAfpaBrive.Web.Controllers
         private readonly PeeLayer _peeLayer = null;
         private readonly AFPANADbContext _dbContext;
         private readonly IConfiguration _config;
-
         private readonly IHostEnvironment _env;
-
-       
         #endregion
+
         #region Constructeur
         public PeeController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
         {
@@ -87,29 +85,41 @@ namespace AppAfpaBrive.Web.Controllers
 
             return View(viewName: "AfficheBeneficiairePee");
         }
+
         [HttpGet]
-        public IActionResult ListePeeAValider(string id)
+        public async Task<IActionResult> ListePeeAValider(string? id)
         {
+            if (id is null)
+                return NotFound();
+
             this.ViewBag.Titre = "Periode en entreprise à valider";
-            IEnumerable<Pee> pees = _peeLayer.GetPeeByMatriculeCollaborateurAfpa(id);
+            IEnumerable<Pee> pees = await _peeLayer.GetPeeByMatriculeCollaborateurAfpaAsync(id);
             List<PeeModelView> peesModelView = new();
 
             foreach (Pee item in pees )
             {
                 peesModelView.Add(new PeeModelView(item));
             }
+
             return View(peesModelView);
         }
+
         /// <summary>
         /// IAction qui suit le système de validation
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult SuivantEntreprise(int id)
+        public async Task<IActionResult> SuivantEntreprise(int? id)
         {
-            // données pour les tests faudra changé tous cela
-            Pee pee = _peeLayer.GetPeeByIdPee(id);
+            if ( id is null )
+                return NotFound();
+
+            Pee pee = await _peeLayer.GetPeeByIdPeeAsync((int)id);
+            if (pee is null)
+                return NotFound();
+
             PeeModelView peeModelView = new PeeModelView(pee);
+
             return View(peeModelView);
         }
 

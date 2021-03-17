@@ -17,20 +17,20 @@ namespace AppAfpaBrive.DAL.Layers
             _dbContext = context;
         }
 
-        public IEnumerable<Pee> GetPeeByMatriculeCollaborateurAfpa(string idMatricule)
+        public async Task<IEnumerable<Pee>> GetPeeByMatriculeCollaborateurAfpaAsync(string idMatricule)
         {
-            return _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.Etat == 0)
+            return await _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.Etat == 0)
                 .Include(e => e.Id)
                 .Include(e=>e.IdEntrepriseNavigation)
-                .Include(e => e.MatriculeBeneficiaireNavigation);
+                .Include(e => e.MatriculeBeneficiaireNavigation).ToListAsync();
         }
 
-        public Pee GetPeeByIdPee(int idPee)
+        public async Task<Pee> GetPeeByIdPeeAsync(int idPee)
         {
-            return _dbContext.Pees.Where(e=>e.IdPee==idPee)
+            return await _dbContext.Pees.Where(e=>e.IdPee==idPee)
                 .Include(e => e.Id)
                 .Include(e=>e.IdEntrepriseNavigation).ThenInclude(e=>e.Idpays2Navigation)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
         }
     }
 }
