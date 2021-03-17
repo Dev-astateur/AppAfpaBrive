@@ -14,6 +14,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Extensions.Hosting;
 using System.IO;
+using System.Net.Mime;
+using Magnum.FileSystem;
+using DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -51,12 +55,20 @@ namespace AppAfpaBrive.Web.Controllers
             return View();
         }
         
-        public IActionResult AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
+        public  IActionResult AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
         {
 
-            IQueryable<Pee> pees = _dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation).ThenInclude(p => p.Pees).ThenInclude(S => S.IdEntrepriseNavigation).Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement);
-
-            return View( pees);
+            IQueryable<Pee> pees = _dbContext.Pees
+                .Include(P => P.MatriculeBeneficiaireNavigation)
+                .ThenInclude(p => p.Pees).ThenInclude(S => S.IdEntrepriseNavigation)
+                .Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement);
+            IQueryable<PeriodePee> periodePees = _dbContext.PeriodePees.Include(pr => pr.IdPeeNavigation)
+                .ThenInclude(pee => pee.MatriculeBeneficiaireNavigation)
+                .Include(pr => pr.IdPeeNavigation)
+                .Where(pee => pee.IdPeeNavigation.IdOffreFormation == IdOffreFormation && pee.IdPeeNavigation.IdEtablissement == idEtablissement);
+            
+                
+            return View( pees); 
         }
 
         public IActionResult ChargementDocPee(int idPee)
@@ -73,9 +85,10 @@ namespace AppAfpaBrive.Web.Controllers
                 .Include(pee => pee.IdResponsableJuridiqueNavigation)
                 .ThenInclude(T => T.TitreCiviliteNavigation)
                 .Include(t => t.IdTuteurNavigation)
-                .ThenInclude(T => T.TitreCiviliteNavigation)
-                .Include(E => E.IdEntrepriseNavigation).FirstOrDefault(pee => pee.IdPee == idPee);
-                
+                .ThenInclude(T => T.TitreCiviliteNavigation.TitreCiviliteComplet)
+                .Include(E => E.IdResponsableJuridiqueNavigation.TitreCiviliteNavigation.TitreCiviliteComplet)
+                .Include(P => P.PeriodePees).FirstOrDefault(pee => pee.IdPee == idPee);
+            var date = Convention.PeriodePees.FirstOrDefault(p => p.IdPee == idPee);
             string nomFichier = $"{Convention.MatriculeBeneficiaireNavigation.NomBeneficiaire}-{Convention.IdEtablissement}-{Convention.IdOffreFormation}.docx";
             string docPath = @$"{path}\Convention{(DateTime.Now - DateTime.MinValue).TotalMilliseconds}.docx";
 
@@ -89,13 +102,41 @@ namespace AppAfpaBrive.Web.Controllers
                 mergeFields.WhereNameIs("Code_postal_entreprise").ReplaceWithText(Convention.IdEntrepriseNavigation.CodePostal);
                 mergeFields.WhereNameIs("Ville_entreprise").ReplaceWithText(Convention.IdEntrepriseNavigation.Ville);
                 mergeFields.WhereNameIs("Téléphone_entreprise").ReplaceWithText(Convention.IdEntrepriseNavigation.TelEntreprise);
-                //mergeFields.WhereNameIs("Titre_signataire").ReplaceWithText(Convention.IdResponsableJuridiqueNavigation.CodeTitreCiviliteProfessionnel);
-                
+                mergeFields.WhereNameIs("Titre_signataire").ReplaceWithText(Convention.IdResponsableJuridiqueNavigation.TitreCiviliteNavigation.TitreCiviliteComplet);
+                mergeFields.WhereNameIs("Prénom_signataire").ReplaceWithText(Convention.IdResponsableJuridiqueNavigation.PrenomProfessionnel);
+                mergeFields.WhereNameIs("Nom_signataire").ReplaceWithText(Convention.IdResponsableJuridiqueNavigation.NomProfessionnel);
+                mergeFields.WhereNameIs("Nom_signataire").ReplaceWithText(Convention.MatriculeBeneficiaireNavigation.NomBeneficiaire);
+                mergeFields.WhereNameIs("Prénom_signataire").ReplaceWithText(Convention.MatriculeBeneficiaireNavigation.PrenomBeneficiaire);
+                mergeFields.WhereNameIs("Début_PAE").ReplaceWithText($"{date.DateDebutPeriodePee}");
+                mergeFields.WhereNameIs("FIN_PAE").ReplaceWithText($"{date.DateFinPeriodePee}");
+                Settings settings = document.MainDocumentPart.DocumentSettingsPart.Settings;
+                foreach(var element in settings.ChildElements)
+                {
+                    if(element is MailMerge)
+                    {
+                        element.Remove();
+                    }
 
-                //document.MainDocumentPart.Document.Save();
+                }
+                document.MainDocumentPart.Document.Save();
+
             }
+            ContentDisposition content = new ContentDisposition()
+            {
+                FileName = nomFichier,
 
-            return View(viewName: "AfficheBeneficiairePee");
+                Inline = false  // false = prompt the user for downloading;  true = browser to try to show the file inline
+            };
+            Response.Headers.Add("Content-Disposition", content.ToString());
+
+            Response.Headers.Add("X-Content-Type-Options", "nosniff");
+
+            byte[] contenu = System.IO.File.ReadAllBytes(docPath);
+            
+            System.IO.File.Delete(docPath);
+
+            return File(contenu, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            
         }
         [HttpGet]
         public IActionResult ListePeeAValider(string id)
