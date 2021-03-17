@@ -12,6 +12,7 @@ using AppAfpaBrive.Web.Models;
 using System.Web.Providers.Entities;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using AppAfpaBrive.Web.ModelView;
 
 
 namespace AppAfpaBrive.Web.Controllers.Convention
@@ -139,7 +140,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // post Entreprise_creation
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Entreprise_creation(Entreprise entreprise)
+        public IActionResult Entreprise_creation(Entreprise_Creation_ViewModel entreprise)
         {
 
             if (ModelState.IsValid)
@@ -147,7 +148,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 string str = this.HttpContext.Session.GetString("convention");
                 Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
 
-                _Entreprise.Create_entreprise(entreprise);
+                //_Entreprise.Create_entreprise(entreprise);
 
                 convention.Siret = entreprise.NumeroSiret;
                 str = JsonConvert.SerializeObject(convention);
