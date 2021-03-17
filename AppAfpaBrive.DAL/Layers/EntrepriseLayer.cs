@@ -30,10 +30,18 @@ namespace AppAfpaBrive.DAL.Layers
         }
         public void RemoveEntrepriseById(int id)
         {
-            _context.Remove(GetEntrepriseById(id));
+            _context.Entreprises.Remove(GetEntrepriseById(id));
             _context.SaveChanges();
-
-
+        }
+        public void AddEntreprise(Entreprise entreprise)
+        {
+            _context.Entreprises.Add(entreprise);
+            _context.SaveChanges();
+        }
+        public void ModifierEntreprise(Entreprise entreprise)
+        {
+            _context.Entry(entreprise).State = EntityState.Modified;
+            _context.SaveChanges();
         }
         public List<Entreprise> GetEntrepriseByDepartementEtOffre(string offre, string departement)
         {

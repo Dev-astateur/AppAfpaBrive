@@ -1,14 +1,13 @@
 ﻿@model AppAfpaBrive.Web.ModelView.EntrepriseListViewModel
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Details";
 }
 
+<h1>Details</h1>
 
-
-<h3>Etes vous sûr de vouloir supprimer cette entreprise?</h3>
 <div>
-    
+    <h4>Entreprise</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -66,21 +65,14 @@
             @Html.DisplayFor(model => model.Ville)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Idpays2Navigation)
+            @Html.DisplayNameFor(model => model.Idpays2)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Idpays2Navigation.Idpays2)
-        </dd class>
+            @Html.DisplayFor(model => model.Idpays2)
+        </dd>
     </dl>
-    
-    <form asp-action="SupprimerEntreprise">
-        @*<input type="hidden" asp-for="IdEntreprise" />
-        <input type="submit" value="Delete" class="btn btn-danger" asp-for="IdEntreprise"  /> |*@
-
-        @Html.ActionLink("Valider", "SupprimerEntreprise", "Entreprise", new { id = Model.IdEntreprise})
-
-        @*@Html.ActionLink("Valider", "SupprimerEntreprise", "Entreprise", new { @class = "link-primary" })*@
-
-        <a asp-action="ListeEntreprisePourModification">Retour à la liste</a>
-    </form>
+</div>
+<div>
+    <a asp-action="ModifierEntreprise" asp-route-id="@Model.IdEntreprise">Modifier</a> |
+    <a asp-action="ListeEntreprisePourModification">Retour à la liste de modification</a>
 </div>
