@@ -28,6 +28,13 @@ namespace AppAfpaBrive.DAL.Layers
         {
             return _context.Entreprises.Where(e => e.CodePostal.StartsWith(dep)).ToList();
         }
+        public void RemoveEntrepriseById(int id)
+        {
+            _context.Remove(GetEntrepriseById(id));
+            _context.SaveChanges();
+
+
+        }
         public List<Entreprise> GetEntrepriseByDepartementEtOffre(string offre, string departement)
         {
             //List<Entreprise> query = _context.ProduitFormations
@@ -113,6 +120,14 @@ namespace AppAfpaBrive.DAL.Layers
             return query;
 
         }
+
+        public Entreprise GetEntrepriseById(int id)
+        {
+            //int identifiant = int.Parse(id);
+          return _context.Entreprises.Where(e => e.IdEntreprise== id).FirstOrDefault();
+           
+        }
+
         public List<Entreprise> GetEntrepriseByProduitFormation(string offre)
         {
 

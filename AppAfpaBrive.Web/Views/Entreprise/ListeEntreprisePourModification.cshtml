@@ -1,0 +1,54 @@
+﻿@model List<AppAfpaBrive.Web.ModelView.EntrepriseListViewModel>
+
+@{
+    ViewData["Title"] = "ListeEntreprisePourModification";
+}
+
+<h1>Liste entreprises pour modification</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              Raison sociale
+            </th>
+            <th>
+                Numéro de SIRET
+            </th>           
+            <th>
+               Adresse
+            </th>         
+            <th>
+               Ville
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RaisonSociale)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroSiret)
+            </td>         
+            <td>
+                @Html.DisplayFor(modelItem => item.Ligne1Adresse)
+            </td>          
+            <td>
+                @Html.DisplayFor(modelItem => item.Ville)
+            </td>        
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdEntreprise">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdEntreprise">Details</a> |
+                <a asp-action="SuppressionEntreprise" asp-route-id="@item.IdEntreprise">Supprimer</a> |
+
+                @*@Html.ActionLink("Supprimer", "SupprimerEntreprise", new { id = item.RaisonSociale })*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -78,6 +78,7 @@ namespace AppAfpaBrive.Web.Controllers
                 entrepriseModel.Ville = entreprise.Ville;
                 entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
                 entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
+               
                 ListentrepriseListViewModel.Add(entrepriseModel);
             }
            
@@ -85,6 +86,51 @@ namespace AppAfpaBrive.Web.Controllers
             return View(ListentrepriseListViewModel);
         }
 
+
+        public async Task<IActionResult> ListeEntreprisePourModification(string departement, string formation)
+        {
+            List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
+
+            ViewData["GetDepartement"] = departement;
+            ViewData["GetProduitForm"] = formation;
+            var query = _layer.GetAllEntreprise();
+            //if (!String.IsNullOrEmpty(departement))
+            //{
+            //    query = _layer.GetEntreprisesByDepartement(departement);
+            //}
+
+            if (!String.IsNullOrEmpty(departement) && (!String.IsNullOrEmpty(formation)))
+            {
+                query = _layer.GetEntrepriseByDepartementEtOffre(formation, departement);
+            }
+
+
+            else if (!String.IsNullOrEmpty(departement) && String.IsNullOrEmpty(formation))
+            {
+                query = _layer.GetEntreprisesByDepartement(departement);
+            }
+
+
+            else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
+            {
+                query = _layer.GetEntrepriseByProduitFormation(formation);
+            }
+            foreach (var entreprise in query)
+            {
+                EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel();
+                entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
+                entrepriseModel.Ville = entreprise.Ville;
+                entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
+                entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
+                entrepriseModel.NumeroSiret = entreprise.NumeroSiret;
+                entrepriseModel.IdEntreprise = entreprise.IdEntreprise;
+                entrepriseModel.Ligne1Adresse = entreprise.Ligne1Adresse;
+                ListentrepriseListViewModel.Add(entrepriseModel);
+            }
+
+
+            return View(ListentrepriseListViewModel);
+        }
 
         // GET: EntrepriseController/creerEntreprise
         [HttpGet]
@@ -115,9 +161,29 @@ namespace AppAfpaBrive.Web.Controllers
            
         }
         [HttpGet]
-        public ActionResult SupprimerEntreprise()
+        public ActionResult SuppressionEntreprise(int id)
         {
-            return View();
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            var query = _layer.GetEntrepriseById(id);
+            if (query == null)
+            {
+                return NotFound();
+            }
+            return View(query);      
+        }
+        public ActionResult SupprimerEntreprise (int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            _layer.RemoveEntrepriseById(id);
+
+            return RedirectToAction("ListeEntreprisePourModification");
+
         }
 
         // POST: EntrepriseController/Create
