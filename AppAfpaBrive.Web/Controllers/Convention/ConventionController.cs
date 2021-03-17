@@ -130,7 +130,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         public IActionResult Entreprise_creation()
         {
             IQueryable<string> pays = _Pays.Get_pays();
-            return View(pays);
+            ViewBag.pays = pays.ToList();
+            return View();
         }
 
 
@@ -139,6 +140,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [ValidateAntiForgeryToken]
         public IActionResult Entreprise_creation(Entreprise entreprise)
         {
+            var x = Request.Form["listpays"].ToString();
             if (ModelState.IsValid)
             {
                 string str = this.HttpContext.Session.GetString("convention");
