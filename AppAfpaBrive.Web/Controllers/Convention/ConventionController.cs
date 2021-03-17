@@ -13,6 +13,7 @@ using System.Web.Providers.Entities;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
+
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
     public class ConventionController : Controller
@@ -140,7 +141,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [ValidateAntiForgeryToken]
         public IActionResult Entreprise_creation(Entreprise entreprise)
         {
-            //var x = Request["ddlPays"];
+
             if (ModelState.IsValid)
             {
                 string str = this.HttpContext.Session.GetString("convention");
