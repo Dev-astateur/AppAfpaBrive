@@ -24,6 +24,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_Code_Produit_Formation _Produit_Formation = null;
         private Layer_Entreprise _Entreprise = null;
         private Layer_Pays _Pays = null;
+        private Layer_Professionnel _pro = null;
         public ConventionController (AFPANADbContext context)
         {
             _beneficiaireOffre = new Layer_Offres_Formation(context);
@@ -31,6 +32,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _Produit_Formation = new Layer_Code_Produit_Formation(context);
             _Entreprise = new Layer_Entreprise(context);
             _Pays = new Layer_Pays(context);
+            _pro = new Layer_Professionnel(context);
         }
 
         // get index
@@ -158,6 +160,13 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 return RedirectToAction("Entreprise_Recap");
             }
             return View(entreprise);
+        }
+
+        // get Professionel
+        public IActionResult Professionel()
+        {
+            var x = _pro.Get_Pro(5);
+            return View();
         }
     }
 }

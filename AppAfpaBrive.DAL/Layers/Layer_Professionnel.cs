@@ -11,11 +11,12 @@ namespace AppAfpaBrive.DAL.Layer
             _db = context;
         }
 
-        public IQueryable<string> Get_Formation_Nom(int Id)
+        public IQueryable<string> Get_Pro(int identreprise)
         {
-            return _db.OffreFormations.Join(_db.ProduitFormations, x => x.CodeProduitFormation, x => x.CodeProduitFormation,
-                (x, y) => new { x.CodeProduitFormation, x.IdOffreFormation, y.LibelleProduitFormation })
-                .Where(x => x.IdOffreFormation == Id).Select(x => x.LibelleProduitFormation);
+            var x =_db.EntrepriseProfessionnels.Join(_db.Professionnels, x => x.IdProfessionnel, x => x.IdProfessionnel,
+                (x, y) => new { x.IdEntreprise, x.IdProfessionnel, y.NomProfessionnel, y.PrenomProfessionnel })
+                .Where(x => x.IdEntreprise == identreprise).ToList();
+            return (IQueryable<string>)x;
         }
     }
 
