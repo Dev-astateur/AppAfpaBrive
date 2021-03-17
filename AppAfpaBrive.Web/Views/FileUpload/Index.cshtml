@@ -4,7 +4,7 @@
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>s
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 @model AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre.IntegrationExcelOffreCreate
 
@@ -64,14 +64,14 @@
         $(document).ready(function () {
             $('#MatriculeCollaborateurAfpa').autocomplete({
                 source: function (request, response) {
-                    
+
                     $.ajax({
                         url: "/api/formateur/GetFormateur",
                         type: "GET",
                         data: request,
                         dataType: "json",
                         success: function (data) {
-                           
+
                             response($.map(data, function (item) {
                                 console.log(item.nom)
                                 return {
@@ -85,30 +85,28 @@
                 },
                 minLength: 1,
                 select: function (event, ui) {
-                 
+
                     $('#MatriculeCollaborateurAfpa').val(ui.item.label);
                     return false;
                 }
 
 
             });
-        })
 
-        $(document).ready(function () {
             $('#CodeProduitFormation').autocomplete({
                 source: function (request, response) {
 
                     $.ajax({
-                        url: "/api/formateur/GetFormateur",
+                        url: "/api/offreFormation/GetOffre",
                         type: "GET",
                         data: request,
                         dataType: "json",
                         success: function (data) {
 
                             response($.map(data, function (item) {
-                                console.log(item.nom)
+                                console.log(item.id)
                                 return {
-                                    label: item.nom,
+                                    label: `${item.id}`,
                                     value: item.id
                                 }
                             }))
@@ -116,7 +114,7 @@
 
                     })
                 },
-                minLength: 1,
+                minLength: 0,
                 select: function (event, ui) {
 
                     $('#CodeProduitFormation').val(ui.item.label);
@@ -126,6 +124,9 @@
 
             });
         })
+
+     
+    
     </script>
 }
 
