@@ -21,7 +21,6 @@ namespace AppAfpaBrive.Web.Controllers
     {
         #region champ privé
         private readonly PeeLayer _peeLayer = null;
-        private readonly PaysLayer _paysLayer = null;
         private readonly AFPANADbContext _dbContext;
         private readonly IConfiguration _config;
 
@@ -31,17 +30,11 @@ namespace AppAfpaBrive.Web.Controllers
         #endregion
         #region Constructeur
         public PeeController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
-
         {
-
             _dbContext = context;
-
             _config = config;
-
             _env = env;
-
             _peeLayer = new PeeLayer(context);
-            //_paysLayer = new PaysLayer(context);    //-- pour test
         }
         #endregion
 
