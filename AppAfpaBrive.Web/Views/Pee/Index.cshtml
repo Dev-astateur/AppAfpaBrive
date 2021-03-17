@@ -1,24 +1,36 @@
-﻿@model IEnumerable<AppAfpaBrive.Web.ModelView.PeeModelView>
+﻿@model AppAfpaBrive.BOL.Pee
 
-@{
-    ViewData["Title"] = "Periode en entreprise à valider";
-}
+<h4>Pee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AfficheBeneficiairePee" >
+            
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="IdPee" />
 
-<h3>@ViewBag.Titre</h3>
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
-        <div class="col-md-4">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
-        <div class="col-md-4">@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.RaisonSociale)</div>
+                <div class="form-group">
+                    <label asp-for="IdOffreFormation" class="control-label"></label>
+                    <input asp-for="IdOffreFormation" class="form-control" id="IdOffreFormation" >
+                    <span asp-validation-for="IdOffreFormation" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdEtablissement" class="control-label"></label>
+                    <input asp-for="IdEtablissement" class="form-control" id="IdEtablissement" >
+                    <span asp-validation-for="IdEtablissement" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                   
+
+                    <input type="submit" value="Recherche" class="btn btn-primary" />
+
+                </div>
+          
+        </form>
     </div>
-    @foreach (var item in Model)
-    {
-    <a asp-action="SuivantEntreprise" asp-route-id="@item.IdPee">
-        <div class="row">
-            <div class="col-md-4">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
-            <div class="col-md-4">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
-            <div class="col-md-4">@Html.DisplayFor(modelItem => item.IdEntrepriseNavigation.RaisonSociale)</div>
-        </div>
-    </a>
-    }
 </div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

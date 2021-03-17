@@ -616,6 +616,12 @@ namespace AppAfpaBrive.DAL.Migrations
                         principalTable: "Professionnel",
                         principalColumn: "IdProfessionnel",
                         onDelete: ReferentialAction.Restrict);
+                    //table.ForeignKey(
+                    //    name: "FK_Pee_Entreprise",
+                    //    column: x => x.IdEntreprise,
+                    //    principalTable: "Entreprise",
+                    //    principalColumn: "IdEntreprise",
+                    //    onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
