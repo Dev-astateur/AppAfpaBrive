@@ -129,8 +129,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get Entreprise_creation
         public IActionResult Entreprise_creation()
         {
-
-            return View();
+            IQueryable<string> pays = _Pays.Get_pays();
+            return View(pays);
         }
 
 
