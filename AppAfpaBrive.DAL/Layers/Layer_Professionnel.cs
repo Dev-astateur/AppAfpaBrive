@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using AppAfpaBrive.BOL;
 using System.Linq;
 
 namespace AppAfpaBrive.DAL.Layer
 {
-    public class Layer_Code_Produit_Formation
+    public class Layer_Professionnel
     {
         private readonly AFPANADbContext _db;
-        public Layer_Code_Produit_Formation(AFPANADbContext context)
+        public Layer_Professionnel(AFPANADbContext context)
         {
             _db = context;
         }
