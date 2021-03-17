@@ -142,7 +142,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [ValidateAntiForgeryToken]
         public IActionResult Entreprise_creation(Entreprise_Creation_ViewModel entreprise)
         {
-
             if (ModelState.IsValid)
             {
                 string str = this.HttpContext.Session.GetString("convention");
