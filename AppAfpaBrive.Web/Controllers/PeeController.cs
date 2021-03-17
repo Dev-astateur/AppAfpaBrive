@@ -44,7 +44,7 @@ namespace AppAfpaBrive.Web.Controllers
         public IActionResult SuivantEntreprise(int id)
         {
             // données pour les tests faudra changé tous cela
-            Pay pays1 = _paysLayer.GetPaysById("US");
+            Pays pays1 = _paysLayer.GetPaysById("US");
             Entreprise entreprise = new Entreprise()
             {
                 IdEntreprise = 1,
