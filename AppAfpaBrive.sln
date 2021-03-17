@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppAfpaBrive.BOL", "AppAfpa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppAfpaBrive.DAL", "AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj", "{685765B5-0658-4CBC-9C58-0FDA0CB58014}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Projet_Test", "Projet_Test\Projet_Test.csproj", "{9310378E-AAA1-4CE2-8389-EACF251FEE95}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,26 +83,6 @@ Global
 		{685765B5-0658-4CBC-9C58-0FDA0CB58014}.Release|x64.Build.0 = Release|Any CPU
 		{685765B5-0658-4CBC-9C58-0FDA0CB58014}.Release|x86.ActiveCfg = Release|Any CPU
 		{685765B5-0658-4CBC-9C58-0FDA0CB58014}.Release|x86.Build.0 = Release|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Debug|ARM.Build.0 = Debug|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Debug|x64.Build.0 = Debug|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Debug|x86.Build.0 = Debug|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Release|ARM.ActiveCfg = Release|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Release|ARM.Build.0 = Release|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Release|ARM64.Build.0 = Release|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Release|x64.ActiveCfg = Release|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Release|x64.Build.0 = Release|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Release|x86.ActiveCfg = Release|Any CPU
-		{9310378E-AAA1-4CE2-8389-EACF251FEE95}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
