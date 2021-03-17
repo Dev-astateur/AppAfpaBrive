@@ -109,7 +109,7 @@ namespace AppAfpaBrive.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> SuivantEntreprise(int? id)
+        public async Task<IActionResult> ValidationPee(int? id)
         {
             if ( id is null )
                 return NotFound();
