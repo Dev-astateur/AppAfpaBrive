@@ -15,6 +15,10 @@ namespace AppAfpaBrive.Web.Controllers
     public class PeeController : Controller
     {
         private readonly PeeLayer _peeLayer = null;
+        private readonly AFPANADbContext _dbContext;
+        private readonly IConfiguration _config;
+
+        private readonly IHostEnvironment _env;
 
         public PeeController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
         {
