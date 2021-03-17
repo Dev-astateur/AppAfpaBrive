@@ -4,14 +4,16 @@ using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppAfpaBrive.DAL.Migrations
 {
     [DbContext(typeof(AFPANADbContext))]
-    partial class AFPANADbContextModelSnapshot : ModelSnapshot
+    [Migration("20210316111055_InsertionsTroisMois")]
+    partial class InsertionsTroisMois
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -725,106 +727,6 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.ToTable("FamilleMetierRome");
                 });
 
-            modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsDouzeMois", b =>
-                {
-                    b.Property<string>("IdEtablissement")
-                        .HasMaxLength(5)
-                        .HasColumnType("char(5)")
-                        .IsFixedLength(true);
-
-                    b.Property<int>("IdOffreFormation")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Annee")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Alternance")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Autres")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Cdd")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Cdi")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("SansEmploie")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("TotalReponse")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.HasKey("IdEtablissement", "IdOffreFormation", "Annee");
-
-                    b.HasIndex("IdOffreFormation");
-
-                    b.ToTable("InsertionsDouzeMois");
-                });
-
-            modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsSixMois", b =>
-                {
-                    b.Property<string>("IdEtablissement")
-                        .HasMaxLength(5)
-                        .HasColumnType("char(5)")
-                        .IsFixedLength(true);
-
-                    b.Property<int>("IdOffreFormation")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Annee")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Alternance")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Autres")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Cdd")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Cdi")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("SansEmploie")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("TotalReponse")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.HasKey("IdEtablissement", "IdOffreFormation", "Annee");
-
-                    b.HasIndex("IdOffreFormation");
-
-                    b.ToTable("InsertionsSixMois");
-                });
-
             modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsTroisMois", b =>
                 {
                     b.Property<string>("IdEtablissement")
@@ -872,7 +774,7 @@ namespace AppAfpaBrive.DAL.Migrations
 
                     b.HasIndex("IdOffreFormation");
 
-                    b.ToTable("InsertionsTroisMois");
+                    b.ToTable("InsertionTroisMois");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.OffreFormation", b =>
@@ -1465,44 +1367,6 @@ namespace AppAfpaBrive.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("IdEventNavigation");
-                });
-
-            modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsDouzeMois", b =>
-                {
-                    b.HasOne("AppAfpaBrive.BOL.Etablissement", "IdEtablissementNavigation")
-                        .WithMany()
-                        .HasForeignKey("IdEtablissement")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppAfpaBrive.BOL.ProduitFormation", "CodeProduitFormation")
-                        .WithMany()
-                        .HasForeignKey("IdOffreFormation")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CodeProduitFormation");
-
-                    b.Navigation("IdEtablissementNavigation");
-                });
-
-            modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsSixMois", b =>
-                {
-                    b.HasOne("AppAfpaBrive.BOL.Etablissement", "IdEtablissementNavigation")
-                        .WithMany()
-                        .HasForeignKey("IdEtablissement")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppAfpaBrive.BOL.ProduitFormation", "CodeProduitFormation")
-                        .WithMany()
-                        .HasForeignKey("IdOffreFormation")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CodeProduitFormation");
-
-                    b.Navigation("IdEtablissementNavigation");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsTroisMois", b =>

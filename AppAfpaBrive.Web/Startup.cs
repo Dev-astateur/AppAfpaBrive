@@ -43,7 +43,6 @@ namespace AppAfpaBrive.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddTransient<IEmailSender, SendinBlueEmailSender>();
-           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +52,6 @@ namespace AppAfpaBrive.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
-               
             }
             else
             {
