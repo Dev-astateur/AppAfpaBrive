@@ -11,7 +11,7 @@ namespace AppAfpaBrive.Web.ModelView
     {
         public BeneficiaireModelView()
         {
-            //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+            BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
             Contrats = new HashSet<ContratModelView>();
             //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
             Pees = new HashSet<PeeModelView>();

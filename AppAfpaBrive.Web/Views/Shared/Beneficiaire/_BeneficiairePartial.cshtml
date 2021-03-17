@@ -1,0 +1,30 @@
+﻿@model AppAfpaBrive.Web.ModelView.BeneficiaireModelView
+@{ 
+    ViewData["Title"] = "Beneficiaire";
+}
+@await Html.PartialAsync("_BeneficiairePartial", Model.BeneficiaireOffreFormations)
+<table class="table">
+
+    <tbody>
+        @foreach (var item in Model.BeneficiaireOffreFormations)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailBeneficiaire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailingAutorise)
+                </td>
+
+
+
+            </tr>
+        }
+    </tbody>
+</table>

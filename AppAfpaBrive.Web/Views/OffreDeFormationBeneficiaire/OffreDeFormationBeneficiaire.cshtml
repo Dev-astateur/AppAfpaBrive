@@ -6,39 +6,41 @@
 }
 
 <h1>OffreDeFormationBeneficiaire</h1>
-<form asp-controller="OffreDeFormationBeneficiaire" asp-action="OffreDeFormationBeneficiaire">
+<form asp-controller="OffreDeFormationBeneficiaire" asp-action="OffreDeFormationBeneficiaire" asp-route-id="@Model.IdOffreFormation">
 
 
     <div class="form-group">
         <label>Offre de formation:</label>
+
+
+        @Html.RenderPartialAsync("_BeneficiairePartial", Model.IdOffreFormation)
+
         @Html.DropDownListFor(m => m.IdOffreFormation, new SelectList(Model.OffreFormations, "IdOffreFormation", "LibelleOffreFormation"))
-    <button type="submit" class="btn btn-primary" value="">Choisir</button>
+        @*@Html.ActionLink("Click", "OffreDeFormationBeneficiaire", "OffredeFormationBeneficiaire", new { id = Model.IdOffreFormation }, new { @class = "btn btn-primary" })*@
+        <input type="button" id="IdOffreFormation" class="btn-primary" value="Rechercher">
+
+        
+        @Html.HiddenFor(m => m.IdOffreFormation)
+        
+
+
     </div>
 
 
-    <table class="table">
-
-        <tbody>
-            @foreach (var item in Model.BeneficiaireOffreFormations)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailBeneficiaire)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.MailingAutorise)
-                    </td>
-
-
-
-                </tr>
-            }
-        </tbody>
-    </table>
+    
 </form>
+<script defer type="text/javascript">
+    $(document).ready(function () {
+        $(".btn-primary").on("click", function () {
+            var q = $("#IdOffreFormation").val();
+            
+            document.location.href = "OffreDeFormationBeneficiaire" + '/' + q;
+            
+            
+        }); 
+       
+    });
+    
+
+
+</script>

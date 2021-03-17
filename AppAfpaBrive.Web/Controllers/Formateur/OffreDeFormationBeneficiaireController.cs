@@ -24,29 +24,59 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
 
         }
         // GET: StagiaireParOffredeFormationController
-        //[HttpPost]
+
+        //[HttpGet]
         public ActionResult OffreDeFormationBeneficiaire()
         {
-            
+
             this.ViewBag.MonTitre = "OffreDeFormationBeneficiaire";
 
             var query = _offreDeFormationLayer.GetByMatriculeCollaborateurAFPA("96GB011");
-           
+
             OffreFormationSpecifiqueModelView model = new OffreFormationSpecifiqueModelView(query);
             int selectedvalue = model.IdOffreFormation;
             query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAllByOffreFormation(selectedvalue);
             model.AlimenterListeOffreFormations(_offreDeFormationLayer.GetAllbyMatricule("96GB011"));
-            
+
 
 
             foreach (var item in query.BeneficiaireOffreFormations)
             {
                 model.BeneficiaireOffreFormations.Add(item);
             }
-            var selectedValue = model.IdOffreFormation;
-            
+
+
             return View(model);
         }
+        [HttpGet]
+        public ActionResult OffreDeFormationBeneficiaire(int id)
+        {
+
+            this.ViewBag.MonTitre = "OffreDeFormationBeneficiaire";
+
+            var query = _offreDeFormationLayer.GetByMatriculeCollaborateurAFPA("96GB011");
+
+            OffreFormationSpecifiqueModelView model = new OffreFormationSpecifiqueModelView(query);
+            int selectedvalue = model.IdOffreFormation;
+            id = selectedvalue;
+            query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAllByOffreFormation(id);
+           model.AlimenterListeOffreFormations(_offreDeFormationLayer.GetAllbyMatricule("96GB011"));
+
+
+
+            foreach (var item in query.BeneficiaireOffreFormations)
+            {
+                model.BeneficiaireOffreFormations.Add(item);
+            }
+
+
+            return View(model);
+        }
+        public PartialViewResult ListeBeneficiaire()
+        {
+            return PartialView("_BeneficiairePartial");
+        }
+
         // GET: OffreDeFormationBeneficiaireController
         public ActionResult Index()
         {
