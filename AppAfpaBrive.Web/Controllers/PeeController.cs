@@ -122,18 +122,6 @@ namespace AppAfpaBrive.Web.Controllers
 
             return View(peeModelView);
         }
-
-        /// <summary>
-        /// Action d'enregistrement des remarques sur la période en entreprise
-        /// </summary>
-        /// <param name="id">id de Pee</param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> SuivantRemarques(int id)
-        {
-            return View();
-        }
-
        
     }
 }

@@ -8,7 +8,7 @@
     ViewData["Title"] = "Entreprise";
 }
 
-@await Html.PartialAsync("~/Views/Shared/_EntreprisePartial.cshtml", Model.IdEntrepriseNavigation)
+@await Html.PartialAsync("~/Views/Shared/Entreprise/_EntreprisePartial.cshtml", Model.IdEntrepriseNavigation)
 <div class="container">
     <div class="row">
         <div class="col-md-6"><p><a asp-action="ListePeeAValider" asp-route-id="@Model.Id.MatriculeCollaborateurAfpa">Retour</a></p></div>
