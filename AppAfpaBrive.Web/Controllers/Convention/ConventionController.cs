@@ -36,7 +36,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get index
         public IActionResult Index()
         {
-            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations("azerty12");
+            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations("16174318");
             List<Creation_convention> obj = new List<Creation_convention>();
             
             foreach (var item in beneficiaires)
@@ -55,7 +55,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             }
             Creation_convention Session_Convention = new Creation_convention
             {
-                Idmatricule = "azerty12"
+                Idmatricule = "16174318"
             };
             var str = JsonConvert.SerializeObject(Session_Convention);
             HttpContext.Session.SetString("convention", str);
@@ -95,7 +95,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // post Entreprise
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Entreprise(Entreprise obj)
+        public IActionResult Entreprise(Entreprise_Siret obj)
         {
             if (ModelState.IsValid)
             {

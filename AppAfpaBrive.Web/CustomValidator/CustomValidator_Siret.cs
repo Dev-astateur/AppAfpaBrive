@@ -16,7 +16,8 @@ namespace AppAfpaBrive.Web.CustomValidator
             int total = 0;
             for (int i = 0; i < siret.Length; i++)
             {
-                int x = siret[i];
+                char y = siret[i];
+                int x = (int)char.GetNumericValue(y);
                 if (i % 2 == 0)
                 {
                     x = x * 2;
