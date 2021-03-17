@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-4">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
         <div class="col-md-4">@Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
-        <div class="col-md-4">@Html.DisplayNameFor(model => model.IdTuteurNavigation.NomProfessionnel)</div>
+        <div class="col-md-4">@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.RaisonSociale)</div>
     </div>
     @foreach (var item in Model)
     {
@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-md-4">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)</div>
             <div class="col-md-4">@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</div>
-            <div class="col-md-4">@Html.DisplayFor(modelItem => item.IdTuteurNavigation.NomProfessionnel)</div>
+            <div class="col-md-4">@Html.DisplayFor(modelItem => item.IdEntrepriseNavigation.RaisonSociale)</div>
         </div>
     </a>
     }
