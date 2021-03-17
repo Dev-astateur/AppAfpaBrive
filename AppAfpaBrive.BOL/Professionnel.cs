@@ -21,7 +21,7 @@ namespace AppAfpaBrive.BOL
         public string PrenomProfessionnel { get; set; }
         public int CodeTitreCiviliteProfessionnel { get; set; }
 
-        
+        public virtual TitreCivilite TitreCiviliteNavigation { get; set; }
         public virtual ICollection<Pee> PeeIdResponsableJuridiqueNavigations { get; set; }
         
         public virtual ICollection<Pee> PeeIdTuteurNavigations { get; set; }

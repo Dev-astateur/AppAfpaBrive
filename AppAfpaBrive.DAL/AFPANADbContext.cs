@@ -857,11 +857,7 @@ namespace AppAfpaBrive.DAL
                     .HasForeignKey(d => d.IdTuteur)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Pee_Tuteur");
-                entity.HasOne(d => d.IdEntrepriseNavigation)
-                    .WithMany(p => p.pees)
-                    .HasForeignKey(d => d.IdEntreprise)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Pee_IdEntreprise");
+                
 
                 entity.HasOne(d => d.MatriculeBeneficiaireNavigation)
                     .WithMany(p => p.Pees)
