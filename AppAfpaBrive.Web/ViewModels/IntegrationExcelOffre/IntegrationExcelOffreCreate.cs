@@ -19,8 +19,8 @@ namespace AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre
         [Required(ErrorMessage = "Formateur requis")]
         public string MatriculeCollaborateurAfpa { get; set; }
 
-        [Required(ErrorMessage = "")]
-        public FilesModel file { get; set; }
+        [Required(ErrorMessage = "Fichier requis")]
+        public FilesModel fileModel { get; set; }
 
         [Display(Name = "Path fichier")]
         [Required(ErrorMessage = "path requis")]

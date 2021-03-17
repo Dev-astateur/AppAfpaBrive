@@ -2,23 +2,32 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-
-@model AppAfpaBrive.Web.Models.FilesModel;
-
-
-<form method="post"
-      asp-action="Upload"
-      asp-controller="FileUpload"
-      enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-    <input asp-for="file" />
-    <span asp-validation-for="file" class="text-danger"></span>
-    <input type="submit" value="Upload" />
-</form>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>s
 
 @model AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre.IntegrationExcelOffreCreate
-<center><h3>Intégrer une offre</h3></center>
+
+<center><h2>Intégrer une offre</h2></center>
+
+<div class="form-vertical">
+
+    <h5>Choisir un fichier à uploader</h5>
+    <form method="post"
+          asp-action="Upload"
+          asp-controller="FileUpload"
+          enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group">
+            <input asp-for="fileModel.file" />
+        </div>
+        <span asp-validation-for="fileModel.file" class="text-danger"></span>
+    </form>
+</div>
+
+<br />
+
 <div class="form-horizontal">
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -40,7 +49,7 @@
         <br />
         <div class="form-group">
 
-            <input type="submit" value="Intégrer" class="btn btn-default" />
+            <input type="submit" value="Integrer Offre" />
 
         </div>
     </form>
@@ -48,7 +57,76 @@
 <hr />
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+            $('#MatriculeCollaborateurAfpa').autocomplete({
+                source: function (request, response) {
+                    
+                    $.ajax({
+                        url: "/api/formateur/GetFormateur",
+                        type: "GET",
+                        data: request,
+                        dataType: "json",
+                        success: function (data) {
+                           
+                            response($.map(data, function (item) {
+                                console.log(item.nom)
+                                return {
+                                    label: item.nom,
+                                    value: item.id
+                                }
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                 
+                    $('#MatriculeCollaborateurAfpa').val(ui.item.label);
+                    return false;
+                }
+
+
+            });
+        })
+
+        $(document).ready(function () {
+            $('#CodeProduitFormation').autocomplete({
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: "/api/formateur/GetFormateur",
+                        type: "GET",
+                        data: request,
+                        dataType: "json",
+                        success: function (data) {
+
+                            response($.map(data, function (item) {
+                                console.log(item.nom)
+                                return {
+                                    label: item.nom,
+                                    value: item.id
+                                }
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 1,
+                select: function (event, ui) {
+
+                    $('#CodeProduitFormation').val(ui.item.label);
+                    return false;
+                }
+
+
+            });
+        })
+    </script>
 }
 
 

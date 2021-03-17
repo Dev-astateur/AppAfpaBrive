@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.Web.Utilitaires;
 using AppAfpaBrive.Web.Models;
+using AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -29,14 +30,13 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
 
-
         [HttpPost]
-        public IActionResult Upload(FilesModel uploadFile)
+        public IActionResult IntegrerOffre(IntegrationExcelOffreCreate uploadFile)
         {
 
             if (ModelState.IsValid)
             {
-                var postedFile = uploadFile.file;
+                var postedFile = uploadFile.fileModel.file;
                 try
                 {
                     var Response = UploadFiles.UploadFile(postedFile, Path);
@@ -49,8 +49,8 @@ namespace AppAfpaBrive.Web.Controllers
                     {
                         return BadRequest();
                     }
-
                 }
+
                 catch (Exception e)
                 {
                     Response.WriteAsync("<script>alert('" + e + "')</script>");
