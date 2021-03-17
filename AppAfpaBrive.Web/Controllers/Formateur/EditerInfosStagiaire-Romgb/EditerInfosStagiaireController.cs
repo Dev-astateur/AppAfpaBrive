@@ -31,8 +31,6 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         public async Task<ActionResult> ListeOffreFormation(string tbRechercherOFormation)
         {
             this.ViewBag.MonTitre = "ListeOffreFormation";
-            //var query = _offreFormation.GetAllOffreFormation();
-            //var query3 = _offreFormation.GetOffreFormationStartsWith(tbRechercherOFormation);
             var query2 = _offreFormation.GetOffreFormationByContains(tbRechercherOFormation);
             //var query3 = _stagiaireLayer.GetAllStagiaires();
 

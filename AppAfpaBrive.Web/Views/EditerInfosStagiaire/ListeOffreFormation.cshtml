@@ -15,7 +15,51 @@
     <script>
         $(document).ready(function () {
             $('#tbRechercherOFormation').autocomplete({
-                source: '/api/chargerlibelleformation/search'
+                source: '/api/chargerlibelleformation/search',
+                minLength: 3
+            });
+        });
+        $(document).ready(function () {
+            // var bouton = $('#btnEdit');
+            // var table = $('tabStagiaire').DataTable();
+            $(document).click(function () {
+                var rrrrr = $('<input/>').attr({
+                    type: "button",
+                    id: "field",
+                    value: 'Editer'
+                });
+                //var x = addEventListener("click", function () {
+                var libelle = $('#tbRechercherOFormation').val(); // Nom de l'input où l'on va récuperer la value
+                if (libelle != '') {
+                    $.ajax({
+                        url: '/api/chargerStagiaires/search', // Chemin vers l'api qui contient requête Linq
+                        method: "GET",
+                        data: 'term=' + libelle,
+                        dataType: "JSON",
+                        success: function (data) {
+                            var table = $('#tabStagiaire');
+                            console.log(data)
+                            $(function () {
+                                $.each(data, function (i, item) {
+                                    $("#tabStagiaire").append(
+                                        "<tr>"
+                                        + "<td>" + item.nomBeneficiaire + "</td>"
+                                        + "<td>" + item.prenomBeneficiaire + "</td>"
+                                        + "<td>" + item.matriculeBeneficiaire + "</td>"
+                                    )
+                                })
+                            })
+
+                        }
+                    });
+
+                };
+            });
+        });
+        $(function () {
+            $('tbRechercherOFormation').on('click', function () {
+                var r = $('<input type="button" value="new button"/>');
+                $("#tabStagiaire").append('<input type="button" value="new button"/>');
             });
         });
     </script>
@@ -23,24 +67,51 @@
 </html>
 
 <h2>Sélectionnez une offre de formation</h2>
+<br />
 
 <div class="form-group">
     <form asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-10 text-center w-auto ">
                 <input type="text" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
+            </div>
+            <div>
+                <input type="button" id="boutontest" class="btn btn-primary" value="Recherche" />
             </div>
         </div>
     </form>
 </div>
 
-<table class="table">
+
+<!--<table id="tabStagiaire" class="table table-light">
+    <tr class="bg-info">
+        <th>Nom </th>
+
+        <th>Prénom </th>
+
+        <th>Matricule </th>
+
+        <th>Rechercher</th>
+    </tr>
+    <tbody>
+    </tbody>-->
+@*<input type="button" id="button" asp-controller="EditerInfosStagiaires2" asp-action="Edit" value="Recherche" />*@
+<!--</table>-->
+
+<table id="tabStagiaire" class="table">
     <thead>
         <tr>
             @*<th>
                     @Html.DisplayNameFor(model => model.LibelleOffreFormation)
                 </th>*@
-            <h4>Libelle Offre Formation</h4>
+            <th>Nom </th>
+
+            <th>Prénom </th>
+
+            <th>Matricule </th>
+
+            <th>Rechercher </th>
+
         </tr>
     </thead>
     <tbody>
@@ -52,15 +123,17 @@
                 </td>
                 <td>
                     <div class="form-group">
-                        <input type="submit" value="Sélectionner" name="btRechercherStagiaire" class="btn btn-primary" @*asp-route-id="@item.BeneficiaireOffreFormations" asp-controller="EditerInfosStagiaire2" asp-action="Edit"*@ />
+                        <input type="submit" value="Sélectionner" name="btRechercherStagiaire" class="btn btn-primary" asp-route-id="@item.BeneficiaireOffreFormations" asp-controller="EditerInfosStagiaire2" asp-action="Edit" />
                     </div>
                 </td>
             </tr>
+            @*<a id="btnEdit" asp-action="Edit" asp-controller="EditerInfosStagiaire2">Edit</a>*@
+
         }
     </tbody>
 </table>
-<div class="form-group">
-    <form asp-controller="EditerInfosStagiaires" asp-action="Details">
-    </form>
+<div>
+
 </div>
+
 

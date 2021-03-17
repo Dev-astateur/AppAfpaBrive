@@ -27,7 +27,7 @@ namespace AppAfpaBrive.Web.Views.EditerInfosStagiaire
             try
             {
                 string term = HttpContext.Request.Query["term"].ToString();
-                var libelles = _context.OffreFormations.Where(p => p.LibelleOffreFormation.StartsWith(term)).Select(p => p.LibelleOffreFormation).ToList();
+                var libelles = _context.OffreFormations.Where(p => p.LibelleOffreFormation.Contains(term)).Select(p => p.LibelleOffreFormation).ToList();
                 return Ok(libelles);
             }
             catch
