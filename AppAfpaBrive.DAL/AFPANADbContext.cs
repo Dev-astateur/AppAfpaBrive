@@ -50,6 +50,9 @@ namespace AppAfpaBrive.DAL
         public virtual DbSet<TypeContrat> TypeContrats { get; set; }
         public virtual DbSet<UniteOrganisationnelle> UniteOrganisationnelles { get; set; }
         public virtual DbSet<UniteOrganisationnelleChampProfessionnel> UniteOrganisationnelleChampProfessionnels { get; set; }
+        public virtual DbSet<InsertionsTroisMois> InsertionTroisMois { get; set; }
+        public virtual DbSet<InsertionsSixMois> InsertionSixMois { get; set; }
+        public virtual DbSet<InsertionsDouzeMois> InsertionDouzeMois { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -165,12 +168,62 @@ namespace AppAfpaBrive.DAL
                     .WithMany(p => p.Beneficiaires)
                     .HasForeignKey(d => d.CodeTitreCivilite)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Beneficiaire_TitreCivilite");
+                    .HasConstraintName("FK_Beneficiaire_TitreCivilite"); 
+                
                 entity.HasOne(d => d.PaysNavigation)
-                     .WithMany(p => p.Beneficiaires)
-                     .HasForeignKey(d => d.IdPays2)
-                     .HasConstraintName("FK_Beneficiaire_Pays");
-            }); 
+                      .WithMany(p => p.Beneficiaires)
+                      .HasForeignKey(d => d.IdPays2)
+                      .HasConstraintName("FK_Beneficiaire_Pays");
+           // });
+        });
+            modelBuilder.Entity<InsertionsTroisMois>(entity =>
+            {
+                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.Annee });
+                entity.ToTable("InsertionsTroisMois");
+                entity.Property(e => e.IdEtablissement)
+                .HasMaxLength(5)
+                .IsFixedLength(true);
+
+                entity.Property(e => e.TotalReponse).HasDefaultValue(0);
+                entity.Property(e => e.Cdi).HasDefaultValue(0);
+                entity.Property(e => e.Cdd) .HasDefaultValue(0);
+                entity.Property(e => e.Alternance).HasDefaultValue(0);
+                entity.Property(e => e.SansEmploie).HasDefaultValue(0);
+                entity.Property(e => e.Autres).HasDefaultValue(0);
+            });
+
+            modelBuilder.Entity<InsertionsSixMois>(entity =>
+            {
+                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.Annee });
+                entity.ToTable("InsertionsSixMois");
+                entity.Property(e => e.IdEtablissement)
+                .HasMaxLength(5)
+                .IsFixedLength(true);
+
+                entity.Property(e => e.TotalReponse).HasDefaultValue(0);
+                entity.Property(e => e.Cdi).HasDefaultValue(0);
+                entity.Property(e => e.Cdd).HasDefaultValue(0);
+                entity.Property(e => e.Alternance).HasDefaultValue(0);
+                entity.Property(e => e.SansEmploie).HasDefaultValue(0);
+                entity.Property(e => e.Autres).HasDefaultValue(0);
+            });
+
+            modelBuilder.Entity<InsertionsDouzeMois>(entity =>
+            {
+                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.Annee });
+                entity.ToTable("InsertionsDouzeMois");
+                entity.Property(e => e.IdEtablissement)
+                .HasMaxLength(5)
+                .IsFixedLength(true);
+
+                entity.Property(e => e.TotalReponse).HasDefaultValue(0);
+                entity.Property(e => e.Cdi).HasDefaultValue(0);
+                entity.Property(e => e.Cdd).HasDefaultValue(0);
+                entity.Property(e => e.Alternance).HasDefaultValue(0);
+                entity.Property(e => e.SansEmploie).HasDefaultValue(0);
+                entity.Property(e => e.Autres).HasDefaultValue(0);
+            });
+                
 
             modelBuilder.Entity<BeneficiaireOffreFormation>(entity =>
             {

@@ -60,7 +60,6 @@ namespace AppAfpaBrive.Web
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
-               
             }
             else
             {

@@ -4,14 +4,16 @@ using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppAfpaBrive.DAL.Migrations
 {
     [DbContext(typeof(AFPANADbContext))]
-    partial class AFPANADbContextModelSnapshot : ModelSnapshot
+    [Migration("20210316111055_InsertionsTroisMois")]
+    partial class InsertionsTroisMois
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +60,7 @@ namespace AppAfpaBrive.DAL.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(10)");
 
-                    b.Property<int?>("CodeTitreCivilite")
+                    b.Property<int>("CodeTitreCivilite")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DateNaissanceBeneficiaire")
@@ -130,9 +132,7 @@ namespace AppAfpaBrive.DAL.Migrations
 
                     b.HasKey("MatriculeBeneficiaire");
 
-                    b.HasIndex(new[] { "CodeTitreCivilite" }, "IX_Beneficiaire_CodeTitreCivilite");
-
-                    b.HasIndex(new[] { "IdPays2" }, "IX_Beneficiaire_Idpays2");
+                    b.HasIndex("CodeTitreCivilite");
 
                     b.ToTable("Beneficiaire");
                 });
@@ -581,8 +581,6 @@ namespace AppAfpaBrive.DAL.Migrations
 
                     b.HasKey("IdEntreprise", "IdProfessionnel");
 
-                    b.HasIndex("IdProfessionnel");
-
                     b.ToTable("Entreprise_Professionnel");
                 });
 
@@ -729,106 +727,6 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.ToTable("FamilleMetierRome");
                 });
 
-            modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsDouzeMois", b =>
-                {
-                    b.Property<string>("IdEtablissement")
-                        .HasMaxLength(5)
-                        .HasColumnType("char(5)")
-                        .IsFixedLength(true);
-
-                    b.Property<int>("IdOffreFormation")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Annee")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Alternance")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Autres")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Cdd")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Cdi")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("SansEmploie")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("TotalReponse")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.HasKey("IdEtablissement", "IdOffreFormation", "Annee");
-
-                    b.HasIndex("IdOffreFormation");
-
-                    b.ToTable("InsertionsDouzeMois");
-                });
-
-            modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsSixMois", b =>
-                {
-                    b.Property<string>("IdEtablissement")
-                        .HasMaxLength(5)
-                        .HasColumnType("char(5)")
-                        .IsFixedLength(true);
-
-                    b.Property<int>("IdOffreFormation")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Annee")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Alternance")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Autres")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Cdd")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("Cdi")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("SansEmploie")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<int>("TotalReponse")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.HasKey("IdEtablissement", "IdOffreFormation", "Annee");
-
-                    b.HasIndex("IdOffreFormation");
-
-                    b.ToTable("InsertionsSixMois");
-                });
-
             modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsTroisMois", b =>
                 {
                     b.Property<string>("IdEtablissement")
@@ -876,7 +774,7 @@ namespace AppAfpaBrive.DAL.Migrations
 
                     b.HasIndex("IdOffreFormation");
 
-                    b.ToTable("InsertionsTroisMois");
+                    b.ToTable("InsertionTroisMois");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.OffreFormation", b =>
@@ -926,7 +824,7 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.ToTable("OffreFormation");
                 });
 
-            modelBuilder.Entity("AppAfpaBrive.BOL.Pays", b =>
+            modelBuilder.Entity("AppAfpaBrive.BOL.Pay", b =>
                 {
                     b.Property<string>("Idpays2")
                         .HasMaxLength(2)
@@ -964,13 +862,7 @@ namespace AppAfpaBrive.DAL.Migrations
                         .HasColumnType("numeric(18,0)")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Etat")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdEntreprise")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdEntrepriseNavigationIdEntreprise")
                         .HasColumnType("int");
 
                     b.Property<string>("IdEtablissement")
@@ -997,8 +889,6 @@ namespace AppAfpaBrive.DAL.Migrations
                         .IsFixedLength(true);
 
                     b.HasKey("IdPee");
-
-                    b.HasIndex("IdEntrepriseNavigationIdEntreprise");
 
                     b.HasIndex("IdResponsableJuridique");
 
@@ -1296,16 +1186,10 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.HasOne("AppAfpaBrive.BOL.TitreCivilite", "CodeTitreCiviliteNavigation")
                         .WithMany("Beneficiaires")
                         .HasForeignKey("CodeTitreCivilite")
-                        .HasConstraintName("FK_Beneficiaire_TitreCivilite");
-
-                    b.HasOne("AppAfpaBrive.BOL.Pays", "PaysNavigation")
-                        .WithMany("Beneficiaires")
-                        .HasForeignKey("IdPays2")
-                        .HasConstraintName("FK_Beneficiaire_Pays");
+                        .HasConstraintName("FK_Beneficiaire_TitreCivilite")
+                        .IsRequired();
 
                     b.Navigation("CodeTitreCiviliteNavigation");
-
-                    b.Navigation("PaysNavigation");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.BeneficiaireOffreFormation", b =>
@@ -1436,32 +1320,13 @@ namespace AppAfpaBrive.DAL.Migrations
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Entreprise", b =>
                 {
-                    b.HasOne("AppAfpaBrive.BOL.Pays", "Idpays2Navigation")
+                    b.HasOne("AppAfpaBrive.BOL.Pay", "Idpays2Navigation")
                         .WithMany("Entreprises")
                         .HasForeignKey("Idpays2")
                         .HasConstraintName("FK_Entreprise_Pays")
                         .IsRequired();
 
                     b.Navigation("Idpays2Navigation");
-                });
-
-            modelBuilder.Entity("AppAfpaBrive.BOL.EntrepriseProfessionnel", b =>
-                {
-                    b.HasOne("AppAfpaBrive.BOL.Entreprise", "IdEntrepriseNavigation")
-                        .WithMany("EntrepriseProfessionnels")
-                        .HasForeignKey("IdEntreprise")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppAfpaBrive.BOL.Professionnel", "IdProfessionnelNavigation")
-                        .WithMany("EntrepriseProfessionnels")
-                        .HasForeignKey("IdProfessionnel")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("IdEntrepriseNavigation");
-
-                    b.Navigation("IdProfessionnelNavigation");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Etablissement", b =>
@@ -1502,44 +1367,6 @@ namespace AppAfpaBrive.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("IdEventNavigation");
-                });
-
-            modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsDouzeMois", b =>
-                {
-                    b.HasOne("AppAfpaBrive.BOL.Etablissement", "IdEtablissementNavigation")
-                        .WithMany()
-                        .HasForeignKey("IdEtablissement")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppAfpaBrive.BOL.ProduitFormation", "CodeProduitFormation")
-                        .WithMany()
-                        .HasForeignKey("IdOffreFormation")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CodeProduitFormation");
-
-                    b.Navigation("IdEtablissementNavigation");
-                });
-
-            modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsSixMois", b =>
-                {
-                    b.HasOne("AppAfpaBrive.BOL.Etablissement", "IdEtablissementNavigation")
-                        .WithMany()
-                        .HasForeignKey("IdEtablissement")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AppAfpaBrive.BOL.ProduitFormation", "CodeProduitFormation")
-                        .WithMany()
-                        .HasForeignKey("IdOffreFormation")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CodeProduitFormation");
-
-                    b.Navigation("IdEtablissementNavigation");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.InsertionsTroisMois", b =>
@@ -1589,10 +1416,6 @@ namespace AppAfpaBrive.DAL.Migrations
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Pee", b =>
                 {
-                    b.HasOne("AppAfpaBrive.BOL.Entreprise", "IdEntrepriseNavigation")
-                        .WithMany("Pees")
-                        .HasForeignKey("IdEntrepriseNavigationIdEntreprise");
-
                     b.HasOne("AppAfpaBrive.BOL.Professionnel", "IdResponsableJuridiqueNavigation")
                         .WithMany("PeeIdResponsableJuridiqueNavigations")
                         .HasForeignKey("IdResponsableJuridique")
@@ -1618,8 +1441,6 @@ namespace AppAfpaBrive.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Id");
-
-                    b.Navigation("IdEntrepriseNavigation");
 
                     b.Navigation("IdResponsableJuridiqueNavigation");
 
@@ -1747,10 +1568,6 @@ namespace AppAfpaBrive.DAL.Migrations
             modelBuilder.Entity("AppAfpaBrive.BOL.Entreprise", b =>
                 {
                     b.Navigation("Contrats");
-
-                    b.Navigation("EntrepriseProfessionnels");
-
-                    b.Navigation("Pees");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Etablissement", b =>
@@ -1783,10 +1600,8 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Navigation("Pees");
                 });
 
-            modelBuilder.Entity("AppAfpaBrive.BOL.Pays", b =>
+            modelBuilder.Entity("AppAfpaBrive.BOL.Pay", b =>
                 {
-                    b.Navigation("Beneficiaires");
-
                     b.Navigation("Entreprises");
                 });
 
@@ -1809,8 +1624,6 @@ namespace AppAfpaBrive.DAL.Migrations
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Professionnel", b =>
                 {
-                    b.Navigation("EntrepriseProfessionnels");
-
                     b.Navigation("PeeIdResponsableJuridiqueNavigations");
 
                     b.Navigation("PeeIdTuteurNavigations");

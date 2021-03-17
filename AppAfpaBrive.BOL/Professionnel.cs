@@ -15,7 +15,7 @@ namespace AppAfpaBrive.BOL
             EntrepriseProfessionnels = new HashSet<EntrepriseProfessionnel>();
             PeeIdTuteurNavigations = new HashSet<Pee>();
         }
-
+        
         public int IdProfessionnel { get; set; }
         public string NomProfessionnel { get; set; }
         public string PrenomProfessionnel { get; set; }
