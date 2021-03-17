@@ -16,18 +16,13 @@ namespace AppAfpaBrive.Web.Controllers
 
 
         protected string Path { get; set; }
-        protected List<String> ExtensionAuthorisee { get; set; }
-
+        
 
 
         public FileUploadController()
         {
             Path = "./Data/Documents";
-            ExtensionAuthorisee = new List<string>()
-            {
-                ".xlsx",
-                ".xl"
-            };
+            
         }
 
         public IActionResult Index()
@@ -44,6 +39,7 @@ namespace AppAfpaBrive.Web.Controllers
             if (ModelState.IsValid)
             {
                 var postedFile = uploadFile.file;
+
                 try
                 {
                     var Response = UploadFiles.UploadFile(postedFile, Path);
