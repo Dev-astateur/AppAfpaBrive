@@ -3,6 +3,8 @@ using AppAfpaBrive.DAL;
 using AppAfpaBrive.DAL.Layers;
 using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +15,13 @@ namespace AppAfpaBrive.Web.Controllers
     public class PeeController : Controller
     {
         private readonly PeeLayer _peeLayer = null;
-        private readonly PaysLayer _paysLayer = null;
 
-        public PeeController ( AFPANADbContext context )
+        public PeeController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
         {
+            _dbContext = context;
+            _config = config;
+            _env = env;
             _peeLayer = new PeeLayer(context);
-            _paysLayer = new PaysLayer(context);    //-- pour test
         }
 
         [HttpGet]
