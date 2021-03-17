@@ -92,7 +92,7 @@ namespace AppAfpaBrive.Web.Controllers
         {
             this.ViewBag.Titre = "Periode en entreprise à valider";
             IEnumerable<Pee> pees = _peeLayer.GetPeeByMatriculeCollaborateurAfpa(id);
-        List<PeeModelView> peesModelView = new();
+            List<PeeModelView> peesModelView = new();
 
             foreach (Pee item in pees )
             {
