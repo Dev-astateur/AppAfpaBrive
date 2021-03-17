@@ -1,6 +1,6 @@
 using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
-using AppAfpaBrive.DAL.Layer.StatsLayer;
+using AppAfpaBrive.DAL.Layers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;

@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppAfpaBrive.DAL.Layer.StatsLayer
+namespace AppAfpaBrive.DAL.Layers
 {
     public class InsertInsertionDataLayer
     {

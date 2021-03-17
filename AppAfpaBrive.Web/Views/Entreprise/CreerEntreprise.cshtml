@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "CreerEntreprise";
-    List<AppAfpaBrive.BOL.Pay> ListeDePays = ViewBag.MaList;
+    List<AppAfpaBrive.BOL.Pays> ListeDePays = ViewBag.MaList;
     var listeItemPays = ListeDePays.Select(p => new SelectListItem() { Text = p.LibellePays, Value = p.Idpays2});
 }
 
