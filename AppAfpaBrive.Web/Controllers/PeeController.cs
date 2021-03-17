@@ -123,5 +123,24 @@ namespace AppAfpaBrive.Web.Controllers
             return View(peeModelView);
         }
        
+        /// <summary>
+        /// Iaction du controller qui fonctionne comme des web service
+        /// ici on charge la partie de saisie des remarques s'il y a lien
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ChargeRemarqueView()
+        {
+            return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml") ;
+        }
+
+        /// <summary>
+        /// IAction du controller qui fonctionne comme des web service
+        /// ici on va charger la vue partiel de validation de la convention de stage
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult SaisieValidation()
+        {
+            return PartialView("");
+        }
     }
 }

@@ -6,10 +6,14 @@
 }
 
 <div class="container">
-    <div class="form-group">
-        <label asp-for="Remarques" class="control-label"></label>
-        <input asp-for="Remarques" class="form-control" />
-        <span asp-validation-for="Remarques" class="text-danger"></span>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label asp-for="Remarques" class="control-label">Si vous avez des remarques, veuillez les saisir.</label>
+                @Html.TextAreaFor(model => model.Remarques, new { @class = "form-control", @rows = 4 })
+                <span asp-validation-for="Remarques" class="text-danger"></span>
+            </div>
+        </div>
     </div>
 </div>
 
