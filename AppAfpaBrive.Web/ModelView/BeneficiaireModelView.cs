@@ -15,10 +15,12 @@ namespace AppAfpaBrive.Web.ModelView
             Contrats = new HashSet<ContratModelView>();
             //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
             Pees = new HashSet<PeeModelView>();
+            
         }
             
         public BeneficiaireModelView( Beneficiaire beneficiaire  )
         {
+            
             MailBeneficiaire = beneficiaire.MatriculeBeneficiaire;
             CodeTitreCivilite = beneficiaire.CodeTitreCivilite;
             NomBeneficiaire = beneficiaire.NomBeneficiaire;

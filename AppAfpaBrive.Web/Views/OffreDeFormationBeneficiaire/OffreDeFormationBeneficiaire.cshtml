@@ -1,46 +1,42 @@
-﻿@model AppAfpaBrive.Web.ModelView.OffreFormationSpecifiqueModelView
+﻿@model IEnumerable<AppAfpaBrive.Web.ModelView.OffreFormationSimplifieModelView>
 
 
 @{
     ViewData["Title"] = "OffreDeFormationBeneficiaire";
 }
 
-<h1>OffreDeFormationBeneficiaire</h1>
-<form asp-controller="OffreDeFormationBeneficiaire" asp-action="OffreDeFormationBeneficiaire" asp-route-id="@Model.IdOffreFormation">
-
-
-    <div class="form-group">
         <label>Offre de formation:</label>
+        <select id="listeoffre"
+                asp-items="@(new SelectList(Model,"IdOffreFormation", "LibelleOffreFormation"))">
+            <option> Sélectionnez une offre de formation</option>
+          
+
+            @*@Html.DropDownListFor(m => m.IdOffreFormation, new SelectList(Model.OffreFormations, "IdOffreFormation", "LibelleOffreFormation"),"Veuillez sélectionner votre offre")*@
+           
+
+        </select>
+
+       
+<div id="listebenef">
+
+</div>
 
 
-        @Html.RenderPartialAsync("_BeneficiairePartial", Model.IdOffreFormation)
 
-        @Html.DropDownListFor(m => m.IdOffreFormation, new SelectList(Model.OffreFormations, "IdOffreFormation", "LibelleOffreFormation"))
-        @*@Html.ActionLink("Click", "OffreDeFormationBeneficiaire", "OffredeFormationBeneficiaire", new { id = Model.IdOffreFormation }, new { @class = "btn btn-primary" })*@
-        <input type="button" id="IdOffreFormation" class="btn-primary" value="Rechercher">
-
-        
-        @Html.HiddenFor(m => m.IdOffreFormation)
-        
-
-
-    </div>
-
-
-    
-</form>
 <script defer type="text/javascript">
     $(document).ready(function () {
-        $(".btn-primary").on("click", function () {
-            var q = $("#IdOffreFormation").val();
-            
-            document.location.href = "OffreDeFormationBeneficiaire" + '/' + q;
-            
-            
-        }); 
-       
+        $('#listeoffre').on('change', function (e) {
+            var optionSelected = $('option:selected', this);
+
+            $("#listebenef").load("/OffreDeFormationBeneficiaire/ListeBeneficiaire?id=" + optionSelected.val());
+
+
+        });
+
     });
-    
+
 
 
 </script>
+
+

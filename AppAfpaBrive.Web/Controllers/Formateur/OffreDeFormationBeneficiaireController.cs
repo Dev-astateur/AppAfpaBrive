@@ -15,12 +15,14 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
     {
         private OffreDeFormationLayer _offreDeFormationLayer;
         private BeneficiaireOffreFormationLayer _beneficiaireOffreFormationLayer;
+        private BeneficiaireLayer _beneficiaireLayer;
 
 
         public OffreDeFormationBeneficiaireController(AFPANADbContext context)
         {
             _offreDeFormationLayer = new OffreDeFormationLayer(context);
             _beneficiaireOffreFormationLayer = new BeneficiaireOffreFormationLayer(context);
+            _beneficiaireLayer = new BeneficiaireLayer(context);
 
         }
         // GET: StagiaireParOffredeFormationController
@@ -54,27 +56,39 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
 
             this.ViewBag.MonTitre = "OffreDeFormationBeneficiaire";
 
-            var query = _offreDeFormationLayer.GetByMatriculeCollaborateurAFPA("96GB011");
+            var offreFormations = _offreDeFormationLayer.GetAllbyMatricule("96GB011");
 
-            OffreFormationSpecifiqueModelView model = new OffreFormationSpecifiqueModelView(query);
-            int selectedvalue = model.IdOffreFormation;
-            id = selectedvalue;
-            query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAllByOffreFormation(id);
-           model.AlimenterListeOffreFormations(_offreDeFormationLayer.GetAllbyMatricule("96GB011"));
-
-
-
-            foreach (var item in query.BeneficiaireOffreFormations)
+            List<OffreFormationSimplifieModelView> liste = new();
+            foreach (var item in offreFormations )
             {
-                model.BeneficiaireOffreFormations.Add(item);
+                liste.Add(new OffreFormationSimplifieModelView(item));
             }
+            //int selectedvalue = model.IdOffreFormation;
+            //id = selectedvalue;
+            //query.BeneficiaireOffreFormations = _beneficiaireOffreFormationLayer.GetAllByOffreFormation(id);
+           //model.AlimenterListeOffreFormations(_offreDeFormationLayer.GetAllbyMatricule("96GB011"));
 
 
-            return View(model);
+
+            //foreach (var item in query.BeneficiaireOffreFormations)
+            //{
+            //    model.BeneficiaireOffreFormations.Add(item);
+            //}
+
+
+            return View(liste);
         }
-        public PartialViewResult ListeBeneficiaire()
+        [HttpGet]
+        public IActionResult ListeBeneficiaire(int id)
         {
-            return PartialView("_BeneficiairePartial");
+            var beneficiaires = _beneficiaireLayer.GetAllByOffredeFormation(id);
+            List<BeneficiaireModelView> liste = new();
+            foreach (var item in beneficiaires)
+            {
+                liste.Add(new BeneficiaireModelView(item));
+            }
+            
+            return PartialView("~/Views/Shared/Beneficiaire/_BeneficiairePartial.cshtml",liste );
         }
 
         // GET: OffreDeFormationBeneficiaireController

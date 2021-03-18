@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,10 +18,10 @@ namespace AppAfpaBrive.DAL.Layers
         }
         #endregion
         #region Methode publique
-        public IEnumerable<BOL.Beneficiaire> GetAllByOffredeFormation()
+        public ICollection<BOL.Beneficiaire> GetAllByOffredeFormation(int id)
         {
-          return _context.Beneficiaires.ToList();
-            
+            return _context.BeneficiaireOffreFormations.Where(e => e.IdOffreFormation == id).Include(a => a.MatriculeBeneficiaireNavigation)
+                 .Select(e => e.MatriculeBeneficiaireNavigation).ToList();
         }
         #endregion 
     }

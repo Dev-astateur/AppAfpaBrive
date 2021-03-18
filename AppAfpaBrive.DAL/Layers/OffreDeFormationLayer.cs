@@ -30,6 +30,7 @@ namespace AppAfpaBrive.DAL.Layers
             return _context.OffreFormations.Where(a => a.MatriculeCollaborateurAfpa == idCollaborateurAFPA).ToList();
                
         }
+       
         
         #endregion
     }
