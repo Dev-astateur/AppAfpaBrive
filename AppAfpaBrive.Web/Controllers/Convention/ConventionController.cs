@@ -25,6 +25,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_Entreprise _Entreprise = null;
         private Layer_Pays _Pays = null;
         private Layer_Professionnel _pro = null;
+        private Layer_EntrepriseProfessionnel _entreprisepro = null;
         public ConventionController (AFPANADbContext context)
         {
             _beneficiaireOffre = new Layer_Offres_Formation(context);
@@ -33,6 +34,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _Entreprise = new Layer_Entreprise(context);
             _Pays = new Layer_Pays(context);
             _pro = new Layer_Professionnel(context);
+            _entreprisepro = new Layer_EntrepriseProfessionnel(context);
         }
 
         // get index
@@ -230,7 +232,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     TelephonePro = obj.NumerosTel,
                     IdEntreprise = convention.IdEntreprise
                 };
-                
+                _entreprisepro.create(entrepriseProfessionnel);
                 return RedirectToAction("Professionel");
             }
 
