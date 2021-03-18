@@ -25,7 +25,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
             {
                 ProduitFormationLayer produitLayer = new ProduitFormationLayer(db);
                 string term = HttpContext.Request.Query["term"].ToString();
-                var offre = layerOffre
+                var offre = produitLayer.GetProduitFormationStartWith(term).Select(x => new { Id = x.CodeProduitFormation, Libelle = x.LibelleProduitFormation });
 
                 var offres = db.ProduitFormations.Where(x => x.CodeProduitFormation.ToString().StartsWith(term)).Select(x => new { Id = x.CodeProduitFormation, Libelle = x.LibelleProduitFormation }).ToList();
                 return Ok(offres);

@@ -1,29 +1,30 @@
-﻿using AppAfpaBrive.BOL;
-using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Layers
 {
-    public class ProduitFormationLayer
+    public class OffreDeFormationLayer
     {
         private readonly AFPANADbContext _context;
 
         #region Constructeur
-        public ProduitFormationLayer(AFPANADbContext context)
+        public OffreDeFormationLayer(AFPANADbContext context)
         {
             this._context = context;
         }
         #endregion
         #region Methode publique
-
-        public List<OffreFormation> GetProduitFormationStartWith(string codeProduit)
+        public BOL.OffreFormation GetByMatriculeCollaborateurAFPA(string idCollaborateurAFPA)
         {
-            return _context.OffreFormations.Where(x => x.CodeProduitFormation.ToString().StartsWith(codeProduit)).ToList();
-          
+            return _context.OffreFormations.Where(a => a.MatriculeCollaborateurAfpa == idCollaborateurAFPA)
+                .Include(e => e.BeneficiaireOffreFormations).ThenInclude(a => a.MatriculeBeneficiaireNavigation)
+               .FirstOrDefault();
+            // return _context.OffreFormations.Where(b => b.MatriculeCollaborateurAfpa == idCollaborateurAFPA).FirstOrDefault();
+
         }
         #endregion
     }
