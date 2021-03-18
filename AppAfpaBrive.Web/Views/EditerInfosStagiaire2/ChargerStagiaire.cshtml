@@ -9,41 +9,13 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit2">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MatriculeBeneficiaire" />
-            <div class="form-group form-check">
-                <div>
-                    <label class="form-check-label">
-                        <input type="radio" name="Civilite" class="form-check-input" value="true Monsieur" asp-for="CodeTitreCivilite" />Monsieur</input> @Html.DisplayFor(model => model.CodeTitreCivilite)
-                    </label>
-
-                </div>
-                <div>
-                    <label class="form-check-label">
-                        <input type="radio" name="Civilite" class="form-check-input" value="true" asp-for="CodeTitreCivilite" />Madame</input> @Html.DisplayFor(model => model.CodeTitreCivilite)
-                    </label>
-                </div>
-                <div>
-                    <label class="form-check-label">
-                        <input type="radio" name="Civilite" class="form-check-input" value="true" asp-for="CodeTitreCivilite" />Mademoiselle</input> @Html.DisplayFor(model => model.CodeTitreCivilite)
-                    </label>
-                </div>
-                
-                @*<select asp-for="CodeTitreCivilite" class="form-control" asp-items="ViewBag.CodeTitreCivilite"></select>
-        <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>*@
-
-                @*@Html.RadioButtonFor(model => model.CodeTitreCivilite, "1", Model.CodeTitreCivilite == '1' ? new { @Checked = "checked" } : null) Monsieur*@
-                @*@Html.RadioButtonFor(
-        settings =>
-        {
-            settings.CodeTitreCivilite = 1;
-
-            settings.CodeTitreCivilite.Items.Add("Yes, this time only");
-            settings.CodeTitreCivilite.Items.Add("No, not this time");
-            settings.CodeTitreCivilite.Items.Add("Yes, always");
-
-        })*@
+            <div class="form-group">
+                <label asp-for="CodeTitreCivilite" class="control-label">Code Titre Civilité</label>
+                <select asp-for="CodeTitreCivilite" class="form-control" asp-items="ViewBag.CodeTitreCivilite"></select>
+                <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NomBeneficiaire" class="control-label">Nom</label>
@@ -61,7 +33,7 @@
                 <span asp-validation-for="DateNaissanceBeneficiaire" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MailBeneficiaire" class="control-label">Email</label>
+                <label asp-for="MailBeneficiaire" class="control-label">Adresse E-mail</label>
                 <input asp-for="MailBeneficiaire" class="form-control" />
                 <span asp-validation-for="MailBeneficiaire" class="text-danger"></span>
             </div>
@@ -71,22 +43,22 @@
                 <span asp-validation-for="TelBeneficiaire" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Ligne1Adresse" class="control-label">Adresse</label>
+                <label asp-for="Ligne1Adresse" class="control-label">Adresse (Ligne 1)</label>
                 <input asp-for="Ligne1Adresse" class="form-control" />
                 <span asp-validation-for="Ligne1Adresse" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Ligne2Adresse" class="control-label">Adresse (ligne 2)</label>
+                <label asp-for="Ligne2Adresse" class="control-label">Adresse (Ligne 2)</label>
                 <input asp-for="Ligne2Adresse" class="form-control" />
                 <span asp-validation-for="Ligne2Adresse" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Ligne3Adresse" class="control-label">Adresse (ligne 3)</label>
+                <label asp-for="Ligne3Adresse" class="control-label">Adresse (Ligne 3)</label>
                 <input asp-for="Ligne3Adresse" class="form-control" />
                 <span asp-validation-for="Ligne3Adresse" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CodePostal" class="control-label">Code postal</label>
+                <label asp-for="CodePostal" class="control-label">Code Postal</label>
                 <input asp-for="CodePostal" class="form-control" />
                 <span asp-validation-for="CodePostal" class="text-danger"></span>
             </div>
@@ -96,16 +68,50 @@
                 <span asp-validation-for="Ville" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdPays2" class="control-label">Id pays</label>
-                <input asp-for="IdPays2" class="form-control" />
+                <label asp-for="UserId" class="control-label">ID Utilisateur</label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdPays2" class="control-label">Id Pays 2</label>
+                <select asp-for="IdPays2" class="form-control" asp-items="ViewBag.IdPays2"></select>
                 <span asp-validation-for="IdPays2" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Annuler" class="btn btn-danger" asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation" />
-                <input type="submit" value="Enregistrer" class="btn btn-success" />
+                <label asp-for="PathPhoto" class="control-label">Photo</label>
+                <input asp-for="PathPhoto" class="form-control" />
+                <span asp-validation-for="PathPhoto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MailingAutorise" class="control-label">Mailing Autorisé</label>
+                <input asp-for="MailingAutorise" class="form-control" />
+                <span asp-validation-for="MailingAutorise" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Revenir au menu d'édition" class="btn btn-danger" asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation" />
+                <input type="submit" value="Enregistrer" class="btn btn-primary" asp-controller="EditerInfosStagiaire2" asp-action="Update" />
             </div>
         </form>
     </div>
 </div>
+
+@*<div class="form-group form-check">
+        <div>
+            <label class="form-check-label">
+                <input type="radio" name="Civilite" class="form-check-input" value="true Monsieur" asp-for="CodeTitreCivilite" />Monsieur</input> @Html.DisplayFor(model => model.CodeTitreCivilite)
+            </label>
+
+        </div>
+        <div>
+            <label class="form-check-label">
+                <input type="radio" name="Civilite" class="form-check-input" value="true" asp-for="CodeTitreCivilite" />Madame</input> @Html.DisplayFor(model => model.CodeTitreCivilite)
+            </label>
+        </div>
+        <div>
+            <label class="form-check-label">
+                <input type="radio" name="Civilite" class="form-check-input" value="true" asp-for="CodeTitreCivilite" />Mademoiselle</input> @Html.DisplayFor(model => model.CodeTitreCivilite)
+            </label>
+        </div>
+    </div>*@
 
 

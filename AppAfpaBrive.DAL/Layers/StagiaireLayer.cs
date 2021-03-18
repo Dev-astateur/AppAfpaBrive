@@ -23,19 +23,19 @@ namespace AppAfpaBrive.DAL.Layers
         }
 
         //Methode pour chercher les stagiaires par matricule
-        public Beneficiaire FinByMatricule(string matricule)
+        public Beneficiaire FinByMatricule(string id)
         {
-            return _context.Beneficiaires.Find(new object[] { matricule });
+            return _context.Beneficiaires.Where(x => x.MatriculeBeneficiaire == id).SingleOrDefault();
         }
 
         //Methode pour chercher les stagiaires par offre de formation
-        //public ICollection<Beneficiaire> GetBeneficiaireParIdOffreDeFormation(int id)
-        //{
-        //    return _context.BeneficiaireOffreFormations
-        //        .Where(x => x.IdOffreFormation == id)
-        //        .Include(x => x.MatriculeBeneficiaireNavigation)
-        //        .Select(x => x.MatriculeBeneficiaireNavigation).ToList();
-        //}
+        public ICollection<Beneficiaire> GetBeneficiaireParIdOffreDeFormation(int id)
+        {
+            return _context.BeneficiaireOffreFormations
+                .Where(x => x.IdOffreFormation == id)
+                .Include(x => x.MatriculeBeneficiaireNavigation)
+                .Select(x => x.MatriculeBeneficiaireNavigation).ToList();
+        }
 
         public ICollection<Beneficiaire> GetBeneficiaireParLibelleOffreDeFormation(string libelle)
         {
@@ -71,6 +71,23 @@ namespace AppAfpaBrive.DAL.Layers
                         MailingAutorise = b.MailingAutorise
                     })
                     .ToList();
+        }
+
+        public void InsertBeneficiaire(Beneficiaire beneficiaire)
+        {
+
+            _context.Beneficiaires.Add(beneficiaire);
+            _context.SaveChanges();
+        }
+        public void RemoveBeneficiare(Beneficiaire beneficiaire)
+        {
+            _context.Beneficiaires.Remove(beneficiaire);
+            _context.SaveChanges();
+        }
+        public void UpdateBeneficiaire(Beneficiaire beneficiaire)
+        {
+            _context.Beneficiaires.Update(beneficiaire);
+            _context.SaveChanges();
         }
     }
 }

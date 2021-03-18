@@ -4,7 +4,7 @@
     ViewData["Title"] = "VuePartielleStagiaires";
 }
 
-<h2>Sélectionnez un stagiaire</h2>
+<h2>Sélectionnez un(e) stagiaire</h2>
 
 <table class="table">
     <thead>
@@ -22,22 +22,22 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomBeneficiaire)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrenomBeneficiaire)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MatriculeBeneficiaire)
-            </td>
-            <td>
-                
-                <a asp-controller="EditerInfosStagiaire2" asp-action="Edit" asp-route-id="@item.MatriculeBeneficiaire">Editer</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomBeneficiaire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrenomBeneficiaire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatriculeBeneficiaire)
+                </td>
+                <td>
+                    <a asp-controller="EditerInfosStagiaire2" asp-action="ChargerStagiaire" asp-route-id="@item.MatriculeBeneficiaire">Editer</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

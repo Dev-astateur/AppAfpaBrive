@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AppAfpaBrive.DAL;
+using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL.Layers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +12,14 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {
     public class EditerInfosStagiaire2Controller : Controller
     {
+        private readonly StagiaireLayer _stagiaireLayer;
+        private AFPANADbContext _context = null;
+
+        public EditerInfosStagiaire2Controller(AFPANADbContext context)
+        {
+            _stagiaireLayer = new StagiaireLayer(context);
+    }
+
         // GET: EditerInfosStagiaire2Controller
         public ActionResult Index()
         {
@@ -16,30 +27,34 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         }
 
         // GET: EditerInfosStagiaire2Controller/Details/5
-        public ActionResult Details(int id)
+        public ActionResult ChargerStagiaire(string id)
         {
-            return View();
+            if (id == null)
+            {
+                return BadRequest();
+            }           
+            var beneficiaire = _stagiaireLayer.FinByMatricule(id);
+            return View(beneficiaire);
         }
 
         // GET: EditerInfosStagiaire2Controller/Create
         public ActionResult Create()
-        {
-                return this.View();     
+        {           
+            
+           return View();
         }
 
         // POST: EditerInfosStagiaire2Controller/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Update(Beneficiaire beneficiaire)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _stagiaireLayer.UpdateBeneficiaire(beneficiaire);
+
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(HomeController));
         }
 
         // GET: EditerInfosStagiaire2Controller/Edit/5
