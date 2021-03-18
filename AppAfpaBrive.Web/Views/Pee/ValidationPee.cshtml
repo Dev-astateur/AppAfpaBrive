@@ -1,17 +1,19 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model AppAfpaBrive.Web.ModelView.PeeModelView
+﻿@model AppAfpaBrive.Web.ModelView.PeeModelView
 @{
     ViewData["Title"] = "Entreprise";
 }
+<div class="container" id="viewPartial">
+    @await Html.PartialAsync("~/Views/Shared/Entreprise/_EntreprisePartial.cshtml", Model.IdEntrepriseNavigation)
+</div>
 
-@await Html.PartialAsync("~/Views/Shared/Entreprise/_EntreprisePartial.cshtml", Model.IdEntrepriseNavigation)
 <div class="container">
     <div class="row">
-        <div class="col-md-6"><p><a asp-action="ListePeeAValider" asp-route-id="@Model.Id.MatriculeCollaborateurAfpa">Retour</a></p></div>
-        <div class="col-md-6"><p><a asp-action="SuivantRemarques" asp-route-id="@Model.IdPee">Suivant</a></p></div>
+        <div class="col-md-6"><p><a asp-action="ListePeeAValider" asp-route-id="@Model.Id.MatriculeCollaborateurAfpa"><input type="button" class="btn btn-primary" value="Retour"></a></p></div>
+        <div class="col-md-6"><p></p><input type="button" class="btn btn-primary" value="Suivant" id="btn-Update"></div>
     </div>
 </div>
+
+@section Scripts
+{
+
+}

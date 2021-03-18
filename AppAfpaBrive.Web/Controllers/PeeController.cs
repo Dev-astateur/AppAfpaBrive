@@ -128,19 +128,22 @@ namespace AppAfpaBrive.Web.Controllers
         /// ici on charge la partie de saisie des remarques s'il y a lien
         /// </summary>
         /// <returns></returns>
-        public IActionResult ChargeRemarqueView()
+        [HttpGet]
+        public async Task<IActionResult> EnregistrementPeeInfo(int? id)
         {
+            if (id is null)
+                return NotFound();
+
             return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml") ;
         }
 
-        /// <summary>
-        /// IAction du controller qui fonctionne comme des web service
-        /// ici on va charger la vue partiel de validation de la convention de stage
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult SaisieValidation()
+        [HttpPost]
+        public async Task<IActionResult> EnregistrementPeeInfo(int IdPee,PeeModelView peeModelView)
         {
-            return PartialView("");
+            if (IdPee != peeModelView.IdPee)
+                return NotFound();
+
+            return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml");
         }
     }
 }
