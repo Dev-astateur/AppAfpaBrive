@@ -42,5 +42,31 @@ namespace AppAfpaBrive.Web.ModelView
 
         public virtual ICollection<OffreFormation> OffreFormations { get; set; }
         public virtual ICollection<ProduitFormationAppellationRome> ProduitFormationAppellationRomes { get; set; }
+
+        public ProduitFormation GetProduitFormation()
+        {
+            return new ProduitFormation()
+            {
+                CodeProduitFormation = this.CodeProduitFormation,
+                NiveauFormation = this.NiveauFormation,
+                LibelleProduitFormation = this.LibelleProduitFormation,
+                LibelleCourtFormation = this.LibelleCourtFormation,
+                FormationContinue = this.FormationContinue,
+                FormationDiplomante = this.FormationDiplomante
+            };
+        }
+        public ProduitFormation GetOneProduitFormationById(int id)
+        {
+            return new ProduitFormation()
+            {
+                CodeProduitFormation = id,
+                NiveauFormation = this.NiveauFormation,
+                LibelleProduitFormation = this.LibelleProduitFormation,
+                LibelleCourtFormation = this.LibelleCourtFormation,
+                FormationContinue = this.FormationContinue,
+                FormationDiplomante = this.FormationDiplomante
+            };
+        }
+
     }
 }

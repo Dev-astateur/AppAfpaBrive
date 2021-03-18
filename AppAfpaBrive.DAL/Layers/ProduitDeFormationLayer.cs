@@ -8,6 +8,7 @@ using AppAfpaBrive.BOL;
 using ReflectionIT.Mvc.Paging;
 using System.Threading.Tasks;
 
+
 namespace AppAfpaBrive.DAL.Layers
 {
     public class ProduitDeFormationLayer
@@ -19,22 +20,24 @@ namespace AppAfpaBrive.DAL.Layers
             _context = context;
         }
        
-        public BOL.ProduitFormation GetByCodeProduitFormation(int idCodeProduitFormation)
+        public ProduitFormation GetByCodeProduitFormation(int idCodeProduitFormation)
         {
             return _context.ProduitFormations.Find(idCodeProduitFormation);
         }
         public async Task<PagingList<ProduitFormation>> GetPage(string filter,int page = 1,string sortExpression ="CodeProduitFormation")
         {
-            var qry = _context.ProduitFormations.AsQueryable(); 
+            var qry = _context.ProduitFormations.AsQueryable();
             if (!string.IsNullOrWhiteSpace(filter))
             {
                 qry = qry.Where(p => p.LibelleProduitFormation.Contains(filter));
             }
+            
             return await PagingList.CreateAsync<ProduitFormation>(qry,20, page, sortExpression,"CodeProduitFormation");
         }
 
         public void InsertProduit(ProduitFormation prod)
         {
+            
             _context.ProduitFormations.Add(prod);
             _context.SaveChanges();
         }

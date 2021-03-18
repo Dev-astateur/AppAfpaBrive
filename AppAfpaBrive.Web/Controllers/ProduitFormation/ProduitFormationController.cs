@@ -55,18 +55,19 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // POST: ProduitFormation/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(BOL.ProduitFormation obj)
+        public IActionResult Create(ProduitFormationModelView obj)
         {
-
-            //if ((obj.FormationContinue == false && obj.FormationDiplomante == false) ||
-            //(obj.FormationDiplomante == true && obj.FormationContinue == true))
-            //{
-            //    ModelState.AddModelError("Error", "Vous devez selectionner une seule option");
-            //}
-            //else
+            var x = Request.Form["Formation"].ToString();
+            
             if (ModelState.IsValid)
             {
-                _produitDeFormationLayer.InsertProduit(obj);
+                if (x == "0")
+                {
+                    obj.FormationContinue = true;
+                }
+                else obj.FormationDiplomante = true;
+                
+                _produitDeFormationLayer.InsertProduit(obj.GetProduitFormation());
                 return RedirectToAction("Index");
             }
             return this.View(obj);
@@ -80,23 +81,24 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
             {
                 return NotFound();
             }
-            var obj = _produitDeFormationLayer.GetByCodeProduitFormation(id);
+            BOL.ProduitFormation obj = _produitDeFormationLayer.GetByCodeProduitFormation(id);
+            
             if (obj == null)
             {
                 return NotFound();
             }
             
-            return View(obj);
+            return View();
         }
 
         // POST: ProduitFormation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(BOL.ProduitFormation obj)
+        public IActionResult Edit(ProduitFormationModelView obj)
         {
             if (ModelState.IsValid)
             {
-                _produitDeFormationLayer.Update(obj);
+                _produitDeFormationLayer.Update(obj.GetProduitFormation());
                 return RedirectToAction("Index");
             }
             return View(obj);

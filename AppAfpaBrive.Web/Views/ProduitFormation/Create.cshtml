@@ -32,17 +32,21 @@
                 <input asp-for="LibelleCourtFormation" class="form-control" />
                 <span asp-validation-for="LibelleCourtFormation" class="text-danger"></span>
             </div>
-            @*<div class="form-group form-check">
+            <div class="form-group form-check">
             <label class="form-check-label">
-                <input type="radio" name="Formation" class="form-check-input" value="True" asp-for="FormationContinue" /> @Html.DisplayNameFor(model => model.FormationContinue)
+                @*<input type="radio" name="Formation" class="form-check-input" value="True" asp-for="FormationContinue" /> @Html.DisplayNameFor(model => model.FormationContinue)*@
+                <label>FormationContinue</label>
+                @Html.RadioButton("Formation","0")
             </label>
         </div>
         <div class="form-group form-check">
-            <label  class="form-check-label">
-                <input type="radio" name ="Formation" value="True" class="form-check-input" checked asp-for="FormationDiplomante" /> @Html.DisplayNameFor(model => model.FormationDiplomante)
+            <label class="form-check-label">
+                @*<input type="radio" name="Formation" value="True" class="form-check-input" checked asp-for="FormationDiplomante" /> @Html.DisplayNameFor(model => model.FormationDiplomante)*@
+                <label>FormationDiplomante</label>
+                @Html.RadioButton("Formation", "1",true)
             </label>
-        </div>*@
-            <div class="form-group form-check">
+        </div>
+            @*<div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="FormationContinue" /> @Html.DisplayNameFor(model => model.FormationContinue)
                 </label>
@@ -51,7 +55,7 @@
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="FormationDiplomante" /> @Html.DisplayNameFor(model => model.FormationDiplomante)
                 </label>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Enregistrer" class="btn btn-primary" />
             </div>
