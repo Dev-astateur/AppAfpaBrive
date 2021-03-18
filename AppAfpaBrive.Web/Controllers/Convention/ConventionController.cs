@@ -151,7 +151,18 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 string str = this.HttpContext.Session.GetString("convention");
                 Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
 
-                //_Entreprise.Create_entreprise(entreprise);
+                Entreprise entreprise1 = new Entreprise
+                {
+                    CodePostal = entreprise.CodePostal,
+                    Ligne1Adresse = entreprise.Ligne1Adresse,
+                    Ligne2Adresse = entreprise.Ligne2Adresse,
+                    Ligne3Adresse = entreprise.Ligne3Adresse,
+                    RaisonSociale = entreprise.RaisonSociale,
+                    NumeroSiret = entreprise.NumeroSiret,
+                    Ville = entreprise.Ville,
+                    Idpays2 = _Pays.Get_pays_ID(entreprise.Idpays2)
+                };
+                _Entreprise.Create_entreprise(entreprise1);
 
                 convention.Siret = entreprise.NumeroSiret;
                 str = JsonConvert.SerializeObject(convention);
