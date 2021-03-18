@@ -23,9 +23,13 @@ namespace AppAfpaBrive.DAL.Layers
         {
             return _context.ProduitFormations.Find(idCodeProduitFormation);
         }
-        public async Task<PagingList<ProduitFormation>> GetPage(int page = 1,string sortExpression ="CodeProduitFormation")
+        public async Task<PagingList<ProduitFormation>> GetPage(string filter,int page = 1,string sortExpression ="CodeProduitFormation")
         {
-            var qry= _context.ProduitFormations;
+            var qry = _context.ProduitFormations.AsQueryable(); 
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                qry = qry.Where(p => p.LibelleProduitFormation.Contains(filter));
+            }
             return await PagingList.CreateAsync<ProduitFormation>(qry,20, page, sortExpression,"CodeProduitFormation");
         }
 

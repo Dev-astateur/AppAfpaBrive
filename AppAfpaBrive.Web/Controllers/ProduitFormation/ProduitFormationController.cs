@@ -10,6 +10,7 @@ using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ModelView;
 using AppAfpaBrive.DAL.Layers;
 using ReflectionIT.Mvc.Paging;
+using Microsoft.AspNetCore.Routing;
 
 namespace AppAfpaBrive.Web.Controllers.ProduitFormation
 {
@@ -27,15 +28,14 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         }
 
         // GET: ProduitFormation
-        public async Task<IActionResult> Index(int page, string sortExpression="CodeProduitFormation")
+        public async Task<IActionResult> Index(string filter,int page, string sortExpression="CodeProduitFormation")
         {
-            //IEnumerable<BOL.ProduitFormation> listProduitFormations;
-            //listProduitFormations = _produitDeFormationLayer.GetAll();
-            // var qry = _produitDeFormationLayer.GetAll();
-            //IOrderedQueryable<BOL.ProduitFormation> qry = _produitDeFormationLayer.GetAll();
-            //var model = await PagingList.CreateAsync(qry, 20, page);
-            var model = await _produitDeFormationLayer.GetPage(page, sortExpression);
-
+           
+            var model = await _produitDeFormationLayer.GetPage(filter,page, sortExpression);
+            model.RouteValue = new RouteValueDictionary
+            {
+                {"filter", filter }
+            };
             return View(model);
         }
 

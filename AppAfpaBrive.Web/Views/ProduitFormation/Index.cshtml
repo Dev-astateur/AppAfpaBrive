@@ -17,10 +17,12 @@
                 <i class="fas fa-plus-square"></i> &nbsp; Créer un nouveau Produit de Formation
             </a>
         </div>
-        <div class="col-6">
-            <input asp-controller="ProduitFormation" asp-action="Details" placeholder="Mécanicien..." />
-            <input id="btnRecherche" type="button" value="Recherche" />
-        </div>
+        <form method="get" class="form-inline">
+            <input name="filter" class="form-control" placeholder="filtre" value="@Model.RouteValue["filter"]"/>
+            <button type="submit" class="btn btn-info">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+            </button>
+        </form>
     </div>
 
     <br /><br />
@@ -31,22 +33,22 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.SortableHeaderFor(Model=>Model.CodeProduitFormation, this.Model)
+                        @Html.SortableHeaderFor(Model=>Model.CodeProduitFormation)
                     </th>
                     <th>
-                        @Html.SortableHeaderFor(model => model.NiveauFormation, this.Model)
+                        @Html.SortableHeaderFor(model => model.NiveauFormation)
                     </th>
                     <th>
-                        @Html.SortableHeaderFor(model => model.LibelleProduitFormation, this.Model)
+                        @Html.SortableHeaderFor(model => model.LibelleProduitFormation)
                     </th>
                     <th>
-                        @Html.SortableHeaderFor(model => model.LibelleCourtFormation, this.Model)
+                        @Html.SortableHeaderFor(model => model.LibelleCourtFormation)
                     </th>
                     <th>
-                        @Html.SortableHeaderFor(model => model.FormationContinue, this.Model)
+                        @Html.SortableHeaderFor(model => model.FormationContinue)
                     </th>
                     <th>
-                        @Html.SortableHeaderFor(model => model.FormationDiplomante, this.Model)
+                        @Html.SortableHeaderFor(model => model.FormationDiplomante)
                     </th>
                 </tr>
             </thead>
