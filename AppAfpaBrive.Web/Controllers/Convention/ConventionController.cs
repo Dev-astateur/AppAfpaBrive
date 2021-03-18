@@ -179,5 +179,13 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             return View();
         }
 
+        // post Professionel_Creation
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Professionel_Creation(Professionnel_ModelView obj)
+        {
+
+            return View(obj);
+        }
     }
 }

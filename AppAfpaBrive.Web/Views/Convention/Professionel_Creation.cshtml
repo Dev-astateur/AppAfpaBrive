@@ -1,22 +1,60 @@
-﻿@model AppAfpaBrive.Web.ModelView.Entreprise_Creation_ViewModel
+﻿@model AppAfpaBrive.Web.ModelView.Professionnel_ModelView
 
 <form method="post">
     <div class="border p-3">
         <div class="form-group row">
-            <h2 class="text-info pl-3">Votre entreprise n'est pas dans la base de donnée. Veuiller remplir les données</h2>
+            <h2 class="text-info pl-3">Veuillez remplir les informations suivantes afin d'ajouter les bloubloublou:</h2>
         </div>
         <div class="row">
             <div class="col-8">
 
                 <div class="form-group row">
                     <div class="col-md-4 p-2">
-                        <label asp-for="NumeroSiret"> Siret</label>
+                        <label> Nom</label>
                     </div>
                     <div class="col-md-8 p-2">
-                        <input asp-for="NumeroSiret" class="form-control" />
-                        <span asp-validation-for="NumeroSiret" class="text-danger"></span>
+                        <input asp-for="NomProfessionnel" class="form-control" />
+                        <span asp-validation-for="NomProfessionnel" class="text-danger"></span>
                     </div>
-                    
+                    <div class="col-md-4 p-2">
+                        <label> prénom</label>
+                    </div>
+                    <div class="col-md-8 p-2">
+                        <input asp-for="PrenomProfessionnel" class="form-control" />
+                        <span asp-validation-for="PrenomProfessionnel" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 p-2">
+                        <label> Civilité</label>
+                    </div>
+                    <div class="col-md-8 p-2">
+                        <div>
+                            <label>Homme: </label>
+                            @Html.RadioButtonFor(m => m.CodeTitreCiviliteProfessionnel, 0)
+                            <label>Femme: </label>
+                            @Html.RadioButtonFor(m => m.CodeTitreCiviliteProfessionnel, 1)
+                        </div>
+                    </div>
+                    <div class="col-md-4 p-2">
+                        <label> Adresse Mail</label>
+                    </div>
+                    <div class="col-md-8 p-2">
+                        <input asp-for="AdresseMail" class="form-control" />
+                        <span asp-validation-for="AdresseMail" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 p-2">
+                        <label> Numeros de Tel</label>
+                    </div>
+                    <div class="col-md-8 p-2">
+                        <input asp-for="NumerosTel" class="form-control" />
+                        <span asp-validation-for="NumerosTel" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 p-2">
+                        <label> Fonction</label>
+                    </div>
+                    <div class="col-md-8 p-2">
+                        <input asp-for="Fonction" class="form-control" />
+                        <span asp-validation-for="Fonction" class="text-danger"></span>
+                    </div>
 
                 </div>
                 <div class="form-group row">
