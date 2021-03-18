@@ -34,7 +34,7 @@ namespace AppAfpaBrive.Web.ModelView
         [DisplayName("Id de l'entreprise")]
         public int IdEntreprise { get; set; }
 
-        [Required(ErrorMessage ="Entrez un nom d'entreprise"]
+        [Required(ErrorMessage ="Entrez un nom d'entreprise")]
         [DisplayName("Raison sociale")]
         public string RaisonSociale { get; set; }
 

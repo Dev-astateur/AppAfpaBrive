@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AppAfpaBrive.DAL.Layers
 {
-   public class EntrepriseLayer
+    public class EntrepriseLayer
     {
         private readonly AFPANADbContext _context;
 
@@ -16,7 +16,7 @@ namespace AppAfpaBrive.DAL.Layers
             _context = context;
         }
 
-       public List<Entreprise> GetAllEntreprise()
+        public List<Entreprise> GetAllEntreprise()
         {
             return _context.Entreprises.ToList();
         }
@@ -109,7 +109,7 @@ namespace AppAfpaBrive.DAL.Layers
                                           {
                                               IdEntreprise = pee.IdEntreprise
                                           })
-                                         
+
                                           .Join(_context.Entreprises,
                                           c => c.IdEntreprise
                                           , ent => ent.IdEntreprise
@@ -132,8 +132,8 @@ namespace AppAfpaBrive.DAL.Layers
         public Entreprise GetEntrepriseById(int id)
         {
             //int identifiant = int.Parse(id);
-          return _context.Entreprises.Where(e => e.IdEntreprise== id).FirstOrDefault();
-           
+            return _context.Entreprises.Where(e => e.IdEntreprise == id).FirstOrDefault();
+
         }
 
         public List<Entreprise> GetEntrepriseByProduitFormation(string offre)
@@ -188,7 +188,7 @@ namespace AppAfpaBrive.DAL.Layers
             //                               }).ToList();
 
             List<Entreprise> query2 = _context.ProduitFormations
-                                          .Where(pro => pro.LibelleProduitFormation.StartsWith(offre))
+                                          .Where(pro => pro.LibelleProduitFormation == offre)
                                            .Join(_context.OffreFormations
                                           , p => p.CodeProduitFormation
                                           , o => o.CodeProduitFormation
@@ -219,13 +219,9 @@ namespace AppAfpaBrive.DAL.Layers
                                               Ville = e.Ville,
                                               Idpays2 = e.Idpays2
                                           }).ToList();
+
+
             return query2;
-
-
-
-
-
-
 
 
         }

@@ -81,8 +81,11 @@ namespace AppAfpaBrive.Web.Controllers
             List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
 
             ViewData["GetDepartement"] = departement;
-            ViewData["GetProduitForm"] = formation;
-            var query = _layer.GetAllEntreprise();
+            // ViewData["GetProduitForm"] = formation;
+
+            //var query = _layer.GetAllEntreprise();
+
+            List<Entreprise> query=null;
 
 
 
@@ -103,19 +106,26 @@ namespace AppAfpaBrive.Web.Controllers
 
                 query = _layer.GetEntrepriseByProduitFormation(formation);
             }
-            foreach (var entreprise in query)
-            {
-                EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
-                //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
-                //entrepriseModel.Ville = entreprise.Ville;
-                //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
-                //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
 
-                ListentrepriseListViewModel.Add(entrepriseModel);
+            if (query!=null)
+            {
+                foreach (var entreprise in query)
+                {
+                    EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
+                    //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
+                    //entrepriseModel.Ville = entreprise.Ville;
+                    //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
+                    //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
+
+                    ListentrepriseListViewModel.Add(entrepriseModel);
+                    
+                }
+                return View(ListentrepriseListViewModel);
             }
 
+            return View();
 
-            return View(ListentrepriseListViewModel);
+            
         }
         #endregion
 
