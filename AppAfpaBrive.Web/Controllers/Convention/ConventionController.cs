@@ -212,6 +212,27 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [ValidateAntiForgeryToken]
         public IActionResult Professionel_Creation(Professionnel_ModelView obj)
         {
+            if(ModelState.IsValid)
+            {
+                string str = this.HttpContext.Session.GetString("convention");
+                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+                Professionnel pro = new Professionnel
+                {
+                    CodeTitreCiviliteProfessionnel = obj.CodeTitreCiviliteProfessionnel,
+                    NomProfessionnel = obj.NomProfessionnel,
+                    PrenomProfessionnel = obj.PrenomProfessionnel
+                };
+                _pro.create(pro);
+                EntrepriseProfessionnel entrepriseProfessionnel = new EntrepriseProfessionnel
+                {
+                    IdProfessionnel = _pro.Get_Id_pro(pro.NomProfessionnel, pro.PrenomProfessionnel),
+                    AdresseMailPro = obj.AdresseMail,
+                    TelephonePro = obj.NumerosTel,
+                    IdEntreprise = convention.IdEntreprise
+                };
+                
+                return RedirectToAction("Professionel");
+            }
 
             return View(obj);
         }

@@ -4,6 +4,19 @@ using AppAfpaBrive.BOL;
 
 namespace AppAfpaBrive.DAL.Layer
 {
+    public class Layer_EntrepriseProfessionnel
+    {
+        private readonly AFPANADbContext _db;
+        public Layer_EntrepriseProfessionnel(AFPANADbContext context)
+        {
+            _db = context;
+        }
+        public void create(EntrepriseProfessionnel entreprise)
+        {
+            _db.Add(entreprise);
+            _db.SaveChanges();
+        }
+    }
     public class Layer_Professionnel
     {
         private readonly AFPANADbContext _db;
@@ -29,6 +42,17 @@ namespace AppAfpaBrive.DAL.Layer
                 y.Add(list);
             }
             return y;
+        }
+
+        public void create(Professionnel pro)
+        {
+            _db.Add(pro);
+            _db.SaveChanges();
+        }
+
+        public int Get_Id_pro(string nom , string prenom)
+        {
+            return _db.Professionnels.Where(x => x.NomProfessionnel == nom && x.PrenomProfessionnel == prenom).FirstOrDefault().IdProfessionnel;
         }
     }
 
