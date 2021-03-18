@@ -129,12 +129,30 @@ namespace AppAfpaBrive.Web.Controllers
                 return NotFound();
 
             PeeModelView pee = await _peeLayer.GetPeeByIdAsync((int)id);
-
             return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml",pee) ;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EnregistrementPeeInfo(int IdPee, PeeModelView peeModelView)
+        {
+            if (IdPee != peeModelView.IdPee)
+                return NotFound();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                }
+            }
+            return RedirectToAction();
+        }
+
         /// <summary>
-        /// Iaction du controller qui fonctionne comme des web service
+        /// IAction du controller qui fonctionne comme des web service
         /// ici on charge la partie de saisie des remarques s'il y a lien
         /// </summary>
         /// <returns></returns>
@@ -149,24 +167,6 @@ namespace AppAfpaBrive.Web.Controllers
             return PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", pee);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EnregistrementPeeInfo(int IdPee,PeeModelView peeModelView)
-        {
-            if (IdPee != peeModelView.IdPee)
-                return NotFound();
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-
-                }
-            }
         
-            return RedirectToAction();
-        }
     }
 }

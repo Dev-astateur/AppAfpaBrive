@@ -6,10 +6,6 @@
     @await Html.PartialAsync("~/Views/Shared/Entreprise/_EntreprisePartial.cshtml", Model)
 </div>
 
-<div class="container" id="navigation">
-    @await Html.PartialAsync("~/Views/Shared/Entreprise/_NavigationPartial.cshtml",Model) 
-</div>
-
 @section Scripts
 {
     <script type="text/javascript">
@@ -22,7 +18,7 @@
             nav1.addEventListener('click', event => {
                 $.ajax({
                     type: 'GET',
-                    url: '/Pee/EnregistrementPeeInfo/' + idPee,
+                    url: '/Pee/ValidationPee/' + idPee,
                     success: function (result) {
                         const partial = document.getElementById('viewPartial');
                         partial.innerHTML = result;
@@ -33,7 +29,7 @@
             nav2.addEventListener('click', event => {
                 $.ajax({
                     type: 'GET',
-                    url: '/Pee/EnregistrementPeeInfo/' + idPee,
+                    url: '/Pee/ListeDocumentPee/' + idPee,
                     success: function (result) {
                         const partial = document.getElementById('viewPartial');
                         partial.innerHTML = result;
