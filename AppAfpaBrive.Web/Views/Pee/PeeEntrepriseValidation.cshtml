@@ -21,25 +21,29 @@
             next.addEventListener('click', event => {
                 switch (win) {
                     case '1':
-                        url = '/Pee/ListeDocumentPee/';
+                        url = '/Pee/ListeDocumentPee/'+idPee;
                         break;
                     case '2':
-                        url = '/Pee/EnregistrementPeeInfo/';
+                        url = '/Pee/EnregistrementPeeInfo/'+idPee;
                         break;
                     case '3':
                         url = '/Pee/ListePeeAValider'+@Model.MatriculeCollaborateurAfpa;
                         break;
                 }
-
-                if ( '' != url) {
+                if ('' != url && 'ListePeeAValider' != url.substring(5, 21)) {
                     $.ajax({
                         type: 'GET',
-                        url: url + idPee,
+                        url: url,
                         success: function (result) {
                             const partial = document.getElementById('viewPartial');
                             partial.innerHTML = result;
                         }
                     });
+                }
+                else {
+                    if (url.length > 0) {
+                        window.location.href = url;
+                    }
                 }
             });
 
@@ -55,8 +59,8 @@
                         url = '/Pee/ListeDocumentPee'+idPee;
                         break;
                 }
-
-                if ('' != url) {
+                console.log(url.substring(5, 21));
+                if (url.length > 0 && 'ListePeeAValider' != url.substring(5, 21)) {
                     $.ajax({
                         type: 'GET',
                         url: url,
@@ -65,6 +69,11 @@
                             partial.innerHTML = result;
                         }
                     });
+                }
+                else {
+                    if (url.length > 0) {
+                        window.location.href = url;
+                    }
                 }
             });
 

@@ -16,7 +16,7 @@
     </div>
     @foreach (var item in Model)
     {
-        <a asp-action="ValidationPee" asp-route-id="@item.IdPee">
+        <a asp-action="PeeEntrepriseValidation" asp-route-id="@item.IdPee">
             <div class="row">
                 <div class="col-md-4">
                     @Html.DisplayFor(model => item.NomBeneficiaire)
