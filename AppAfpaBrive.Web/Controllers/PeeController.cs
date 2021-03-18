@@ -104,7 +104,7 @@ namespace AppAfpaBrive.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> ValidationPee(int? id)
+        public async Task<IActionResult> PeeEntrepriseValidation(int? id)
         {
             if ( id is null )
                 return NotFound();
@@ -166,7 +166,5 @@ namespace AppAfpaBrive.Web.Controllers
             PeeModelView pee = await _peeLayer.GetPeeByIdAsync((int)id);
             return PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", pee);
         }
-
-        
     }
 }

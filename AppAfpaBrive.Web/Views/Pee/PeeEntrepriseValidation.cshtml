@@ -1,0 +1,73 @@
+﻿@model AppAfpaBrive.Web.ModelView.ValidationPee.PeeEntrepriseModelView
+@{
+    ViewData["Title"] = "Entreprise";
+}
+<div class="container" id="viewPartial">
+    @await Html.PartialAsync("~/Views/Shared/Entreprise/_EntreprisePartial.cshtml", Model)
+</div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const next = document.getElementById('next');
+            const retour = document.getElementById('return');
+            let win = document.getElementById('window').value;
+
+            const idPee = @Model.IdPee;
+            let url = '';
+
+            next.addEventListener('click', event => {
+                switch (win) {
+                    case '1':
+                        url = '/Pee/ListeDocumentPee/';
+                        break;
+                    case '2':
+                        url = '/Pee/EnregistrementPeeInfo/';
+                        break;
+                    case '3':
+                        url = '/Pee/ListePeeAValider'+@Model.MatriculeCollaborateurAfpa;
+                        break;
+                }
+
+                if ( '' != url) {
+                    $.ajax({
+                        type: 'GET',
+                        url: url + idPee,
+                        success: function (result) {
+                            const partial = document.getElementById('viewPartial');
+                            partial.innerHTML = result;
+                        }
+                    });
+                }
+            });
+
+            retour.addEventListener('click', event => {
+                switch (win) {
+                    case '1':
+                        url = '/Pee/ListePeeAValider/'+@Model.MatriculeCollaborateurAfpa;
+                        break;
+                    case '2':
+                        url = '/Pee/PeeEntrepriseValidation/' + idPee;
+                        break;
+                    case '3':
+                        url = '/Pee/ListeDocumentPee'+idPee;
+                        break;
+                }
+
+                if ('' != url) {
+                    $.ajax({
+                        type: 'GET',
+                        url: url,
+                        success: function (result) {
+                            const partial = document.getElementById('viewPartial');
+                            partial.innerHTML = result;
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+}
