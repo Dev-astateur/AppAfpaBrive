@@ -1,11 +1,12 @@
 ﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AppAfpaBrive.DAL.Layers
+namespace AppAfpaBrive.Web.Layers
 {
     public class EntrepriseLayer
     {
@@ -43,7 +44,12 @@ namespace AppAfpaBrive.DAL.Layers
             _context.Entry(entreprise).State = EntityState.Modified;
             _context.SaveChanges();
         }
-        public List<Entreprise> GetEntrepriseByDepartementEtOffre(string offre, string departement)
+        public string GetIdPaysByMatriculePays(string libellePays)
+        {
+            var query = _context.Pays.Where(p => p.LibellePays.Equals(libellePays)).Select(p => p.Idpays2).SingleOrDefault();
+            return query;
+        }
+        public List<Entreprise> GetEntrepriseByDepartementEtOffre(string produit, string departement)
         {
             //List<Entreprise> query = _context.ProduitFormations
             //                               .Where(pro => pro.LibelleProduitFormation.Contains(offre))
@@ -94,7 +100,7 @@ namespace AppAfpaBrive.DAL.Layers
             //return query;
 
             List<Entreprise> query = _context.ProduitFormations
-                                          .Where(pro => pro.LibelleProduitFormation.Contains(offre))
+                                          .Where(pro => pro.LibelleProduitFormation.Contains(produit))
                                            .Join(_context.OffreFormations
                                           , p => p.CodeProduitFormation
                                           , o => o.CodeProduitFormation
@@ -136,7 +142,7 @@ namespace AppAfpaBrive.DAL.Layers
 
         }
 
-        public List<Entreprise> GetEntrepriseByProduitFormation(string offre)
+        public List<Entreprise> GetEntrepriseByProduitFormation(string produit)
         {
 
 
@@ -188,7 +194,7 @@ namespace AppAfpaBrive.DAL.Layers
             //                               }).ToList();
 
             List<Entreprise> query2 = _context.ProduitFormations
-                                          .Where(pro => pro.LibelleProduitFormation == offre)
+                                          .Where(pro => pro.LibelleProduitFormation == produit)
                                            .Join(_context.OffreFormations
                                           , p => p.CodeProduitFormation
                                           , o => o.CodeProduitFormation
@@ -225,7 +231,7 @@ namespace AppAfpaBrive.DAL.Layers
 
 
         }
-
+      
 
     }
 }

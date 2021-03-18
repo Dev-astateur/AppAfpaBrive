@@ -1,6 +1,6 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
-using AppAfpaBrive.DAL.Layers;
+
 using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -199,9 +200,14 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpPost]
         public ActionResult CreerEntreprise(Entreprise entreprise)
         {
+            
 
+                string libellePays = entreprise.Idpays2Navigation.LibellePays;
+              //
+            entreprise.Idpays2= _layer.GetIdPaysByMatriculePays(libellePays);
             try
             {
+                
                 _layer.AddEntreprise(entreprise);
                 //_dbContext.Entreprises.Add(entreprise);
                 //_dbContext.SaveChanges();

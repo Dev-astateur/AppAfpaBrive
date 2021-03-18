@@ -41,7 +41,8 @@ namespace AppAfpaBrive.Web.Controllers
             try
             {
                 string term = HttpContext.Request.Query["term"].ToString();
-                var names = _db.Pays.Where(p => p.LibellePays.StartsWith(term)).ToList();
+                var names = _db.Pays.Where(p => p.LibellePays.StartsWith(term))
+                    .Select(x=>x.LibellePays).ToList();
                 return Ok(names);
             }
             catch
