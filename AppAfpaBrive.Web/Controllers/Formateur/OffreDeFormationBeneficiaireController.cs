@@ -78,8 +78,19 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
 
             return View(liste);
         }
-        [HttpGet]
-        public IActionResult ListeBeneficiaire(int id)
+        //[HttpGet]
+        //public IActionResult ListeBeneficiaire(int id)
+        //{
+        //    var beneficiaires = _beneficiaireLayer.GetAllByOffredeFormation(id);
+        //    List<BeneficiaireModelView> liste = new();
+        //    foreach (var item in beneficiaires)
+        //    {
+        //        liste.Add(new BeneficiaireModelView(item));
+        //    }
+            
+        //    return PartialView("~/Views/Shared/Beneficiaire/_BeneficiairePartial.cshtml",liste );
+        //}
+        public async Task<IActionResult> ListeBeneficiaire(int id, int page=1, string sortExpression="NomBeneficiaire")
         {
             var beneficiaires = _beneficiaireLayer.GetAllByOffredeFormation(id);
             List<BeneficiaireModelView> liste = new();
@@ -87,8 +98,8 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
             {
                 liste.Add(new BeneficiaireModelView(item));
             }
-            
-            return PartialView("~/Views/Shared/Beneficiaire/_BeneficiairePartial.cshtml",liste );
+            var model = await _beneficiaireLayer.GetPage(id, page, sortExpression);
+            return PartialView("~/Views/Shared/Beneficiaire/_BeneficiairePartial.cshtml", model);
         }
 
         // GET: OffreDeFormationBeneficiaireController

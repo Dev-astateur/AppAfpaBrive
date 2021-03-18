@@ -1,66 +1,76 @@
-﻿@model IEnumerable<AppAfpaBrive.Web.ModelView.BeneficiaireModelView>
-@{ 
+﻿@*@model IEnumerable<AppAfpaBrive.Web.ModelView.BeneficiaireModelView>*@
+@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.Web.ModelView.BeneficiaireModelView>
+@{
     ViewData["Title"] = "Liste Beneficiaire";
 }
 @*@await Html.PartialAsync("_BeneficiairePartial", Model.BeneficiaireOffreFormations)*@
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
 
-<table class="table table-striped table-reponsive-md">
-    <thead>
+<nav aria-label="Beneficiaire navigation">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>
 
-        <tr class="table-primary">
-            
-            <th scope="col">
+@if (Model.Count() > 0)
+{
+    <table class="table table-striped table-reponsive-md" style="width:100%">
+        <thead>
 
-                @Html.DisplayNameFor(model => model.NomBeneficiaire)
+            <tr class="table-primary">
 
-            </th>
+                <th scope="col">
 
-            <th scope="col">
+                    @Html.SortableHeaderFor(model => model.NomBeneficiaire)
 
-                @Html.DisplayNameFor(model => model.PrenomBeneficiaire)
+                </th>
 
-            </th>
+                <th scope="col">
 
-            <th scope="col">
+                    @Html.DisplayNameFor(model => model.PrenomBeneficiaire)
 
-                @Html.DisplayNameFor(model => model.MailBeneficiaire)
+                </th>
 
-            </th>
+                <th scope="col">
 
-            <th scope="col">
+                    @Html.DisplayNameFor(model => model.MailBeneficiaire)
 
-                @Html.DisplayNameFor(model => model.MailingAutorise)
+                </th>
 
-            </th>
+                <th scope="col">
 
-        </tr>
+                    @Html.DisplayNameFor(model => model.MailingAutorise)
 
-    </thead>
+                </th>
 
-    <tbody>
+            </tr>
 
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            
+        </thead>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.NomBeneficiaire)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrenomBeneficiaire)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MailBeneficiaire)
-            </td>
-            <td>
-                @Html.CheckBox("checked", true, item.MailingAutorise)
-            </td>
+        <tbody>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
 
 
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NomBeneficiaire)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrenomBeneficiaire)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MailBeneficiaire)
+                    </td>
+                    <td>
+                        @Html.CheckBox("checked", true, item.MailingAutorise)
+                    </td>
 
-        </tr>
-        }
-    </tbody>
-</table>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}

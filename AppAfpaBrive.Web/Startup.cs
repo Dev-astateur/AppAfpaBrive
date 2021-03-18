@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using AppAfpaBrive.Web.Utilitaires;
+using ReflectionIT.Mvc.Paging;
 
 namespace AppAfpaBrive.Web
 {
@@ -43,6 +44,11 @@ namespace AppAfpaBrive.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddTransient<IEmailSender, SendinBlueEmailSender>();
+            services.AddPaging(option =>
+            {
+                option.ViewName = "Bootstrap4";
+                option.PageParameterName = "page";
+            });
            
         }
 
