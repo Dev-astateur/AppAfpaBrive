@@ -25,12 +25,17 @@ namespace AppAfpaBrive.DAL.Layers
                 .Include(e => e.MatriculeBeneficiaireNavigation).ToListAsync();
         }
 
-        public async Task<Pee> GetPeeByIdPeeAsync(int idPee)
+        public async Task<Pee> GetPeeByIdPeeOffreEntreprisePaysAsync(int idPee)
         {
             return await _dbContext.Pees.Where(e=>e.IdPee==idPee)
                 .Include(e => e.Id)
                 .Include(e=>e.IdEntrepriseNavigation).ThenInclude(e=>e.Idpays2Navigation)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<Pee> GetPeeByIdAsync(int idPee)
+        {
+            return await _dbContext.Pees.FindAsync((decimal)idPee);
         }
     }
 }

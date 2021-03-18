@@ -114,7 +114,7 @@ namespace AppAfpaBrive.Web.Controllers
             if ( id is null )
                 return NotFound();
 
-            Pee pee = await _peeLayer.GetPeeByIdPeeAsync((int)id);
+            Pee pee = await _peeLayer.GetPeeByIdPeeOffreEntreprisePaysAsync((int)id);
             if (pee is null)
                 return NotFound();
 
@@ -128,13 +128,16 @@ namespace AppAfpaBrive.Web.Controllers
         /// ici on charge la partie de saisie des remarques s'il y a lien
         /// </summary>
         /// <returns></returns>
+        [Route("/Pee/EnregistrementPeeInfo/{id}")]
         [HttpGet]
         public async Task<IActionResult> EnregistrementPeeInfo(int? id)
         {
             if (id is null)
                 return NotFound();
 
-            return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml") ;
+            PeeModelView pee = new PeeModelView(await _peeLayer.GetPeeByIdAsync((int)id));
+
+            return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml",pee) ;
         }
 
         [HttpPost]
