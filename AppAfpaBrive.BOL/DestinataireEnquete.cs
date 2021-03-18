@@ -22,6 +22,8 @@ namespace AppAfpaBrive.BOL
         public int? IdContrat { get; set; }
         public bool? EnEmploi { get; set; }
 
+        public bool Repondu { get; set; }
+
         public virtual Contrat IdContratNavigation { get; set; }
         public virtual PlanificationCampagneMail IdPlanificationCampagneMailNavigation { get; set; }
         public virtual Beneficiaire MatriculeBeneficiaireNavigation { get; set; }

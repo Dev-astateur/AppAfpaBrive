@@ -10,6 +10,7 @@ namespace AppAfpaBrive.Web.Controllers.GraphicsController
         // GET: /<controller>/  
         public IActionResult Index()
         {
+
             return View();
         }
         [HttpGet]

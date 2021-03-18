@@ -469,6 +469,8 @@ namespace AppAfpaBrive.DAL
 
                 entity.Property(e => e.DateRelance2).HasColumnType("date");
 
+                entity.Property(e => e.Repondu).HasDefaultValue(false);
+
                 entity.Property(e => e.IdEtablissement)
                     .HasMaxLength(10)
                     .IsFixedLength(true);

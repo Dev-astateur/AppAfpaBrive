@@ -34,7 +34,6 @@
     <Folder Include="ModelesOffice\" />
     <Folder Include="Views\Formateur\" />
     <Folder Include="Views\Stagiaire\" />
-    <Folder Include="Models\Layer\" />
   </ItemGroup>
 
 </Project>
