@@ -1,5 +1,5 @@
 ﻿@*@model AppAfpaBrive.BOL.Entreprise*@
-@model AppAfpaBrive.Web.ModelView.EntrepriseModelView
+@model AppAfpaBrive.Web.ModelView.ValidationPee.PeeEntrepriseModelView
 
 <div class="row">
     <div class="col-sm text-center">
@@ -13,24 +13,30 @@
 </div>
 <div class="row">
     <div class="col-sm col-lg-6">
-        <p>@Html.DisplayNameFor(model => model.NumeroSiret) : @Html.DisplayFor(item => item.NumeroSiret)</p>
+        <p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.NumeroSiret) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.NumeroSiret)</p>
     </div>
     <div class="col-sm col-lg-6">
-        <p>@Html.DisplayNameFor(model => model.RaisonSociale) : @Html.DisplayFor(item => item.RaisonSociale)</p>
+        <p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.RaisonSociale) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.RaisonSociale)</p>
     </div>
 </div>
 <div class="row">
-    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.MailEntreprise) : @Html.DisplayFor(item => item.MailEntreprise)</p></div>
-    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.TelEntreprise) : @Html.DisplayFor(item => item.TelEntreprise)</p></div>
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.MailEntreprise) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.MailEntreprise)</p></div>
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.TelEntreprise) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.TelEntreprise)</p></div>
 </div>
 <div class="row">
-    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.Ligne1Adresse) : @Html.DisplayFor(item => item.Ligne1Adresse)</p></div>
-    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.Ligne2Adresse) : @Html.DisplayFor(item => item.Ligne2Adresse)</p></div>
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.Ligne1Adresse) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.Ligne1Adresse)</p></div>
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.Ligne2Adresse) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.Ligne2Adresse)</p></div>
 </div>
 <div class="row">
-    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.Ligne3Adresse) : @Html.DisplayFor(item => item.Ligne3Adresse)</p></div>
-    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.Ville) : @Html.DisplayFor(item => item.CodePostal) @Html.DisplayFor(item => item.Ville)</p></div>
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.Ligne3Adresse) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.Ligne3Adresse)</p></div>
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.Ville) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.CodePostal) @Html.DisplayFor(item => item.IdEntrepriseNavigation.Ville)</p></div>
 </div>
 <div class="row">
-    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.Idpays2Navigation.LibellePays) : @Html.DisplayFor(item=>item.Idpays2Navigation.LibellePays)</p></div>
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.Idpays2Navigation.LibellePays) : @Html.DisplayFor(item=>item.IdEntrepriseNavigation.Idpays2Navigation.LibellePays)</p></div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6"><p><a asp-action="ListePeeAValider" asp-route-id="@Model.MatriculeCollaborateurAfpa">Retour</a></p></div>
+        <div class="col-md-6"><p><a href="#" id="1">Suivant</a></p></div>
+    </div>
 </div>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.Web.ModelView.ValidationPee;
+using AppAfpaBrive.Web.ModelView;
 
 namespace AppAfpaBrive.Web.Layers
 {
@@ -32,18 +33,23 @@ namespace AppAfpaBrive.Web.Layers
                 } ).ToListAsync();
         }
 
-        public async Task<object> GetPeeByIdPeeOffreEntreprisePaysAsync(int idPee)
+        public async Task<PeeEntrepriseModelView> GetPeeByIdPeeOffreEntreprisePaysAsync(int idPee)
         {
             return await _dbContext.Pees.Where(e=>e.IdPee==idPee)
                 .Include(e => e.Id)
                 .Include(e=>e.IdEntrepriseNavigation).ThenInclude(e=>e.Idpays2Navigation)
-                .Select(e=>new { IdPee = e.IdPee, MatriculeCollaborateurAfpa= e.Id.MatriculeCollaborateurAfpa, IdEntrepriseNavigation=e.IdEntrepriseNavigation } )
+                .Select(e=>new PeeEntrepriseModelView() 
+                { 
+                    IdPee = e.IdPee, 
+                    MatriculeCollaborateurAfpa= e.Id.MatriculeCollaborateurAfpa, 
+                    IdEntrepriseNavigation=new EntrepriseModelView(e.IdEntrepriseNavigation) 
+                } )
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Pee> GetPeeByIdAsync(int idPee)
+        public async Task<PeeModelView> GetPeeByIdAsync(int idPee)
         {
-            return await _dbContext.Pees.FindAsync((decimal)idPee);
+            return new PeeModelView(await _dbContext.Pees.FindAsync((decimal)idPee));
         }
     }
 }

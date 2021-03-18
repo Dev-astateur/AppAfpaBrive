@@ -100,7 +100,7 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
         /// <summary>
-        /// IAction qui suit le système de validation
+        /// Page principale de validation de Pee
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -109,13 +109,11 @@ namespace AppAfpaBrive.Web.Controllers
             if ( id is null )
                 return NotFound();
 
-            object pee = await _peeLayer.GetPeeByIdPeeOffreEntreprisePaysAsync((int)id);
+            PeeEntrepriseModelView pee = await _peeLayer.GetPeeByIdPeeOffreEntreprisePaysAsync((int)id);
             if (pee is null)
                 return NotFound();
 
-            //PeeModelView peeModelView = new PeeModelView(pee);
-
-            return View();
+            return View(pee);
         }
        
         /// <summary>
@@ -130,26 +128,25 @@ namespace AppAfpaBrive.Web.Controllers
             if (id is null)
                 return NotFound();
 
-            PeeModelView pee = new PeeModelView(await _peeLayer.GetPeeByIdAsync((int)id));
+            PeeModelView pee = await _peeLayer.GetPeeByIdAsync((int)id);
 
             return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml",pee) ;
         }
 
+        /// <summary>
+        /// Iaction du controller qui fonctionne comme des web service
+        /// ici on charge la partie de saisie des remarques s'il y a lien
+        /// </summary>
+        /// <returns></returns>
+        [Route("/Pee/ListeDocumentPee/{id}")]
         [HttpGet]
-        public IActionResult NavigationPeeValidation( string navigation )
+        public async Task<IActionResult> ListeDocumentPee(int? id)
         {
-            if ( navigation is null)
+            if (id is null)
                 return NotFound();
-            
-            switch ( navigation )
-            {
-                case "1":
-                    return PartialView("~/Views/Shared/Entreprise/_NavigationPartial");
-                case "2":
-                case "3":
-                default:
-                    return PartialView("~/Views/Shared/Pee/_NavigationUpdatePeePartial");
-            }
+
+            PeeModelView pee = await _peeLayer.GetPeeByIdAsync((int)id);
+            return PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", pee);
         }
 
         [HttpPost]
