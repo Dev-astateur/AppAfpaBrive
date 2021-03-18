@@ -18,13 +18,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="ReflectionIT.Mvc.Paging" Version="5.1.1" />
     <PackageReference Include="sib_api_v3_sdk" Version="3.2.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
-    <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +29,11 @@
     <Folder Include="Views\Formateur\" />
     <Folder Include="Views\Stagiaire\" />
     <Folder Include="Models\Layer\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
+    <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.BOL;
-
+using ReflectionIT.Mvc.Paging;
+using System.Threading.Tasks;
 
 namespace AppAfpaBrive.DAL.Layers
 {
@@ -22,9 +23,10 @@ namespace AppAfpaBrive.DAL.Layers
         {
             return _context.ProduitFormations.Find(idCodeProduitFormation);
         }
-        public IEnumerable<BOL.ProduitFormation> GetAll()
+        public async Task<PagingList<ProduitFormation>> GetPage(int page = 1,string sortExpression ="CodeProduitFormation")
         {
-            return _context.ProduitFormations.OrderBy(x => x.CodeProduitFormation);
+            var qry= _context.ProduitFormations;
+            return await PagingList.CreateAsync<ProduitFormation>(qry,20, page, sortExpression,"CodeProduitFormation");
         }
 
         public void InsertProduit(ProduitFormation prod)

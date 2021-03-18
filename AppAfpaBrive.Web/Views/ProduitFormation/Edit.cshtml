@@ -1,11 +1,11 @@
-﻿@model AppAfpaBrive.Web.ModelView.ProduitFormationModelView;
+﻿@model AppAfpaBrive.BOL.ProduitFormation;
 
 
 @{
     ViewData["Title"] = "View";
 }
 
-<h1>Edit</h1>
+<h1>Edition</h1>
 
 <h4>Produit de Formation</h4>
 <hr />
@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CodeProduitFormation" class="control-label"></label>
-                <input asp-for="CodeProduitFormation" class="form-control" />
+                <input asp-for="CodeProduitFormation" class="form-control" readonly />
                 <span asp-validation-for="CodeProduitFormation" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -51,7 +51,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour</a>
 </div>
 
 @section Scripts {

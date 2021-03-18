@@ -1,4 +1,11 @@
-﻿@model IEnumerable<AppAfpaBrive.BOL.ProduitFormation>
+﻿@*@model IEnumerable<AppAfpaBrive.BOL.ProduitFormation>*@
+@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.BOL.ProduitFormation>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
+<nav aria-label="ProduitFormation navigation">
+    @await this.Component.InvokeAsync("Pager", new { paginglist = this.Model })
+</nav>
 
 <div class="container p-3">
     <div class="row pt-4">
@@ -24,22 +31,22 @@
             <thead>
                 <tr>
                     <th>
-                        Code Produit de Formation
+                        @Html.SortableHeaderFor(Model=>Model.CodeProduitFormation, this.Model)
                     </th>
                     <th>
-                        Niveau Formation
+                        @Html.SortableHeaderFor(model => model.NiveauFormation, this.Model)
                     </th>
                     <th>
-                        LibelleProduitFormation
+                        @Html.SortableHeaderFor(model => model.LibelleProduitFormation, this.Model)
                     </th>
                     <th>
-                        LibelleCourtFormation
+                        @Html.SortableHeaderFor(model => model.LibelleCourtFormation, this.Model)
                     </th>
                     <th>
-                        FormationContinue
+                        @Html.SortableHeaderFor(model => model.FormationContinue, this.Model)
                     </th>
                     <th>
-                        Formation Diplomante
+                        @Html.SortableHeaderFor(model => model.FormationDiplomante, this.Model)
                     </th>
                 </tr>
             </thead>
@@ -67,18 +74,17 @@
                 }
             </tbody>
         </table>
-        <div>
-            <button class="btn-primary" asp-action="Index"> Previous  </button>
-            <button class="btn-primary" asp-action="Index"> Next </button>
-        </div>
-
 
     }
     else
     {
         <p> Il n'y a pas de produits de formation</p>
     }
-   
+
+    <nav aria-label="produitFormation navigation example">
+        <vc:pager paging-list="@Model"/>
+    </nav>
+
 </div>
 
 
