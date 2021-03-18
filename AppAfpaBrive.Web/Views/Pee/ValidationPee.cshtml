@@ -4,32 +4,30 @@
 }
 <div class="container" id="viewPartial">
     @await Html.PartialAsync("~/Views/Shared/Entreprise/_EntreprisePartial.cshtml", Model.IdEntrepriseNavigation)
-    @*@await Html.PartialAsync("~/Views/Shared/Pee/_AddRemarque.cshtml", Model)*@ 
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6"><p><a asp-action="ListePeeAValider" asp-route-id="@Model.Id.MatriculeCollaborateurAfpa"><input type="button" class="btn btn-primary" value="Retour"></a></p></div>
-        <div class="col-md-6"><p></p><input type="button" class="btn btn-primary" value="Suivant" id="btn-Update"></div>
-    </div>
+<div class="container" id="navigation">
+    @await Html.PartialAsync("~/Views/Shared/Entreprise/_NavigationPartial.cshtml",Model) 
 </div>
 
 @section Scripts
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            const btn = document.getElementById('btn-Update');
-            const idPee = @Model.IdPee
-                btn.addEventListener('click', event => {
+            const nav1 = document.getElementById('1');
+            const nav2 = document.getElementById('2');
+            const nav3 = document.getElementById('3');
+            const idPee = @Model.IdPee;
+
+            nav1.addEventListener('click', event => {
                 $.ajax({
                     type: 'GET',
                     url: '/Pee/EnregistrementPeeInfo/' + idPee,
                     success: function (result) {
                         const partial = document.getElementById('viewPartial');
-                        partial.innerHTML= result;
+                        partial.innerHTML = result;
                     }
-                })
-
+                });
             });
         });
     </script>

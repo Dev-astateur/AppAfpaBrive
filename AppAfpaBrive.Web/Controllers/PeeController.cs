@@ -1,6 +1,5 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
-using AppAfpaBrive.DAL.Layers;
 using AppAfpaBrive.Web.ModelView;
 using DocumentFormat.OpenXml.Packaging;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Extensions.Hosting;
 using System.IO;
+using AppAfpaBrive.Web.ModelView.ValidationPee;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -87,21 +88,15 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListePeeAValider(string? id)
+        public async Task<IActionResult> ListePeeAValider(string id)
         {
             if (id is null)
                 return NotFound();
 
             this.ViewBag.Titre = "Periode en entreprise à valider";
-            IEnumerable<Pee> pees = await _peeLayer.GetPeeByMatriculeCollaborateurAfpaAsync(id);
-            List<PeeModelView> peesModelView = new();
+            IEnumerable<ListePeeAValiderModelView> pees = await _peeLayer.GetPeeByMatriculeCollaborateurAfpaAsync(id);  
 
-            foreach (Pee item in pees )
-            {
-                peesModelView.Add(new PeeModelView(item));
-            }
-
-            return View(peesModelView);
+            return View(pees);
         }
 
         /// <summary>
@@ -114,13 +109,13 @@ namespace AppAfpaBrive.Web.Controllers
             if ( id is null )
                 return NotFound();
 
-            Pee pee = await _peeLayer.GetPeeByIdPeeOffreEntreprisePaysAsync((int)id);
+            object pee = await _peeLayer.GetPeeByIdPeeOffreEntreprisePaysAsync((int)id);
             if (pee is null)
                 return NotFound();
 
-            PeeModelView peeModelView = new PeeModelView(pee);
+            //PeeModelView peeModelView = new PeeModelView(pee);
 
-            return View(peeModelView);
+            return View();
         }
        
         /// <summary>
@@ -140,13 +135,41 @@ namespace AppAfpaBrive.Web.Controllers
             return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml",pee) ;
         }
 
+        [HttpGet]
+        public IActionResult NavigationPeeValidation( string navigation )
+        {
+            if ( navigation is null)
+                return NotFound();
+            
+            switch ( navigation )
+            {
+                case "1":
+                    return PartialView("~/Views/Shared/Entreprise/_NavigationPartial");
+                case "2":
+                case "3":
+                default:
+                    return PartialView("~/Views/Shared/Pee/_NavigationUpdatePeePartial");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> EnregistrementPeeInfo(int IdPee,PeeModelView peeModelView)
         {
             if (IdPee != peeModelView.IdPee)
                 return NotFound();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    
+                }
+                catch (DbUpdateConcurrencyException)
+                {
 
-            return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml");
+                }
+            }
+        
+            return RedirectToAction();
         }
     }
 }

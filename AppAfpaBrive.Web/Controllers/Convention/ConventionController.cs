@@ -5,14 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
-using AppAfpaBrive.DAL.Layer;
 using AppAfpaBrive.BOL;
 using System.Diagnostics;
 using AppAfpaBrive.Web.Models;
 using System.Web.Providers.Entities;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-
+using AppAfpaBrive.Web.Layer;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {

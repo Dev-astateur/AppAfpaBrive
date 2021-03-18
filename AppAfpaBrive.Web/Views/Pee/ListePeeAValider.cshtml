@@ -1,17 +1,17 @@
-﻿@model IEnumerable<AppAfpaBrive.Web.ModelView.PeeModelView>
+﻿@model IEnumerable<AppAfpaBrive.Web.ModelView.ValidationPee.ListePeeAValiderModelView>
 
 <h4>Periode en entreprise à valider</h4>
 <hr />
 <div class="container">
     <div class="row">
         <div class="col-md-4">
-            @Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.NomBeneficiaire)
+            @Html.DisplayNameFor(model => model.NomBeneficiaire)
         </div>
         <div class="col-md-4">
-            @Html.DisplayNameFor(model => model.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)
+            @Html.DisplayNameFor(model => model.PrenomBeneficiaire)
         </div>
         <div class="col-md-4">
-            @Html.DisplayNameFor(model => model.IdEntrepriseNavigation.RaisonSociale)
+            @Html.DisplayNameFor(model => model.RaisonSociale)
         </div>
     </div>
     @foreach (var item in Model)
@@ -19,13 +19,13 @@
         <a asp-action="ValidationPee" asp-route-id="@item.IdPee">
             <div class="row">
                 <div class="col-md-4">
-                    @Html.DisplayFor(model => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)
+                    @Html.DisplayFor(model => item.NomBeneficiaire)
                 </div>
                 <div class="col-md-4">
-                    @Html.DisplayFor(model => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)
+                    @Html.DisplayFor(model => item.PrenomBeneficiaire)
                 </div>
                 <div class="col-md-4">
-                    @Html.DisplayFor(model => item.IdEntrepriseNavigation.RaisonSociale)
+                    @Html.DisplayFor(model => item.RaisonSociale)
                 </div>
             </div>
         </a>

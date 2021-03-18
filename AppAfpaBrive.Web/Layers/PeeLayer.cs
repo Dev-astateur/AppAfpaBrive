@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
+using AppAfpaBrive.Web.ModelView.ValidationPee;
 
-namespace AppAfpaBrive.DAL.Layers
+namespace AppAfpaBrive.Web.Layers
 {
     public class PeeLayer
     {
@@ -17,19 +18,26 @@ namespace AppAfpaBrive.DAL.Layers
             _dbContext = context;
         }
 
-        public async Task<IEnumerable<Pee>> GetPeeByMatriculeCollaborateurAfpaAsync(string idMatricule)
+        public async Task<IEnumerable<ListePeeAValiderModelView>> GetPeeByMatriculeCollaborateurAfpaAsync(string idMatricule)
         {
             return await _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.Etat == 0)
                 .Include(e => e.Id)
                 .Include(e=>e.IdEntrepriseNavigation)
-                .Include(e => e.MatriculeBeneficiaireNavigation).ToListAsync();
+                .Include(e => e.MatriculeBeneficiaireNavigation).
+                Select(e=> new ListePeeAValiderModelView () { 
+                    NomBeneficiaire=e.MatriculeBeneficiaireNavigation.NomBeneficiaire,
+                    PrenomBeneficiaire = e.MatriculeBeneficiaireNavigation.PrenomBeneficiaire,
+                    RaisonSociale = e.IdEntrepriseNavigation.RaisonSociale,
+                    IdPee = e.IdPee
+                } ).ToListAsync();
         }
 
-        public async Task<Pee> GetPeeByIdPeeOffreEntreprisePaysAsync(int idPee)
+        public async Task<object> GetPeeByIdPeeOffreEntreprisePaysAsync(int idPee)
         {
             return await _dbContext.Pees.Where(e=>e.IdPee==idPee)
                 .Include(e => e.Id)
                 .Include(e=>e.IdEntrepriseNavigation).ThenInclude(e=>e.Idpays2Navigation)
+                .Select(e=>new { IdPee = e.IdPee, MatriculeCollaborateurAfpa= e.Id.MatriculeCollaborateurAfpa, IdEntrepriseNavigation=e.IdEntrepriseNavigation } )
                 .FirstOrDefaultAsync();
         }
 

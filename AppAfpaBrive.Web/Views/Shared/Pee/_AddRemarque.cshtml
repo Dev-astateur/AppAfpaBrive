@@ -19,8 +19,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="Etat" class="control-label">Validation de la convention de stage</label>
-                <p>@Html.RadioButton("0", Model.Etat) Non Valider</p>
-                <p>@Html.RadioButton("1", Model.Etat) Valider</p>
+                <p>
+                    @Html.RadioButtonFor(model => model.Etat, "0") Non Valide
+                    @Html.RadioButtonFor(model => model.Etat, "1") Valide
+                </p
             </div>
             <div class="form-group">
                 <input type="submit" value="Enregistrement" class="btn btn-primary" />

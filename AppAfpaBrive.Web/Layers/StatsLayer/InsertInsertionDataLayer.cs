@@ -6,8 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.DAL.Layers
+namespace AppAfpaBrive.Web.Layers
 {
     public class InsertInsertionDataLayer
     {
