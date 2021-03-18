@@ -34,5 +34,22 @@ namespace AppAfpaBrive.Web.Controllers
                 return BadRequest();
             }
         }
+        [Produces("application/json")]
+        [HttpGet("searchPays")]
+        public async Task<IActionResult> SearchPays()
+        {
+            try
+            {
+                string term = HttpContext.Request.Query["term"].ToString();
+                var names = _db.Pays.Where(p => p.LibellePays.StartsWith(term)).ToList();
+                return Ok(names);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+
     }
 }

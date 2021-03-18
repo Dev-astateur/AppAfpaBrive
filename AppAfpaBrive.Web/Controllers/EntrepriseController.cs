@@ -136,8 +136,10 @@ namespace AppAfpaBrive.Web.Controllers
             List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
 
             ViewData["GetDepartement"] = departement;
-            ViewData["GetProduitForm"] = formation;
-            var query = _layer.GetAllEntreprise();
+            //ViewData["GetProduitForm"] = formation;
+            // var query = _layer.GetAllEntreprise();
+            List<Entreprise> query=null;
+
             //if (!String.IsNullOrEmpty(departement))
             //{
             //    query = _layer.GetEntreprisesByDepartement(departement);
@@ -159,21 +161,26 @@ namespace AppAfpaBrive.Web.Controllers
             {
                 query = _layer.GetEntrepriseByProduitFormation(formation);
             }
-            foreach (var entreprise in query)
+            if (query!=null)
             {
-                EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
-                //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
-                //entrepriseModel.Ville = entreprise.Ville;
-                //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
-                //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
-                //entrepriseModel.NumeroSiret = entreprise.NumeroSiret;
-                //entrepriseModel.IdEntreprise = entreprise.IdEntreprise;
-                //entrepriseModel.Ligne1Adresse = entreprise.Ligne1Adresse;
-                ListentrepriseListViewModel.Add(entrepriseModel);
+                foreach (var entreprise in query)
+                {
+                    EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
+                    //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
+                    //entrepriseModel.Ville = entreprise.Ville;
+                    //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
+                    //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
+                    //entrepriseModel.NumeroSiret = entreprise.NumeroSiret;
+                    //entrepriseModel.IdEntreprise = entreprise.IdEntreprise;
+                    //entrepriseModel.Ligne1Adresse = entreprise.Ligne1Adresse;
+                    ListentrepriseListViewModel.Add(entrepriseModel);
+                }
+                return View(ListentrepriseListViewModel);
             }
 
+            return View();
 
-            return View(ListentrepriseListViewModel);
+            
         }
         #endregion
 

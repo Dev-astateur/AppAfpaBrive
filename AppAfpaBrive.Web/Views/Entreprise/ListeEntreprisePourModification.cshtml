@@ -21,7 +21,7 @@
             <div class="col-sm-4">
                 <p>Recherche par l'intitulé de l'offre de formation: </p>
                 <p>
-                    <input type="search" placeholder=" formation" value="@ViewData["GetProduitForm"]" name="formation" />
+                    <input type="search" placeholder=" formation" @*value="@ViewData["GetProduitForm"]"*@ name="formation" id="ProduitFormation" />
 
 
                 </p>
@@ -38,44 +38,62 @@
     <thead>
         <tr>
             <th>
-              Raison sociale
+                Raison sociale
             </th>
             <th>
                 Numéro de SIRET
-            </th>           
-            <th>
-               Adresse
-            </th>         
-            <th>
-               Ville
             </th>
-           
+            <th>
+                Adresse
+            </th>
+            <th>
+                Ville
+            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RaisonSociale)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumeroSiret)
-            </td>         
-            <td>
-                @Html.DisplayFor(modelItem => item.Ligne1Adresse)
-            </td>          
-            <td>
-                @Html.DisplayFor(modelItem => item.Ville)
-            </td>        
-            <td>
-                <a asp-action="ModifierEntreprise" asp-route-id="@item.IdEntreprise">Modifier</a> |
-                <a asp-action="Details" asp-route-id="@item.IdEntreprise">Details</a> |
-                <a asp-action="SuppressionEntreprise" asp-route-id="@item.IdEntreprise">Supprimer</a> |
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RaisonSociale)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumeroSiret)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ligne1Adresse)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ville)
+                    </td>
+                    <td>
+                        <a asp-action="ModifierEntreprise" asp-route-id="@item.IdEntreprise">Modifier</a> |
+                        <a asp-action="Details" asp-route-id="@item.IdEntreprise">Details</a> |
+                        <a asp-action="SuppressionEntreprise" asp-route-id="@item.IdEntreprise">Supprimer</a> |
 
-                @*@Html.ActionLink("Supprimer", "SupprimerEntreprise", new { id = item.RaisonSociale })*@
-            </td>
-        </tr>
-}
+                        @*@Html.ActionLink("Supprimer", "SupprimerEntreprise", new { id = item.RaisonSociale })*@
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#ProduitFormation').autocomplete({
+                source: '/api/AutoCompleteOffreFormationApi/search'
+            });
+        });
+    </script>
+}
+
