@@ -22,8 +22,6 @@ namespace AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre
         [Required(ErrorMessage = "Fichier requis")]
         public FilesModel fileModel { get; set; }
 
-        [Display(Name = "Path fichier")]
-        [Required(ErrorMessage = "path requis")]
         public string PathFileIntegration { get; set; }
         #endregion
     }

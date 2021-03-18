@@ -3,7 +3,8 @@
 *@
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 @model AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre.IntegrationExcelOffreCreate
 
@@ -26,15 +27,13 @@
             <span asp-validation-for="CodeProduitFormation" class="text-danger"></span>
         </div>
         <div class="form-group">
+            <input id="libelleFormateur" />
             <label asp-for="MatriculeCollaborateurAfpa" class="control-label"></label>
-            <input asp-for="MatriculeCollaborateurAfpa" class="form-control" />
+            <input asp-for="MatriculeCollaborateurAfpa" class="form-control" readonly />
             <span asp-validation-for="MatriculeCollaborateurAfpa" class="text-danger"></span>
+
         </div>
-        <div class="form-group">
-            <label asp-for="PathFileIntegration" class="control-label"></label>
-            <input asp-for="PathFileIntegration" class="form-control" />
-            <span asp-validation-for="PathFileIntegration" class="text-danger"></span>
-        </div>
+
 
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -56,10 +55,6 @@
 
 <hr />
 
-
-
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
@@ -67,7 +62,7 @@
     <script>
 
         $(document).ready(function () {
-            $('#MatriculeCollaborateurAfpa').autocomplete({
+            $('#libelleFormateur').autocomplete({
                 source: function (request, response) {
 
                     $.ajax({
@@ -90,8 +85,9 @@
                 },
                 minLength: 1,
                 select: function (event, ui) {
-
-                    $('#MatriculeCollaborateurAfpa').val(ui.item.label);
+                    $('#MatriculeCollaborateurAfpa').val(ui.item.value);
+                    $('#libelleFormateur').val(ui.item.label);
+                
                     return false;
                 }
 

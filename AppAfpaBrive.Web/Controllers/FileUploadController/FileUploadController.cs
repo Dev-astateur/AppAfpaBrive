@@ -9,20 +9,28 @@ using System.Threading.Tasks;
 using AppAfpaBrive.Web.Utilitaires;
 using AppAfpaBrive.Web.Models;
 using AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre;
+using AppAfpaBrive.DAL;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace AppAfpaBrive.Web.Controllers
 {
     public class FileUploadController : Controller
     {
-
+        private readonly AFPANADbContext _context;
+        private readonly IConfiguration _config;
+        private readonly ILogger<HomeController> _logger;
 
         protected string Path { get; set; }
-      
-        public FileUploadController()
+
+        public FileUploadController(AFPANADbContext context, IConfiguration config)
         {
             ///A enlever
             Path = "./Data/Documents";
-          
+
+            _context = context;
+            _config = config;
+
         }
 
         public IActionResult Index()
@@ -40,10 +48,17 @@ namespace AppAfpaBrive.Web.Controllers
                 var postedFile = uploadFile.fileModel.file;
                 try
                 {
-                    var Response = UploadFiles.UploadFile(postedFile, Path);
+                    var response = UploadFiles.UploadFile(postedFile, Path);
 
-                    if (Response.Done)
+                    if (response.Done)
                     {
+                        Utilitaires.IntegrationExcelOffre integration = new Utilitaires.IntegrationExcelOffre(_config, _context);
+                        string pathFile = response.Paths.First();
+
+                        integration.IntegrerDonnees(uploadFile.MatriculeCollaborateurAfpa, uploadFile.CodeProduitFormation, pathFile);
+
+                        Response.WriteAsync("<script>alert('Réussi!')</script>");
+
                         return View(viewName: "Index");
                     }
                     else

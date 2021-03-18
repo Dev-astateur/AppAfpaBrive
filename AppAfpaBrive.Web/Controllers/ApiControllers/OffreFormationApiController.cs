@@ -1,4 +1,5 @@
 ﻿using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.Layers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,10 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
         {
             try
             {
+                ProduitFormationLayer produitLayer = new ProduitFormationLayer(db);
                 string term = HttpContext.Request.Query["term"].ToString();
-                Debug.WriteLine(term);
+                var offre = layerOffre
+
                 var offres = db.ProduitFormations.Where(x => x.CodeProduitFormation.ToString().StartsWith(term)).Select(x => new { Id = x.CodeProduitFormation, Libelle = x.LibelleProduitFormation }).ToList();
                 return Ok(offres);
             }

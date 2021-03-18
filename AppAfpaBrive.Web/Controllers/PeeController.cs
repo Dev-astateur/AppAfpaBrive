@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
-using AppAfpaBrive.DAL.Layers;
+
+using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Mvc;
 using System;

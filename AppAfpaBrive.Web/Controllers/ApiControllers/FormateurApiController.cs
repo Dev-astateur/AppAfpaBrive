@@ -1,4 +1,5 @@
 ﻿using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.Layers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,6 +25,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
             {
                 string term = HttpContext.Request.Query["term"].ToString();
                 Debug.WriteLine(term);
+             
                 var names = db.CollaborateurAfpas.Where(p => p.NomCollaborateur.StartsWith(term)).Select(x => new { Nom = x.NomCollaborateur, Id = x.MatriculeCollaborateurAfpa });
                 return Ok(names);
 
