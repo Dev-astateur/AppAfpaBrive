@@ -38,11 +38,11 @@
                             @item.PrenomProfessionnel
                         </td>
                         <td width="20%">
-                            @Html.RadioButtonFor(m=>m[i].PrenomProfessionnel,item.IdProfessionnel)
+                            @Html.RadioButtonFor(m=>item.IdProfessionnel, "Tuteur")
                             @*<input type="button" class="btn btn-primary w-100" value="Sélectionner"></input>*@    
                         </td>
                         <td width="20%">
-                            @Html.RadioButtonFor(m => m[i].PrenomProfessionnel, item.IdProfessionnel)
+                            @*@Html.RadioButtonFor(m => item.IdProfessionnel, "Resp")*@
                             @*<input type="button" class="btn btn-primary w-100" value="Sélectionner "></input>*@
                         </td>
 
