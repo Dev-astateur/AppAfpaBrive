@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.Web.Layers;
+using ReflectionIT.Mvc.Paging;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -23,10 +24,14 @@ namespace AppAfpaBrive.Web.Controllers
             _layer = new EntrepriseLayer(Db);
             //_dbContext = new AFPANADbContext();
         }
+
+       
+
+
         #region ModifierEntreprise
         // GET: EntrepriseController
 
-        
+
         [HttpGet]
         public ActionResult ModifierEntreprise(int id)
         {
@@ -76,7 +81,7 @@ namespace AppAfpaBrive.Web.Controllers
         //[HttpGet]
 
 
-        public async Task<IActionResult> ListeEntreprise(string departement, string formation)
+        public async Task<IActionResult> ListeEntreprise(string departement, string formation, int page)
         {
 
             List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
@@ -121,9 +126,13 @@ namespace AppAfpaBrive.Web.Controllers
                     ListentrepriseListViewModel.Add(entrepriseModel);
                     
                 }
+                ;
                 return View(ListentrepriseListViewModel);
             }
 
+            //Test pour paging
+            var qry = _layer.GetAllEntreprise();
+            var model = PagingList.CreateAsync(qry, 10, page);
             return View();
 
             
@@ -150,14 +159,10 @@ namespace AppAfpaBrive.Web.Controllers
             {
                 query = _layer.GetEntrepriseByDepartementEtOffre(formation, departement);
             }
-
-
             else if (!String.IsNullOrEmpty(departement) && String.IsNullOrEmpty(formation))
             {
                 query = _layer.GetEntreprisesByDepartement(departement);
             }
-
-
             else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
             {
                 query = _layer.GetEntrepriseByProduitFormation(formation);
@@ -203,7 +208,7 @@ namespace AppAfpaBrive.Web.Controllers
             
 
                 string libellePays = entreprise.Idpays2Navigation.LibellePays;
-              //
+              
             entreprise.Idpays2= _layer.GetIdPaysByMatriculePays(libellePays);
             try
             {
