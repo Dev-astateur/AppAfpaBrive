@@ -6,46 +6,38 @@
     @await Html.PartialAsync("~/Views/Shared/Entreprise/_EntreprisePartial.cshtml", Model)
 </div>
 
+
 @section Scripts
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            const nav1 = document.getElementById('1');
-            const nav2 = document.getElementById('2');
-            const nav3 = document.getElementById('3');
+            const nav = document.querySelector('a');
             const idPee = @Model.IdPee;
+            let url = '';
 
-            nav1.addEventListener('click', event => {
-                $.ajax({
-                    type: 'GET',
-                    url: '/Pee/ValidationPee/' + idPee,
-                    success: function (result) {
-                        const partial = document.getElementById('viewPartial');
-                        partial.innerHTML = result;
-                    }
-                });
-            });
+            nav.addEventListener('click', event => {
+                switch (nav.id) {
+                    case '1':
+                        url = '/Pee/ValidationPee/';
+                        break;
+                    case '2':
+                        url = '/Pee/ListeDocumentPee/';
+                        break;
+                    case '3':
+                        url = '/Pee/EnregistrementPeeInfo/';
+                        break;
+                }
 
-            nav2.addEventListener('click', event => {
-                $.ajax({
-                    type: 'GET',
-                    url: '/Pee/ListeDocumentPee/' + idPee,
-                    success: function (result) {
-                        const partial = document.getElementById('viewPartial');
-                        partial.innerHTML = result;
-                    }
-                });
-            });
-
-            nav3.addEventListener('click', event => {
-                $.ajax({
-                    type: 'GET',
-                    url: '/Pee/EnregistrementPeeInfo/' + idPee,
-                    success: function (result) {
-                        const partial = document.getElementById('viewPartial');
-                        partial.innerHTML = result;
-                    }
-                });
+                if ( '' != url) {
+                    $.ajax({
+                        type: 'GET',
+                        url: url + idPee,
+                        success: function (result) {
+                            const partial = document.getElementById('viewPartial');
+                            partial.innerHTML = result;
+                        }
+                    });
+                } 
             });
 
         });
