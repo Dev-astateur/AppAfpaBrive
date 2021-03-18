@@ -54,4 +54,5 @@ namespace AppAfpaBrive.Web.ModelView
         public virtual ICollection<ContratModelView> Contrats { get; set; }
 
     }
+
 }

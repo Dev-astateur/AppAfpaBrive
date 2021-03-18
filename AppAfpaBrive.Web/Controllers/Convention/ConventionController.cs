@@ -170,5 +170,14 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             List<Professionnel> pro =_pro.Get_Pro(convention.IdEntreprise);
             return View(pro);
         }
+
+
+        // get Professionel_creation
+        public IActionResult Professionel_Creation()
+        {
+            
+            return View();
+        }
+
     }
 }

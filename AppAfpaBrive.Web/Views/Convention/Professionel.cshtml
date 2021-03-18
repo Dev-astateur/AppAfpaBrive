@@ -1,9 +1,69 @@
 ﻿@model List<AppAfpaBrive.BOL.Professionnel>
 
-@foreach (var item in Model)
-{
-    <label>@item.NomProfessionnel</label>
-    <label>@item.PrenomProfessionnel</label>
-    <label>@item.IdProfessionnel</label>
+<div>
+    <h2>
+        Veuillez sélectionner votre tuteur et votre résponsble juridique.
+    </h2>
+</div>
+<div>
+    @if (Model.Count() > 0)
+    {
+        int i = 0;
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        Nom
+                    </th>
+                    <th>
+                        Prénom
+                    </th>
+                    <th>
+                        Sélectionner en tant que tuteur
+                    </th>
+                    <th>
+                        Sélectionner en tant que responsable juridique
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    
+                    <tr id="ligne">
+                        <td width="20%">
+                            @item.NomProfessionnel
+                        </td>
+                        <td width="20%">
+                            @item.PrenomProfessionnel
+                        </td>
+                        <td width="20%">
+                            @Html.RadioButtonFor(m=>m[i].PrenomProfessionnel,item.IdProfessionnel)
+                            @*<input type="button" class="btn btn-primary w-100" value="Sélectionner"></input>*@    
+                        </td>
+                        <td width="20%">
+                            @Html.RadioButtonFor(m => m[i].PrenomProfessionnel, item.IdProfessionnel)
+                            @*<input type="button" class="btn btn-primary w-100" value="Sélectionner "></input>*@
+                        </td>
 
-}
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p> Vous n'avez pas de formation.</p>
+    }
+</div>
+<div>
+    <div class="col">
+        <label> Retour</label>
+        <a asp-action="Entreprise_recap" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> retour</a>
+    </div>
+    <div class="col">
+        <label> Ajouter des Personnes</label>
+        <a asp-action="Entreprise" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> retour</a>
+    </div>
+</div>
