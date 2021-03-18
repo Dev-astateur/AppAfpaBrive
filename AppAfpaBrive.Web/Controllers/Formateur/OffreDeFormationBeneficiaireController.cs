@@ -1,5 +1,4 @@
 ﻿using AppAfpaBrive.DAL;
-using AppAfpaBrive.DAL.Layers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.BOL;
 using AppAfpaBrive.Web.ModelView;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers.Formateur
 {

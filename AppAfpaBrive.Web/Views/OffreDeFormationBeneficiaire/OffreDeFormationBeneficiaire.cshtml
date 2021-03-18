@@ -5,22 +5,26 @@
     ViewData["Title"] = "OffreDeFormationBeneficiaire";
 }
 
-        <label>Offre de formation:</label>
-        <select id="listeoffre"
-                asp-items="@(new SelectList(Model,"IdOffreFormation", "LibelleOffreFormation"))">
-            <option> Sélectionnez une offre de formation</option>
-          
+<div class="form-group">
 
-            @*@Html.DropDownListFor(m => m.IdOffreFormation, new SelectList(Model.OffreFormations, "IdOffreFormation", "LibelleOffreFormation"),"Veuillez sélectionner votre offre")*@
-           
 
-        </select>
+    <label for="offreFormation">Offre de Formation :</label>
+    <select id="listeoffre"
+            asp-items="@(new SelectList(Model,"IdOffreFormation", "LibelleOffreFormation"))">
+        <option> Sélectionnez une offre de formation</option>
 
-       
-<div id="listebenef">
+
+        @*@Html.DropDownListFor(m => m.IdOffreFormation, new SelectList(Model.OffreFormations, "IdOffreFormation", "LibelleOffreFormation"),"Veuillez sélectionner votre offre")*@
+
+
+    </select>
+
+
+    <div id="listebenef">
+
+    </div>
 
 </div>
-
 
 
 <script defer type="text/javascript">
@@ -38,5 +42,6 @@
 
 
 </script>
+
 
 

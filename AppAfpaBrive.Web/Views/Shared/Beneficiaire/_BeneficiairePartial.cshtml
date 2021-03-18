@@ -3,28 +3,64 @@
     ViewData["Title"] = "Liste Beneficiaire";
 }
 @*@await Html.PartialAsync("_BeneficiairePartial", Model.BeneficiaireOffreFormations)*@
-<table class="table">
+
+<table class="table table-striped table-reponsive-md">
+    <thead>
+
+        <tr class="table-primary">
+            
+            <th scope="col">
+
+                @Html.DisplayNameFor(model => model.NomBeneficiaire)
+
+            </th>
+
+            <th scope="col">
+
+                @Html.DisplayNameFor(model => model.PrenomBeneficiaire)
+
+            </th>
+
+            <th scope="col">
+
+                @Html.DisplayNameFor(model => model.MailBeneficiaire)
+
+            </th>
+
+            <th scope="col">
+
+                @Html.DisplayNameFor(model => model.MailingAutorise)
+
+            </th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
 
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NomBeneficiaire)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PrenomBeneficiaire)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MailBeneficiaire)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MailingAutorise)
-                </td>
+        <tr>
+            
+
+            <td>
+                @Html.DisplayFor(modelItem => item.NomBeneficiaire)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrenomBeneficiaire)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MailBeneficiaire)
+            </td>
+            <td>
+                @Html.CheckBox("checked", true, item.MailingAutorise)
+            </td>
 
 
 
-            </tr>
+        </tr>
         }
     </tbody>
 </table>

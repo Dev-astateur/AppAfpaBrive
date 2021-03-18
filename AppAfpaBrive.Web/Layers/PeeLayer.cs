@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppAfpaBrive.DAL.Layers
+namespace AppAfpaBrive.Web.Layers
 {
     public class PeeLayer
     {
