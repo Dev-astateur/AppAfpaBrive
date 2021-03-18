@@ -13,62 +13,42 @@ using System.Threading.Tasks;
 namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {
 
-    
+
     public class EditerInfosStagiaireController : Controller
     {
         private AFPANADbContext _context = null;
         private readonly StagiaireLayer _stagiaireLayer;
         private readonly OffreFormationLayer _offreFormation;
+        private readonly BeneficiaireLayer _beneficiaireLayer;
 
 
         public EditerInfosStagiaireController(AFPANADbContext context)
         {
             _offreFormation = new OffreFormationLayer(context);
             _stagiaireLayer = new StagiaireLayer(context);
-        }    
+            _beneficiaireLayer = new BeneficiaireLayer(context);
+        }
 
         //GET: EditerInfosStagiaireController
         public async Task<ActionResult> ListeOffreFormation(string tbRechercherOFormation)
         {
             this.ViewBag.MonTitre = "ListeOffreFormation";
             var query2 = _offreFormation.GetOffreFormationByContains(tbRechercherOFormation);
-            //var query3 = _stagiaireLayer.GetAllStagiaires();
 
             return View(query2);
         }
 
-        public ActionResult Create()
+        //public IActionResult ChargerListeStagiaires(int idOffreFormation)
+        //{
+        //    var beneficiaires = _stagiaireLayer.GetBeneficiaireParIdOffreDeFormation(idOffreFormation);
+        //    return PartialView("_VuePartielleStagiaires", beneficiaires);
+        //}
+
+        public IActionResult ChargerListeStagiaires(string libelle)
         {
-            return View();
+            var beneficiaires = _stagiaireLayer.GetBeneficiaireParLibelleOffreDeFormation(libelle);
+            return PartialView("_VuePartielleStagiaires", beneficiaires);
         }
-
-        //// GET: EditerInfosStagiaireController/Details/5
-        //public ActionResult Details()
-        //{
-        //    this.ViewBag.MonTitre = "ListeOffreFormation";
-        //    BeneficiaireModelView beneficiare = new BeneficiaireModelView();
-
-        //    return View();
-
-        //}
-
-        //public ActionResult Beneficiaire(int id)
-        //{
-        //    IEnumerable<Beneficiaire> modelList = new List<Beneficiaire>();
-        //    using (DAL.AFPANADbContext context = new DAL.AFPANADbContext())
-        //    {              
-        //        var beneficiaires = context.Beneficiaires.ToList();
-        //        modelList = beneficiaires.Select(x =>
-        //                                    new Beneficiaire()
-        //                                    {
-        //                                        NomBeneficiaire = x.NomBeneficiaire,
-        //                                        PrenomBeneficiaire = x.PrenomBeneficiaire,
-        //                                        MatriculeBeneficiaire = x.MatriculeBeneficiaire                                              
-        //                                    });
-        //    }
-        //    return PartialView(modelList);
-        //}
-
 
         // GET: EditerInfosStagiaireController/Details/5
         public ActionResult Details()
@@ -77,10 +57,10 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         }
 
         // GET: EditerInfosStagiaireController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+        public ActionResult Create()
+        {
+            return View();
+        }
 
         // POST: EditerInfosStagiaireController/Create
         [HttpPost]

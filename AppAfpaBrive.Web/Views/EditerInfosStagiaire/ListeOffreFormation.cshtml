@@ -2,63 +2,15 @@
 
 @{
     ViewData["Title"] = "ListeOffreFormation";
-    //List<AppAfpaBrive.BOL.OffreFormation> listeOffreFormations = ViewBag.MaListe;
-    //var listeItemOffreFormation = listeOffreFormations.Select(o => new SelectListItem() { Text = o.LibelleOffreFormation, Value = o.IdOffreFormation.ToString()});
+
 }
-<html>
+
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#tbRechercherOFormation').autocomplete({
-                source: '/api/chargerlibelleformation/search',
-                minLength: 3
-            });
-        });
-        $(document).ready(function () {         
-            $('#boutontest').click(function () {
-                $('#bodyID').empty();
-                //var x = addEventListener("click", function () {
-                var libelle = $('#tbRechercherOFormation').val(); // Nom de l'input où l'on va récuperer la value
-                if (libelle != '') {
-                    $.ajax({
-                        url: '/api/chargerStagiaires/search', // Chemin vers l'api qui contient requête Linq
-                        method: "GET",
-                        data: 'term=' + libelle,
-                        dataType: "JSON",
-                        success: function (data) {
-                            var table = $('#tabStagiaire');
-                            console.log(data)
-                            $(function () {
-                                $.each(data, function (i, item) {
-                                    $("#tabStagiaire").append(
-                                        "<tr>"
-                                        + "<td>" + item.nomBeneficiaire + "</td>"
-                                        + "<td>" + item.prenomBeneficiaire + "</td>"
-                                        + "<td>" + item.matriculeBeneficiaire + "</td>"
-                                        + "<td>" + "<input class=\"btn-primary\" value=\"test\" />" + "</td >" )
-                                })
-                            })
 
-                        }
-                    });
-
-                };
-            });
-        });
-        $(function () {
-            $('tbRechercherOFormation').on('click', function () {
-                var r = $('<input type="button" value="new button"/>');
-                $("#tabStagiaire").append('<input type="button" value="new button"/>');
-            });
-        });
-    </script>
 </head>
-</html>
 
 <h2>Sélectionnez une offre de formation</h2>
 <br />
@@ -67,7 +19,9 @@
     <form asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation">
         <div class="row">
             <div class="col-md-10 text-center w-auto ">
+
                 <input type="text" style="max-width:900px" width="400" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
+
             </div>
             <div>
                 <input type="button" id="boutontest" class="btn btn-primary" value="Recherche" />
@@ -75,59 +29,31 @@
         </div>
     </form>
 </div>
-
-
-<!--<table id="tabStagiaire" class="table table-light">
-    <tr class="bg-info">
-        <th>Nom </th>
-
-        <th>Prénom </th>
-
-        <th>Matricule </th>
-
-        <th>Rechercher</th>
-    </tr>
-    <tbody>
-    </tbody>-->
-@*<input type="button" id="button" asp-controller="EditerInfosStagiaires2" asp-action="Edit" value="Recherche" />*@
-<!--</table>-->
-
-<table id="tabStagiaire" class="table">
-    <thead>
-        <tr>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.LibelleOffreFormation)
-                </th>*@
-            <th>Nom </th>
-
-            <th>Prénom </th>
-
-            <th>Matricule </th>
-
-            <th>Rechercher </th>
-
-        </tr>
-    </thead>
-    <tbody id="bodyID">
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LibelleOffreFormation)
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input type="submit" value="Sélectionner" name="btRechercherStagiaire" class="btn btn-primary" asp-route-id="@item.BeneficiaireOffreFormations" asp-controller="EditerInfosStagiaire2" asp-action="Edit" />
-                    </div>
-                </td>
-            </tr>
-            @*<a id="btnEdit" asp-action="Edit" asp-controller="EditerInfosStagiaire2">Edit</a>*@
-
-        }
-    </tbody>
-</table>
-<div>
-
+<div id="liste">
 </div>
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tbRechercherOFormation').autocomplete({
+                source: '/api/chargerlibelleformation/search',
+                minLength: 3
+            });
+        });
+        $(document).ready(function () {
+            $('#boutontest').on('click', function (e) {
+                var libelle = $('#tbRechercherOFormation').val();
+
+                const uri = '/EditerInfosStagiaire/ChargerListeStagiaires?libelle=' + libelle;
+                const encoded = encodeURI(uri);
+                $('#liste').load(encoded);
+            });
+        });
+    </script>
+}
 
 
