@@ -168,7 +168,24 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
             List<Professionnel> pro =_pro.Get_Pro(convention.IdEntreprise);
+            ViewBag.pro = pro;
             return View(pro);
+        }
+
+        //post Professionel
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Professionel(List<Professionnel> obj)
+        {
+            if (Request.Form["tuteur"] != "")
+            {
+                string selectedGender = Request.Form["tuteur"].ToString();
+            }
+            if (Request.Form["Responsable"] != "")
+            {
+                string selectedGender = Request.Form["Responsable"].ToString();
+            }
+            return View(obj);
         }
 
 

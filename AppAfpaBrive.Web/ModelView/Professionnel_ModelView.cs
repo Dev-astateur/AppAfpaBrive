@@ -22,5 +22,18 @@ namespace AppAfpaBrive.Web.ModelView
         public string NumerosTel { get; set; }
         public string Fonction { get; set; }
 
+
+    }
+    public class Professionnel_Fonction_ModelView
+    {
+        public string NomProfessionnel { get; set; }
+
+        public string PrenomProfessionnel { get; set; }
+
+        public bool Tuteur { get; set; }
+
+        public bool Responsable { get; set; }
+
+
     }
 }
