@@ -103,6 +103,7 @@ namespace AppAfpaBrive.Web.Controllers
         /// Page principale de validation de Pee
         /// </summary>
         /// <returns></returns>
+        [Route("/Pee/PeeEntrepriseValidation/{id}")]
         [HttpGet]
         public async Task<IActionResult> PeeEntrepriseValidation(int? id)
         {

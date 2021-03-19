@@ -6,6 +6,12 @@
     @await Html.PartialAsync("~/Views/Shared/Entreprise/_EntreprisePartial.cshtml", Model)
 </div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-6"><p><button id="return">Retour</button></p></div>
+        <div class="col-md-6"><p><button id="next">Suivant</button></p></div>
+    </div>
+</div>
 
 @section Scripts
 {
@@ -13,27 +19,27 @@
         $(document).ready(function () {
             const next = document.getElementById('next');
             const retour = document.getElementById('return');
-            let win = document.getElementById('window').value;
 
             const idPee = @Model.IdPee;
-            let url = '';
+            let newUrl = '';
 
             next.addEventListener('click', event => {
+                let win = document.getElementById('window').value;
                 switch (win) {
                     case '1':
-                        url = '/Pee/ListeDocumentPee/'+idPee;
+                        newUrl = encodeURI('/Pee/ListeDocumentPee/' + idPee);
                         break;
                     case '2':
-                        url = '/Pee/EnregistrementPeeInfo/'+idPee;
+                        newUrl = encodeURI('/Pee/EnregistrementPeeInfo/'+idPee);
                         break;
                     case '3':
-                        url = '/Pee/ListePeeAValider'+@Model.MatriculeCollaborateurAfpa;
+                        newUrl = encodeURI('/Pee/ListePeeAValider'+@Model.MatriculeCollaborateurAfpa);
                         break;
                 }
-                if ('' != url && 'ListePeeAValider' != url.substring(5, 21)) {
+                if ('' != newUrl && 'ListePeeAValider' != newUrl.substring(5, 21)) {
                     $.ajax({
                         type: 'GET',
-                        url: url,
+                        url: newUrl,
                         success: function (result) {
                             const partial = document.getElementById('viewPartial');
                             partial.innerHTML = result;
@@ -41,29 +47,30 @@
                     });
                 }
                 else {
-                    if (url.length > 0) {
-                        window.location.href = url;
+                    if (newUrl.length > 0) {
+                        window.location.href = newUrl;
                     }
                 }
             });
 
             retour.addEventListener('click', event => {
+                let win = document.getElementById('window').value;
                 switch (win) {
                     case '1':
-                        url = '/Pee/ListePeeAValider/'+@Model.MatriculeCollaborateurAfpa;
+                        newUrl = encodeURI('/Pee/ListePeeAValider/'+@Model.MatriculeCollaborateurAfpa);
                         break;
                     case '2':
-                        url = '/Pee/PeeEntrepriseValidation/' + idPee;
+                        newUrl = encodeURI('/Pee/PeeEntrepriseValidation/' + idPee);
                         break;
                     case '3':
-                        url = '/Pee/ListeDocumentPee'+idPee;
+                        newUrl = encodeURI('/Pee/ListeDocumentPee/'+idPee);
                         break;
                 }
-                console.log(url.substring(5, 21));
-                if (url.length > 0 && 'ListePeeAValider' != url.substring(5, 21)) {
+               
+                if ('/Pee/ListeDocumentPee/' == newUrl.substring(0,22)) {
                     $.ajax({
                         type: 'GET',
-                        url: url,
+                        url: newUrl,
                         success: function (result) {
                             const partial = document.getElementById('viewPartial');
                             partial.innerHTML = result;
@@ -71,8 +78,8 @@
                     });
                 }
                 else {
-                    if (url.length > 0) {
-                        window.location.href = url;
+                    if (newUrl.length > 0) {
+                        window.location.href = newUrl;
                     }
                 }
             });
