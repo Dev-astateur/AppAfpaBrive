@@ -25,13 +25,11 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         {
             _db = db;
             _produitDeFormationLayer = new ProduitDeFormationLayer(db);
-            
         }
 
         // GET: ProduitFormation
         public async Task<IActionResult> Index(string filter,int page, string sortExpression="CodeProduitFormation")
         {
-           
             var model = await _produitDeFormationLayer.GetPage(filter,page, sortExpression);
             model.RouteValue = new RouteValueDictionary
             {
@@ -43,7 +41,6 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // GET: ProduitFormation/Details/5
         public IActionResult Details(string Libelle)
         {
-
             return View();
         }
 
@@ -62,12 +59,11 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
             
             if (ModelState.IsValid)
             {
-                if (x == "0")
-                {
-                    obj.FormationContinue = true;
-                }
-                else obj.FormationDiplomante = true;
-                
+                //if (x == "0")
+                //{
+                //    obj.FormationContinue = true;
+                //}
+                //else obj.FormationDiplomante = true; 
                 _produitDeFormationLayer.InsertProduit(obj.GetProduitFormation());
                 return RedirectToAction("Index");
             }
@@ -83,13 +79,10 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
                 return NotFound();
             }
             ProduitFormationModelView obj = _produitDeFormationLayer.GetByCodeProduitFormation(id);
-            
-            
             if (obj == null)
             {
                 return NotFound();
             }
-            
             return View(obj);
         }
 
@@ -98,8 +91,14 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         [ValidateAntiForgeryToken]
         public IActionResult Edit(ProduitFormationModelView obj)
         {
+            var x = Request.Form["Formation"].ToString();
             if (ModelState.IsValid)
             {
+                //if (x == "0")
+                //{
+                //    obj.FormationContinue = true;
+                //}
+                //else obj.FormationDiplomante = true;
                 _produitDeFormationLayer.Update(obj.GetProduitFormation());
                 return RedirectToAction("Index");
             }

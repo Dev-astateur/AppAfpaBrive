@@ -33,16 +33,28 @@
                 <input asp-for="LibelleCourtFormation" class="form-control" />
                 <span asp-validation-for="LibelleCourtFormation" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            @*<div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="FormationContinue" /> @Html.DisplayNameFor(model => model.FormationContinue)
+            </label>
+        </div>
+        <div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="FormationDiplomante" /> @Html.DisplayNameFor(model => model.FormationDiplomante)
+            </label>
+        </div>*@
+            @*<div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="FormationContinue" /> @Html.DisplayNameFor(model => model.FormationContinue)
+                    <label>FormationContinue</label>
+                    @Html.RadioButton("Formation", "0")
                 </label>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="FormationDiplomante" /> @Html.DisplayNameFor(model => model.FormationDiplomante)
+                    <label>FormationDiplomante</label>
+                    @Html.RadioButton("Formation", "1")
                 </label>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

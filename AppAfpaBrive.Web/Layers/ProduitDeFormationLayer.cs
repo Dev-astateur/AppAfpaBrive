@@ -32,8 +32,8 @@ namespace AppAfpaBrive.Web.Layers
                 NiveauFormation = e.NiveauFormation,
                 LibelleProduitFormation = e.LibelleProduitFormation,
                 LibelleCourtFormation = e.LibelleCourtFormation,
-                FormationContinue = e.FormationContinue,
-                FormationDiplomante = e.FormationDiplomante
+                //FormationContinue = e.FormationContinue,
+                //FormationDiplomante = e.FormationDiplomante
             }).First(p => p.CodeProduitFormation == idCodeProduitFormation);
             return obj as ProduitFormationModelView;
         }
