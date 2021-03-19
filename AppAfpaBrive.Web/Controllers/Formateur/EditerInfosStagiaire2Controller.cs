@@ -18,7 +18,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         public EditerInfosStagiaire2Controller(AFPANADbContext context)
         {
             _stagiaireLayer = new StagiaireLayer(context);
-    }
+        }
 
         // GET: EditerInfosStagiaire2Controller
         public ActionResult Index()
@@ -32,16 +32,16 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
             if (id == null)
             {
                 return BadRequest();
-            }           
+            }
             var beneficiaire = _stagiaireLayer.FinByMatricule(id);
             return View(beneficiaire);
         }
 
         // GET: EditerInfosStagiaire2Controller/Create
         public ActionResult Create()
-        {           
-            
-           return View();
+        {
+
+            return View();
         }
 
         // POST: EditerInfosStagiaire2Controller/Create
@@ -49,12 +49,26 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         [ValidateAntiForgeryToken]
         public ActionResult Update(Beneficiaire beneficiaire)
         {
+            var btnRadioGenre = Request.Form["Genre"].ToString();
+            var btnRadioMailing = Request.Form["Mailing"].ToString();
+
             if (ModelState.IsValid)
             {
-                _stagiaireLayer.UpdateBeneficiaire(beneficiaire);
+                if (btnRadioMailing == "0")
+                {
+                    beneficiaire.MailingAutorise = true;
+                }
+                else beneficiaire.MailingAutorise = false;
 
+                if (btnRadioGenre == "1")
+                {
+                    beneficiaire.CodeTitreCivilite = 1;
+                }
+                else beneficiaire.CodeTitreCivilite = 0;
+
+                _stagiaireLayer.UpdateBeneficiaire(beneficiaire);
             }
-            return RedirectToAction(nameof(HomeController));
+            return RedirectToAction("ListeOffreFormation", "EditerInfosStagiaire");
         }
 
         // GET: EditerInfosStagiaire2Controller/Edit/5

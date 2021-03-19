@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-md-10 text-center w-auto ">
 
-                <input type="text" style="max-width:900px" width="400" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
+                <input type="text" size="100" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
 
             </div>
             <div>
@@ -47,7 +47,6 @@
         $(document).ready(function () {
             $('#boutontest').on('click', function (e) {
                 var libelle = $('#tbRechercherOFormation').val();
-
                 const uri = '/EditerInfosStagiaire/ChargerListeStagiaires?libelle=' + libelle;
                 const encoded = encodeURI(uri);
                 $('#liste').load(encoded);

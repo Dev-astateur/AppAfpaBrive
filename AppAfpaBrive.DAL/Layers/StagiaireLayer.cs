@@ -73,6 +73,8 @@ namespace AppAfpaBrive.DAL.Layers
                     .ToList();
         }
 
+
+        //Methodes CRUD
         public void InsertBeneficiaire(Beneficiaire beneficiaire)
         {
 
