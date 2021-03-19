@@ -267,5 +267,15 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             return View();
         }
 
+        // get post
+        public IActionResult date(string id)
+        {
+            string Date1 = Request.Form["date1"];
+            string Date2 = Request.Form["date2"];
+            string Date3 = Request.Form["date3"];
+            string Date4 = Request.Form["date4"];
+
+            return View();
+        }
     }
 }

@@ -2,16 +2,16 @@
     <div>
         <label>Veuillez saisir vos dates de stages: </label>
         <div>
-            <input type="date" />
-            <input type="date" />
+            <input type="date" id="date1"/>
+            <input type="date" id="date2"/>
         </div>
         <div>
             <label>J'ai une deuxieme date: </label>
             <input type="checkbox" id="btn" value="Ajouter des dates" />
         </div>
         <div id="division" style="display:none">
-            <input type="date" id="date1" />
-            <input type="date" id="date2" />
+            <input type="date"  id="date3"/>
+            <input type="date"  id="date4"/>
         </div>
         <input type="submit" />
     </div>
@@ -23,8 +23,6 @@
     $(document).ready(function () {
         $("#btn").click(function () {
             $("#division").toggle();
-            $('#date1').val("");
-            $('#date2').val("");
         });
     });
 </script>
