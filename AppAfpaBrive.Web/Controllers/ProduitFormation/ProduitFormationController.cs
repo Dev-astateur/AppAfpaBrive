@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ModelView;
-using AppAfpaBrive.DAL.Layers;
+
 using ReflectionIT.Mvc.Paging;
 using Microsoft.AspNetCore.Routing;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers.ProduitFormation
 {
@@ -88,7 +89,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
                 return NotFound();
             }
             
-            return View();
+            return View(obj);
         }
 
         // POST: ProduitFormation/Edit/5

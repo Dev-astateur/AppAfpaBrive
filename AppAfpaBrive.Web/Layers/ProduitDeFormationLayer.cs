@@ -9,7 +9,7 @@ using ReflectionIT.Mvc.Paging;
 using System.Threading.Tasks;
 
 
-namespace AppAfpaBrive.DAL.Layers
+namespace AppAfpaBrive.Web.Layers
 {
     public class ProduitDeFormationLayer
     {
