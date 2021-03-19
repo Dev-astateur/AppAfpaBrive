@@ -1,11 +1,30 @@
-﻿<input type="date" />
-<input type="date" />
-<button id="btn"></button>
-<div id="div" hidden="hidden">
-    <input type="date" />
-    <input type="date" />
-</div>
+﻿<form method="post">
+    <div>
+        <label>Veuillez saisir vos dates de stages: </label>
+        <div>
+            <input type="date" />
+            <input type="date" />
+        </div>
+        <div>
+            <label>J'ai une deuxieme date: </label>
+            <input type="checkbox" id="btn" value="Ajouter des dates" />
+        </div>
+        <div id="division" style="display:none">
+            <input type="date" id="date1" />
+            <input type="date" id="date2" />
+        </div>
+        <input type="submit" />
+    </div>
+</form>
 
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
-
+    $(document).ready(function () {
+        $("#btn").click(function () {
+            $("#division").toggle();
+            $('#date1').val("");
+            $('#date2').val("");
+        });
+    });
 </script>
