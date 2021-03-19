@@ -10,4 +10,5 @@ namespace AppAfpaBrive.Web.ModelView
         public string NumeroSiret { get; set; }
        
     }
+
 }

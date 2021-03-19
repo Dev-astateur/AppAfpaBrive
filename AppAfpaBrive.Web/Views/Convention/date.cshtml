@@ -1,17 +1,18 @@
-﻿<form method="post">
+﻿@model AppAfpaBrive.Web.ModelView.Date_ModelView
+<form method="post">
     <div>
         <label>Veuillez saisir vos dates de stages: </label>
         <div>
-            <input type="date" id="date1"/>
-            <input type="date" id="date2"/>
+            <input type="date" id="date1" asp-for="Date1"/>
+            <input type="date" id="date2" asp-for="Date2"/>
         </div>
         <div>
             <label>J'ai une deuxieme date: </label>
             <input type="checkbox" id="btn" value="Ajouter des dates" />
         </div>
         <div id="division" style="display:none">
-            <input type="date"  id="date3"/>
-            <input type="date"  id="date4"/>
+            <input type="date" id="date3" />
+            <input type="date" id="date4" />
         </div>
         <input type="submit" />
     </div>

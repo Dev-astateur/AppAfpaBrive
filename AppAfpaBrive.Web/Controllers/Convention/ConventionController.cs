@@ -268,7 +268,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         }
 
         // get post
-        public IActionResult date(string id)
+        [HttpPost]
+        public IActionResult date(Date_ModelView id)
         {
             string Date1 = Request.Form["date1"];
             string Date2 = Request.Form["date2"];
