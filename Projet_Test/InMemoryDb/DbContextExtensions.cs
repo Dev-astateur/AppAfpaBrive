@@ -18,6 +18,7 @@ namespace Projet_Test.InMemoryDb
                 NomCollaborateur = "Titi",
                 MatriculeCollaborateurAfpa = "96AA011"
             });
+
         }
 
     }
