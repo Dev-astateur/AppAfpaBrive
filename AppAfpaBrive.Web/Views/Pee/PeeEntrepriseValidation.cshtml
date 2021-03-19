@@ -36,6 +36,7 @@
                         newUrl = encodeURI('/Pee/ListePeeAValider'+@Model.MatriculeCollaborateurAfpa);
                         break;
                 }
+
                 if ('' != newUrl && 'ListePeeAValider' != newUrl.substring(5, 21)) {
                     $.ajax({
                         type: 'GET',

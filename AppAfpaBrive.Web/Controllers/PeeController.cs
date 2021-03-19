@@ -138,18 +138,22 @@ namespace AppAfpaBrive.Web.Controllers
         {
             if (IdPee != peeModelView.IdPee)
                 return NotFound();
-            if (ModelState.IsValid)
+            if (peeModelView.IsValid)
             {
                 try
                 {
 
+                    peeModelView.Id = new OffreFormationModelView()
+                    {
+                        MatriculeCollaborateurAfpa = "1603870"
+                    };
                 }
                 catch (DbUpdateConcurrencyException)
                 {
 
                 }
             }
-            return RedirectToAction();
+            return RedirectToAction(nameof(ListePeeAValider),peeModelView.Id.MatriculeCollaborateurAfpa);
         }
 
         /// <summary>

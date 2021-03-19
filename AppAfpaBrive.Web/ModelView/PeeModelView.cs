@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.ModelView
 {
-    public class PeeModelView
+    public class PeeModelView : ModelViewBase
     {
         public PeeModelView()
         {
@@ -43,7 +43,7 @@ namespace AppAfpaBrive.Web.ModelView
         public int IdOffreFormation { get; set; }
         public string IdEtablissement { get; set; }
         public string Remarques { get; set; }   // il n'existe pas dans la base pour le moment à rajouter par la suite
-        public int Etat { get; set; }
+        public new int Etat { get; set; }
 
         public virtual EntrepriseModelView IdEntrepriseNavigation { get; set; }
         public virtual OffreFormationModelView Id { get; set; }
