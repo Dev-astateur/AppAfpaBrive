@@ -25,8 +25,10 @@ namespace AppAfpaBrive.Web.Layers
         {
             return _context.Pays.ToList();
         }
-        public List<Entreprise> GetEntreprisesByDepartement(string dep)
+        public List<Entreprise> GetEntreprisesByDepartement(string dep, int page=1)
         {
+            var query = _context.Entreprises.Where(e => e.CodePostal.StartsWith(dep)).AsQueryable();
+
             return _context.Entreprises.Where(e => e.CodePostal.StartsWith(dep)).ToList();
         }
         public void RemoveEntrepriseById(int id)

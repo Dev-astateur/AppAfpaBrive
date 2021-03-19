@@ -16,13 +16,13 @@ namespace AppAfpaBrive.Web.Controllers
 {
     public class EntrepriseController : Controller
     {
-        //private readonly AFPANADbContext _dbContext;
+        private readonly AFPANADbContext _dbContext;
         private readonly EntrepriseLayer _layer;
 
         public EntrepriseController(AFPANADbContext Db)
         {
             _layer = new EntrepriseLayer(Db);
-            //_dbContext = new AFPANADbContext();
+            _dbContext = new AFPANADbContext();
         }
 
        
@@ -81,13 +81,13 @@ namespace AppAfpaBrive.Web.Controllers
         //[HttpGet]
 
 
-        public async Task<IActionResult> ListeEntreprise(string departement, string formation, int page)
+        public async Task<IActionResult> ListeEntreprise(string departement, string formation, int page=1)
         {
 
             List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
 
             ViewData["GetDepartement"] = departement;
-            // ViewData["GetProduitForm"] = formation;
+             ViewData["GetProduitForm"] = formation;
 
             //var query = _layer.GetAllEntreprise();
 
@@ -113,7 +113,7 @@ namespace AppAfpaBrive.Web.Controllers
                 query = _layer.GetEntrepriseByProduitFormation(formation);
             }
 
-            if (query!=null)
+            if (query != null)
             {
                 foreach (var entreprise in query)
                 {
@@ -124,18 +124,24 @@ namespace AppAfpaBrive.Web.Controllers
                     //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
 
                     ListentrepriseListViewModel.Add(entrepriseModel);
-                    
-                }
-                ;
+
+                };
+                //var model = await PagingList.CreateAsync(ListentrepriseListViewModel, 10, page);
+
                 return View(ListentrepriseListViewModel);
             }
 
             //Test pour paging
-            var qry = _layer.GetAllEntreprise();
-            var model = PagingList.CreateAsync(qry, 10, page);
-            return View();
+
+
+            var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
+            var model = await PagingList.CreateAsync(qry, 10, page);
+
+            return View(model);
+            //return View();
 
             
+        
         }
         #endregion
 

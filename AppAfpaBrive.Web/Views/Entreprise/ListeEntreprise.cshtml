@@ -1,4 +1,7 @@
-﻿@model List<AppAfpaBrive.Web.ModelView.EntrepriseListViewModel>
+﻿@*@model List<AppAfpaBrive.Web.ModelView.EntrepriseListViewModel>*@
+@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.BOL.Entreprise>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflexionIT.Mvc.Paging
 
 @{
     ViewData["Title"] = "ListeEntreprise";
@@ -6,10 +9,9 @@
 
 <head>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
 </head>
+
 
 
 <form asp-controller="Entreprise" asp-action="ListeEntreprise">
@@ -25,7 +27,7 @@
             <div class="col-sm-4">
                 <p>Recherche par l'intitulé de l'offre de formation: </p>
                 <p>
-                    <input type="text" placeholder=" formation" @*value="@ViewData["GetProduitForm"]"*@ name="formation" id="productName" />
+                    <input type="text" placeholder=" formation" value="@ViewData["GetProduitForm"]" name="formation" id="productName" />
 
 
                 </p>
@@ -38,35 +40,25 @@
     </div>
 </form>
 
-
 <table class="table">
-    <thead>
-        <div class="row">
-            <tr>
-
-                <div class="col-md-3">
+    <thead>       
+            <tr> 
                     <th>
                         Raison sociale
-                    </th>
-                </div>
-                <div class="col-md-3">
+                    </th>          
                     <th>
                         E-Mail
                     </th>
-                </div>
-                <div class="col-md-3">
+                
                     <th>
                         Téléphone
                     </th>
-                </div>
-                <div class="col-md-3">
+                
                     <th>
                         Ville
                     </th>
-                </div>
-
             </tr>
-        </div>
+        
 
     </thead>
     <tbody>
@@ -77,28 +69,26 @@
 
             foreach (var item in Model)
             {
-                <div class="row">
+               
                     <tr>
-                        <div class="col-md-3">
+                       
                             <td>
                                 @Html.DisplayFor(modelItem => item.RaisonSociale)
                             </td>
-                        </div>
-                        <div class="col-md-3">
+                       
+                        
                             <td>
                                 @Html.DisplayFor(modelItem => item.MailEntreprise)
                             </td>
-                        </div>
-                        <div class="col-md-3">
+                        
                             <td>
                                 @Html.DisplayFor(modelItem => item.TelEntreprise)
                             </td>
-                        </div>
-                        <div class="col-md-3">
+                       
                             <td>
                                 @Html.DisplayFor(modelItem => item.Ville)
                             </td>
-                        </div>
+                       
 
                         @*<td>
                                 <a asp-action="Edit" asp-route-id="@item.IdEntreprise">Edit</a> |
@@ -107,12 +97,20 @@
                             </td>*@
 
                     </tr>
-                </div>
+                
             }
         }
 
     </tbody>
 </table>
+<nav aria-label="pagination">
+    @await this.Component.InvokeAsync("Pager", new { PagingList = this.Model })
+</nav>
+
+<nav aria-label="pagination">
+    <vc:pager paging list="@Model" />
+</nav>
+
 @section Scripts{
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
