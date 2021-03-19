@@ -89,55 +89,68 @@ namespace AppAfpaBrive.Web.Controllers
             ViewData["GetDepartement"] = departement;
              ViewData["GetProduitForm"] = formation;
 
-            //var query = _layer.GetAllEntreprise();
+            
 
-            List<Entreprise> query=null;
+            //Essai pour pagination
 
+            var query = _layer.GetAllEntrepriseForPaging(page);
+
+            //List<Entreprise> query=null;
 
 
             if (!String.IsNullOrEmpty(departement) && (!String.IsNullOrEmpty(formation)))
             {
-                query = _layer.GetEntrepriseByDepartementEtOffre(formation, departement);
+                // query = _layer.GetEntrepriseByDepartementEtOffre(formation, departement);
+
+                //pagination
+
+                query =  _layer.GetEntrepriseByDepartementEtOffreForPaging(formation,departement,page);
+
             }
 
 
             else if (!String.IsNullOrEmpty(departement) && String.IsNullOrEmpty(formation))
             {
-                query = _layer.GetEntreprisesByDepartement(departement);
+                //query = _layer.GetEntreprisesByDepartement(departement);
+
+                //pagination
+                 query =_layer.GetEntreprisesByDepartementPaging(formation, page);
             }
 
 
             else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
             {
 
-                query = _layer.GetEntrepriseByProduitFormation(formation);
+                // query = _layer.GetEntrepriseByProduitFormation(formation);
+
+                //pagination
+                query = _layer.GetEntrepriseByProduitFormationForPaging(formation, page);
             }
 
-            if (query != null)
-            {
-                foreach (var entreprise in query)
-                {
-                    EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
-                    //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
-                    //entrepriseModel.Ville = entreprise.Ville;
-                    //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
-                    //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
+            //if (query != null)
+            //{
+            //    foreach (var entreprise in query)
+            //    {
+            //        EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
+            //        //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
+            //        //entrepriseModel.Ville = entreprise.Ville;
+            //        //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
+            //        //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
 
-                    ListentrepriseListViewModel.Add(entrepriseModel);
+            //        ListentrepriseListViewModel.Add(entrepriseModel);
 
-                };
-                //var model = await PagingList.CreateAsync(ListentrepriseListViewModel, 10, page);
+            //    };
+            //    //var model = await PagingList.CreateAsync(ListentrepriseListViewModel, 10, page);
 
-                return View(ListentrepriseListViewModel);
-            }
+            //    return View(ListentrepriseListViewModel);
+            //}
 
             //Test pour paging
 
+           // var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
+            //var model = await PagingList.CreateAsync(query, 20, page);
 
-            var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
-            var model = await PagingList.CreateAsync(qry, 10, page);
-
-            return View(model);
+            return View(query);
             //return View();
 
             
