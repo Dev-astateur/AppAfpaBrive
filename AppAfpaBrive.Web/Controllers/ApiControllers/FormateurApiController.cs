@@ -24,7 +24,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
         /// <returns></returns>
         [Produces("application/json")]
         [HttpGet("getFormateur")]
-        public async Task<IActionResult> GetFormateur()
+        public async Task<IActionResult> GetFormateurStartWith()
         {
             try
             {
