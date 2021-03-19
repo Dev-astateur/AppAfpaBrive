@@ -4,15 +4,16 @@
         <label>Veuillez saisir vos dates de stages: </label>
         <div>
             <input type="date" id="date1" asp-for="Date1"/>
+            <span asp-validation-for="Date1"></span>
             <input type="date" id="date2" asp-for="Date2"/>
         </div>
         <div>
             <label>J'ai une deuxieme date: </label>
-            <input type="checkbox" id="btn" value="Ajouter des dates" />
+            <input type="checkbox" id="btn" value="Ajouter des dates" asp-for="Checkbox" />
         </div>
         <div id="division" style="display:none">
-            <input type="date" id="date3" />
-            <input type="date" id="date4" />
+            <input type="date" id="date3" asp-for="Date3"/>
+            <input type="date" id="date4" asp-for="Date4"/>
         </div>
         <input type="submit" />
     </div>
