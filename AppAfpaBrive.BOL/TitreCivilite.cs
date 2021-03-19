@@ -11,6 +11,7 @@ namespace AppAfpaBrive.BOL
         {
             Beneficiaires = new HashSet<Beneficiaire>();
             CollaborateurAfpas = new HashSet<CollaborateurAfpa>();
+            Professionnels = new HashSet<Professionnel>();
         }
 
         public int CodeTitreCivilite { get; set; }
@@ -19,5 +20,6 @@ namespace AppAfpaBrive.BOL
 
         public virtual ICollection<Beneficiaire> Beneficiaires { get; set; }
         public virtual ICollection<CollaborateurAfpa> CollaborateurAfpas { get; set; }
+        public virtual ICollection<Professionnel> Professionnels { get; set; }
     }
 }

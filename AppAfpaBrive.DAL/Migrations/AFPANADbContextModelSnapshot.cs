@@ -1159,9 +1159,7 @@ namespace AppAfpaBrive.DAL.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int?>("TitreCiviliteNavigationCodeTitreCivilite")
-                        .HasColumnType("int");
-
+                  
                     b.HasKey("IdProfessionnel");
 
                     b.HasIndex("TitreCiviliteNavigationCodeTitreCivilite");
@@ -1464,6 +1462,8 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Navigation("IdEntrepriseNavigation");
 
                     b.Navigation("IdProfessionnelNavigation");
+
+                   
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Etablissement", b =>
@@ -1677,7 +1677,8 @@ namespace AppAfpaBrive.DAL.Migrations
                 {
                     b.HasOne("AppAfpaBrive.BOL.TitreCivilite", "TitreCiviliteNavigation")
                         .WithMany()
-                        .HasForeignKey("TitreCiviliteNavigationCodeTitreCivilite");
+                        .HasForeignKey("CodeTitreCivilite")
+                        .HasConstraintName("FK_Professionnel_TitreCivilite");
 
                     b.Navigation("TitreCiviliteNavigation");
                 });
@@ -1827,6 +1828,7 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Navigation("PeeIdResponsableJuridiqueNavigations");
 
                     b.Navigation("PeeIdTuteurNavigations");
+                 
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Rome", b =>

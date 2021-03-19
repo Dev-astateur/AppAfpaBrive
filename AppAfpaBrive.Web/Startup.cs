@@ -93,7 +93,7 @@ namespace AppAfpaBrive.Web
             {
                 endpoints.MapControllerRoute(
                     name: "AfficheBeneficiairePee",
-                    pattern: "{controller=Pee}/{action=AfficheBeneficiairePee}"
+                    pattern: "{controller=Pee}/{action=Index}"
                     );
                 endpoints.MapControllerRoute(
                     name: "default",

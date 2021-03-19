@@ -1,17 +1,14 @@
-﻿@model IQueryable<AppAfpaBrive.BOL.Pee>
+﻿@model IEnumerable<AppAfpaBrive.BOL.Pee>
 @using AppAfpaBrive.BOL;
 @using Microsoft.EntityFrameworkCore;
+
 @{
-    ViewData["Title"] = "AfficheBeneficiairePee";
-    Entreprise entreprise = new Entreprise();
-    PeriodePee periodePee = new PeriodePee();
-    Pee pee = new AppAfpaBrive.BOL.Pee();
-    Beneficiaire beneficiaire = new AppAfpaBrive.BOL.Beneficiaire();
-    pee.MatriculeBeneficiaireNavigation = beneficiaire;
-    //List<AppAfpaBrive.BOL.Pee> pees = new List<AppAfpaBrive.BOL.Pee>();
-    var listPee = Model.Select(S => S.MatriculeBeneficiaireNavigation.Pees).ToList();
-    
-    
+    List<PeriodePee> LitsPeriode = new List<PeriodePee>();
+
+    LitsPeriode = ViewData["PeriodePee"] as List<PeriodePee>;
+    //var ListPeeSansDoublon = ViewBag.ListSansDoublons;
+
+
 }
 
 <h4>Pee</h4>
@@ -29,59 +26,118 @@
 
                 <th>Nom Beneficiaire</th>
                 <th>Prénom Beneficiaire</th>
-                @*<th>Entreprise d'accueil</th>*@
+                <th>Entreprise_1</th>
 
-                @if (Model != null && listPee.Count() < 1)
+                @foreach (var itemBeneficiaire in Model)
                 {
-                    foreach (var data in listPee)
+                    if (itemBeneficiaire.MatriculeBeneficiaireNavigation.Pees.Count() > 1)
                     {
-                        foreach (var item in data)
+                        int j = 1;
+                        for (int x = 0; x < itemBeneficiaire.MatriculeBeneficiaireNavigation.Pees.Count(); x++)
                         {
-                            <th>Pee</th>
+                            j += 1;
+                            <th>Entreprise_@j</th>
+                        }
+                    }
+                }
+
+                <th>Pee_1</th>
+                @{
+                    int i = 0;
+                    foreach (var item in Model)
+                    {
+
+                        if (item.MatriculeBeneficiaireNavigation.Pees.Count() > 1)
+                        {
+                            for (int b = 0; b < item.MatriculeBeneficiaireNavigation.Pees.Count(); b++)
+                            {
+                                i += 1;
+                                <th>Pee_@i</th>
+                            }
+
                         }
 
 
                     }
+                }
 
-                }
-                else
-                {
-                    <th>Pee</th>
-                }
             </tr>
         </thead>
-        @if (Model != null)
-        {
+        
 
-            foreach (var item in Model)
+            @foreach (var item in Model)
             {
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.NomBeneficiaire)</td>
-                    <td>@Html.DisplayFor(modelItem => item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire)</td>
+                
+    <tr>
+
+        <td>@item.MatriculeBeneficiaireNavigation.NomBeneficiaire</td>
+        <td>@item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire</td>
+        <td>@item.IdEntrepriseNavigation.RaisonSociale</td>
+        @{
+            int r = 0;
+
+            if (item.MatriculeBeneficiaireNavigation.Pees.Count() > 1)
+            {
+                r = item.MatriculeBeneficiaireNavigation.Pees.Count();
 
 
-                    @if (Model != null)
+
+
+                foreach (var elem in item.MatriculeBeneficiaireNavigation.Pees)
+                {
+                    if (elem.IdEntrepriseNavigation.IdEntreprise != item.IdEntreprise)
                     {
-                        @foreach (var itemPee in item.MatriculeBeneficiaireNavigation.Pees)
-                        {
-                            <td>
-                                @Html.ActionLink($"Convention_{item.MatriculeBeneficiaire}",
-                                       "TeleWord",
-                                       new { id = itemPee.IdPee },
-                                       new { @class = "btn btn-primary border" }
-                                      )
-                            </td>
-
-
-
-                        }
-
+                        <td>@elem.IdEntrepriseNavigation.RaisonSociale</td>
                     }
 
 
-                </tr>
+
+                }
+
+            }
+            else
+            {
+                
+                    
+                  <td>@item.IdEntrepriseNavigation.RaisonSociale</td>
+                   
+                
+                for (int l = 0; l < r; l++)
+                {
+                    <td></td>
+
+
+                }
             }
         }
+        @foreach (var element in item.MatriculeBeneficiaireNavigation.Pees)
+        {
+
+            if (element.MatriculeBeneficiaire == item.MatriculeBeneficiaire)
+            {
+
+
+                <td>
+                    @Html.ActionLink($"Convention_{element.PeriodePees.FirstOrDefault(pr => pr.IdPee == element.IdPee).DateDebutPeriodePee.ToString("MMddyyy")}",
+                            "ChargementDocPee",
+                            new { id = element.IdPee },
+                            new { @class = "btn btn-primary border" }
+                           )
+                </td>
+            }
+
+
+        }
+        @{
+
+        }
+
+
+
+    </tr>
+
+            }
+
 
     </table>
 
