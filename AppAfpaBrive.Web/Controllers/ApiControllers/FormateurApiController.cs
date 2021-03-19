@@ -17,6 +17,11 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
 
         private AFPANADbContext db = new AFPANADbContext();
 
+
+        /// <summary>
+        /// Retourne les formateurs par le début de leurs noms
+        /// </summary>
+        /// <returns></returns>
         [Produces("application/json")]
         [HttpGet("getFormateur")]
         public async Task<IActionResult> GetFormateur()
@@ -24,9 +29,10 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
             try
             {
                 string term = HttpContext.Request.Query["term"].ToString();
+                CollaborateurAfpaLayer ofl = new CollaborateurAfpaLayer(db);
                 Debug.WriteLine(term);
-             
-                var names = db.CollaborateurAfpas.Where(p => p.NomCollaborateur.StartsWith(term)).Select(x => new { Nom = x.NomCollaborateur, Id = x.MatriculeCollaborateurAfpa });
+                var names = ofl.GetCollaborateurStartWith(term).Select(x => new { Nom = x.NomCollaborateur, Id = x.MatriculeCollaborateurAfpa });
+              
                 return Ok(names);
 
             }
