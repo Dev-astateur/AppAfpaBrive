@@ -41,6 +41,11 @@ namespace AppAfpaBrive.DAL.Layer
         {
             return _db.Professionnels.Where(x => x.NomProfessionnel == nom && x.PrenomProfessionnel == prenom).FirstOrDefault().IdProfessionnel;
         }
+
+        public Professionnel GetProfessionnel(int ID)
+        {
+            return _db.Professionnels.Where(x => x.IdProfessionnel == ID).FirstOrDefault();
+        }
     }
 
 }

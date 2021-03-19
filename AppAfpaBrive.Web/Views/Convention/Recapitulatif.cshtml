@@ -1,0 +1,51 @@
+﻿@model AppAfpaBrive.Web.Models.Creation_convention
+
+
+
+<div class="border p-3">
+    <div class="form-group row">
+        <h2 class="text-info pl-3">Récapitulatif de votre convention de stage: </h2>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="form-group row">
+                <div class="col-8">
+                    <label class="col-4"> Etablissement </label>
+                    <label class="col-4">@Model.Etablissement</label>
+                </div>
+                <div class="col-8">
+                    <label class="col-4"> Raison sociale: </label>
+                    <label class="col-4">@Model.Formation </label>
+                </div>
+                <div class="col-8">
+                    <label class="col-4"> Entreprise </label>
+                    <label class="col-4">@Model.Raison_social </label>
+                </div>
+                <div class="col-8">
+                    <label class="col-4"> Siret: </label>
+                    <label class="col-4">@Model.Siret</label>
+                </div>
+                <div class="col-8">
+                    <label class="col-4"> Tuteur: </label>
+                    <label class="col-4">@Model.TuteurNom @Model.TuteurPrenom </label>
+                </div>
+                <div class="col-8">
+                    <label class="col-4"> Responsable: </label>
+                    <label class="col-4">@Model.ResponsableNom @Model.ResponsablePrenom </label>
+                </div>
+
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-4 row">
+
+                    <div class="col">
+                        <a asp-action="Professionel" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Continuer</a>
+                    </div>
+                    <div class="col">
+                        <a asp-action="entreprise" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Retour</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -111,6 +111,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 string str = this.HttpContext.Session.GetString("convention");
                 Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
                 convention.Siret = obj.NumeroSiret;
+                
                 str = JsonConvert.SerializeObject(convention);
                 HttpContext.Session.SetString("convention", str);
                 return RedirectToAction("Entreprise_Recap");
@@ -128,7 +129,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             Entreprise obj = _Entreprise.get_Entreprise(convention.Siret).FirstOrDefault();
             convention.Siret = obj.NumeroSiret;
             convention.IdEntreprise = obj.IdEntreprise;
-
+            convention.Raison_social = obj.RaisonSociale;
             str = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", str); 
             return View(obj);
@@ -190,17 +191,38 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [ValidateAntiForgeryToken]
         public IActionResult Professionel(List<Professionnel> obj)
         {
+            string str = this.HttpContext.Session.GetString("convention");
+            Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
             if (Request.Form["tuteur"] != "")
             {
-                string selectedGender = Request.Form["tuteur"].ToString();
+                string tuteurID = Request.Form["tuteur"].ToString();
+                Professionnel professionnel = new Professionnel(); 
+                professionnel = _pro.GetProfessionnel(int.Parse(tuteurID));
+                convention.TuteurNom = professionnel.NomProfessionnel;
+                convention.TuteurPrenom = professionnel.PrenomProfessionnel;
+                convention.IdTuteur = professionnel.IdProfessionnel;
             }
             if (Request.Form["Responsable"] != "")
             {
-                string selectedGender = Request.Form["Responsable"].ToString();
+                string ResponsableID = Request.Form["Responsable"].ToString();
+                Professionnel professionnel = new Professionnel();
+                professionnel = _pro.GetProfessionnel(int.Parse(ResponsableID));
+                convention.ResponsableNom = professionnel.NomProfessionnel;
+                convention.ResponsablePrenom = professionnel.PrenomProfessionnel;
+                convention.IdResponsable = professionnel.IdProfessionnel;
             }
-            return View(obj);
+            var x = JsonConvert.SerializeObject(convention);
+            HttpContext.Session.SetString("convention", x);
+            return RedirectToAction("Recapitulatif");
         }
 
+        // get Professionel_creation
+        public IActionResult Recapitulatif()
+        {
+            string str = this.HttpContext.Session.GetString("convention");
+            Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+            return View(convention);
+        }
 
         // get Professionel_creation
         public IActionResult Professionel_Creation()
@@ -238,5 +260,12 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
             return View(obj);
         }
+        // get date
+        public IActionResult date()
+        {
+
+            return View();
+        }
+
     }
 }
