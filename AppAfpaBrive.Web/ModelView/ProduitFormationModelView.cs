@@ -55,18 +55,5 @@ namespace AppAfpaBrive.Web.ModelView
                 FormationDiplomante = this.FormationDiplomante
             };
         }
-        public ProduitFormation GetOneProduitFormationById(int id)
-        {
-            return new ProduitFormation()
-            {
-                CodeProduitFormation = id,
-                NiveauFormation = this.NiveauFormation,
-                LibelleProduitFormation = this.LibelleProduitFormation,
-                LibelleCourtFormation = this.LibelleCourtFormation,
-                FormationContinue = this.FormationContinue,
-                FormationDiplomante = this.FormationDiplomante
-            };
-        }
-
     }
 }

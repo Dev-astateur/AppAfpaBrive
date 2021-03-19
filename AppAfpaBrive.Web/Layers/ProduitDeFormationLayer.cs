@@ -7,7 +7,7 @@ using AppAfpaBrive.DAL;
 using AppAfpaBrive.BOL;
 using ReflectionIT.Mvc.Paging;
 using System.Threading.Tasks;
-
+using AppAfpaBrive.Web.ModelView;
 
 namespace AppAfpaBrive.Web.Layers
 {
@@ -19,10 +19,23 @@ namespace AppAfpaBrive.Web.Layers
         {
             _context = context;
         }
-       
-        public ProduitFormation GetByCodeProduitFormation(int idCodeProduitFormation)
+
+        public ProduitFormation GetByCodeProduitFormationdelete(int idCodeProduitFormation)
         {
             return _context.ProduitFormations.Find(idCodeProduitFormation);
+        }
+        public ProduitFormationModelView GetByCodeProduitFormation(int idCodeProduitFormation)
+        {
+            var obj =_context.ProduitFormations.Select(e => new ProduitFormationModelView()
+            {
+                CodeProduitFormation = e.CodeProduitFormation,
+                NiveauFormation = e.NiveauFormation,
+                LibelleProduitFormation = e.LibelleProduitFormation,
+                LibelleCourtFormation = e.LibelleCourtFormation,
+                FormationContinue = e.FormationContinue,
+                FormationDiplomante = e.FormationDiplomante
+            }).First(p => p.CodeProduitFormation == idCodeProduitFormation);
+            return obj as ProduitFormationModelView;
         }
         public async Task<PagingList<ProduitFormation>> GetPage(string filter,int page = 1,string sortExpression ="CodeProduitFormation")
         {
