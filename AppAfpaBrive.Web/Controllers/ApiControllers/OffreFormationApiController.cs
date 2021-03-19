@@ -23,12 +23,12 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
         {
             try
             {
-                ProduitFormationLayer produitLayer = new ProduitFormationLayer(db);
+                ProduitDeFormationLayer produitLayer = new ProduitDeFormationLayer(db);
                 string term = HttpContext.Request.Query["term"].ToString();
                 var offre = produitLayer.GetProduitFormationStartWith(term).Select(x => new { Id = x.CodeProduitFormation, Libelle = x.LibelleProduitFormation });
 
-                var offres = db.ProduitFormations.Where(x => x.CodeProduitFormation.ToString().StartsWith(term)).Select(x => new { Id = x.CodeProduitFormation, Libelle = x.LibelleProduitFormation }).ToList();
-                return Ok(offres);
+               
+                return Ok(offre);
             }
             catch
             {

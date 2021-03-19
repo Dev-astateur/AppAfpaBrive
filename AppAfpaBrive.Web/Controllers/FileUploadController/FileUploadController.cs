@@ -19,7 +19,7 @@ namespace AppAfpaBrive.Web.Controllers
     {
         private readonly AFPANADbContext _context;
         private readonly IConfiguration _config;
-        private readonly ILogger<HomeController> _logger;
+        
 
         protected string Path { get; set; }
 

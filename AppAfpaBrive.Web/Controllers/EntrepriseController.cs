@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
-using AppAfpaBrive.DAL.Layers;
+
+using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace AppAfpaBrive.Web.Controllers
 
         public EntrepriseController(AFPANADbContext Db)
         {
-           
+             
             _layer = new EntrepriseLayer(Db);
         }
 
