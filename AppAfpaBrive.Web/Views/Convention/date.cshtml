@@ -1,22 +1,65 @@
-﻿@model AppAfpaBrive.Web.ModelView.Date_ModelView
+﻿@model List<AppAfpaBrive.Web.ModelView.Date_ModelView>
+
+
+
 <form method="post">
-    <div>
-        <label>Veuillez saisir vos dates de stages: </label>
-        <div>
-            <input type="date" id="date1" asp-for="Date1"/>
-            <span asp-validation-for="Date1"></span>
-            <input type="date" id="date2" asp-for="Date2"/>
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
         </div>
-        <div>
-            <label>J'ai une deuxieme date: </label>
-            <input type="checkbox" id="btn" value="Ajouter des dates" asp-for="Checkbox" />
+        <div class="col-6 text-right">
+            <a asp-controller="Convention" asp-action="date_create" class="btn btn-primary">
+                Ajouter de nouvelles dates
+            </a>
         </div>
-        <div id="division" style="display:none">
-            <input type="date" id="date3" asp-for="Date3"/>
-            <input type="date" id="date4" asp-for="Date4"/>
-        </div>
-        <input type="submit" />
     </div>
+
+    <br /><br />
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        Date de début du stage
+                    </th>
+                    <th>
+                        Date de fin du stage
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr id="ligne">
+                        <td width="50%">@obj.Date1</td>
+                        <td width="30%">@obj.Date2</td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                @*<a asp-controller="Convention" asp-route-Id="@obj.Iddate" asp-action="date_delete" class="btn btn-danger">
+                                    Supprimer
+                                </a>*@
+                                <input type="submit" asp-for="@obj.Iddate" value="Supprimer" />
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p> Vous n'avez pas de dates de stages.</p>
+    }
+<div class="col-6 text-right">
+    <a asp-controller="Convention" asp-action="entreprise" class="btn btn-primary">
+        Retour à la selection d'entreprise
+    </a>
+    <a asp-controller="Convention" asp-action="professionel" class="btn btn-primary">
+        Suivant
+    </a>
+</div>
 </form>
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

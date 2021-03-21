@@ -26,7 +26,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_Pays _Pays = null;
         private Layer_Professionnel _pro = null;
         private Layer_EntrepriseProfessionnel _entreprisepro = null;
-        public ConventionController (AFPANADbContext context)
+        public ConventionController(AFPANADbContext context)
         {
             _beneficiaireOffre = new Layer_Offres_Formation(context);
             _Etablissement = new Layer_Etablissement(context);
@@ -42,7 +42,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations("16174318");
             List<Creation_convention> obj = new List<Creation_convention>();
-            
+
             foreach (var item in beneficiaires)
             {
                 Creation_convention convention = new Creation_convention
@@ -82,7 +82,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             string str = HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
 
-            if(id ==0)
+            if (id == 0)
             {
                 id = convention.IdFormation;
             }
@@ -104,14 +104,14 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             if (ModelState.IsValid)
             {
                 var entreprise = _Entreprise.get_Entreprise(obj.NumeroSiret).FirstOrDefault();
-                if(entreprise is null)
+                if (entreprise is null)
                 {
                     return RedirectToAction("Entreprise_creation");
                 }
                 string str = this.HttpContext.Session.GetString("convention");
                 Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
                 convention.Siret = obj.NumeroSiret;
-                
+
                 str = JsonConvert.SerializeObject(convention);
                 HttpContext.Session.SetString("convention", str);
                 return RedirectToAction("Entreprise_Recap");
@@ -131,7 +131,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             convention.IdEntreprise = obj.IdEntreprise;
             convention.Raison_social = obj.RaisonSociale;
             str = JsonConvert.SerializeObject(convention);
-            HttpContext.Session.SetString("convention", str); 
+            HttpContext.Session.SetString("convention", str);
             return View(obj);
         }
 
@@ -181,7 +181,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-            List<Professionnel> pro =_pro.Get_Pro(convention.IdEntreprise);
+            List<Professionnel> pro = _pro.Get_Pro(convention.IdEntreprise);
             ViewBag.pro = pro;
             return View(pro);
         }
@@ -196,7 +196,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             if (Request.Form["tuteur"] != "")
             {
                 string tuteurID = Request.Form["tuteur"].ToString();
-                Professionnel professionnel = new Professionnel(); 
+                Professionnel professionnel = new Professionnel();
                 professionnel = _pro.GetProfessionnel(int.Parse(tuteurID));
                 convention.TuteurNom = professionnel.NomProfessionnel;
                 convention.TuteurPrenom = professionnel.PrenomProfessionnel;
@@ -213,7 +213,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             }
             var x = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", x);
-            return RedirectToAction("Recapitulatif");
+            return RedirectToAction("date");
         }
 
         // get Professionel_creation
@@ -227,7 +227,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get Professionel_creation
         public IActionResult Professionel_Creation()
         {
-            
+
             return View();
         }
 
@@ -236,7 +236,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [ValidateAntiForgeryToken]
         public IActionResult Professionel_Creation(Professionnel_ModelView obj)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 string str = this.HttpContext.Session.GetString("convention");
                 Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
@@ -263,19 +263,59 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get date
         public IActionResult date()
         {
+            string str = this.HttpContext.Session.GetString("date");
+            List<Date_ModelView> date = new List<Date_ModelView>();
+            if (str != null)
+            {
+                date = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
+            }
+            return View(date);
+        }
 
+        // get post
+        [HttpPost]
+        public IActionResult date(Date_ModelView date)
+        {
+            return View(date);
+        }
+
+        // get date
+        public IActionResult date_create()
+        {
+
+            return View();
+        }
+
+        //  post
+        [HttpPost]
+        public IActionResult date_create(Date_ModelView date)
+        {
+            List<Date_ModelView> listDate = new List<Date_ModelView>();
+            string str = this.HttpContext.Session.GetString("date");
+            if (str != null)
+            {
+                listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
+            }
+            date.Iddate = listDate.Count() + 1;
+            listDate.Add(date);
+            str = JsonConvert.SerializeObject(listDate);
+            HttpContext.Session.SetString("date", str);
+            return RedirectToAction("date");
+
+
+            //return View(date);
+        }
+
+        // get date
+        public IActionResult date_delete()
+        {
             return View();
         }
 
         // get post
         [HttpPost]
-        public IActionResult date(Date_ModelView id)
+        public IActionResult date_delete(Date_ModelView date)
         {
-            string Date1 = Request.Form["date1"];
-            string Date2 = Request.Form["date2"];
-            string Date3 = Request.Form["date3"];
-            string Date4 = Request.Form["date4"];
-
             return View();
         }
     }
