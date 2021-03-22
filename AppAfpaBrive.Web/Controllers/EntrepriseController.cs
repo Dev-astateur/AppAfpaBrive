@@ -228,12 +228,13 @@ namespace AppAfpaBrive.Web.Controllers
         
         // POST: EntrepriseController/creerEntreprise
         [HttpPost]
-        public ActionResult CreerEntreprise(Entreprise entreprise)
+        public ActionResult CreerEntreprise(Entreprise entreprise, string InputPays)
         {
-            
 
-                string libellePays = entreprise.Idpays2Navigation.LibellePays;
-              
+            string libellePays = InputPays;
+            //string libellePays = (string)ViewData["LibellePays"];
+            //string libellePays = entreprise.Idpays2Navigation.LibellePays;
+
             entreprise.Idpays2= _layer.GetIdPaysByMatriculePays(libellePays);
             //try
             //{
