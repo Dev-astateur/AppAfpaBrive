@@ -1,34 +1,45 @@
-﻿@model IEnumerable<AppAfpaBrive.Web.ModelView.ValidationPee.ListePeeAValiderModelView>
+﻿@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.Web.ModelView.ValidationPee.ListePeeAValiderModelView>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *,ReflectionIT.Mvc.Paging
 
 <h4>Periode en entreprise à valider</h4>
 <hr />
 <div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            @Html.DisplayNameFor(model => model.NomBeneficiaire)
-        </div>
-        <div class="col-md-4">
-            @Html.DisplayNameFor(model => model.PrenomBeneficiaire)
-        </div>
-        <div class="col-md-4">
-            @Html.DisplayNameFor(model => model.RaisonSociale)
-        </div>
-    </div>
-    @foreach (var item in Model)
-    {
-        <a asp-action="PeeEntrepriseValidation" asp-route-id="@item.IdPee">
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.DisplayFor(model => item.NomBeneficiaire)
-                </div>
-                <div class="col-md-4">
-                    @Html.DisplayFor(model => item.PrenomBeneficiaire)
-                </div>
-                <div class="col-md-4">
-                    @Html.DisplayFor(model => item.RaisonSociale)
-                </div>
-            </div>
-        </a>
-    }
+    @if (Model.Count > 0)
+     {
+        <nav aria-label="">
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+        </nav>
 
+        <div class="row">
+            <div class="col-md-4">
+                @Html.DisplayNameFor(model => model.NomBeneficiaire)
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayNameFor(model => model.PrenomBeneficiaire)
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayNameFor(model => model.RaisonSociale)
+            </div>
+        </div>
+        @foreach (var item in Model)
+        {
+            <a asp-action="PeeEntrepriseValidation" asp-route-id="@item.IdPee">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.DisplayFor(model => item.NomBeneficiaire)
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DisplayFor(model => item.PrenomBeneficiaire)
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DisplayFor(model => item.RaisonSociale)
+                    </div>
+                </div>
+            </a>
+        }
+        <nav aria-label="">
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+        </nav>
+    }
 </div>

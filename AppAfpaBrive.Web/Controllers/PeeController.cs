@@ -88,15 +88,16 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListePeeAValider(string id)
+        public async Task<IActionResult> ListePeeAValider(string id,int? pageIndex)
         {
             if (id is null)
                 return NotFound();
-
+            if (pageIndex is null)
+                pageIndex = 1;
             this.ViewBag.Titre = "Periode en entreprise à valider";
-            IEnumerable<ListePeeAValiderModelView> pees = await _peeLayer.GetPeeByMatriculeCollaborateurAfpaAsync(id);  
+            //IEnumerable<ListePeeAValiderModelView> pees = ;  
 
-            return View(pees);
+            return View(await _peeLayer.GetPeeByMatriculeCollaborateurAfpaAsync(id,(int) pageIndex));
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.Web.ModelView.ValidationPee;
 using AppAfpaBrive.Web.ModelView;
+using ReflectionIT.Mvc.Paging;
 
 namespace AppAfpaBrive.Web.Layers
 {
@@ -19,9 +20,9 @@ namespace AppAfpaBrive.Web.Layers
             _dbContext = context;
         }
 
-        public async Task<IEnumerable<ListePeeAValiderModelView>> GetPeeByMatriculeCollaborateurAfpaAsync(string idMatricule)
+        public async Task<PagingList<ListePeeAValiderModelView>> GetPeeByMatriculeCollaborateurAfpaAsync(string idMatricule,int page = 1)
         {
-            return await _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.EtatPee == 0)
+            var qry = _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.EtatPee == 0)
                 .Include(e => e.Id)
                 .Include(e=>e.IdEntrepriseNavigation)
                 .Include(e => e.MatriculeBeneficiaireNavigation).
@@ -30,7 +31,10 @@ namespace AppAfpaBrive.Web.Layers
                     PrenomBeneficiaire = e.MatriculeBeneficiaireNavigation.PrenomBeneficiaire,
                     RaisonSociale = e.IdEntrepriseNavigation.RaisonSociale,
                     IdPee = e.IdPee
-                } ).ToListAsync();
+                } ).AsQueryable();
+            Task<PagingList<ListePeeAValiderModelView>> model = PagingList.CreateAsync((IOrderedQueryable<ListePeeAValiderModelView>)qry, 3, page);
+            model.Result.Action = "ListePeeAValider";
+            return await model;
         }
 
         public async Task<PeeEntrepriseModelView> GetPeeByIdPeeOffreEntreprisePaysAsync(int idPee)

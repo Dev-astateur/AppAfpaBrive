@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using AppAfpaBrive.Web.Utilitaires;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using ReflectionIT.Mvc.Paging;
 
 namespace AppAfpaBrive.Web
 {
@@ -50,11 +51,9 @@ namespace AppAfpaBrive.Web
             services.AddControllersWithViews();
             services.AddTransient<IEmailSender, SendinBlueEmailSender>();
             services.AddMvc();
-           
-
+            services.AddPaging(options=> { options.ViewName = "Bootstrap4"; });
 
             services.AddDistributedMemoryCache();
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
