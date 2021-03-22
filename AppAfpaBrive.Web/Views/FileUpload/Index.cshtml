@@ -2,40 +2,138 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-@model AppAfpaBrive.Web.Models.FilesModel;
+@model AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre.IntegrationExcelOffreCreate
+
+<center><h2>Intégrer une offre</h2></center>
 
 
-@*<form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="Upload">
+<br />
 
-    <div class="form-group">
-        <div class="col-md-10">
-            <p>Sélectionnez un ficher à importer</p>
-            <input type="file" name="uploadFile" asp-for="file" />
-            <div asp-validation-summary="All" class="text-danger"></div>
+<div class="form-horizontal">
+    <form asp-action="IntegrerOffre"
+          asp-controller="FileUpload"
+          enctype="multipart/form-data"
+          method="post">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="CodeProduitFormation" class="control-label"></label>
+            <input asp-for="CodeProduitFormation" class="form-control" />
+            <input id="libelleOffre" class="form-control" readonly />
+            <span asp-validation-for="CodeProduitFormation" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input id="libelleFormateur" />
+            <label asp-for="MatriculeCollaborateurAfpa" class="control-label"></label>
+            <input asp-for="MatriculeCollaborateurAfpa" class="form-control" readonly />
+            <span asp-validation-for="MatriculeCollaborateurAfpa" class="text-danger"></span>
 
         </div>
-    </div>
 
-    <div class="form-group">
-        <div class="col-md-10">
-            <span asp-validation-for="file" class="text-danger"></span>
-            <input type="submit" value="Upload" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h5>Choisir un fichier à uploader</h5>
+        <div class="form-group">
+            <input asp-for="fileModel.file" />
         </div>
-    </div>
+        @*@Html.ValidationMessageFor(m => m.fileModel.file, "", new { @class = "error" })*@
 
-</form>*@
+        <span asp-validation-for="fileModel.file" class="text-danger"></span>
+        <br />
+        <div class="form-group">
 
-<form method="post"
-      asp-action="Upload"
-      asp-controller="FileUpload"
-      enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="submit" value="Integrer Offre" />
 
-    <input asp-for="file" />
-    <span asp-validation-for="file" class="text-danger"></span>
-    <input type="submit" value="Upload" />
-</form>
+        </div>
+    </form>
+</div>
+
+<hr />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script>
+
+        $(document).ready(function () {
+            $('#libelleFormateur').autocomplete({
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: "/api/formateur/GetFormateur",
+                        type: "GET",
+                        data: request,
+                        dataType: "json",
+                        success: function (data) {
+
+                            response($.map(data, function (item) {
+                                console.log(item.nom)
+                                return {
+                                    label: item.nom,
+                                    value: item.id
+                                }
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $('#MatriculeCollaborateurAfpa').val(ui.item.value);
+                    $('#libelleFormateur').val(ui.item.label);
+                
+                    return false;
+                }
+
+
+            });
+
+            $('#CodeProduitFormation').autocomplete({
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: "/api/offreFormation/GetOffre",
+                        type: "GET",
+                        data: request,
+                        dataType: "json",
+                        success: function (data) {
+
+                            response($.map(data, function (item) {
+                                console.log(item.id)
+                                return {
+                                    label: `${item.id}`,
+                                    value: item.id,
+                                    id: item.libelle
+                                }
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 0,
+                select: function (event, ui) {
+
+                    $('#CodeProduitFormation').val(ui.item.label);
+                    $('#libelleOffre').val(ui.item.label + "   |   " + ui.item.id);
+                    return false;
+                }
+
+
+            });
+        })
+
+
+
+    </script>
+}
+
+
 
 
 

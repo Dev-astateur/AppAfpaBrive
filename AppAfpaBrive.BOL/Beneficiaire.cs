@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class Beneficiaire
+    public partial class Beneficiaire :EntityBase
     {
         public Beneficiaire()
         {
@@ -14,9 +15,9 @@ namespace AppAfpaBrive.BOL
             DestinataireEnquetes = new HashSet<DestinataireEnquete>();
             Pees = new HashSet<Pee>();
         }
-
+        
         public string MatriculeBeneficiaire { get; set; }
-        public int CodeTitreCivilite { get; set; }
+        public int? CodeTitreCivilite { get; set; }
         public string NomBeneficiaire { get; set; }
         public string PrenomBeneficiaire { get; set; }
         public DateTime? DateNaissanceBeneficiaire { get; set; }
@@ -31,7 +32,7 @@ namespace AppAfpaBrive.BOL
         public string IdPays2 { get; set; }
         public string PathPhoto { get; set; }
         public bool? MailingAutorise { get; set; }
-
+        public virtual Pays PaysNavigation { get; set; }
         public virtual TitreCivilite CodeTitreCiviliteNavigation { get; set; }
         public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
         public virtual ICollection<Contrat> Contrats { get; set; }

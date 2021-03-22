@@ -15,5 +15,8 @@ namespace AppAfpaBrive.Web.Utilitaires
         public string Credentials_Id { get; set; }
         public string Credentials_Pw { get; set; }
     }
-   
+    public class ImportDataOffreBeneficiaires
+    {
+        public string ListeColonnes { get; set; }
+    }
 }

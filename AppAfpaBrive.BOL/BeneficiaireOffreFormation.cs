@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class BeneficiaireOffreFormation
+    public partial class BeneficiaireOffreFormation :EntityBase
     {
+        
         public string MatriculeBeneficiaire { get; set; }
+        
         public int IdOffreFormation { get; set; }
+        
         public string Idetablissement { get; set; }
         public DateTime DateEntreeBeneficiaire { get; set; }
         public DateTime? DateSortieBeneficiaire { get; set; }
@@ -20,5 +24,7 @@ namespace AppAfpaBrive.BOL
         public virtual CodeResultatCertification CertifieNavigation { get; set; }
         public virtual OffreFormation Id { get; set; }
         public virtual Beneficiaire MatriculeBeneficiaireNavigation { get; set; }
+
     }
+
 }

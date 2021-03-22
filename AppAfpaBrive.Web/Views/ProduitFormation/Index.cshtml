@@ -1,0 +1,84 @@
+﻿@model IEnumerable<AppAfpaBrive.BOL.ProduitFormation>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Liste des Produits de Formation </h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-controller="ProduitFormation" asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus-square"></i> &nbsp; Créer un nouveau Produit de Formation
+            </a>
+        </div>
+        <div class="col-6">
+            <input asp-controller="ProduitFormation" asp-action="Details" placeholder="Mécanicien..." />
+            <input id="btnRecherche" type="button" value="Recherche" />
+        </div>
+    </div>
+
+    <br /><br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        Code Produit de Formation
+                    </th>
+                    <th>
+                        Niveau Formation
+                    </th>
+                    <th>
+                        LibelleProduitFormation
+                    </th>
+                    <th>
+                        LibelleCourtFormation
+                    </th>
+                    <th>
+                        FormationContinue
+                    </th>
+                    <th>
+                        Formation Diplomante
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr id="ligne">
+                        <td width="15%">@obj.CodeProduitFormation</td>
+                        <td width="10%">@obj.NiveauFormation</td>
+                        <td width="30%">@obj.LibelleProduitFormation</td>
+                        <td width="20%">@obj.LibelleCourtFormation</td>
+                        <td width="10%">@obj.FormationContinue</td>
+                        <td width="10%">@obj.FormationDiplomante</td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="ProduitFormation" asp-route-Id="@obj.CodeProduitFormation" asp-action="Edit" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> Modifier
+                                </a>
+                                <a asp-controller="ProduitFormation" asp-route-Id="@obj.CodeProduitFormation" asp-action="Delete" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> Supprimer
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div>
+            <button class="btn-primary" asp-action="Index"> Previous  </button>
+            <button class="btn-primary" asp-action="Index"> Next </button>
+        </div>
+
+
+    }
+    else
+    {
+        <p> Il n'y a pas de produits de formation</p>
+    }
+   
+</div>
+
+

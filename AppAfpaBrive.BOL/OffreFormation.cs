@@ -5,13 +5,14 @@ using System.Collections.Generic;
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class OffreFormation
+    public partial class OffreFormation : EntityBase
     {
         public OffreFormation()
         {
             BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
             CampagneMails = new HashSet<CampagneMail>();
             Pees = new HashSet<Pee>();
+
         }
 
         public int IdOffreFormation { get; set; }
@@ -26,8 +27,10 @@ namespace AppAfpaBrive.BOL
         public virtual ProduitFormation CodeProduitFormationNavigation { get; set; }
         public virtual Etablissement IdEtablissementNavigation { get; set; }
         public virtual CollaborateurAfpa MatriculeCollaborateurAfpaNavigation { get; set; }
+
         public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
         public virtual ICollection<CampagneMail> CampagneMails { get; set; }
         public virtual ICollection<Pee> Pees { get; set; }
+
     }
 }

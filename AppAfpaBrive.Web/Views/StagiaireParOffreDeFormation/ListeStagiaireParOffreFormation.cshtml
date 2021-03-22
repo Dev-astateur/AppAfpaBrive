@@ -1,0 +1,60 @@
+﻿@model IEnumerable<AppAfpaBrive.BOL.Beneficiaire>
+
+@{
+//ViewData["Title"] = "StagiaireParOffreDeFormation";
+//List<AppAfpaBrive.BOL.OffreFormation> listeOffreFormations = ViewBag.MaList;
+//var liste = listeOffreFormations.Where(e => e.MatriculeCollaborateurAfpa == )
+
+}
+
+<h1 class="text-center">@ViewBag.MonTitre</h1>
+
+<p>
+    
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomBeneficiaire)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrenomBeneficiaire)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.MailBeneficiaire)
+            </th>
+            
+            
+            <th>
+                @Html.DisplayNameFor(model => model.MailingAutorise)
+            </th>
+            <
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomBeneficiaire)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrenomBeneficiaire)
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.MailBeneficiaire)
+            </td>
+           
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.MailingAutorise)
+            </td>
+            
+           
+        </tr>
+}
+    </tbody>
+</table>

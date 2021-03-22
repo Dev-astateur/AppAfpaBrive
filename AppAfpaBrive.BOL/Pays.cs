@@ -5,11 +5,12 @@ using System.Collections.Generic;
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class Pay
+    public partial class Pays
     {
-        public Pay()
+        public Pays()
         {
             Entreprises = new HashSet<Entreprise>();
+            Beneficiaires = new HashSet<Beneficiaire>();
         }
 
         public string Idpays2 { get; set; }
@@ -18,5 +19,6 @@ namespace AppAfpaBrive.BOL
         public string LibellePays { get; set; }
 
         public virtual ICollection<Entreprise> Entreprises { get; set; }
+        public virtual ICollection<Beneficiaire> Beneficiaires { get; set; }
     }
 }
