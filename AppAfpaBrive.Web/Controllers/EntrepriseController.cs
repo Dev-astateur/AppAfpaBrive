@@ -47,19 +47,13 @@ namespace AppAfpaBrive.Web.Controllers
             }
             EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
 
-            //EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel();
-            //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
-            //entrepriseModel.Ville = entreprise.Ville;
-            //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
-            //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
-            //entrepriseModel.NumeroSiret = entreprise.NumeroSiret;
-            //entrepriseModel.IdEntreprise = entreprise.IdEntreprise;
-            //entrepriseModel.Ligne1Adresse = entreprise.Ligne1Adresse;
+            
             return View(entrepriseModel);
         }
         [HttpPost]
-        public ActionResult ModifierEntreprise(Entreprise entreprise)
+        public ActionResult ModifierEntreprise(Entreprise entreprise, string Pays)
         {
+            //entreprise.Idpays2 = _layer.GetIdPaysByMatriculePays(Pays);
             if (ModelState.IsValid)
             {
                 //_dbContext.Entry(entreprise).State = EntityState.Modified;
@@ -221,25 +215,36 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public ActionResult CreerEntreprise()
         {
-           
+            
+
+
             return View();
         }
 
         
         // POST: EntrepriseController/creerEntreprise
         [HttpPost]
-        public ActionResult CreerEntreprise(Entreprise entreprise, string InputPays)
+        public ActionResult CreerEntreprise(EntrepriseListViewModel entrepriseVM, string InputPays)
         {
-
             string libellePays = InputPays;
-            //string libellePays = (string)ViewData["LibellePays"];
-            //string libellePays = entreprise.Idpays2Navigation.LibellePays;
+            
 
-            entreprise.Idpays2= _layer.GetIdPaysByMatriculePays(libellePays);
+            Entreprise entreprise = new Entreprise();
+            entreprise.CodePostal = entrepriseVM.CodePostal;
+            entreprise.Ligne1Adresse = entrepriseVM.Ligne1Adresse;
+            entreprise.Ligne2Adresse = entrepriseVM.Ligne2Adresse;
+            entreprise.Ligne3Adresse = entrepriseVM.Ligne3Adresse;
+            entreprise.MailEntreprise = entrepriseVM.MailEntreprise;
+            entreprise.NumeroSiret = entrepriseVM.NumeroSiret;
+            entreprise.RaisonSociale = entrepriseVM.RaisonSociale;
+            entreprise.TelEntreprise = entrepriseVM.TelEntreprise;
+            entreprise.Ville = entrepriseVM.Ville;
+            entreprise.Idpays2 = _layer.GetIdPaysByMatriculePays(libellePays);
+
             //try
             //{
-                
-                _layer.AddEntreprise(entreprise);
+
+            _layer.AddEntreprise(entreprise);
                 //_dbContext.Entreprises.Add(entreprise);
                 //_dbContext.SaveChanges();
                 return RedirectToAction("ListeEntreprisePourModification", "Entreprise");
