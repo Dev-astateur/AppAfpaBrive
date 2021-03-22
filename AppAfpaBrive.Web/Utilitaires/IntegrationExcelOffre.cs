@@ -138,9 +138,17 @@ namespace AppAfpaBrive.Web.Utilitaires
                     telephone1 = reader.GetString(positions[7].Value);
                     mail = reader.GetString(positions[8].Value);
                     dateEntree = DateTime.Parse(reader.GetString(positions[11].Value));
-                    dateSortie = (reader.GetString(positions[12].Value) != "-")
-                        ? DateTime.Parse(reader.GetString(positions[12].Value))
-                        : null;
+                    if(reader.GetString(positions[12].Value) != "-")
+                    {
+                        dateSortie = DateTime.Parse(reader.GetString(positions[12].Value));
+                    }
+                    else
+                    {
+                        dateSortie = null;
+                    }
+                    //dateSortie = (reader.GetString(positions[12].Value) != "-")
+                    //    ? DateTime.Parse(reader.GetString(positions[12].Value))
+                    //    : null;
 
                     beneficiaire = _context.Beneficiaires.Find(new object[] { numeroClient });
                     // beneficiaire = _context.Beneficiaires.FirstOrDefault(c => c.MatriculeBeneficiaire == numeroClient);
