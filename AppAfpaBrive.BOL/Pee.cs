@@ -20,10 +20,9 @@ namespace AppAfpaBrive.BOL
         public int IdEntreprise { get; set; }
         public int IdOffreFormation { get; set; }
         public string IdEtablissement { get; set; }
-        public int Etat { get; set; }
+        public int EtatPee { get; set; }
 
         public virtual OffreFormation Id { get; set; }
-        
         
         public virtual Professionnel IdResponsableJuridiqueNavigation { get; set; }
         public virtual Entreprise IdEntrepriseNavigation { get; set; }
