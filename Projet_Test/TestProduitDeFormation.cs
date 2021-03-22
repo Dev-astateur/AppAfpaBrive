@@ -89,6 +89,7 @@ namespace Projet_Test
                 (va => va.MemberNames.Contains("CodeProduitFormation")
                 && va.ErrorMessage.Contains("Le code produit formation")));
         }
+
         // dur a tester étant donné que int n'est pas nullable et donc CodeproduitFormation
         //prend naturellement 0 comme valeur quand non fourni
         //[Test]
@@ -142,6 +143,7 @@ namespace Projet_Test
         //    var view = controleur.Delete(id);
         //    Assert.IsInstanceOf<ViewResult>(view);
         //}
+
 
     }
 }
