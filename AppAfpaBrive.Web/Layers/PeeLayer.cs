@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
 
 namespace AppAfpaBrive.DAL.Layers
 {
@@ -32,12 +33,31 @@ namespace AppAfpaBrive.DAL.Layers
                 .Include(e=>e.IdEntrepriseNavigation).ThenInclude(e=>e.Idpays2Navigation)
                 .FirstOrDefault();
         }
-        public IEnumerable<Pee> GetPeeEntrepriseWithBeneficiaireBy(int IdOffreFormation, string idEtablissement)
+        public IEnumerable<Pee> GetPeeEntrepriseWithBeneficiaire(int IdOffreFormation, string idEtablissement)
         {
             return _dbContext.Pees
                 .Include(P => P.MatriculeBeneficiaireNavigation)
                 .Include(S => S.IdEntrepriseNavigation)
                 .Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement);
+           
+           
+        }
+        public IEnumerable<PeriodePee> GetListPeriodePeeByIdPee(int IdOffreFormation, string idEtablissement)
+        {
+            List<PeriodePee> listPeriode = new List<PeriodePee>();
+            var periodePees = _dbContext.PeriodePees.Include(pr => pr.IdPeeNavigation).ToList();
+            foreach (var item in GetPeeEntrepriseWithBeneficiaire(IdOffreFormation, idEtablissement))
+            {
+                foreach (var element in periodePees)
+                {
+                    if (element.IdPee == item.IdPee)
+                    {
+                        listPeriode.Add(element);
+                    }
+                }
+
+            }
+            return listPeriode;
         }
     }
 }

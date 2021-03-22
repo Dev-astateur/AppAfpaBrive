@@ -6,11 +6,11 @@
 
     LitsPeriode = ViewData["PeriodePee"] as List<PeriodePee>;
     IEnumerable<Pee> ListPee = ViewData["ListPeeSansDoublons"] as IEnumerable<Pee>;
-
+    
 
 }
 <div class="table container-fluid">
-    <table id="myTable" class="table table-bordered table-hover table-sm col-sm-8 text-lg-center">
+    <table id="myTable" class="table table-bordered table-hover table-striped table-sm col-sm-8 text-lg-center">
         <thead class="thead-light ">
             <tr>
 
@@ -30,80 +30,81 @@
         </thead>
         <tbody>
             @{ int len = 0;
-                int idEntreprise = 0;
+     int idEntreprise = 0;
 
-                if (ListPee != null)
-                {
+     if (ListPee != null)
+     {
 
-                    foreach (var item in ListPee)
-                    {
+         foreach (var item in ListPee)
+         {
 
+            <tr>
+
+                <td>@item.MatriculeBeneficiaireNavigation.NomBeneficiaire</td>
+                <td>@item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire</td>
+                <td>
+                    <table>
                         <tr>
+                            @{
 
-                            <td>@item.MatriculeBeneficiaireNavigation.NomBeneficiaire</td>
-                            <td>@item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire</td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        @{
+                                List<Pee> listPee = new List<Pee>(item.MatriculeBeneficiaireNavigation.Pees);
+                                foreach (var ele in listPee)
+                                {
+                                    int countItem = listPee.Count();
+                                    if (listPee.Count() > 1 && countItem >= len && idEntreprise != ele.IdEntreprise)
+                                    {
+                                        <td>@ele.IdEntrepriseNavigation.RaisonSociale</td>
+                                        idEntreprise = ele.IdEntreprise;
+                                    }
+                                    else if (idEntreprise != ele.IdEntreprise || listPee.Count() <= 1)
+                                    {
+                                        <td>@ele.IdEntrepriseNavigation.RaisonSociale</td>
+                                    }
 
-                                            List<Pee> listPee = new List<Pee>(item.MatriculeBeneficiaireNavigation.Pees);
-                                            foreach (var ele in listPee)
-                                            {
-                                                int countItem = listPee.Count();
-                                                if (listPee.Count() > 1 && countItem >= len && idEntreprise != ele.IdEntreprise)
-                                                {
-                                                    <td>@ele.IdEntrepriseNavigation.RaisonSociale</td>
-                                                    idEntreprise = ele.IdEntreprise;
-                                                }
-                                                else if (idEntreprise != ele.IdEntreprise || listPee.Count() <= 1)
-                                                {
-                                                    <td>@ele.IdEntrepriseNavigation.RaisonSociale</td>
-                                                }
+                                    len = item.IdEntrepriseNavigation.Pees.Count();
+                                }
 
-                                                len = item.IdEntrepriseNavigation.Pees.Count();
-                                            }
-
-                                        }
-
-                                    </tr>
-
-                                </table>
-                            </td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        @foreach (var element in item.MatriculeBeneficiaireNavigation.Pees)
-                                        {
-
-                                            if (element.MatriculeBeneficiaire == item.MatriculeBeneficiaire)
-                                            {
-
-                                                <td>
-                                                    @Html.ActionLink($"Convention_{element.PeriodePees.FirstOrDefault(pr => pr.IdPee == element.IdPee).DateDebutPeriodePee.ToString("MMddyyy")}",
-                                                            "ChargementDocPee",
-                                                            new { id = element.IdPee },
-                                                            new { @class = "btn btn-primary border" }
-                                                           )
-                                                </td>
-                                            }
-
-                                        }
-
-                                    </tr>
-                                </table>
-                            </td>
+                            }
 
                         </tr>
-                    }
-                }
-                else
-                {
 
-                }
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            @foreach (var element in item.MatriculeBeneficiaireNavigation.Pees)
+                            {
+
+                                if (element.MatriculeBeneficiaire == item.MatriculeBeneficiaire)
+                                {
+
+                                    <td>
+                                        @Html.ActionLink($"Convention_{element.PeriodePees.FirstOrDefault(pr => pr.IdPee == element.IdPee).DateDebutPeriodePee.ToString("MMddyyy")}",
+                                                "ChargementDocPee",
+                                                new { id = element.IdPee },
+                                                new { @class = "btn btn-primary border" }
+                                               )
+                                    </td>
+                                }
+
+                            }
+
+                        </tr>
+                    </table>
+                </td>
+
+            </tr>
+        }
+    }
+    else
+    {
+
+    }
             }
 
         </tbody>
     </table>
+</div>
 
 

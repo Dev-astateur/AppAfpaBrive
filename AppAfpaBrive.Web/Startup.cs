@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using AppAfpaBrive.Web.Utilitaires;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using ReflectionIT.Mvc.Paging;
 
 namespace AppAfpaBrive.Web
 {
@@ -50,7 +51,15 @@ namespace AppAfpaBrive.Web
             services.AddControllersWithViews();
             services.AddTransient<IEmailSender, SendinBlueEmailSender>();
             services.AddMvc();
-           
+            services.AddPaging(options =>
+            {
+                options.ViewName = "Bootstrap4";
+                options.PageParameterName = "page";
+                options.HtmlIndicatorDown = "<span class='text-primary'> <i class='fas fa-arrow-alt-circle-down'></i></span>";
+                options.HtmlIndicatorUp = "<span class='text-primary'> <i class='fas fa-arrow-circle-up'></i></span>";
+            });
+             
+                
 
 
             services.AddDistributedMemoryCache();

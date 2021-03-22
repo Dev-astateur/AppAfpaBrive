@@ -70,25 +70,12 @@ namespace AppAfpaBrive.Web.Controllers
         /// <returns></returns>
         public IActionResult _AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
         {
-            var pees = _peeLayer.GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement);
-
-            List<PeriodePee> listPeriode = new List<PeriodePee>();
-            var periodePees = _dbContext.PeriodePees.Include(pr => pr.IdPeeNavigation).ToList();
-            foreach (var item in pees)
-            {
-                foreach (var element in periodePees)
-                {
-                    if (element.IdPee == item.IdPee)
-                    {
-                        listPeriode.Add(element);
-                    }
-                }
-
-            }
+            var pees = _peeLayer.GetPeeEntrepriseWithBeneficiaire(IdOffreFormation, idEtablissement);
+            var listPeriode = _peeLayer.GetListPeriodePeeByIdPee(IdOffreFormation, idEtablissement);
             ViewData["PeriodePee"] = listPeriode;
             IEnumerable<Pee> PeeSansDoublons = pees.Distinct(new PeeComparer());
             ViewData["ListPeeSansDoublons"] = PeeSansDoublons;
-            return View("Index");
+            return View ("Index");
         }
         #endregion
         #region IAction pour inserer les données de la convention Pee du beneficiaire et de la charger pour impression ou téléchargement
