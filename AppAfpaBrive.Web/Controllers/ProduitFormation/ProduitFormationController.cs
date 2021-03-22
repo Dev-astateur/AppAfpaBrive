@@ -9,41 +9,38 @@ using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ModelView;
 
-
+using ReflectionIT.Mvc.Paging;
+using Microsoft.AspNetCore.Routing;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers.ProduitFormation
 {
     public class ProduitFormationController : Controller
     {
         private readonly AFPANADbContext _db;
+        private readonly ProduitDeFormationLayer _produitDeFormationLayer;
 
+        
         public ProduitFormationController(AFPANADbContext db)
         {
             _db = db;
+            _produitDeFormationLayer = new ProduitDeFormationLayer(db);
         }
 
         // GET: ProduitFormation
-        public IActionResult Index(int id=0 )
+        public async Task<IActionResult> Index(string filter,int page, string sortExpression="CodeProduitFormation")
         {
-        
-            IEnumerable<BOL.ProduitFormation> listProduitFormations = _db.ProduitFormations.OrderBy(x => x.LibelleProduitFormation);
-           
-            if (id != 0)
+            var model = await _produitDeFormationLayer.GetPage(filter,page, sortExpression);
+            model.RouteValue = new RouteValueDictionary
             {
-                //for (int i = 0; i < listProduitFormations.Count(); i++)
-                //{
-                listProduitFormations = _db.ProduitFormations.Skip(20 * (id - 1)).Take(20);
-                //}
-                return View(listProduitFormations);
-            }
-            listProduitFormations = _db.ProduitFormations.Take(20);
-            return View(listProduitFormations);
+                {"filter", filter }
+            };
+            return View(model);
         }
 
         // GET: ProduitFormation/Details/5
         public IActionResult Details(string Libelle)
         {
-
             return View();
         }
 
@@ -56,19 +53,18 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // POST: ProduitFormation/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(BOL.ProduitFormation obj)
+        public IActionResult Create(ProduitFormationModelView obj)
         {
-
-            //if ((obj.FormationContinue == false && obj.FormationDiplomante == false) ||
-            //(obj.FormationDiplomante == true && obj.FormationContinue == true))
-            //{
-            //    ModelState.AddModelError("Error", "Vous devez selectionner une seule option");
-            //}
-            //else
+            var x = Request.Form["Formation"].ToString();
+            
             if (ModelState.IsValid)
             {
-                _db.ProduitFormations.Add(obj);
-                _db.SaveChanges();
+                //if (x == "0")
+                //{
+                //    obj.FormationContinue = true;
+                //}
+                //else obj.FormationDiplomante = true; 
+                _produitDeFormationLayer.InsertProduit(obj.GetProduitFormation());
                 return RedirectToAction("Index");
             }
             return this.View(obj);
@@ -82,24 +78,28 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
             {
                 return NotFound();
             }
-            var obj = _db.ProduitFormations.Find(id);
+            ProduitFormationModelView obj = _produitDeFormationLayer.GetByCodeProduitFormation(id);
             if (obj == null)
             {
                 return NotFound();
             }
-            
             return View(obj);
         }
 
         // POST: ProduitFormation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(BOL.ProduitFormation obj)
+        public IActionResult Edit(ProduitFormationModelView obj)
         {
+            var x = Request.Form["Formation"].ToString();
             if (ModelState.IsValid)
             {
-                _db.ProduitFormations.Update(obj);
-                _db.SaveChanges();
+                //if (x == "0")
+                //{
+                //    obj.FormationContinue = true;
+                //}
+                //else obj.FormationDiplomante = true;
+                _produitDeFormationLayer.Update(obj.GetProduitFormation());
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -112,7 +112,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
             {
                 return NotFound();
             }
-            var obj = _db.ProduitFormations.Find(id);
+            var obj = _produitDeFormationLayer.GetByCodeProduitFormationdelete((int)id);
             if (obj == null)
             {
                 return NotFound();
@@ -125,13 +125,12 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            var obj = _db.ProduitFormations.Find(id);
-            if(obj == null)
+            ProduitFormationModelView obj = _produitDeFormationLayer.GetByCodeProduitFormation(id);
+            if (obj == null)
             {
                 return NotFound();
             }
-            _db.ProduitFormations.Remove(obj);
-            _db.SaveChanges();
+            _produitDeFormationLayer.Remove(obj.GetProduitFormation());
             return RedirectToAction("Index");
         }
     }

@@ -5,7 +5,7 @@
     ViewData["Title"] = "View";
 }
 
-<h1>Edit</h1>
+<h1>Edition</h1>
 
 <h4>Produit de Formation</h4>
 <hr />
@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CodeProduitFormation" class="control-label"></label>
-                <input asp-for="CodeProduitFormation" class="form-control" />
+                <input asp-for="CodeProduitFormation" class="form-control" readonly />
                 <span asp-validation-for="CodeProduitFormation" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,16 +33,28 @@
                 <input asp-for="LibelleCourtFormation" class="form-control" />
                 <span asp-validation-for="LibelleCourtFormation" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            @*<div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="FormationContinue" /> @Html.DisplayNameFor(model => model.FormationContinue)
+            </label>
+        </div>
+        <div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="FormationDiplomante" /> @Html.DisplayNameFor(model => model.FormationDiplomante)
+            </label>
+        </div>*@
+            @*<div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="FormationContinue" /> @Html.DisplayNameFor(model => model.FormationContinue)
+                    <label>FormationContinue</label>
+                    @Html.RadioButton("Formation", "0")
                 </label>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="FormationDiplomante" /> @Html.DisplayNameFor(model => model.FormationDiplomante)
+                    <label>FormationDiplomante</label>
+                    @Html.RadioButton("Formation", "1")
                 </label>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -51,7 +63,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour</a>
 </div>
 
 @section Scripts {

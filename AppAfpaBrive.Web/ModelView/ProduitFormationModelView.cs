@@ -32,15 +32,28 @@ namespace AppAfpaBrive.Web.ModelView
 
         //[FormationValidator(ErrorMessage ="un des champs seulement doit etre selectionné")]
         //[Display(Name ="FormationContinue")]
-        [Required]
-        public bool FormationContinue { get; set; }
+        //[Required]
+        //public bool FormationContinue { get; set; }
 
-        //[FormationValidator(ErrorMessage = "un des champs seulement doit etre selectionné")]
-        //[Display(Name ="FormationDiplomante")]
-        [Required]
-        public bool FormationDiplomante {get;set;}
+        ////[FormationValidator(ErrorMessage = "un des champs seulement doit etre selectionné")]
+        ////[Display(Name ="FormationDiplomante")]
+        //[Required]
+        //public bool FormationDiplomante {get;set;}
 
         public virtual ICollection<OffreFormation> OffreFormations { get; set; }
         public virtual ICollection<ProduitFormationAppellationRome> ProduitFormationAppellationRomes { get; set; }
+
+        public ProduitFormation GetProduitFormation()
+        {
+            return new ProduitFormation()
+            {
+                CodeProduitFormation = this.CodeProduitFormation,
+                NiveauFormation = this.NiveauFormation,
+                LibelleProduitFormation = this.LibelleProduitFormation,
+                LibelleCourtFormation = this.LibelleCourtFormation,
+                //FormationContinue = this.FormationContinue,
+                //FormationDiplomante = this.FormationDiplomante
+            };
+        }
     }
 }

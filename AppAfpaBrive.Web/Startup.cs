@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using AppAfpaBrive.Web.Utilitaires;
+using ReflectionIT.Mvc.Paging;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 
@@ -52,6 +53,13 @@ namespace AppAfpaBrive.Web
             services.AddControllersWithViews();
             services.AddTransient<IEmailSender, SendinBlueEmailSender>();
             services.AddMvc();
+            services.AddPaging(options =>
+            {
+                options.ViewName = "Bootstrap4";
+                options.PageParameterName = "page";
+                options.HtmlIndicatorDown = "<span class='text-primary'> <i class='fas fa-arrow-alt-circle-down'></i></span>";
+                options.HtmlIndicatorUp = "<span class='text-primary'> <i class='fas fa-arrow-circle-up'></i></span>";
+            });
            
 
 
@@ -96,6 +104,12 @@ namespace AppAfpaBrive.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+               
+                endpoints.MapRazorPages();
+                endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
+                endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
+
+               
             });
         }
     }

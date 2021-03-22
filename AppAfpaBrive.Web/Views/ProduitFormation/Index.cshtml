@@ -1,4 +1,11 @@
-﻿@model IEnumerable<AppAfpaBrive.BOL.ProduitFormation>
+﻿@*@model IEnumerable<AppAfpaBrive.BOL.ProduitFormation>*@
+@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.BOL.ProduitFormation>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
+<nav aria-label="ProduitFormation navigation">
+    @await this.Component.InvokeAsync("Pager", new { paginglist = this.Model })
+</nav>
 
 <div class="container p-3">
     <div class="row pt-4">
@@ -10,37 +17,39 @@
                 <i class="fas fa-plus-square"></i> &nbsp; Créer un nouveau Produit de Formation
             </a>
         </div>
-        <div class="col-6">
-            <input asp-controller="ProduitFormation" asp-action="Details" placeholder="Mécanicien..." />
-            <input id="btnRecherche" type="button" value="Recherche" />
-        </div>
+        <form method="get" class="form-inline">
+            <input name="filter" class="form-control" placeholder="filtre" value="@Model.RouteValue["filter"]"/>
+            @*<button type="submit" class="btn btn-info">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+            </button>*@
+        </form>
     </div>
 
     <br /><br />
 
     @if (Model.Count() > 0)
     {
-        <table class="table table-bordered table-striped" style="width:100%">
+        <table class="table table-bordered table-striped" style="width:100%" >
             <thead>
                 <tr>
                     <th>
-                        Code Produit de Formation
+                        @Html.SortableHeaderFor(Model=>Model.CodeProduitFormation)
                     </th>
                     <th>
-                        Niveau Formation
+                        @Html.SortableHeaderFor(model => model.NiveauFormation)
                     </th>
                     <th>
-                        LibelleProduitFormation
+                        @Html.SortableHeaderFor(model => model.LibelleProduitFormation)
                     </th>
                     <th>
-                        LibelleCourtFormation
+                        @Html.SortableHeaderFor(model => model.LibelleCourtFormation)
+                    </th>
+                    @*<th>
+                        @Html.SortableHeaderFor(model => model.FormationContinue)
                     </th>
                     <th>
-                        FormationContinue
-                    </th>
-                    <th>
-                        Formation Diplomante
-                    </th>
+                        @Html.SortableHeaderFor(model => model.FormationDiplomante)
+                    </th>*@
                 </tr>
             </thead>
             <tbody>
@@ -51,8 +60,8 @@
                         <td width="10%">@obj.NiveauFormation</td>
                         <td width="30%">@obj.LibelleProduitFormation</td>
                         <td width="20%">@obj.LibelleCourtFormation</td>
-                        <td width="10%">@obj.FormationContinue</td>
-                        <td width="10%">@obj.FormationDiplomante</td>
+                        @*<td width="10%">@obj.FormationContinue</td>
+                        <td width="10%">@obj.FormationDiplomante</td>*@
                         <td>
                             <div class="w-75 btn-group" role="group">
                                 <a asp-controller="ProduitFormation" asp-route-Id="@obj.CodeProduitFormation" asp-action="Edit" class="btn btn-primary">
@@ -67,18 +76,17 @@
                 }
             </tbody>
         </table>
-        <div>
-            <button class="btn-primary" asp-action="Index"> Previous  </button>
-            <button class="btn-primary" asp-action="Index"> Next </button>
-        </div>
-
 
     }
     else
     {
         <p> Il n'y a pas de produits de formation</p>
     }
-   
+
+    <nav aria-label="produitFormation navigation example">
+        <vc:pager paging-list="@Model"/>
+    </nav>
+
 </div>
 
 

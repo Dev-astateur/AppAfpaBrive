@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.12.3" />
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
+    <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNet.Providers.Core" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.4" />
@@ -21,15 +22,11 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="ReflectionIT.Mvc.Paging" Version="5.1.1" />
     <PackageReference Include="Rotativa.AspNetCore" Version="1.1.1" />
     <PackageReference Include="sib_api_v3_sdk" Version="3.2.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
-    <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +39,11 @@
     <Folder Include="Models\Layer\" />
     <Folder Include="Script\" />
     <Folder Include="Repository\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
+    <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
   </ItemGroup>
 
 </Project>

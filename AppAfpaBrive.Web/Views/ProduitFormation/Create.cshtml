@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Création</h1>
 
 <h4>ProduitFormation</h4>
 <hr />
@@ -29,20 +29,24 @@
             </div>
             <div class="form-group">
                 <label asp-for="LibelleCourtFormation" class="control-label"></label>
-                <input asp-for="LibelleCourtFormation" class="form-control" />
+                <input asp-for="LibelleCourtFormation" class="form-control" maxlength="10" />
                 <span asp-validation-for="LibelleCourtFormation" class="text-danger"></span>
             </div>
-            @*<div class="form-group form-check">
-            <label class="form-check-label">
-                <input type="radio" name="Formation" class="form-check-input" value="True" asp-for="FormationContinue" /> @Html.DisplayNameFor(model => model.FormationContinue)
+            <!--<div class="form-group form-check">
+            <label class="form-check-label">-->
+                @*<input type="radio" name="Formation" class="form-check-input" value="True" asp-for="FormationContinue" /> @Html.DisplayNameFor(model => model.FormationContinue)*@
+                <!--<label>FormationContinue</label>
+                @Html.RadioButton("Formation","0")
             </label>
         </div>
         <div class="form-group form-check">
-            <label  class="form-check-label">
-                <input type="radio" name ="Formation" value="True" class="form-check-input" checked asp-for="FormationDiplomante" /> @Html.DisplayNameFor(model => model.FormationDiplomante)
+            <label class="form-check-label">-->
+                @*<input type="radio" name="Formation" value="True" class="form-check-input" checked asp-for="FormationDiplomante" /> @Html.DisplayNameFor(model => model.FormationDiplomante)*@
+                <!--<label>FormationDiplomante</label>
+                @Html.RadioButton("Formation","1",true)
             </label>
-        </div>*@
-            <div class="form-group form-check">
+        </div>-->
+            @*<div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="FormationContinue" /> @Html.DisplayNameFor(model => model.FormationContinue)
                 </label>
@@ -51,7 +55,7 @@
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="FormationDiplomante" /> @Html.DisplayNameFor(model => model.FormationDiplomante)
                 </label>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Enregistrer" class="btn btn-primary" />
             </div>
@@ -60,7 +64,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour</a>
 </div>
 
 
