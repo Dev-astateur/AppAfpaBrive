@@ -39,6 +39,7 @@ namespace AppAfpaBrive.DAL
         public virtual DbSet<OffreFormation> OffreFormations { get; set; }
         public virtual DbSet<Pays> Pays { get; set; }
         public virtual DbSet<Pee> Pees { get; set; }
+        public virtual DbSet<PeeDocument> PeeDocuments { get; set; }
         public virtual DbSet<PeriodePee> PeriodePees { get; set; }
         public virtual DbSet<PeriodePeeEvenement> PeriodePeeEvenements { get; set; }
         public virtual DbSet<PlanificationCampagneMail> PlanificationCampagneMails { get; set; }
