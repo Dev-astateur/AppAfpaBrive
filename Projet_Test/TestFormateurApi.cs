@@ -39,7 +39,7 @@ namespace Projet_Test
         {
 
             //arrange
-           
+          
          
             var controller = new FormateurApiController(dba);
 
@@ -52,10 +52,9 @@ namespace Projet_Test
 
             Assert.That(result is OkObjectResult);
             Assert.That((HttpStatusCode)result.StatusCode == HttpStatusCode.OK);
-            Assert.That(result.Value ==);
+            //Assert.That(result.Value);
             
  
-
         }
 
     }
