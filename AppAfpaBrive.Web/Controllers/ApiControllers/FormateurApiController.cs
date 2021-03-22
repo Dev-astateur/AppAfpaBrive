@@ -15,7 +15,12 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
     public class FormateurApiController : ControllerBase
     {
 
-        private AFPANADbContext db = new AFPANADbContext();
+        private AFPANADbContext db;
+
+        public FormateurApiController(AFPANADbContext DB)
+        {
+            db = DB;
+        }
 
 
         /// <summary>
