@@ -21,7 +21,7 @@ namespace AppAfpaBrive.Web.Layers
 
         public async Task<IEnumerable<ListePeeAValiderModelView>> GetPeeByMatriculeCollaborateurAfpaAsync(string idMatricule)
         {
-            return await _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.Etat == 0)
+            return await _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.EtatPee == 0)
                 .Include(e => e.Id)
                 .Include(e=>e.IdEntrepriseNavigation)
                 .Include(e => e.MatriculeBeneficiaireNavigation).

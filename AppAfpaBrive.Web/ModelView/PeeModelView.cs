@@ -26,7 +26,7 @@ namespace AppAfpaBrive.Web.ModelView
                 IdOffreFormation = pee.IdOffreFormation;
                 IdEtablissement = pee.IdEtablissement;
                 Remarques = "";
-                Etat = pee.Etat;
+                Etat = pee.EtatPee;
                 Id = new OffreFormationModelView(pee.Id);
                 IdEntrepriseNavigation = new EntrepriseModelView(pee.IdEntrepriseNavigation);
                 MatriculeBeneficiaireNavigation = new BeneficiaireModelView(pee.MatriculeBeneficiaireNavigation);
