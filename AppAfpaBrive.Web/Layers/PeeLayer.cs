@@ -32,7 +32,7 @@ namespace AppAfpaBrive.Web.Layers
                     RaisonSociale = e.IdEntrepriseNavigation.RaisonSociale,
                     IdPee = e.IdPee
                 } ).AsQueryable();
-            Task<PagingList<ListePeeAValiderModelView>> model = PagingList.CreateAsync((IOrderedQueryable<ListePeeAValiderModelView>)qry, 3, page);
+            Task<PagingList<ListePeeAValiderModelView>> model = PagingList.CreateAsync((IOrderedQueryable<ListePeeAValiderModelView>)qry, 10 , page);
             model.Result.Action = "ListePeeAValider";
             return await model;
         }

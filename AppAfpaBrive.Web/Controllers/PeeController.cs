@@ -139,11 +139,12 @@ namespace AppAfpaBrive.Web.Controllers
         {
             if (IdPee != peeModelView.IdPee)
                 return NotFound();
+
             if (peeModelView.IsValid)
             {
                 try
                 {
-
+                    
                     peeModelView.Id = new OffreFormationModelView()
                     {
                         MatriculeCollaborateurAfpa = "1603870"
