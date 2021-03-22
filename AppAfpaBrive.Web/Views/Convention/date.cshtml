@@ -38,8 +38,8 @@
                         <td>
                             <div class="w-75 btn-group" role="group">
                                 @*<a asp-controller="Convention" asp-route-Id="@obj.Iddate" asp-action="date_delete" class="btn btn-danger">
-                                    Supprimer
-                                </a>*@
+                                        Supprimer
+                                    </a>*@
                                 <input type="submit" asp-for="@obj.Iddate" value="Supprimer" />
                             </div>
                         </td>
@@ -47,19 +47,22 @@
                 }
             </tbody>
         </table>
+        <div class="text-right">
+            <a asp-controller="Convention" asp-action="Recapitulatif" class="btn btn-primary">
+                Suivant
+            </a>
+        </div>
     }
     else
     {
         <p> Vous n'avez pas de dates de stages.</p>
     }
-<div class="col-6 text-right">
-    <a asp-controller="Convention" asp-action="entreprise" class="btn btn-primary">
-        Retour à la selection d'entreprise
-    </a>
-    <a asp-controller="Convention" asp-action="professionel" class="btn btn-primary">
-        Suivant
-    </a>
-</div>
+    <div class="col-6 text-right">
+        <a asp-controller="Convention" asp-action="entreprise" class="btn btn-primary">
+            Retour à la selection d'entreprise
+        </a>
+
+    </div>
 </form>
 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

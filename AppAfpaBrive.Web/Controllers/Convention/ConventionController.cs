@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using AppAfpaBrive.Web.ModelView;
 using DocumentFormat.OpenXml;
+using AppAfpaBrive.DAL.Layers;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
@@ -26,6 +27,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_Pays _Pays = null;
         private Layer_Professionnel _pro = null;
         private Layer_EntrepriseProfessionnel _entreprisepro = null;
+        private PeeLayer _peelayer = null;
+        private Periode_pee_Layer _periode = null;
         public ConventionController(AFPANADbContext context)
         {
             _beneficiaireOffre = new Layer_Offres_Formation(context);
@@ -35,6 +38,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _Pays = new Layer_Pays(context);
             _pro = new Layer_Professionnel(context);
             _entreprisepro = new Layer_EntrepriseProfessionnel(context);
+            _peelayer = new PeeLayer(context);
+            _periode = new Periode_pee_Layer(context);
         }
 
         // get index
@@ -216,13 +221,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             return RedirectToAction("date");
         }
 
-        // get Professionel_creation
-        public IActionResult Recapitulatif()
-        {
-            string str = this.HttpContext.Session.GetString("convention");
-            Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-            return View(convention);
-        }
+        
 
         // get Professionel_creation
         public IActionResult Professionel_Creation()
@@ -317,6 +316,55 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         public IActionResult date_delete(Date_ModelView date)
         {
             return View();
+        }
+
+        // get recapitulatif
+        public IActionResult Recapitulatif()
+        {
+            string str = this.HttpContext.Session.GetString("convention");
+            Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+
+            string str_date = this.HttpContext.Session.GetString("date");
+            List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
+            ViewBag.dates = dates;
+
+            return View(convention);
+        }
+
+        //post Recapitulatif
+        [HttpPost]
+        public IActionResult Recapitulatif(Creation_convention oui)
+        {
+            string str = this.HttpContext.Session.GetString("convention");
+            Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+            Pee pee = new Pee
+            {
+                IdEntreprise = convention.IdEntreprise,
+                MatriculeBeneficiaire = convention.Idmatricule,
+                IdTuteur = convention.IdTuteur,
+                IdResponsableJuridique = convention.IdResponsable,
+                IdOffreFormation = convention.IdFormation,
+                IdEtablissement = convention.IdEtablissement
+            };
+
+            string str_date = this.HttpContext.Session.GetString("date");
+            List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
+            _peelayer.Pee_Create(pee);
+            decimal id = _peelayer.GetPeeBy_Idmatricule_idFormation_idetablissemnt(pee.MatriculeBeneficiaire, pee.IdEntreprise, pee.IdEtablissement);
+            foreach (var item in dates)
+            {
+                PeriodePee periodePee = new PeriodePee
+                {
+                    IdPee = id,
+                    DateDebutPeriodePee = item.Date1,
+                    DateFinPeriodePee = item.Date2,
+                    NumOrdre = item.Iddate
+                };
+                _periode.Pee_Create(periodePee);
+            }
+
+
+            return RedirectToAction("index");
         }
     }
 }

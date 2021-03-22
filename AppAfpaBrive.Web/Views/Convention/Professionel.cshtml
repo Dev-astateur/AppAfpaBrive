@@ -47,11 +47,11 @@
                                 @item.PrenomProfessionnel
                             </td>
                             <td width="20%">
-                                @Html.RadioButton("tuteur", item.IdProfessionnel,true)
+                                @Html.RadioButton("tuteur", item.IdProfessionnel, true)
                                 @*<input type="button" class="btn btn-primary w-100" value="Sélectionner"></input>*@
                             </td>
                             <td width="20%">
-                                @Html.RadioButton("Responsable", item.IdProfessionnel,true)
+                                @Html.RadioButton("Responsable", item.IdProfessionnel, true)
                                 @*<input type="button" class="btn btn-primary w-100" value="Sélectionner "></input>*@
                             </td>
 
@@ -63,18 +63,12 @@
         }
         else
         {
-            <p> Vous n'avez pas de formation.</p>
+            <p> Personne de connue dans la base de donnée.</p>
         }
     </div>
     <div>
-        <div class="col">
-            <label> Retour</label>
-            <a asp-action="Entreprise_recap" class="btn btn-success"><i class="fas fa-sign-out-alt"></i> retour</a>
-        </div>
-        <div class="col">
-            <label> Ajouter des Personnes</label>
-            <a asp-action="Professionel_Creation" class="btn btn-success"><i class="fas fa-sign-out-alt"></i> Ajouter</a>
-        </div>
+        <a asp-action="Entreprise_recap" class="btn btn-success"><i class="fas fa-sign-out-alt"></i> retour</a>
+        <a asp-action="Professionel_Creation" class="btn btn-success"><i class="fas fa-sign-out-alt"></i> Ajouter</a>
         <input class="btn btn-primary" type="submit" value="go" />
     </div>
 </form>
