@@ -1,4 +1,5 @@
-﻿@model List<AppAfpaBrive.Web.ModelView.EntrepriseListViewModel>
+﻿@*@model List<AppAfpaBrive.Web.ModelView.EntrepriseListViewModel>*@
+@model ReflectionIT.Mvc.Paging.IPagingList<AppAfpaBrive.BOL.Entreprise>
 
 @{
     ViewData["Title"] = "ListeEntreprisePourModification";
@@ -24,7 +25,7 @@
             <div class="col-sm-4">
                 <p>Recherche par l'intitulé de l'offre de formation: </p>
                 <p>
-                    <input type="search" placeholder=" formation" @*value="@ViewData["GetProduitForm"]"*@ name="formation" id="ProduitFormation" />
+                    <input type="search" placeholder=" formation" value="@ViewData["GetProduitForm"]" name="formation" id="ProduitFormation" />
 
 
                 </p>
@@ -86,6 +87,12 @@
         }
     </tbody>
 </table>
+<nav aria-label="Pagination">
+    @await this.Component.InvokeAsync("Pager", new { pagingList=this.Model}) 
+</nav>
+<nav aria-label="pagination">
+    <vc:pager paging list="@Model" />
+</nav>
 
 @section Scripts{
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

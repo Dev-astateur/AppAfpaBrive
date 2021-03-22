@@ -16,13 +16,13 @@ namespace AppAfpaBrive.Web.Controllers
 {
     public class EntrepriseController : Controller
     {
-        private readonly AFPANADbContext _dbContext;
+       // private readonly AFPANADbContext _dbContext;
         private readonly EntrepriseLayer _layer;
 
         public EntrepriseController(AFPANADbContext Db)
         {
             _layer = new EntrepriseLayer(Db);
-            _dbContext = new AFPANADbContext();
+           // _dbContext = new AFPANADbContext();
         }
 
        
@@ -146,7 +146,11 @@ namespace AppAfpaBrive.Web.Controllers
             // var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
             // var model = PagingList.Create(qry, 10, page);
             // return View(model);
+
+
+            //If faut assigner une action à la liste pour les pages differentes de la 1 
             query.Action = "ListeEntreprise";
+
             return View(query);
            
 
@@ -157,50 +161,55 @@ namespace AppAfpaBrive.Web.Controllers
 
 
         #region ListeEntrepriseModification
-        public async Task<IActionResult> ListeEntreprisePourModification(string departement, string formation)
+        public async Task<IActionResult> ListeEntreprisePourModification(string departement, string formation, int page=1)
         {
-            List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
+           // List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
 
             ViewData["GetDepartement"] = departement;
-            //ViewData["GetProduitForm"] = formation;
-            // var query = _layer.GetAllEntreprise();
-            List<Entreprise> query=null;
+            ViewData["GetProduitForm"] = formation;
+            var query = _layer.GetAllEntrepriseForPaging();
 
-            //if (!String.IsNullOrEmpty(departement))
-            //{
-            //    query = _layer.GetEntreprisesByDepartement(departement);
-            //}
+            // List<Entreprise> query = null;
 
             if (!String.IsNullOrEmpty(departement) && (!String.IsNullOrEmpty(formation)))
             {
-                query = _layer.GetEntrepriseByDepartementEtOffre(formation, departement);
+                query = _layer.GetEntrepriseByDepartementEtOffreForPaging(formation, departement, page);
             }
             else if (!String.IsNullOrEmpty(departement) && String.IsNullOrEmpty(formation))
             {
-                query = _layer.GetEntreprisesByDepartement(departement);
+                query = _layer.GetEntreprisesByDepartementPaging(departement, page);
             }
             else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
             {
-                query = _layer.GetEntrepriseByProduitFormation(formation);
+                query = _layer.GetEntrepriseByProduitFormationForPaging(formation, page);
             }
-            if (query!=null)
-            {
-                foreach (var entreprise in query)
-                {
-                    EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
-                    //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
-                    //entrepriseModel.Ville = entreprise.Ville;
-                    //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
-                    //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
-                    //entrepriseModel.NumeroSiret = entreprise.NumeroSiret;
-                    //entrepriseModel.IdEntreprise = entreprise.IdEntreprise;
-                    //entrepriseModel.Ligne1Adresse = entreprise.Ligne1Adresse;
-                    ListentrepriseListViewModel.Add(entrepriseModel);
-                }
-                return View(ListentrepriseListViewModel);
-            }
+            //if (query != null)
+            //{
+            //    foreach (var entreprise in query)
+            //    {
+            //        EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
+            //        //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
+            //        //entrepriseModel.Ville = entreprise.Ville;
+            //        //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
+            //        //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
+            //        //entrepriseModel.NumeroSiret = entreprise.NumeroSiret;
+            //        //entrepriseModel.IdEntreprise = entreprise.IdEntreprise;
+            //        //entrepriseModel.Ligne1Adresse = entreprise.Ligne1Adresse;
+            //        ListentrepriseListViewModel.Add(entrepriseModel);
+            //    }
+            //    return View(ListentrepriseListViewModel);
+            //}
 
-            return View();
+            //Test pour pagination
+            //var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
+            // var model = PagingList.Create(qry, 10, page);
+            // model.Action = "ListeEntreprisePourModification";
+            // return View(model);
+
+
+            //If faut assigner une action à la liste pour les pages differentes de la 1 
+            query.Action = "ListeEntreprise";
+           return View(query);
 
             
         }
@@ -226,18 +235,18 @@ namespace AppAfpaBrive.Web.Controllers
                 string libellePays = entreprise.Idpays2Navigation.LibellePays;
               
             entreprise.Idpays2= _layer.GetIdPaysByMatriculePays(libellePays);
-            try
-            {
+            //try
+            //{
                 
                 _layer.AddEntreprise(entreprise);
                 //_dbContext.Entreprises.Add(entreprise);
                 //_dbContext.SaveChanges();
                 return RedirectToAction("ListeEntreprisePourModification", "Entreprise");
-            }
-            catch
-            {
-                return View();
-            }
+            //}
+            //catch
+            //{
+            //    return View();
+            //}
         }
         #endregion
 
