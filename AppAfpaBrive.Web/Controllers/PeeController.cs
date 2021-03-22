@@ -153,7 +153,7 @@ namespace AppAfpaBrive.Web.Controllers
 
                 }
             }
-            return RedirectToAction(nameof(ListePeeAValider),peeModelView.Id.MatriculeCollaborateurAfpa);
+            return RedirectToAction(nameof(ListePeeAValider),new { id = peeModelView.Id.MatriculeCollaborateurAfpa });
         }
 
         /// <summary>
@@ -162,14 +162,26 @@ namespace AppAfpaBrive.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [Route("/Pee/ListeDocumentPee/{id}")]
+        [Route("/Pee/ListeDocumentPee/{id}/{page}")]
         [HttpGet]
-        public async Task<IActionResult> ListeDocumentPee(int? id)
+        public async Task<IActionResult> ListeDocumentPee(int? id,int? page)
         {
             if (id is null)
                 return NotFound();
 
-            PeeModelView pee = await _peeLayer.GetPeeByIdAsync((int)id);
-            return PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", pee);
+            IEnumerable<PeeDocumentModelView> peeDocument = await _peeLayer.GetPeeDocumentByIdAsync((int)id);
+
+            if ( page is not null )
+            {
+                return peeDocument.Count() == 0 ? RedirectToAction(nameof(PeeEntrepriseValidation), new { id = id })
+                : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
+            }
+            else
+            {
+                return peeDocument.Count() == 0 ? RedirectToAction(nameof(EnregistrementPeeInfo), new { id = id })
+                : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
+            }
         }
     }
 }
+ 

@@ -51,5 +51,10 @@ namespace AppAfpaBrive.Web.Layers
         {
             return new PeeModelView(await _dbContext.Pees.FindAsync((decimal)idPee));
         }
+
+        public async Task<ICollection<PeeDocumentModelView>> GetPeeDocumentByIdAsync(int idPee)
+        {
+            return await _dbContext.PeeDocuments.Where(e => e.IdPee == idPee).Select(e=>new PeeDocumentModelView(e)).ToListAsync();
+        }
     }
 }

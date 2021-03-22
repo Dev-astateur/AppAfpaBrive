@@ -8,10 +8,15 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6"><p><button id="return">Retour</button></p></div>
-        <div class="col-md-6"><p><button id="next">Suivant</button></p></div>
+        @*<div class="col-sm-6"><p><button id="return">Retour</button></p></div>
+        <div class="col-sm-6"><p><button id="next">Suivant</button></p></div>*@
+        <div class="col-sm-6">
+            <a href="javascript:void(0)" id="return">Retour</a>
+        </div>
+        <div class="col-sm-6">
+            <a href="javascript:void(0)" id="next">Suivant</a>
+        </div>
     </div>
-</div>
 
 @section Scripts
 {
@@ -64,17 +69,21 @@
                         newUrl = encodeURI('/Pee/PeeEntrepriseValidation/' + idPee);
                         break;
                     case '3':
-                        newUrl = encodeURI('/Pee/ListeDocumentPee/'+idPee);
+                        newUrl = encodeURI('/Pee/ListeDocumentPee/'+idPee+"/"+win);
                         break;
                 }
-               
-                if ('/Pee/ListeDocumentPee/' == newUrl.substring(0,22)) {
+
+                if ('/Pee/ListeDocumentPee/' === newUrl.substring(0,22)) {
                     $.ajax({
                         type: 'GET',
                         url: newUrl,
                         success: function (result) {
                             const partial = document.getElementById('viewPartial');
-                            partial.innerHTML = result;
+                            if ('DOCTYPE' === result.substring(2, 9)) {
+                                window.location.href = newUrl;
+                            } else {
+                                partial.innerHTML = result;
+                            }
                         }
                     });
                 }
