@@ -9,9 +9,9 @@ namespace AppAfpaBrive.BOL
 {
     public partial class PeeDocument
     {
-        [Key]
+        
         public decimal IdPee { get; set; }
-        [Key]
+        
         public int NumOrdre { get; set; }
         public string PathDocument { get; set; }
 
