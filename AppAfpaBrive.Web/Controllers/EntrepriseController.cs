@@ -241,18 +241,17 @@ namespace AppAfpaBrive.Web.Controllers
             entreprise.Ville = entrepriseVM.Ville;
             entreprise.Idpays2 = _layer.GetIdPaysByMatriculePays(libellePays);
 
-            //try
-            //{
-
-            _layer.AddEntreprise(entreprise);
+            try
+            {
+                _layer.AddEntreprise(entreprise);
                 //_dbContext.Entreprises.Add(entreprise);
                 //_dbContext.SaveChanges();
                 return RedirectToAction("ListeEntreprisePourModification", "Entreprise");
-            //}
-            //catch
-            //{
-            //    return View();
-            //}
+            }
+            catch
+            {
+                return View();
+            }
         }
         #endregion
 

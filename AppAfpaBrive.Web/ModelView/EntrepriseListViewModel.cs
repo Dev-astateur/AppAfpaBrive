@@ -1,4 +1,5 @@
 ﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.Web.CustomValidator;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,35 +32,51 @@ namespace AppAfpaBrive.Web.ModelView
             Idpays2Navigation = new PaysViewModel(entreprise.Idpays2Navigation);
         }
         [Required]
-        [DisplayName("Id de l'entreprise")]
+        [DisplayName("Id de l'entreprise: ")]
         public int IdEntreprise { get; set; }
 
-        [Required(ErrorMessage ="Entrez un nom d'entreprise")]
-        [DisplayName("Raison sociale")]
+        [MaxLength(255)]
+        [Required(ErrorMessage = "La raison sociale est requise")]
+        [DisplayName("Raison sociale: ")]
         public string RaisonSociale { get; set; }
 
-        [Required]
-        [StringLengthAttribute(14, ErrorMessage ="Un numéro de SIRET est composé de 14 chiffres")]
-        [DisplayName("Numéro de SIRET")]
+        [Required(ErrorMessage = "La raison sociale est requise")]
+        [CustomValidator_SiretAttribute(ErrorMessage ="Le numéro de Siret est invalide")]
+        [DisplayName("Numéro de SIRET: ")]
         public string NumeroSiret { get; set; }
-        [DisplayName("E-mail")]
+
+        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$|^\+?\d{0,2}\-?\d{4,5}\-?\d{5,6}", ErrorMessage = "Veuillez entrer une addresse e-mail correcte")]
+        [DisplayName("E-mail: ")]
         public string MailEntreprise { get; set; }
-        [DisplayName("Téléphone")]
+
+        
+        [DisplayName("Téléphone: ")]
         public string TelEntreprise { get; set; }
-        [DisplayName("1ére ligne adresse")]
+
+        [Required(ErrorMessage = "L'adresse est requise")]
+        [DisplayName("1ére ligne adresse: ")]
         public string Ligne1Adresse { get; set; }
-        [DisplayName("2ème ligne adresse")]
+
+
+        [DisplayName("2ème ligne adresse: ")]
         public string Ligne2Adresse { get; set; }
-        [DisplayName("3ème ligne adresse")]
+
+
+        [DisplayName("3ème ligne adresse: ")]
         public string Ligne3Adresse { get; set; }
-        [DisplayName("Code postal")]
+
+        [Required(ErrorMessage ="Le code postal est obligatoire")]
+        [RegularExpression("([0-9]+)", ErrorMessage = "Le code postal ne doit etre composé que de chiffres")]
+        [DisplayName("Code postal: ")]
         public string CodePostal { get; set; }
-        [DisplayName("Ville")]
+
+        [Required(ErrorMessage ="Le nom de la ville est requise")]
+        [DisplayName("Ville: ")]
         public string Ville { get; set; }
 
 
-        [Required]
-        [DisplayName("Pays")]
+        [Required(ErrorMessage ="L'id du pays est obligatoire")]
+        [DisplayName("Pays: ")]
         public string Idpays2 { get; set; }
 
         public virtual PaysViewModel Idpays2Navigation { get; set; }
