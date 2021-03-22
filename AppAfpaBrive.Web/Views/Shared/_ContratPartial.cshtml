@@ -1,0 +1,27 @@
+﻿<br />
+@{
+    if (Model == null)
+    {
+        <p class="text-center">Sortie de formation / Sans emploi</p>
+    }
+    else
+    {
+        <div class="row text-center">
+            <p class="col-sm-4 col-md-12">Entreprise : @Model.IdEntrepriseNavigation.RaisonSociale</p>
+            <p class="col-sm-4 col-md-12">Poste : @Model.LibelleFonction</p>
+            <p class="col-sm-4 col-md-12">Type de contrat : @Model.TypeContratNavigation.DesignationTypeContrat</p>
+            <p class="col-sm-4 col-md-12">Date d'embauche : @Model.DateEntreeFonction.ToShortDateString()</p>
+            @{
+                if (Model.DateSortieFonction == null)
+                {
+                    <p class="col-sm-4 col-md-12">Date de fin de contrat : contrat en cours </p>
+                }
+                else
+                {
+                    <p class="col-sm-4 col-md-12">Date de fin de contrat : @Model.DateSortieFonction </p>
+                }
+            }
+        </div>
+    }
+}
+<br />

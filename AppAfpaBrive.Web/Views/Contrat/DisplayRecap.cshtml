@@ -1,0 +1,24 @@
+﻿@model AppAfpaBrive.BOL.Contrat
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="text-center">
+    <h4>- Recapitualatif - </h4>
+    <h4>Votre situation actuelle</h4>
+</div>
+
+<br />
+@await Html.PartialAsync("_ContratPartial")
+<br />
+
+<div class="text-center">
+    <button type="button" class="btn btn-outline-primary btn-sm text-center">Valider</button> 
+    @*To do : enregistrement en bdd et redirection vers page au revoir*@
+</div>
+<br />
+<div>
+    <button type="button" class="btn btn-outline-primary btn-sm float-left" id="same_entreprise"><< Précédent</button>
+    @*To do : en fonction du chemin emprunté par le client, le btn renvoie vers "Display" ou vers la modification de contrat*@
+</div>
