@@ -24,23 +24,31 @@ namespace AppAfpaBrive.Web.Layers
             return _context.Entreprises.ToList();
         }
 
-        public async Task<PagingList<Entreprise>> GetAllEntrepriseForPaging(int page)
+        public PagingList<Entreprise> GetAllEntrepriseForPaging(int page=1)
         {
-           var query= _context.Entreprises.OrderBy(e=>e.RaisonSociale);
-            return await PagingList.CreateAsync<Entreprise>(query, 20, page);
+            var query = _context.Entreprises.OrderBy(e => e.RaisonSociale);
+            return PagingList.Create<Entreprise>(query, 10, page);
         }
+
+        //Methode asynchrone 
+
+        //public async Task<PagingList<Entreprise>> GetAllEntrepriseForPaging(int page)
+        //{
+        //   var query= _context.Entreprises.OrderBy(e=>e.RaisonSociale);
+        //    return await PagingList.CreateAsync<Entreprise>(query, 10, page);
+        //}
        
         
-        public List<Entreprise> GetEntreprisesByDepartement(string dep, int page=1)
+        public List<Entreprise> GetEntreprisesByDepartement(string dep)
         {
             return _context.Entreprises.Where(e => e.CodePostal.StartsWith(dep)).ToList();
         }
 
-        public Task<PagingList<Entreprise>> GetEntreprisesByDepartementPaging(string dep, int page = 1)
+        public PagingList<Entreprise> GetEntreprisesByDepartementPaging(string dep, int page = 1)
         {
             var query = _context.Entreprises.Where(e => e.CodePostal.StartsWith(dep)).OrderBy(e => e.RaisonSociale);
 
-            return  PagingList.CreateAsync<Entreprise>(query, 20, page);
+            return  PagingList.Create<Entreprise>(query, 10, page);
         }
         public void RemoveEntrepriseById(int id)
         {
@@ -62,7 +70,6 @@ namespace AppAfpaBrive.Web.Layers
         {
             //int identifiant = int.Parse(id);
             return _context.Entreprises.Where(e => e.IdEntreprise == id).FirstOrDefault();
-
         }
         #region Pays
         public string GetIdPaysByMatriculePays(string libellePays)
@@ -80,8 +87,6 @@ namespace AppAfpaBrive.Web.Layers
         #region GetEntrepriseByDepartementEtOffre
         public List<Entreprise> GetEntrepriseByDepartementEtOffre(string produit, string departement)
         {
-
-
             List<Entreprise> query = _context.ProduitFormations
                                           .Where(pro => pro.LibelleProduitFormation.Contains(produit))
                                            .Join(_context.OffreFormations
@@ -117,7 +122,7 @@ namespace AppAfpaBrive.Web.Layers
             return query;
 
         }
-        public async Task<PagingList<Entreprise>> GetEntrepriseByDepartementEtOffreForPaging(string produit, string departement, int page = 1)
+        public PagingList<Entreprise> GetEntrepriseByDepartementEtOffreForPaging(string produit, string departement, int page = 1)
         {
             var query = _context.ProduitFormations
                                          .Where(pro => pro.LibelleProduitFormation.Contains(produit))
@@ -152,7 +157,7 @@ namespace AppAfpaBrive.Web.Layers
                                              Idpays2 = e.Idpays2
                                          }).Where(e => e.CodePostal.StartsWith(departement)).OrderBy(e => e.RaisonSociale);
 
-            return await PagingList.CreateAsync(query, 20, page);
+            return PagingList.Create(query, 20, page);
 
         }
         #endregion
@@ -195,9 +200,8 @@ namespace AppAfpaBrive.Web.Layers
                                           }).ToList();
             return query2;
         }
-        public async Task<PagingList<Entreprise>> GetEntrepriseByProduitFormationForPaging(string produit, int page)
+        public PagingList<Entreprise> GetEntrepriseByProduitFormationForPaging(string produit, int page)
         {
-
             var query = _context.ProduitFormations
                                          .Where(pro => pro.LibelleProduitFormation == produit)
                                           .Join(_context.OffreFormations
@@ -230,7 +234,7 @@ namespace AppAfpaBrive.Web.Layers
                                              Ville = e.Ville,
                                              Idpays2 = e.Idpays2
                                          }).OrderBy(e => e.RaisonSociale);
-            return await PagingList.CreateAsync(query, 20, page);
+            return  PagingList.Create(query, 20, page);
         }
         #endregion
 

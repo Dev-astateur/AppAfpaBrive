@@ -81,15 +81,13 @@ namespace AppAfpaBrive.Web.Controllers
         //[HttpGet]
 
 
-        public async Task<IActionResult> ListeEntreprise(string departement, string formation, int page=1)
+        public ActionResult ListeEntreprise(string departement, string formation, int page)
         {
 
-            List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
+          //  List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
 
             ViewData["GetDepartement"] = departement;
              ViewData["GetProduitForm"] = formation;
-
-            
 
             //Essai pour pagination
 
@@ -108,15 +106,13 @@ namespace AppAfpaBrive.Web.Controllers
 
             }
 
-
             else if (!String.IsNullOrEmpty(departement) && String.IsNullOrEmpty(formation))
             {
                 //query = _layer.GetEntreprisesByDepartement(departement);
 
                 //pagination
-                 query =_layer.GetEntreprisesByDepartementPaging(formation, page);
+                 query =_layer.GetEntreprisesByDepartementPaging(departement, page);
             }
-
 
             else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
             {
@@ -147,14 +143,15 @@ namespace AppAfpaBrive.Web.Controllers
 
             //Test pour paging
 
-           // var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
-            //var model = await PagingList.CreateAsync(query, 20, page);
-
+            // var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
+            // var model = PagingList.Create(qry, 10, page);
+            // return View(model);
+            query.Action = "ListeEntreprise";
             return View(query);
-            //return View();
+           
 
-            
-        
+
+
         }
         #endregion
 

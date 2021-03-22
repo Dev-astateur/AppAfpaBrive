@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.0" />
+    <PackageReference Include="ReflectionIT.Mvc.Paging" Version="5.1.1" />
   </ItemGroup>
 
 </Project>
