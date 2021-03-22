@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
@@ -19,6 +20,7 @@ namespace AppAfpaBrive.BOL
         public int IdResponsableJuridique { get; set; }
         public int IdEntreprise { get; set; }
         public int IdOffreFormation { get; set; }
+        [Required(ErrorMessage = "Veuillez complétez ce champ")]
         public string IdEtablissement { get; set; }
         public int Etat { get; set; }
 

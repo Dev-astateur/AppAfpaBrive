@@ -4,33 +4,33 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AfficheBeneficiairePee">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdPee" />
-            
-           
+       
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" data-valmsg-summary="true" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="IdOffreFormation" class="control-label"></label>
-                <input asp-for="IdOffreFormation" class="form-control" >
+                <input asp-for="IdOffreFormation" class="form-control" autocorrect="none"
+                       autocapitalize="none" autofocus="autofocus"
+                       aria-required="true" data-val-required="Veuillez complétez ce champ">
                 <span asp-validation-for="IdOffreFormation" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="IdEtablissement" class="control-label"></label>
-                <input asp-for="IdEtablissement" class="form-control" >
+                <input asp-for="IdEtablissement" class="form-control" autocorrect="none" autocapitalize="none"
+                       data-drupal-selector="IdEtablissement" aria-required="true">
                 <span asp-validation-for="IdEtablissement" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Recherche" class="btn btn-primary" asp-action="_AfficheBeneficiairePee" />
             </div>
         </form>
     </div>
 </div>
 <div>
-   @*<partial name="AfficheBeneficiairePee" />*@
-   
+    <partial name="_AfficheBeneficiairePee" />
 </div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

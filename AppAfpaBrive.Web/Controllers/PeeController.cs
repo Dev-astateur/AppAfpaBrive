@@ -33,12 +33,12 @@ namespace AppAfpaBrive.Web.Controllers
 
         #endregion
         #region Constructeur
-        //public PeeController(AFPANADbContext context)
-        //{ 
-        //    _dbContext = context;
+        //public PeeController()
+        //{
+        //    //_dbContext = context;
 
-        //    _peeLayer = new PeeLayer(context);
-        //    //_paysLayer = new PaysLayer(context);    //-- pour test
+        //    //_peeLayer = new PeeLayer(context);
+        //    ////_paysLayer = new PaysLayer(context);    //-- pour test
         //}
         public PeeController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
         {
@@ -48,20 +48,30 @@ namespace AppAfpaBrive.Web.Controllers
             _peeLayer = new PeeLayer(context);
         }
         #endregion
-
-        public IActionResult Index(int IdOffreFormation=0, string idEtablissement=null)
+        #region Méthode IAction Index et AfficheBeneficiairePee
+        /// <summary>
+        /// IAction Index pour rechercher les stagiaire et 
+        /// leurs Pee avec IdOffreFormation et IdEtablissement
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Index()
         {
-           
+
             return View();
         }
-        
-        public  IActionResult AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
+        /// <summary>
+        /// IAction pour afficher le nom et le prénom 
+        /// des beneficiaire et les entreprise qui les 
+        /// accueillent et leurs Pee
+        /// </summary>
+        /// <param name="IdOffreFormation"></param>
+        /// <param name="idEtablissement"></param>
+        /// <returns></returns>
+        public IActionResult _AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
         {
+            var pees = _peeLayer.GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement);
 
-            IEnumerable<Pee> pees = _dbContext.Pees
-                .Include(P => P.MatriculeBeneficiaireNavigation)
-                .Include(S => S.IdEntrepriseNavigation)
-                .Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement);
             List<PeriodePee> listPeriode = new List<PeriodePee>();
             var periodePees = _dbContext.PeriodePees.Include(pr => pr.IdPeeNavigation).ToList();
             foreach (var item in pees)
@@ -77,45 +87,19 @@ namespace AppAfpaBrive.Web.Controllers
             }
             ViewData["PeriodePee"] = listPeriode;
             IEnumerable<Pee> PeeSansDoublons = pees.Distinct(new PeeComparer());
-            
-            
-
-            //bool hasValue = false;
-            //foreach (var item in pees)
-            //{
-            //    do
-            //    {
-
-
-            //        foreach (var item2 in pee2)
-            //        {
-            //            if (item2.MatriculeBeneficiaire == item.MatriculeBeneficiaire)
-            //            {
-                           
-            //                ListPees.Add(new PeeModelView(item));
-            //                hasValue = true;
-            //            }
-
-            //        }
-            //        pee2.Add(item);
-
-
-            //    } while (!hasValue);
-
-            //}
-            //ViewData["listDoublons"] = ListPees;
-
-            return View(PeeSansDoublons); 
+            ViewData["ListPeeSansDoublons"] = PeeSansDoublons;
+            return View("Index");
         }
-        
+        #endregion
+        #region IAction pour inserer les données de la convention Pee du beneficiaire et de la charger pour impression ou téléchargement
+        /// <summary>
+        /// IAction pour inserer les données de la convention Pee de beneficiaire et de la charger pour impression ou téléchargement
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IActionResult ChargementDocPee(int id)
         {
             string path = Path.Combine(_env.ContentRootPath, "ModelesOffice");
-
-            
-
-            // var pee = _context.Pees.Find((decimal)idPee);
-
 
             var Convention = _dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation)
                 .ThenInclude(S => S.CodeTitreCiviliteNavigation)
@@ -130,7 +114,7 @@ namespace AppAfpaBrive.Web.Controllers
             string Civilite = Convention.MatriculeBeneficiaireNavigation.CodeTitreCiviliteNavigation.TitreCiviliteComplet;
             var Collaborateur = _dbContext.OffreFormations.Include(O => O.MatriculeCollaborateurAfpaNavigation)
                 .Where(C => C.IdOffreFormation == Convention.IdOffreFormation && C.IdEtablissement == Convention.IdEtablissement).FirstOrDefault();
-            string pathModele = Civilite == "Monsieur"?  Path.Combine(path, "1-ConventionPE-M.docx"): Path.Combine(path, "1-ConventionPE-F.docx");
+            string pathModele = Civilite == "Monsieur" ? Path.Combine(path, "1-ConventionPE-M.docx") : Path.Combine(path, "1-ConventionPE-F.docx");
             var date = _dbContext.PeriodePees.FirstOrDefault(p => p.IdPee == Convention.IdPee);
 
             string nomFichier = $"{Convention.MatriculeBeneficiaireNavigation.NomBeneficiaire}-{Convention.IdEtablissement}-{Convention.IdOffreFormation}.docx";
@@ -142,13 +126,13 @@ namespace AppAfpaBrive.Web.Controllers
                 var mergeFields = document.GetMergeFields().ToList();
                 mergeFields.WhereNameIs("Entreprise").ReplaceWithText(Convention.IdEntrepriseNavigation.RaisonSociale);
                 mergeFields.WhereNameIs("Adresse1").ReplaceWithText(Convention.IdEntrepriseNavigation.Ligne1Adresse);
-                mergeFields.WhereNameIs("Adresse2").ReplaceWithText(Convention.IdEntrepriseNavigation.Ligne2Adresse );
+                mergeFields.WhereNameIs("Adresse2").ReplaceWithText(Convention.IdEntrepriseNavigation.Ligne2Adresse);
                 mergeFields.WhereNameIs("Adresse3").ReplaceWithText(Convention.IdEntrepriseNavigation.Ligne3Adresse);
                 mergeFields.WhereNameIs("Code_Postal").ReplaceWithText(Convention.IdEntrepriseNavigation.CodePostal);
                 mergeFields.WhereNameIs("Commune").ReplaceWithText(Convention.IdEntrepriseNavigation.Ville);
                 mergeFields.WhereNameIs("Tél_").ReplaceWithText(Convention.IdEntrepriseNavigation.TelEntreprise);
                 mergeFields.WhereNameIs("TITRE_REP").ReplaceWithText(Convention.IdResponsableJuridiqueNavigation.TitreCiviliteNavigation.TitreCiviliteComplet);
-                mergeFields.WhereNameIs("Représentant").ReplaceWithText(Convention.IdResponsableJuridiqueNavigation.NomProfessionnel +" "+Convention.IdResponsableJuridiqueNavigation.PrenomProfessionnel);
+                mergeFields.WhereNameIs("Représentant").ReplaceWithText(Convention.IdResponsableJuridiqueNavigation.NomProfessionnel + " " + Convention.IdResponsableJuridiqueNavigation.PrenomProfessionnel);
                 mergeFields.WhereNameIs("Fonction_Représentant").ReplaceWithText(Fonction.Fonction);
                 mergeFields.WhereNameIs("Titre_Tuteur_1").ReplaceWithText(Convention.IdTuteurNavigation.TitreCiviliteNavigation.TitreCiviliteComplet);
                 mergeFields.WhereNameIs("Tuteur1").ReplaceWithText(Convention.IdTuteurNavigation.NomProfessionnel + " " + Convention.IdTuteurNavigation.PrenomProfessionnel);
@@ -160,15 +144,15 @@ namespace AppAfpaBrive.Web.Controllers
                 mergeFields.WhereNameIs("TélFormateur").ReplaceWithText(Collaborateur.MatriculeCollaborateurAfpaNavigation.TelCollaborateurAfpa);
                 mergeFields.WhereNameIs("Début_stage").ReplaceWithText($"{date.DateDebutPeriodePee}");
                 mergeFields.WhereNameIs("Fin_stage").ReplaceWithText($"{date.DateFinPeriodePee}");
-                //Settings settings = document.MainDocumentPart.DocumentSettingsPart.Settings;
-                //foreach(var element in settings.ChildElements)
-                //{
-                //    if(element is MailMerge)
-                //    {
-                //        element.Remove();
-                //    }
+                Settings settings = document.MainDocumentPart.DocumentSettingsPart.Settings;
+                foreach (var element in settings.ChildElements)
+                {
+                    if (element is MailMerge)
+                    {
+                        element.Remove();
+                    }
 
-                //}
+                }
                 document.MainDocumentPart.Document.Save();
 
             }
@@ -187,8 +171,9 @@ namespace AppAfpaBrive.Web.Controllers
             System.IO.File.Delete(docPath);
 
             return File(contenu, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-            
+
         }
+        #endregion
         [HttpGet]
         public IActionResult ListePeeAValider(string id)
         {
@@ -196,7 +181,7 @@ namespace AppAfpaBrive.Web.Controllers
             IEnumerable<Pee> pees = _peeLayer.GetPeeByMatriculeCollaborateurAfpa(id);
             List<PeeModelView> peesModelView = new();
 
-            foreach (Pee item in pees )
+            foreach (Pee item in pees)
             {
                 peesModelView.Add(new PeeModelView(item));
             }
@@ -226,6 +211,6 @@ namespace AppAfpaBrive.Web.Controllers
             return View();
         }
 
-       
+
     }
 }

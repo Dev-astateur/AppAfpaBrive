@@ -32,5 +32,12 @@ namespace AppAfpaBrive.DAL.Layers
                 .Include(e=>e.IdEntrepriseNavigation).ThenInclude(e=>e.Idpays2Navigation)
                 .FirstOrDefault();
         }
+        public IEnumerable<Pee> GetPeeEntrepriseWithBeneficiaireBy(int IdOffreFormation, string idEtablissement)
+        {
+            return _dbContext.Pees
+                .Include(P => P.MatriculeBeneficiaireNavigation)
+                .Include(S => S.IdEntrepriseNavigation)
+                .Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement);
+        }
     }
 }
