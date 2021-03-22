@@ -1,35 +1,4 @@
 ﻿@await Html.PartialAsync("_RechercheEntrepriseParSiretPartial")
 
-@section Scripts{
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
-}
 
-<script type="text/javascript">
 
-    var eve = document.getElementById("Valider")
-    eve.addEventListener("click", function () {
-
-        var siret = document.getElementById("Siret").value
-        var total = 0
-        for (let index = 0; index < siret.length; index++) {
-            const element = siret[index]
-            var x = parseInt(siret[index])
-            if (index % 2 == 0) {
-                x = x * 2
-            }
-            if (x > 9) {
-                x = x.toString()
-                total += parseInt(x[0]) + parseInt(x[1])
-            }
-            else {
-                total += x
-            }
-        }
-        if (total % 10 != 0) {
-            document.write(e)
-        }
-    })
-
-</script>
