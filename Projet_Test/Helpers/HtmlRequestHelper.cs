@@ -18,7 +18,7 @@ namespace Projet_Test.Helpers
             _url = Url;
         }
 
-        private HttpRequestMessage CreateRequest(string url, string mthv, HttpMethod method)
+        public HttpRequestMessage CreateRequest(string url, string mthv, HttpMethod method)
         {
             var request = new HttpRequestMessage();
 
@@ -29,7 +29,7 @@ namespace Projet_Test.Helpers
             return request;
         }
 
-        private HttpRequestMessage CreateRequest<T>(string url, string mthv, HttpMethod method, T content, MediaTypeFormatter formatter) where T : class
+        public HttpRequestMessage CreateRequest<T>(string url, string mthv, HttpMethod method, T content, MediaTypeFormatter formatter) where T : class
         {
             HttpRequestMessage request = CreateRequest(url, mthv, method);
             request.Content = new ObjectContent<T>(content, formatter);
