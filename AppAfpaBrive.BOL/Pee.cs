@@ -29,5 +29,6 @@ namespace AppAfpaBrive.BOL
         public virtual Professionnel IdTuteurNavigation { get; set; }
         public virtual Beneficiaire MatriculeBeneficiaireNavigation { get; set; }
         public virtual ICollection<PeriodePee> PeriodePees { get; set; }
+        public virtual ICollection<PeeDocument> PeeDocument { get; set; }
     }
 }
