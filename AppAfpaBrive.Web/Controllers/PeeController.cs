@@ -26,9 +26,16 @@ namespace AppAfpaBrive.Web.Controllers
 
         private readonly IHostEnvironment _env;
 
-       
+
         #endregion
         #region Constructeur
+        //public PeeController(AFPANADbContext context)
+        //{ 
+        //    _dbContext = context;
+
+        //    _peeLayer = new PeeLayer(context);
+        //    //_paysLayer = new PaysLayer(context);    //-- pour test
+        //}
         public PeeController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
         {
             _dbContext = context;
@@ -64,9 +71,9 @@ namespace AppAfpaBrive.Web.Controllers
             var Convention = _dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation)
                 .ThenInclude(S => S.CodeTitreCiviliteNavigation)
                 .Include(pee => pee.IdResponsableJuridiqueNavigation)
-                .ThenInclude(T => T.CodeTitreCiviliteProfessionnel)
+                .ThenInclude(T => T.TitreCiviliteNavigation)
                 .Include(t => t.IdTuteurNavigation)
-                .ThenInclude(T => T.CodeTitreCiviliteProfessionnel)
+                .ThenInclude(T => T.TitreCiviliteNavigation)
                 .Include(E => E.IdEntrepriseNavigation).FirstOrDefault(pee => pee.IdPee == idPee);
                 
             string nomFichier = $"{Convention.MatriculeBeneficiaireNavigation.NomBeneficiaire}-{Convention.IdEtablissement}-{Convention.IdOffreFormation}.docx";
@@ -79,7 +86,10 @@ namespace AppAfpaBrive.Web.Controllers
                 mergeFields.WhereNameIs("Nom_Entreprise").ReplaceWithText(Convention.IdEntrepriseNavigation.RaisonSociale);
                 mergeFields.WhereNameIs("Adresse_entreprise").ReplaceWithText(Convention.IdEntrepriseNavigation.Ligne1Adresse);
                 mergeFields.WhereNameIs("Adresse_entreprise_suite").ReplaceWithText(Convention.IdEntrepriseNavigation.Ligne2Adresse + " " + Convention.IdEntrepriseNavigation.Ligne3Adresse);
-                
+                mergeFields.WhereNameIs("Code_postal_entreprise").ReplaceWithText(Convention.IdEntrepriseNavigation.CodePostal);
+                mergeFields.WhereNameIs("Ville_entreprise").ReplaceWithText(Convention.IdEntrepriseNavigation.Ville);
+                mergeFields.WhereNameIs("Téléphone_entreprise").ReplaceWithText(Convention.IdEntrepriseNavigation.TelEntreprise);
+                //mergeFields.WhereNameIs("Titre_signataire").ReplaceWithText(Convention.IdResponsableJuridiqueNavigation.CodeTitreCiviliteProfessionnel);
                 
 
                 //document.MainDocumentPart.Document.Save();

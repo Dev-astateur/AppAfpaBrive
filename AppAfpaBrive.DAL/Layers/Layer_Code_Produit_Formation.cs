@@ -19,4 +19,5 @@ namespace AppAfpaBrive.DAL.Layer
                 .Where(x => x.IdOffreFormation == Id).Select(x => x.LibelleProduitFormation);
         }
     }
+
 }

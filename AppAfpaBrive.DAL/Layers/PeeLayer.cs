@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppAfpaBrive.DAL.Layers
 {
-    public class PeeLayer
+     public class PeeLayer
     {
         private readonly AFPANADbContext _dbContext = null;
 
@@ -30,6 +30,19 @@ namespace AppAfpaBrive.DAL.Layers
             return _dbContext.Pees.Where(e=>e.IdPee==idPee)
                 .Include(e => e.Id)
                 .Include(e=>e.IdEntrepriseNavigation).ThenInclude(e=>e.Idpays2Navigation)
+                .FirstOrDefault();
+        }
+
+        public void Pee_Create(Pee pee)
+        {
+            _dbContext.Pees.Add(pee);
+            _dbContext.SaveChanges();
+        }
+
+        public decimal GetPeeBy_Idmatricule_idFormation_idetablissemnt(string matricule,int identreprise,string idetablissement)
+        {
+            return _dbContext.Pees.Where(e => e.MatriculeBeneficiaire == matricule && e.IdEntreprise == identreprise && e.IdEtablissement==idetablissement)
+                .Select(x=>x.IdPee)
                 .FirstOrDefault();
         }
     }
