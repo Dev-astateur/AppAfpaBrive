@@ -300,8 +300,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             str = JsonConvert.SerializeObject(listDate);
             HttpContext.Session.SetString("date", str);
             return RedirectToAction("date");
-
-
             //return View(date);
         }
 

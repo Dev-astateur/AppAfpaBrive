@@ -43,7 +43,7 @@ namespace AppAfpaBrive.DAL.Layers
         {
             return _dbContext.Pees.Where(e => e.MatriculeBeneficiaire == matricule && e.IdEntreprise == identreprise && e.IdEtablissement==idetablissement)
                 .Select(x=>x.IdPee)
-                .FirstOrDefault();
+                .LastOrDefault();
         }
     }
 }
