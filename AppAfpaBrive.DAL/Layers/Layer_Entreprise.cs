@@ -22,5 +22,11 @@ namespace AppAfpaBrive.DAL.Layer
             _db.Entreprises.Add(entreprise);
             _db.SaveChanges();
         }
+
+        public Entreprise GetEntrepriseById(int id)
+        {
+            Entreprise entreprise = _db.Entreprises.Where(e => e.IdEntreprise == id).FirstOrDefault();
+            return entreprise; 
+        }
     }
 }

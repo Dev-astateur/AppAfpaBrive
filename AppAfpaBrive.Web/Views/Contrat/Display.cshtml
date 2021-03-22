@@ -12,15 +12,15 @@
     <p class="font-weight-bold">Êtes-vous toujours dans cette situation ?</p>
     <div class="buttons_yes_no">
         <a asp-action="DisplayRecap" class="btn btn-outline-primary btn-sm" id="same_situation">Oui</a>
-        <button data-toggle="collapse" data-target="#changement_entreprise" type="button" class="btn btn-outline-primary btn-sm" id="not_same_situation">Non</button>
+        <a data-toggle="collapse" data-target="#changement_entreprise" class="btn btn-outline-primary btn-sm" id="not_same_situation" role="button">Non</a>
     </div>
 </div>
 <br />
 <div id="changement_entreprise" class="text-center collapse">
     <p class="font-weight-bold">Avez-vous changé d'entreprise ?</p>
     <div class="buttons_yes_no">
-        <button type="button" class="btn btn-outline-primary btn-sm" id="change_entreprise">Oui</button>
-        <button type="button" class="btn btn-outline-primary btn-sm" id="same_entreprise">Non</button>
+        <a asp-action="ChercherEntreprise" role="button" class="btn btn-outline-primary btn-sm" id="change_entreprise">Oui</a>
+        <a role="button" class="btn btn-outline-primary btn-sm" id="same_entreprise">Non</a>
     </div>
 </div>
 
