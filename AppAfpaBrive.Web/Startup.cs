@@ -55,7 +55,6 @@ namespace AppAfpaBrive.Web
             services.AddControllersWithViews();
             services.AddTransient<IEmailSender, SendinBlueEmailSender>();
             services.AddMvc();
-<<<<<<< HEAD
             services.AddPaging(options =>
             {
                 options.ViewName = "Bootstrap4";
@@ -63,22 +62,6 @@ namespace AppAfpaBrive.Web
                 options.HtmlIndicatorDown = "<span class='text-primary'> <i class='fas fa-arrow-alt-circle-down'></i></span>";
                 options.HtmlIndicatorUp = "<span class='text-primary'> <i class='fas fa-arrow-circle-up'></i></span>";
             });
-           
-||||||| d701881
-           
-=======
-            services.AddPaging(options =>
-            {
-                options.ViewName = "Bootstrap4";
-                options.PageParameterName = "page";
-                options.HtmlIndicatorDown = "<span class='text-primary'> <i class='fas fa-arrow-alt-circle-down'></i></span>";
-                options.HtmlIndicatorUp = "<span class='text-primary'> <i class='fas fa-arrow-circle-up'></i></span>";
-            });
-             
-                
->>>>>>> feature/Fethi
-
-
             services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
@@ -117,19 +100,8 @@ namespace AppAfpaBrive.Web
 
             app.UseEndpoints(endpoints =>
             {
+                
                 endpoints.MapControllerRoute(
-<<<<<<< HEAD
-||||||| d701881
-                    name: "AfficheBeneficiairePee",
-                    pattern: "{controller=Pee}/{action=AfficheBeneficiairePee}"
-                    );
-                endpoints.MapControllerRoute(
-=======
-                    name: "AfficheBeneficiairePee",
-                    pattern: "{controller=Pee}/{action=Index}"
-                    );
-                endpoints.MapControllerRoute(
->>>>>>> feature/Fethi
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                

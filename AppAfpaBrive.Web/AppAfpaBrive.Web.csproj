@@ -35,6 +35,7 @@
     <Folder Include="Controllers\ExtraireInformationStagiaireController\" />
     <Folder Include="Data\Documents\" />
     <Folder Include="Views\Formateur\" />
+    <Folder Include="Views\OffreDeFormationBeneficiaire\" />
     <Folder Include="Views\Stagiaire\" />
     <Folder Include="Models\Layer\" />
     <Folder Include="Script\" />
