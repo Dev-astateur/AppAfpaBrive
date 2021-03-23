@@ -987,6 +987,11 @@ namespace AppAfpaBrive.DAL
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
+                entity.HasOne(d => d.TitreCiviliteNavigation)
+                   .WithMany(p => p.Professionnels)
+                   .HasForeignKey(d => d.CodeTitreCiviliteProfessionnel)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("FK_Professionnel_TitreCivilite");
             });
 
             modelBuilder.Entity<Rome>(entity =>

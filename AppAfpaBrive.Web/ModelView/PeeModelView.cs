@@ -48,6 +48,6 @@ namespace AppAfpaBrive.Web.ModelView
         public virtual ProfessionnelModelView IdResponsableJuridiqueNavigation { get; set; }
         public virtual ProfessionnelModelView IdTuteurNavigation { get; set; }
         public virtual BeneficiaireModelView MatriculeBeneficiaireNavigation { get; set; }
-        //public virtual ICollection<PeriodePee> PeriodePees { get; set; }
+        public virtual ICollection<PeriodePee> PeriodePees { get; set; }
     }
 }
