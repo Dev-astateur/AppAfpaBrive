@@ -63,22 +63,7 @@ namespace AppAfpaBrive.Web
                 options.HtmlIndicatorDown = "<span class='text-primary'> <i class='fas fa-arrow-alt-circle-down'></i></span>";
                 options.HtmlIndicatorUp = "<span class='text-primary'> <i class='fas fa-arrow-circle-up'></i></span>";
             });
-           
-
-           
-
-            services.AddPaging(options =>
-            {
-                options.ViewName = "Bootstrap4";
-                options.PageParameterName = "page";
-                options.HtmlIndicatorDown = "<span class='text-primary'> <i class='fas fa-arrow-alt-circle-down'></i></span>";
-                options.HtmlIndicatorUp = "<span class='text-primary'> <i class='fas fa-arrow-circle-up'></i></span>";
-            });
-             
-                
-
-
-
+ 
             services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
@@ -117,11 +102,7 @@ namespace AppAfpaBrive.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-
-                    name: "AfficheBeneficiairePee",
-                    pattern: "{controller=Pee}/{action=AfficheBeneficiairePee}"
-                    );
+                
                 endpoints.MapControllerRoute(
 
                     name: "AfficheBeneficiairePee",

@@ -34,7 +34,6 @@
     <Folder Include="Controllers\Stagiaire\" />
     <Folder Include="Controllers\ExtraireInformationStagiaireController\" />
     <Folder Include="Data\Documents\" />
-	<Folder Include="ModelesOffice\" />
     <Folder Include="Views\Formateur\" />
     <Folder Include="Views\Stagiaire\" />
     <Folder Include="Models\Layer\" />

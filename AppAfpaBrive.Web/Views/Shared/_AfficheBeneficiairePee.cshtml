@@ -30,13 +30,14 @@
         </thead>
         <tbody>
             @{ int len = 0;
-     int idEntreprise = 0;
+                int idEntreprise = 0;
+                bool checkedCase = false;
 
-     if (ListPee != null)
-     {
+                if (ListPee != null)
+                {
 
-         foreach (var item in ListPee)
-         {
+                    foreach (var item in ListPee)
+                    {
 
             <tr>
 
@@ -79,13 +80,20 @@
                                 if (element.MatriculeBeneficiaire == item.MatriculeBeneficiaire)
                                 {
 
-                                    <td>
-                                        @Html.ActionLink($"Convention_{element.PeriodePees.FirstOrDefault(pr => pr.IdPee == element.IdPee).DateDebutPeriodePee.ToString("MMddyyy")}",
-                                                "ChargementDocPee",
-                                                new { id = element.IdPee },
-                                                new { @class = "btn btn-primary border" }
-                                               )
-                                    </td>
+                            <td>
+                                @Html.ActionLink($"Convention_{element.PeriodePees.FirstOrDefault(pr => pr.IdPee == element.IdPee).DateDebutPeriodePee.ToString("MMddyyy")}",
+                                        "ChargementDocPee",
+                                        new { id = element.IdPee },
+                                        new { @class = "btn btn-primary border" }
+                                       )
+
+                                @{
+
+                                    <input name="PeeChecked" type="checkbox" value="@element.IdPee" /> @element.IdPee
+                                }
+
+
+                            </td>
                                 }
 
                             }

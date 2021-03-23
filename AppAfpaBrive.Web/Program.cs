@@ -18,10 +18,10 @@ namespace AppAfpaBrive.Web
         {
 
             InsertInsertionDataLayer obj = new InsertInsertionDataLayer(new AFPANADbContext());
-            
 
-                CreateHostBuilder(args).Build().Run();
-            
+
+            CreateHostBuilder(args).Build().Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
