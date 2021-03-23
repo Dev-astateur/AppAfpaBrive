@@ -20,7 +20,6 @@ namespace AppAfpaBrive.BOL
         public int IdResponsableJuridique { get; set; }
         public int IdEntreprise { get; set; }
         public int IdOffreFormation { get; set; }
-        [Required(ErrorMessage = "Veuillez complétez ce champ")]
         public string IdEtablissement { get; set; }
         public int Etat { get; set; }
 

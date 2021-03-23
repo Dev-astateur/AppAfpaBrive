@@ -70,11 +70,15 @@ namespace AppAfpaBrive.Web.Controllers
         /// <returns></returns>
         public IActionResult _AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
         {
-            var pees = _peeLayer.GetPeeEntrepriseWithBeneficiaire(IdOffreFormation, idEtablissement);
-            var listPeriode = _peeLayer.GetListPeriodePeeByIdPee(IdOffreFormation, idEtablissement);
-            ViewData["PeriodePee"] = listPeriode;
-            IEnumerable<Pee> PeeSansDoublons = pees.Distinct(new PeeComparer());
-            ViewData["ListPeeSansDoublons"] = PeeSansDoublons;
+            if (ModelState.IsValid)
+            {
+                var pees = _peeLayer.GetPeeEntrepriseWithBeneficiaire(IdOffreFormation, idEtablissement);
+                var listPeriode = _peeLayer.GetListPeriodePeeByIdPee(IdOffreFormation, idEtablissement);
+                ViewData["PeriodePee"] = listPeriode;
+                IEnumerable<Pee> PeeSansDoublons = pees.Distinct(new PeeComparer());
+                ViewData["ListPeeSansDoublons"] = PeeSansDoublons;
+            }
+            
             return View ("Index");
         }
         #endregion
