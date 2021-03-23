@@ -73,7 +73,7 @@ namespace AppAfpaBrive.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var pees = _peeLayer.GetPeeEntrepriseWithBeneficiaire(IdOffreFormation, idEtablissement);
+                var pees = _peeLayer.GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement);
                 var listPeriode = _peeLayer.GetListPeriodePeeByIdPee(IdOffreFormation, idEtablissement);
                 ViewData["PeriodePee"] = listPeriode;
                 IEnumerable<Pee> PeeSansDoublons = pees.Distinct(new PeeComparer());

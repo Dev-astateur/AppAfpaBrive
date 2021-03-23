@@ -83,7 +83,7 @@ namespace Projet_Test
             context.SaveChanges();
             var controller = new PeeLayer(context);
             //Act 
-            IEnumerable<Pee> result = controller.(20101, "19011");
+            IEnumerable<Pee> result = controller.GetPeeEntrepriseWithBeneficiaireBy(20101, "19011");
 
             //Assert
 

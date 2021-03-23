@@ -27,6 +27,10 @@ namespace AppAfpaBrive.Web.Layers
 
         public List<ProduitFormation> GetProduitFormationStartWith(string codeProduit)
         {
+            return _context.ProduitFormations.Where(x => x.CodeProduitFormation.ToString().StartsWith(codeProduit)).ToList();
+        }
+        public ProduitFormation GetByCodeProduitFormationdelete(int idCodeProduitFormation)
+        {
             return _context.ProduitFormations.Find(idCodeProduitFormation);
         }
         public ProduitFormationModelView GetByCodeProduitFormation(int idCodeProduitFormation)
