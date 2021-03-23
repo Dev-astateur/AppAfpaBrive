@@ -17,10 +17,7 @@ namespace AppAfpaBrive.DAL.Layers
         public Contrat GetContratByIdContrat(int? id)
         {
            Contrat contrat = _db.Contrats.Where(c => c.IdContrat == id).FirstOrDefault();
-           //contrat.IdEntrepriseNavigation = _db.Entreprises.Where(e => e.IdEntreprise == contrat.IdEntreprise).FirstOrDefault();
-           //contrat.TypeContratNavigation = _db.TypeContrats.Where(tc => tc.IdTypeContrat == contrat.TypeContrat).FirstOrDefault();
-
-            return contrat; 
+           return contrat; 
         }
     }
 }
