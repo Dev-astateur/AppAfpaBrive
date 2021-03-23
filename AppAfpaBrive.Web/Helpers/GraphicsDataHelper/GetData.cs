@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AppAfpaBrive.BOL;
-using AppAfpaBrive.DAL.Layers.StatsLayer;
+using AppAfpaBrive.Web.Layers.StatsLayer;
+
 namespace AppAfpaBrive.Web.Helpers.GraphicsDataHelpers
 {
     public class GetData
@@ -24,7 +24,7 @@ namespace AppAfpaBrive.Web.Helpers.GraphicsDataHelpers
             List<IInsertion> datas = new List<IInsertion>();
             switch (filter)
             {
-                case "":
+                case "1":
                     datas = data.GetAllInsertion();
                     break;
                 case "3":
@@ -42,8 +42,21 @@ namespace AppAfpaBrive.Web.Helpers.GraphicsDataHelpers
             return datas;
         }
 
+        public static List<EtablissementAutoComplete> GetEtablissementData(string filter)
+        {
+            AutoCompleteDataLayer data = new AutoCompleteDataLayer(new AppAfpaBrive.DAL.AFPANADbContext());
+            List<EtablissementAutoComplete> datas = data.GetAllEtablissementData();
+            if(filter != "") datas = datas.Where(x => x.NomEtablissement.ToLower().Contains(filter.ToLower())).ToList();
+            return datas;
+        }
 
-     
+        public static List<OffreFormationAutoComplete> GetOffreFormationData(string filter)
+        {
+            AutoCompleteDataLayer data = new AutoCompleteDataLayer(new AppAfpaBrive.DAL.AFPANADbContext());
+            return data.GetAllOffreFormationData().Where(x => x.NomOffreFormation.ToLower().Contains(filter.ToLower())).ToList();
+        }
+
+
 
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,8 +18,7 @@ namespace AppAfpaBrive.Web
         public static void Main(string[] args)
         {
 
-            InsertInsertionDataLayer obj = new InsertInsertionDataLayer(new AFPANADbContext());
-            
+
 
                 CreateHostBuilder(args).Build().Run();
             

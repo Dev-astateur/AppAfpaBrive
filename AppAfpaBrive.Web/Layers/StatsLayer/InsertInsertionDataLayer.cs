@@ -1,13 +1,11 @@
 ﻿using AppAfpaBrive.BOL;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Reflection;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
+using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.DAL.Layers.StatsLayer
+namespace AppAfpaBrive.Web.Layers.StatsLayer
 {
     public class InsertInsertionDataLayer
     {

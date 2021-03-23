@@ -1,8 +1,9 @@
 ﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 using System;
 using System.Linq;
 
-namespace AppAfpaBrive.DAL.Layers.StatsLayer
+namespace AppAfpaBrive.Web.Layers.StatsLayer
 {
     public class CreateNewLineDataLayer
     {

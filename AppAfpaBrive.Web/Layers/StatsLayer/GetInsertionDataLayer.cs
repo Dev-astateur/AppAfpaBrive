@@ -1,15 +1,14 @@
 ﻿using AppAfpaBrive.BOL;
-using System;
+using AppAfpaBrive.DAL;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace AppAfpaBrive.DAL.Layers.StatsLayer
+namespace AppAfpaBrive.Web.Layers.StatsLayer
 {
     public class GetInsertionDataLayer
     {
-        private readonly DAL.AFPANADbContext _dbContext = null;
-        public GetInsertionDataLayer(DAL.AFPANADbContext dbContext)
+        private readonly AFPANADbContext _dbContext = null;
+        public GetInsertionDataLayer(AFPANADbContext dbContext)
         {
             _dbContext = dbContext;
         }
