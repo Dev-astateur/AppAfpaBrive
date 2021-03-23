@@ -4,6 +4,7 @@ using AppAfpaBrive.DAL.Layers;
 using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,7 +27,6 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         {
             _offreFormation = new OffreFormationLayer(context);
             _stagiaireLayer = new StagiaireLayer(context);
-            _beneficiaireLayer = new BeneficiaireLayer(context);
         }
 
         //GET: EditerInfosStagiaireController
@@ -38,13 +38,23 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
             return View(query2);
         }
 
+        //Composant de pagination
+        //public async Task<IActionResult> ChargerListeStagiaires(int page = 1)
+        //{
+        //    var beneficiaires =_context.Beneficiaires.OrderBy(x => x.NomBeneficiaire);
+        //    var model = await PagingList.CreateAsync(beneficiaires, 5, page);
+        //    return PartialView("_VuePartielleStagiaires", model);
+        //}
+
+
         //public IActionResult ChargerListeStagiaires(int idOffreFormation)
         //{
         //    var beneficiaires = _stagiaireLayer.GetBeneficiaireParIdOffreDeFormation(idOffreFormation);
         //    return PartialView("_VuePartielleStagiaires", beneficiaires);
         //}
 
-        public IActionResult ChargerListeStagiaires(string libelle)
+        
+        public async Task<IActionResult> ChargerListeStagiaires(string libelle)
         {
             var beneficiaires = _stagiaireLayer.GetBeneficiaireParLibelleOffreDeFormation(libelle);
             return PartialView("_VuePartielleStagiaires", beneficiaires);

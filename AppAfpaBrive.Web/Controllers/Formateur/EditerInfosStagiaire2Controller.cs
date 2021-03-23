@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AppAfpaBrive.Web.ModelView;
 
 namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {
@@ -14,16 +16,18 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
     {
         private readonly StagiaireLayer _stagiaireLayer;
         private AFPANADbContext _context = null;
+        private readonly PaysLayer _paysLayer;
 
         public EditerInfosStagiaire2Controller(AFPANADbContext context)
         {
             _stagiaireLayer = new StagiaireLayer(context);
+            _paysLayer = new PaysLayer(context);
         }
 
         // GET: EditerInfosStagiaire2Controller
         public ActionResult Index()
         {
-            return View();
+           return View();
         }
 
         // GET: EditerInfosStagiaire2Controller/Details/5
@@ -34,8 +38,11 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
                 return BadRequest();
             }
             var beneficiaire = _stagiaireLayer.FinByMatricule(id);
-            return View(beneficiaire);
-        }
+            BeneficiaireModelView beneficiaireModelView = new BeneficiaireModelView(beneficiaire);
+            IEnumerable<string> listePays = _paysLayer.GetAllLibelle();
+            ViewBag.IDPays2 = listePays;
+            return View(beneficiaireModelView);
+        }           
 
         // GET: EditerInfosStagiaire2Controller/Create
         public ActionResult Create()
@@ -69,6 +76,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
                 _stagiaireLayer.UpdateBeneficiaire(beneficiaire);
             }
             return RedirectToAction("ListeOffreFormation", "EditerInfosStagiaire");
+        
         }
 
         // GET: EditerInfosStagiaire2Controller/Edit/5

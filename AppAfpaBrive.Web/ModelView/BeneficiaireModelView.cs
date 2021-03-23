@@ -19,7 +19,7 @@ namespace AppAfpaBrive.Web.ModelView
             
         public BeneficiaireModelView( Beneficiaire beneficiaire  )
         { 
-            MailBeneficiaire = beneficiaire.MatriculeBeneficiaire;
+            MatriculeBeneficiaire = beneficiaire.MatriculeBeneficiaire;
             CodeTitreCivilite = beneficiaire.CodeTitreCivilite;
             NomBeneficiaire = beneficiaire.NomBeneficiaire;
             PrenomBeneficiaire = beneficiaire.PrenomBeneficiaire;
@@ -40,21 +40,46 @@ namespace AppAfpaBrive.Web.ModelView
             //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
             Pees = new HashSet<PeeModelView>();
         }
+
         [Display(Name ="Matricule du stagiaire")]
         public string MatriculeBeneficiaire { get; set; }
+
+
         public int? CodeTitreCivilite { get; set; }
-        [Display(Name ="Nom du stagiaire")]
+
+        [Required(ErrorMessage = "Enter first name")]
         public string NomBeneficiaire { get; set; }
+
+        
         [Display(Name ="Prénom du stagiaire")]
+        [Required(ErrorMessage = "Veuillez saisir un prénom")]
         public string PrenomBeneficiaire { get; set; }
+        
+
+        [Required]
         [Display(Name ="Date de naissance")]
         public DateTime? DateNaissanceBeneficiaire { get; set; }
+
+        [Required]
+        [RegularExpression(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b")]
         public string MailBeneficiaire { get; set; }
+
+        [Required]
+        [RegularExpression(@"(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}")]
         public string TelBeneficiaire { get; set; }
+
+        [Required]
         public string Ligne1Adresse { get; set; }
         public string Ligne2Adresse { get; set; }
         public string Ligne3Adresse { get; set; }
+
+        [Required]
+        [MaxLength(5)]
+        [MinLength(5)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Doit être un caractère numérique")]
         public string CodePostal { get; set; }
+
+        [Required]
         public string Ville { get; set; }
         public string UserId { get; set; }
         public string IdPays2 { get; set; }

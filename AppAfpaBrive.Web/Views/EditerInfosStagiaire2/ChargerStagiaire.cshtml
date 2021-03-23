@@ -1,10 +1,14 @@
-﻿@model AppAfpaBrive.BOL.Beneficiaire
+﻿@model AppAfpaBrive.Web.ModelView.BeneficiaireModelView
+@using AppAfpaBrive.BOL
 
 @{
     ViewData["Title"] = "Edit";
 }
 
+
 <h1>Stagiaire</h1>
+
+    <Link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" />
 
 <hr />
 <div class="row">
@@ -12,23 +16,19 @@
         <form asp-action="Edit2">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MatriculeBeneficiaire" />
-            @*<div class="form-group">
-
-                <select asp-for="CodeTitreCivilite" class="form-control" asp-items="ViewBag.CodeTitreCivilite"></select>
-                     </div>*@
             <div class="row">
                 <div class="form-group form-check">
                     <div>
-                        <label asp-for="CodeTitreCivilite" class="control-label" >Code Titre Civilité</label>
+                        <label asp-for="CodeTitreCivilite" class="control-label">Code Titre Civilité</label>
                     </div>
                     <div class="form-check-label">
                         <label>Monsieur</label>
-                        @Html.RadioButton("Genre", "1", true)
+                        @Html.RadioButton("Genre", "0", true)
                         <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
                     </div>
                     <div class="form-check-label">
                         <label>Madame</label>
-                        @Html.RadioButton("Genre", "0")
+                        @Html.RadioButton("Genre", "1")
                         <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
                     </div>
                 </div>
@@ -71,42 +71,25 @@
             <div class="row">
                 <div class="col-md-4 form-group">
                     <label asp-for="Ligne1Adresse" class="control-label">Adresse</label>
-                    <input asp-for="Ligne1Adresse" class="form-control" />
+                    <textarea asp-for="Ligne1Adresse" class="form-control"></textarea>
                     <span asp-validation-for="Ligne1Adresse" class="text-danger"></span>
-                </div>
-                <div class="col-md-4 form-group">
-                    <label asp-for="Ligne2Adresse" class="control-label">Adresse (Ligne 2)</label>
-                    <input asp-for="Ligne2Adresse" class="form-control" />
-                    <span asp-validation-for="Ligne2Adresse" class="text-danger"></span>
-                </div>
-                <div class="col-md-4 form-group">
-                    <label asp-for="Ligne3Adresse" class="control-label">Adresse (Ligne 3)</label>
-                    <input asp-for="Ligne3Adresse" class="form-control" />
-                    <span asp-validation-for="Ligne3Adresse" class="text-danger"></span>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-5 form-group">
+                <div class="col-sm-2 form-group">
                     <label asp-for="CodePostal" class="control-label">Code Postal</label>
-                    <input asp-for="CodePostal" class="form-control" />
+                    <input asp-for="CodePostal" id="inputCodePostal" class="form-control" />
                     <span asp-validation-for="CodePostal" class="text-danger"></span>
                 </div>
-                <div class="col-sm-5 form-group">
+                <div class="col-sm-3 form-group">
                     <label asp-for="Ville" class="control-label">Ville</label>
-                    <input asp-for="Ville" class="form-control" />
+                    <input asp-for="Ville" id="inputVille" class="form-control" />
                     <span asp-validation-for="Ville" class="text-danger"></span>
                 </div>
                 <div class="col-sm-2 form-group">
                     <label asp-for="IdPays2" class="control-label">Id Pays</label>
-                    <select asp-for="IdPays2" class="form-control" asp-items="ViewBag.IdPays2"></select>
+                    @Html.DropDownListFor(x => x.IdPays2, new SelectList(ViewBag.IdPays2 as IEnumerable<string>, selectedValue: "FR"), new { id = "ddlPays"} )
                     <span asp-validation-for="IdPays2" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 form-group">
-                    <label asp-for="UserId" class="control-label">ID Utilisateur</label>
-                    <input asp-for="UserId" class="form-control" />
-                    <span asp-validation-for="UserId" class="text-danger"></span>
                 </div>
             </div>
             <div class="row">
@@ -146,8 +129,12 @@
 
 @section Scripts {
 
+    @*<script src="https://raw.githack.com/xcash/bootstrap-autocomplete/master/dist/latest/bootstrap-autocomplete.js"></script>*@
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     @*//Test UpLoad Image//*@
     <script type="text/javascript">
+
         //$(document).ready(
         //    $("#upload").change(function () {
         //        var oFReader = new FileReader();
@@ -159,6 +146,8 @@
         //    })
         //);
 
+
+        //Chargement Image
         var loadFile = function (event) {
             var imageView = document.getElementById('output');
             imageView.src = URL.createObjectURL(event.target.files[0]);
@@ -167,6 +156,67 @@
                 URL.revokeObjectURL(imageView.src)
             }
         };
+
+        //////Composant d'affichage des communes en fonction du code postal
+        $(document).ready(function () {
+            $("[id*=inputVille]").focus(function () {
+
+                //var request = new XMLHttpRequest();
+                //request.open('GET', 'https://api.zippopotam.us/')
+                var url = "https://api.zippopotam.us/"
+                var Pays = $("[id*=ddlPays]").val()
+                var CP = $("[id*=inputCodePostal]").val()
+                $.ajax({
+                    url: url + Pays + "/" + CP,
+                    dataType: "json",
+                    type: "GET",
+                    success: function (result, success) {
+                        suggestions = [];
+                        for (i in result['places']) {
+                            suggestions.push(result['places'][i]['place name']);
+                        }
+                        $("[id*=inputVille]").autocomplete({ source: suggestions, delay: 10, disabled: false, minLength: 2 });
+                        if (suggestions.length > 0) {
+                            $("[id*=inputVille]").placeholder = suggestions[0];
+                        }
+                    }
+                })
+            })
+        })
+
+
+                //Composant d'affichage des communes en fonction du code postal
+        //$(document).ready(function () {
+        //    $('#advancedAutoComplete').autoComplete({
+        //        resolver: 'custom',
+        //        autoSelect: 'true',
+        //        minLength: 2,
+        //        formatResult: function (item) {
+        //            console.log(item)
+        //            return {
+        //                value: item["state abreviation"],
+        //                text: item["place name"],
+        //            };
+
+        //            console.log(item)
+        //        },
+        //        events: {
+        //            search: function (qry, callback) {
+        //                var url = "https://api.zippopotam.us/fr";
+        //                var cp = $("[id*=inputCodePostal]").val();
+        //                var urlFull = url + "/" + cp;
+
+        //                $.ajax(
+        //                    urlFull,
+        //                ).done(function (res) {
+        //                    callback(res);
+        //                });
+
+        //            }
+        //        }
+        //    });
+        //});
+
 
     </script>
 }

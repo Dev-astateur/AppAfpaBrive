@@ -19,5 +19,15 @@ namespace AppAfpaBrive.DAL.Layers
         {
             return _context.Pays.Find(idPays);
         }
+
+        public IEnumerable<Pays> GetAll()
+        {
+            return _context.Pays.ToList();
+        }
+
+        public IEnumerable<string> GetAllLibelle()
+        {
+            return _context.Pays.Select(x=>x.Idpays2).ToList();
+        }
     }
 }

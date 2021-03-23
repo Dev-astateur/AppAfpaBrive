@@ -19,9 +19,7 @@
     <form asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation">
         <div class="row">
             <div class="col-md-10 text-center w-auto ">
-
                 <input type="text" size="100" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
-
             </div>
             <div>
                 <input type="button" id="boutontest" class="btn btn-primary" value="Recherche" />
@@ -36,6 +34,7 @@
 {
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
 
     <script>
         $(document).ready(function () {
@@ -52,6 +51,7 @@
                 $('#liste').load(encoded);
             });
         });
+       
     </script>
 }
 

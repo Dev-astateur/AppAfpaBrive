@@ -1,10 +1,17 @@
 ﻿@model IEnumerable<AppAfpaBrive.BOL.Beneficiaire>
 
+@*@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.MVC.Paging*@
+
 @{
     ViewData["Title"] = "VuePartielleStagiaires";
 }
 
 <h2>Sélectionnez un(e) stagiaire</h2>
+
+@*<nav aria-label="Suppliers navigation example">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>*@
 
 <table class="table table-striped">
     <thead>

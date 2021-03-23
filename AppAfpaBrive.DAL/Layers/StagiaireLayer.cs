@@ -37,6 +37,11 @@ namespace AppAfpaBrive.DAL.Layers
                 .Select(x => x.MatriculeBeneficiaireNavigation).ToList();
         }
 
+        //public PagingList<Beneficiaire> ListeBenefPagines(int page = 1, string libelle)
+        //{
+        //    var qry = _context.Beneficiaires.OrderBy(x => x.NomBeneficiaire);
+        //}
+
         public ICollection<Beneficiaire> GetBeneficiaireParLibelleOffreDeFormation(string libelle)
         {
             return _context.OffreFormations
@@ -73,6 +78,7 @@ namespace AppAfpaBrive.DAL.Layers
                     .ToList();
         }
 
+        
 
         //Methodes CRUD
         public void InsertBeneficiaire(Beneficiaire beneficiaire)
