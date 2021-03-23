@@ -27,7 +27,7 @@ namespace AppAfpaBrive.Web.ModelView
             CodePostal = entreprise.CodePostal;
             Ville = entreprise.Ville;
             Idpays2 = entreprise.Idpays2;
-           // Idpays2Navigation = new PaysViewModel(entreprise.Idpays2Navigation);
+            Idpays2Navigation = new PaysViewModel(entreprise.Idpays2Navigation);
         }
 
         public int IdEntreprise { get; set; }

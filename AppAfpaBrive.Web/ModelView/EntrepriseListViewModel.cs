@@ -29,7 +29,7 @@ namespace AppAfpaBrive.Web.ModelView
             CodePostal = entreprise.CodePostal;
             Ville = entreprise.Ville;
             Idpays2 = entreprise.Idpays2;
-            Idpays2Navigation = new PaysViewModel(entreprise.Idpays2Navigation);
+            //Idpays2Navigation = new PaysViewModel(entreprise.Idpays2Navigation);
         }
         [Required]
         [DisplayName("Id de l'entreprise: ")]
@@ -41,12 +41,13 @@ namespace AppAfpaBrive.Web.ModelView
         public string RaisonSociale { get; set; }
 
         [Required(ErrorMessage = "La raison sociale est requise")]
-        [CustomValidator_SiretAttribute(ErrorMessage ="Le numéro de Siret est invalide")]
+        [CustomValidator_Siret(ErrorMessage ="Le numéro de Siret est invalide")]
         [DisplayName("Numéro de SIRET: ")]
         public string NumeroSiret { get; set; }
 
         [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$|^\+?\d{0,2}\-?\d{4,5}\-?\d{5,6}", ErrorMessage = "Veuillez entrer une addresse e-mail correcte")]
         [DisplayName("E-mail: ")]
+        [EmailAddress]
         public string MailEntreprise { get; set; }
 
         

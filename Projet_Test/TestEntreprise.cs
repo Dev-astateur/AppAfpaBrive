@@ -13,23 +13,31 @@ using System.Threading.Tasks;
 
 namespace Projet_Test
 {
+    [TestFixture]
     class TestEntreprise
     {
-        [Test]
-        public void TestActionCreerEntrepriseRenvoieView()
+        //[Test]
+        //public void TestActionCreerEntrepriseRenvoieView()
+        //{
+        //    DbContextOptionsBuilder<AFPANADbContext> optionsBuilder = new DbContextOptionsBuilder<AFPANADbContext>();
+        //    string path = Directory.GetCurrentDirectory();
+
+        //    optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
+        //    AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
+        //    EntrepriseController controller = new EntrepriseController(contexte);
+
+        //    var result = controller.CreerEntreprise();
+        //    ViewResult view = result as ViewResult;
+
+        //    Assert.IsInstanceOf<Entreprise>(view.Model);
+        //}
+        [TestCase]
+        
+        public void TestInsertionEntreprise()
         {
-            DbContextOptionsBuilder<AFPANADbContext> optionsBuilder = new DbContextOptionsBuilder<AFPANADbContext>();
-            string path = Directory.GetCurrentDirectory();
-
-            optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
-            AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
-            EntrepriseController controller = new EntrepriseController(contexte);
-
-            var result = controller.CreerEntreprise();
-            ViewResult view = result as ViewResult;
-
-            Assert.IsInstanceOf<Entreprise>(view.Model);
+            
 
         }
+
     }
 }
