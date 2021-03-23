@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class Pee
+    public partial class Pee : EntityBase
     {
         public Pee()
         {
@@ -21,6 +21,7 @@ namespace AppAfpaBrive.BOL
         public int IdOffreFormation { get; set; }
         public string IdEtablissement { get; set; }
         public int EtatPee { get; set; }
+        public string Remarque { get; set; }
 
         public virtual OffreFormation Id { get; set; }
         

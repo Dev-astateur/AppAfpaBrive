@@ -150,7 +150,11 @@ namespace AppAfpaBrive.Web.Controllers
                         MatriculeCollaborateurAfpa = "1603870"
                     };
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException dbC)
+                {
+
+                }
+                catch(DbUpdateException dE)
                 {
 
                 }

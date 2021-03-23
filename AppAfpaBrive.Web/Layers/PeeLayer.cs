@@ -60,5 +60,31 @@ namespace AppAfpaBrive.Web.Layers
         {
             return await _dbContext.PeeDocuments.Where(e => e.IdPee == idPee).Select(e=>new PeeDocumentModelView(e)).ToListAsync();
         }
+
+        public async void UpdatePee( PeeModelView peeModelView )
+        {
+            Pee pee = new Pee()
+            {
+                IdPee = peeModelView.IdPee,
+                MatriculeBeneficiaire = peeModelView.MatriculeBeneficiaire,
+                IdTuteur = peeModelView.IdTuteur,
+                IdResponsableJuridique = peeModelView.IdResponsableJuridique,
+                IdEntreprise = peeModelView.IdEntreprise,
+                IdOffreFormation = peeModelView.IdOffreFormation,
+                IdEtablissement = peeModelView.IdEtablissement,
+                EtatPee = peeModelView.EtatPee,
+                Remarque = peeModelView.Remarque,
+                Etat = peeModelView.Etat,
+            };
+
+            if (  pee.IsValid )
+            {
+                if (pee.Etat == EntityPOCOState.Modified)
+                {
+                    _dbContext.Update(pee);
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+        }
     }
 }
