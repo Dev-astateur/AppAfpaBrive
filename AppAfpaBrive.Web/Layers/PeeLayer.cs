@@ -32,7 +32,7 @@ namespace AppAfpaBrive.Web.Layers
                     RaisonSociale = e.IdEntrepriseNavigation.RaisonSociale,
                     IdPee = e.IdPee
                 } ).AsQueryable();
-            Task<PagingList<ListePeeAValiderModelView>> model = PagingList.CreateAsync((IOrderedQueryable<ListePeeAValiderModelView>)qry, 10 , page);
+            Task<PagingList<ListePeeAValiderModelView>> model = PagingList.CreateAsync((IOrderedQueryable<ListePeeAValiderModelView>)qry, 2 , page);
             model.Result.Action = "ListePeeAValider";
             return await model;
         }
@@ -61,7 +61,7 @@ namespace AppAfpaBrive.Web.Layers
             return await _dbContext.PeeDocuments.Where(e => e.IdPee == idPee).Select(e=>new PeeDocumentModelView(e)).ToListAsync();
         }
 
-        public async void UpdatePee( PeeModelView peeModelView )
+        public async void UpdatePeeAsync( PeeModelView peeModelView )
         {
             Pee pee = new Pee()
             {
