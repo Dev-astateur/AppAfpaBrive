@@ -18,8 +18,6 @@ using AppAfpaBrive.Web.Utilitaires;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
-using ReflectionIT.Mvc.Paging;
-
 
 namespace AppAfpaBrive.Web
 {
@@ -100,16 +98,12 @@ namespace AppAfpaBrive.Web
 
             app.UseEndpoints(endpoints =>
             {
-                
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-               
                 endpoints.MapRazorPages();
                 endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
                 endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
-
-               
+                endpoints.MapControllerRoute(
+                   name: "default",
+                   pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
