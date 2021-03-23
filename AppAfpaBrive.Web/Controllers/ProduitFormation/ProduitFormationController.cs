@@ -23,7 +23,6 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         
         public ProduitFormationController(AFPANADbContext db)
         {
-            _db = db;
             _produitDeFormationLayer = new ProduitDeFormationLayer(db);
         }
 

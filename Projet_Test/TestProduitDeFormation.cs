@@ -11,12 +11,16 @@ using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.Web.Controllers.ProduitFormation;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
+using Projet_Test.InMemoryDb;
 
 namespace Projet_Test
 {
     [TestFixture]
     public class TestProduitDeFormation
     {
+        public DbContextMocker db = new DbContextMocker();
+        AFPANADbContext dba;
+
         [Test]
         public void LibelleCourtFormationTropLong()
         {
@@ -132,17 +136,28 @@ namespace Projet_Test
             Assert.IsInstanceOf<ViewResult>(view);
         }
 
-        //[Test]
-        //[TestCase(6)]
-        //public void TestViewDeleteValide(int id)
-        //{
-        //    DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
-        //    builder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;", assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName));
+        [Test]
+        
+        public void TestMethodeDeleteValide()
+        {
+            dba = db.GetAFPANADbContext("bloub");
 
-        //    ProduitFormationController controleur = new ProduitFormationController(new AFPANADbContext(builder.Options));
-        //    var view = controleur.Delete(id);
-        //    Assert.IsInstanceOf<ViewResult>(view);
-        //}
+            dba.ProduitFormations.Add(new ProduitFormation
+            {
+                CodeProduitFormation=7,
+                NiveauFormation="3",
+                LibelleCourtFormation="abc",
+                LibelleProduitFormation="dkazkdakanfpoakfjha"
+            });
+            dba.SaveChanges();
+
+
+            ProduitFormationController controleur = new ProduitFormationController(dba);
+            var view = controleur.Delete(7);
+            
+            var result = dba.ProduitFormations.Where(x=> x.CodeProduitFormation==7);
+            Assert.IsTrue(result.Count()==0);
+        }
 
 
     }
