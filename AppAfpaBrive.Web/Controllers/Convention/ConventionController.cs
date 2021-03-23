@@ -45,7 +45,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get index
         public IActionResult Index()
         {
-            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations("16174318");
+            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations("20061760");
             List<Creation_convention> obj = new List<Creation_convention>();
 
             foreach (var item in beneficiaires)
