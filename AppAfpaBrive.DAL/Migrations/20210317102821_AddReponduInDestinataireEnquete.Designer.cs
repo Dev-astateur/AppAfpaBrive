@@ -4,14 +4,16 @@ using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AppAfpaBrive.DAL.Migrations
 {
     [DbContext(typeof(AFPANADbContext))]
-    partial class AFPANADbContextModelSnapshot : ModelSnapshot
+    [Migration("20210317102821_AddReponduInDestinataireEnquete")]
+    partial class AddReponduInDestinataireEnquete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -975,6 +977,9 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Property<int>("IdEntreprise")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IdEntrepriseNavigationIdEntreprise")
+                        .HasColumnType("int");
+
                     b.Property<string>("IdEtablissement")
                         .IsRequired()
                         .HasMaxLength(5)
@@ -1000,7 +1005,7 @@ namespace AppAfpaBrive.DAL.Migrations
 
                     b.HasKey("IdPee");
 
-                    b.HasIndex("IdEntreprise");
+                    b.HasIndex("IdEntrepriseNavigationIdEntreprise");
 
                     b.HasIndex("IdResponsableJuridique");
 
@@ -1164,10 +1169,7 @@ namespace AppAfpaBrive.DAL.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)");
 
-                  
                     b.HasKey("IdProfessionnel");
-
-                    b.HasIndex("TitreCiviliteNavigationCodeTitreCivilite");
 
                     b.ToTable("Professionnel");
                 });
@@ -1467,8 +1469,6 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Navigation("IdEntrepriseNavigation");
 
                     b.Navigation("IdProfessionnelNavigation");
-
-                   
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Etablissement", b =>
@@ -1598,9 +1598,7 @@ namespace AppAfpaBrive.DAL.Migrations
                 {
                     b.HasOne("AppAfpaBrive.BOL.Entreprise", "IdEntrepriseNavigation")
                         .WithMany("Pees")
-                        .HasForeignKey("IdEntreprise")
-                        .HasConstraintName("FK_Pee_IdEntreprise")
-                        .IsRequired();
+                        .HasForeignKey("IdEntrepriseNavigationIdEntreprise");
 
                     b.HasOne("AppAfpaBrive.BOL.Professionnel", "IdResponsableJuridiqueNavigation")
                         .WithMany("PeeIdResponsableJuridiqueNavigations")
@@ -1676,16 +1674,6 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Navigation("CodeProduitFormationNavigation");
 
                     b.Navigation("CodeRomeNavigation");
-                });
-
-            modelBuilder.Entity("AppAfpaBrive.BOL.Professionnel", b =>
-                {
-                    b.HasOne("AppAfpaBrive.BOL.TitreCivilite", "TitreCiviliteNavigation")
-                        .WithMany()
-                        .HasForeignKey("CodeTitreCivilite")
-                        .HasConstraintName("FK_Professionnel_TitreCivilite");
-
-                    b.Navigation("TitreCiviliteNavigation");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Rome", b =>
@@ -1833,7 +1821,6 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Navigation("PeeIdResponsableJuridiqueNavigations");
 
                     b.Navigation("PeeIdTuteurNavigations");
-                 
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.Rome", b =>

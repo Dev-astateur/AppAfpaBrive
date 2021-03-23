@@ -1,20 +1,19 @@
 ﻿using AppAfpaBrive.BOL;
-using System;
+using AppAfpaBrive.DAL;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace AppAfpaBrive.DAL.Layers
+namespace AppAfpaBrive.Web.Layers.StatsLayer
 {
     public class GetInsertionDataLayer
     {
-        private readonly DAL.AFPANADbContext _dbContext = null;
-        public GetInsertionDataLayer(DAL.AFPANADbContext dbContext)
+        private readonly AFPANADbContext _dbContext = null;
+        public GetInsertionDataLayer(AFPANADbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public List<InsertionsTroisMois> GetInsertionTroisMois()
+        public List<IInsertion> GetInsertionTroisMois()
         {
             List<IInsertion> list = new List<IInsertion>();
             return _dbContext.InsertionTroisMois.Select(x => new InsertionsTroisMois
@@ -27,10 +26,9 @@ namespace AppAfpaBrive.DAL.Layers
                 Alternance = x.Alternance,
                 SansEmploie = x.SansEmploie,
                 Autres = x.Autres
-            }).ToList();
+            }).ToList<IInsertion>();
         }
-
-        public List<InsertionsSixMois> GetInsertionSixMois()
+        public List<IInsertion> GetInsertionSixMois()
         {
             List<IInsertion> list = new List<IInsertion>();
             return _dbContext.InsertionSixMois.Select(x => new InsertionsSixMois
@@ -43,9 +41,9 @@ namespace AppAfpaBrive.DAL.Layers
                 Alternance = x.Alternance,
                 SansEmploie = x.SansEmploie,
                 Autres = x.Autres
-            }).ToList();    
+            }).ToList<IInsertion>();    
         }
-        public List<InsertionsDouzeMois> GetInsertionDouzeMois()
+        public List<IInsertion> GetInsertionDouzeMois()
         {
             List <IInsertion> list = new List<IInsertion>();
             return _dbContext.InsertionDouzeMois.Select(x => new InsertionsDouzeMois
@@ -58,9 +56,8 @@ namespace AppAfpaBrive.DAL.Layers
                 Alternance = x.Alternance,
                 SansEmploie = x.SansEmploie,
                 Autres = x.Autres
-            }).ToList();
+            }).ToList<IInsertion>();
         }
-
         public List<IInsertion> GetAllInsertion()
         {
             List<IInsertion> list = new List<IInsertion>();
@@ -69,6 +66,17 @@ namespace AppAfpaBrive.DAL.Layers
             list.AddRange(GetInsertionDouzeMois());
             return list;
         }
-
+        public List<IInsertion> GetOneYearData(List<IInsertion> datas, int annee)
+        {
+            return datas.Where(x => x.Annee == annee).ToList();
+        }
+        public List<IInsertion> GetOneFormationData(List<IInsertion> datas, int idOffreFormation)
+        {
+            return datas.Where(x => x.IdOffreFormation == idOffreFormation).ToList();
+        }
+        public List<IInsertion> GetOneEtablissementData(List<IInsertion> datas, string idEtablissement)
+        {
+            return datas.Where(x => x.IdEtablissement == idEtablissement).ToList();
+        }
     }
 }
