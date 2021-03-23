@@ -162,6 +162,29 @@ namespace Projet_Test
             Assert.IsTrue(result.Count()==0);
         }
 
+        [Test]
+        public void TestMethodeCreateValide()
+        {
+            dba = db.GetAFPANADbContext("xxx");
+            var bloub = new ProduitFormationModelView
+            {
+                CodeProduitFormation = 7,
+                NiveauFormation = "3",
+                LibelleCourtFormation = "abc",
+                LibelleProduitFormation = "dkazkdakanfpoakfjha"
+            };
+            var item = bloub.GetProduitFormation();
+           
+            dba.Entry<ProduitFormation>(item).State = EntityState.Detached;
 
+            ProduitFormationController controleur = new ProduitFormationController(dba);
+
+            var view = controleur.Create(bloub);
+
+            var result = dba.ProduitFormations.Where(x => x.CodeProduitFormation == 7);
+            Assert.IsTrue(result.Count() == 1);
+
+        }
+        
     }
 }

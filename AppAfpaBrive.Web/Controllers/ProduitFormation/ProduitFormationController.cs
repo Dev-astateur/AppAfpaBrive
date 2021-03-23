@@ -58,7 +58,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         public IActionResult Create(ProduitFormationModelView obj)
         {
             ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
-            var x = Request.Form["Formation"].ToString();
+            //var x = Request.Form["Formation"].ToString();
             
             if (ModelState.IsValid)
             {
