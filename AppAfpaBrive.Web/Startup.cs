@@ -40,9 +40,10 @@ namespace AppAfpaBrive.Web
                     Configuration.GetConnectionString("DbSecurite")));
             services.AddDbContext<AFPANADbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DbAfpaNA"),
+                    Configuration.GetConnectionString("DbAfpaNA"), 
                     assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName)));
             services.AddDatabaseDeveloperPageExceptionFilter();
+           
 
             services.AddSingleton<IFileProvider>(
            new PhysicalFileProvider(

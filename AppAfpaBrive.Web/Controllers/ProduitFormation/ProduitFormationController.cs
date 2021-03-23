@@ -18,17 +18,20 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
     public class ProduitFormationController : Controller
     {
         private readonly AFPANADbContext _db;
-        private readonly ProduitDeFormationLayer _produitDeFormationLayer;
+        //private readonly ProduitDeFormationLayer _produitDeFormationLayer;
 
         
         public ProduitFormationController(AFPANADbContext db)
         {
-            _produitDeFormationLayer = new ProduitDeFormationLayer(db);
+            _db = db;
         }
+
+
 
         // GET: ProduitFormation
         public async Task<IActionResult> Index(string filter,int page, string sortExpression="CodeProduitFormation")
         {
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
             var model = await _produitDeFormationLayer.GetPage(filter,page, sortExpression);
             model.RouteValue = new RouteValueDictionary
             {
@@ -54,6 +57,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         [ValidateAntiForgeryToken]
         public IActionResult Create(ProduitFormationModelView obj)
         {
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
             var x = Request.Form["Formation"].ToString();
             
             if (ModelState.IsValid)
@@ -73,7 +77,8 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // GET: ProduitFormation/Edit/5
         public IActionResult Edit(int id)
         {
-            if(id == 0)
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -90,6 +95,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         [ValidateAntiForgeryToken]
         public IActionResult Edit(ProduitFormationModelView obj)
         {
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
             var x = Request.Form["Formation"].ToString();
             if (ModelState.IsValid)
             {
@@ -107,6 +113,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // GET: ProduitFormation/Delete/5
         public IActionResult Delete(int? id)
         {
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
             if (id == null || id == 0)
             {
                 return NotFound();
@@ -124,6 +131,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
             ProduitFormationModelView obj = _produitDeFormationLayer.GetByCodeProduitFormation(id);
             if (obj == null)
             {

@@ -18,11 +18,13 @@ namespace Projet_Test.InMemoryDb
         /// </summary>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        public  AFPANADbContext GetAFPANADbContext(string dbName)
+        public AFPANADbContext GetAFPANADbContext(string dbName)
         {
             var options = new DbContextOptionsBuilder<AFPANADbContext>()
                             .UseInMemoryDatabase(databaseName: dbName)
+                            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                             .Options;
+
             var dbContext = new AFPANADbContext(options);
 
             return dbContext;

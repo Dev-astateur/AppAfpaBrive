@@ -18,7 +18,7 @@ namespace Projet_Test
     [TestFixture]
     public class TestProduitDeFormation
     {
-        public DbContextMocker db = new DbContextMocker();
+        DbContextMocker db = new DbContextMocker();
         AFPANADbContext dba;
 
         [Test]
@@ -140,17 +140,20 @@ namespace Projet_Test
         
         public void TestMethodeDeleteValide()
         {
+            
             dba = db.GetAFPANADbContext("bloub");
 
-            dba.ProduitFormations.Add(new ProduitFormation
+            var bloub = new ProduitFormation
             {
-                CodeProduitFormation=7,
-                NiveauFormation="3",
-                LibelleCourtFormation="abc",
-                LibelleProduitFormation="dkazkdakanfpoakfjha"
-            });
-            dba.SaveChanges();
+                CodeProduitFormation = 7,
+                NiveauFormation = "3",
+                LibelleCourtFormation = "abc",
+                LibelleProduitFormation = "dkazkdakanfpoakfjha"
+            };
+            dba.ProduitFormations.Add(bloub);
 
+            dba.SaveChanges();
+            dba.Entry<ProduitFormation>(bloub).State =EntityState.Detached;
 
             ProduitFormationController controleur = new ProduitFormationController(dba);
             var view = controleur.Delete(7);
