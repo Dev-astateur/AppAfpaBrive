@@ -14,15 +14,26 @@ namespace AppAfpaBrive.Web.Models
         private DateTime _dateDebut;
         private DateTime? _datefin;
         private string _formation;
-        private string _Siret;
-        private int _IdEntreprise;
+
         private int _idTuteur;
         private int _idResponsable;
         private string _tuteurPrenom;
         private string _ResponsablePrenom;
         private string _tuteurNom;
         private string _ResponsableNom;
-        private string _raison_social;
+
+
+        private string _Siret;
+        private int _IdEntreprise;
+        private string _Entreprise_raison_social;
+        private string _Entreprise_codePostal;
+        private string _Entreprise_Ligne1Adresse;
+        private string _Entreprise_Ligne2Adresse;
+        private string _Entreprise_Ligne3Adresse;
+        private string _Entreprise_Ville;
+        private string _Entreprise_IdPays;
+        private string _Entreprise_Mail;
+        private string _Entreprise_Tel;
 
 
 
@@ -42,6 +53,14 @@ namespace AppAfpaBrive.Web.Models
         public string ResponsablePrenom { get => _ResponsablePrenom; set => _ResponsablePrenom = value; }
         public string TuteurNom { get => _tuteurNom; set => _tuteurNom = value; }
         public string ResponsableNom { get => _ResponsableNom; set => _ResponsableNom = value; }
-        public string Raison_social { get => _raison_social; set => _raison_social = value; }
+        public string Entreprise_raison_social { get => _Entreprise_raison_social; set => _Entreprise_raison_social = value; }
+        public string Entreprise_codePostal { get => _Entreprise_codePostal; set => _Entreprise_codePostal = value; }
+        public string Entreprise_Ligne1Adresse { get => _Entreprise_Ligne1Adresse; set => _Entreprise_Ligne1Adresse = value; }
+        public string Entreprise_Ligne2Adresse { get => _Entreprise_Ligne2Adresse; set => _Entreprise_Ligne2Adresse = value; }
+        public string Entreprise_Ligne3Adresse { get => _Entreprise_Ligne3Adresse; set => _Entreprise_Ligne3Adresse = value; }
+        public string Entreprise_Ville { get => _Entreprise_Ville; set => _Entreprise_Ville = value; }
+        public string Entreprise_IdPays { get => _Entreprise_IdPays; set => _Entreprise_IdPays = value; }
+        public string Entreprise_Mail { get => _Entreprise_Mail; set => _Entreprise_Mail = value; }
+        public string Entreprise_Tel { get => _Entreprise_Tel; set => _Entreprise_Tel = value; }
     }
 }

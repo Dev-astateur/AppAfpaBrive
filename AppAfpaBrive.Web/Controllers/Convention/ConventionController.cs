@@ -85,7 +85,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-
+            
             if (id == 0)
             {
                 id = convention.IdFormation;
@@ -110,6 +110,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 var entreprise = _Entreprise.get_Entreprise(obj.NumeroSiret).FirstOrDefault();
                 if (entreprise is null)
                 {
+                    HttpContext.Session.SetString("siret", obj.NumeroSiret);
                     return RedirectToAction("Entreprise_creation");
                 }
                 string str = this.HttpContext.Session.GetString("convention");
@@ -129,11 +130,12 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+            
 
             Entreprise obj = _Entreprise.get_Entreprise(convention.Siret).FirstOrDefault();
             convention.Siret = obj.NumeroSiret;
             convention.IdEntreprise = obj.IdEntreprise;
-            convention.Raison_social = obj.RaisonSociale;
+            convention.Entreprise_raison_social = obj.RaisonSociale;
             str = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", str);
             return View(obj);
@@ -142,6 +144,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get Entreprise_creation
         public IActionResult Entreprise_creation()
         {
+            string siret = this.HttpContext.Session.GetString("siret");
+            ViewBag.siret = siret;
             IQueryable<string> pays = _Pays.Get_pays();
             ViewBag.pays = pays;
             return View();
@@ -157,24 +161,30 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             {
                 string str = this.HttpContext.Session.GetString("convention");
                 Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-
-                Entreprise entreprise1 = new Entreprise
-                {
-                    CodePostal = entreprise.CodePostal,
-                    Ligne1Adresse = entreprise.Ligne1Adresse,
-                    Ligne2Adresse = entreprise.Ligne2Adresse,
-                    Ligne3Adresse = entreprise.Ligne3Adresse,
-                    RaisonSociale = entreprise.RaisonSociale,
-                    NumeroSiret = entreprise.NumeroSiret,
-                    Ville = entreprise.Ville,
-                    Idpays2 = _Pays.Get_pays_ID(entreprise.Idpays2)
-                };
-                _Entreprise.Create_entreprise(entreprise1);
-
+                //Entreprise entreprise1 = new Entreprise
+                //{
+                //    CodePostal = entreprise.CodePostal,
+                //    Ligne1Adresse = entreprise.Ligne1Adresse,
+                //    Ligne2Adresse = entreprise.Ligne2Adresse,
+                //    Ligne3Adresse = entreprise.Ligne3Adresse,
+                //    RaisonSociale = entreprise.RaisonSociale,
+                //    NumeroSiret = entreprise.NumeroSiret,
+                //    Ville = entreprise.Ville,
+                //    Idpays2 = _Pays.Get_pays_ID(entreprise.Idpays2)
+                //};
+                //_Entreprise.Create_entreprise(entreprise1);
+                convention.Entreprise_codePostal = entreprise.CodePostal;
+                convention.Entreprise_IdPays = entreprise.Idpays2;
+                convention.Entreprise_Ligne1Adresse = entreprise.Ligne1Adresse;
+                convention.Entreprise_Ligne2Adresse = entreprise.Ligne2Adresse;
+                convention.Entreprise_Ligne3Adresse = entreprise.Ligne3Adresse;
+                convention.Entreprise_Mail = entreprise.MailEntreprise;
+                convention.Entreprise_raison_social = entreprise.RaisonSociale;
+                convention.Entreprise_Tel = entreprise.TelEntreprise;
+                convention.Entreprise_Ville = entreprise.Ville;
                 convention.Siret = entreprise.NumeroSiret;
                 str = JsonConvert.SerializeObject(convention);
                 HttpContext.Session.SetString("convention", str);
-
                 return RedirectToAction("Entreprise_Recap");
             }
             return View(entreprise);
