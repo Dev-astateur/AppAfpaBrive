@@ -107,14 +107,16 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             if (ModelState.IsValid)
             {
+                string str = this.HttpContext.Session.GetString("convention");
+                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
                 var entreprise = _Entreprise.get_Entreprise(obj.NumeroSiret).FirstOrDefault();
                 if (entreprise is null)
                 {
+                    convention.Entreprise_Create = true;
                     HttpContext.Session.SetString("siret", obj.NumeroSiret);
                     return RedirectToAction("Entreprise_creation");
                 }
-                string str = this.HttpContext.Session.GetString("convention");
-                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+                convention.Entreprise_Create = false;
                 convention.Siret = obj.NumeroSiret;
 
                 str = JsonConvert.SerializeObject(convention);
