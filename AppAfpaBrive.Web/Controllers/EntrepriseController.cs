@@ -155,15 +155,15 @@ namespace AppAfpaBrive.Web.Controllers
 
 
         #region ListeEntrepriseModification
-        public async Task<IActionResult> ListeEntreprisePourModification(string departement, string formation, int page=1)
+        public async Task<IActionResult> ListeEntreprisePourModification(string departement, string formation, int page)
         {
            // List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
 
             ViewData["GetDepartement"] = departement;
             ViewData["GetProduitForm"] = formation;
-            var query = _layer.GetAllEntrepriseForPaging();
+            var query = _layer.GetAllEntrepriseForPaging(page);
 
-            // List<Entreprise> query = null;
+           
 
             if (!String.IsNullOrEmpty(departement) && (!String.IsNullOrEmpty(formation)))
             {
@@ -202,8 +202,9 @@ namespace AppAfpaBrive.Web.Controllers
 
 
             //If faut assigner une action à la liste pour les pages differentes de la 1 
-            query.Action = "ListeEntreprise";
-           return View(query);
+
+            query.Action = "ListeEntreprisePourModification";
+            return View(query);
 
             
         }
