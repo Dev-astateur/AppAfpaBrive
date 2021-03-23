@@ -18,7 +18,7 @@ using AppAfpaBrive.Web.Utilitaires;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
-using ReflectionIT.Mvc.Paging;
+//using ReflectionIT.Mvc.Paging;
 
 
 namespace AppAfpaBrive.Web
@@ -107,37 +107,6 @@ namespace AppAfpaBrive.Web
                 endpoints.MapRazorPages();
                 endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
                 endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
-
-               
-                        controller = "StagiaireParOffredeFormation",
-                        action = "ListeStagiaireParOffreFormation"
-                    }
-                    );
-                endpoints.MapControllerRoute(
-                    name: "offreFormation",
-                    pattern: "liste-offreFormation",
-                    defaults: new
-                    {
-                        controller = "OffreDeFormationBeneficiaireController",
-                        action = "OffreDeFormationBeneficiaire"
-                    }
-                    );
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=ProduitFormation}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
-                endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
-                endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
-
-                endpoints.MapControllerRoute(
-                   name: "editstagiaire1",
-                   pattern: "edition-stagiaire",
-                   defaults: new { controller = "EditerInfosStagiaire", action = "ListeOffreFormation" });
-
-                endpoints.MapControllerRoute(
-                   name: "editstagiaire",
-                   pattern: "edition-stagiaire2",
-                   defaults: new { controller = "EditerInfosStagiaire2", action = "Edit" });
             });
         }
     }

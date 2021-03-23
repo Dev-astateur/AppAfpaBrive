@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-using AppAfpaBrive.DAL.Layers;
 //using Apps72.Dev.Data.DbMocker;
 using AppAfpaBrive.Web.Controllers;
 using Microsoft.Extensions.Hosting;

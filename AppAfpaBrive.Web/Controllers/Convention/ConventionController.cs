@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 using AppAfpaBrive.Web.ModelView;
 using DocumentFormat.OpenXml;
 using AppAfpaBrive.Web.Layers;
+using AppAfpaBrive.Web.Layer;
+using AppAfpaBrive.DAL.Layer;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {

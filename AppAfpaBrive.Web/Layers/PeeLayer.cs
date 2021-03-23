@@ -72,5 +72,72 @@ namespace AppAfpaBrive.Web.Layers
             }
             return listPeriode;
         }
+        public async Task<PagingList<ListePeeAValiderModelView>> GetPeeByMatriculeCollaborateurAfpaAsync(string idMatricule, int page = 1)
+        {
+            var qry = _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.EtatPee == 0)
+                .Include(e => e.Id)
+                .Include(e => e.IdEntrepriseNavigation)
+                .Include(e => e.MatriculeBeneficiaireNavigation).
+                Select(e => new ListePeeAValiderModelView()
+                {
+                    NomBeneficiaire = e.MatriculeBeneficiaireNavigation.NomBeneficiaire,
+                    PrenomBeneficiaire = e.MatriculeBeneficiaireNavigation.PrenomBeneficiaire,
+                    RaisonSociale = e.IdEntrepriseNavigation.RaisonSociale,
+                    IdPee = e.IdPee
+                }).AsQueryable();
+            Task<PagingList<ListePeeAValiderModelView>> model = PagingList.CreateAsync((IOrderedQueryable<ListePeeAValiderModelView>)qry, 2, page);
+            model.Result.Action = "ListePeeAValider";
+            return await model;
+        }
+
+        public async Task<PeeEntrepriseModelView> GetPeeByIdPeeOffreEntreprisePaysAsync(int idPee)
+        {
+            return await _dbContext.Pees.Where(e => e.IdPee == idPee)
+                .Include(e => e.Id)
+                .Include(e => e.IdEntrepriseNavigation).ThenInclude(e => e.Idpays2Navigation)
+                .Select(e => new PeeEntrepriseModelView()
+                {
+                    IdPee = e.IdPee,
+                    MatriculeCollaborateurAfpa = e.Id.MatriculeCollaborateurAfpa,
+                    IdEntrepriseNavigation = new EntrepriseModelView(e.IdEntrepriseNavigation)
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<PeeModelView> GetPeeByIdAsync(int idPee)
+        {
+            return new PeeModelView(await _dbContext.Pees.FindAsync((decimal)idPee));
+        }
+
+        public async Task<ICollection<PeeDocumentModelView>> GetPeeDocumentByIdAsync(int idPee)
+        {
+            return await _dbContext.PeeDocuments.Where(e => e.IdPee == idPee).Select(e => new PeeDocumentModelView(e)).ToListAsync();
+        }
+
+        public async void UpdatePeeAsync(PeeModelView peeModelView)
+        {
+            Pee pee = new Pee()
+            {
+                IdPee = peeModelView.IdPee,
+                MatriculeBeneficiaire = peeModelView.MatriculeBeneficiaire,
+                IdTuteur = peeModelView.IdTuteur,
+                IdResponsableJuridique = peeModelView.IdResponsableJuridique,
+                IdEntreprise = peeModelView.IdEntreprise,
+                IdOffreFormation = peeModelView.IdOffreFormation,
+                IdEtablissement = peeModelView.IdEtablissement,
+                EtatPee = peeModelView.EtatPee,
+                Remarque = peeModelView.Remarque,
+                Etat = peeModelView.Etat,
+            };
+
+            if (pee.IsValid)
+            {
+                if (pee.Etat == EntityPOCOState.Modified)
+                {
+                    _dbContext.Update(pee);
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+        }
     }
 }
