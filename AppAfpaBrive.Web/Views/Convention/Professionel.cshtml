@@ -1,37 +1,30 @@
 ﻿@model List<AppAfpaBrive.BOL.Professionnel>
 
-@{
-    var list = ViewBag.pro as List<AppAfpaBrive.BOL.Professionnel>;
-    foreach (var item in list)
-    {
-        <label>@item.NomProfessionnel</label>
-        <label>@item.PrenomProfessionnel</label>
-    }
-}
-<form method="post">
+
+<form method="post" class="text-center">
     <div>
-        <h2>
+        <h2 class="text-info">
             Veuillez sélectionner votre tuteur et votre résponsble juridique.
         </h2>
     </div>
-    <div>
+    <div class="row justify-content-center">
         @if (Model.Count() > 0)
         {
             int i = 0;
-            <table class="table table-bordered table-striped" style="width:100%">
+            <table class="table table-responsive" style="width:50%">
                 <thead>
                     <tr>
                         <th>
-                            Nom
+                            Nom:
                         </th>
                         <th>
-                            Prénom
+                            Prénom:
                         </th>
                         <th>
-                            Sélectionner en tant que tuteur
+                            Tuteur:
                         </th>
                         <th>
-                            Sélectionner en tant que responsable juridique
+                            Responsable juridique:
                         </th>
                     </tr>
                 </thead>
@@ -40,17 +33,17 @@
                     {
 
                         <tr id="ligne">
-                            <td width="20%">
+                            <td width="15%">
                                 @item.NomProfessionnel
                             </td>
-                            <td width="20%">
+                            <td width="15%">
                                 @item.PrenomProfessionnel
                             </td>
-                            <td width="20%">
+                            <td width="10%">
                                 @Html.RadioButton("tuteur", item.IdProfessionnel, true)
                                 @*<input type="button" class="btn btn-primary w-100" value="Sélectionner"></input>*@
                             </td>
-                            <td width="20%">
+                            <td width="10%">
                                 @Html.RadioButton("Responsable", item.IdProfessionnel, true)
                                 @*<input type="button" class="btn btn-primary w-100" value="Sélectionner "></input>*@
                             </td>
