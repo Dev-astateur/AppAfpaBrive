@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using AppAfpaBrive.BOL;
 using System.Linq;
+using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.DAL.Layer
+namespace AppAfpaBrive.Web.Layers
 {
     public class Layer_Offres_Formation
     {

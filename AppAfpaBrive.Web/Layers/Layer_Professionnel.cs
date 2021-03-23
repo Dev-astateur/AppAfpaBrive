@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.DAL.Layer
+namespace AppAfpaBrive.Web.Layers
 {
     public class Layer_Professionnel
     {

@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.DAL.Layers
+namespace AppAfpaBrive.Web.Layers
 {
     public class Periode_pee_Layer
     {

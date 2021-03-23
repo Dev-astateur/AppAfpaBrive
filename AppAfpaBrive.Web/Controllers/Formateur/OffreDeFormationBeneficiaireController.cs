@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.BOL;
 using AppAfpaBrive.Web.ModelView;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers.Formateur
 {

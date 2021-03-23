@@ -5,16 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
-using AppAfpaBrive.DAL.Layer;
 using AppAfpaBrive.BOL;
 using System.Diagnostics;
 using AppAfpaBrive.Web.Models;
-using System.Web.Providers.Entities;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using AppAfpaBrive.Web.ModelView;
 using DocumentFormat.OpenXml;
 using AppAfpaBrive.DAL.Layers;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
@@ -198,6 +197,9 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+            Professionnel xd = new Professionnel();
+            xd = _pro.GetProfessionnel(1);
+
             if (Request.Form["tuteur"] != "")
             {
                 string tuteurID = Request.Form["tuteur"].ToString();

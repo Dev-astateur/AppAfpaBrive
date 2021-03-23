@@ -1,10 +1,11 @@
 ﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AppAfpaBrive.DAL.Layers
+namespace AppAfpaBrive.Web.Layers
 {
     public class OffreFormationLayer
     {
