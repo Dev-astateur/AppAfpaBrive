@@ -14,9 +14,9 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using AppAfpaBrive.DAL.Layers;
-using Apps72.Dev.Data.DbMocker;
 using AppAfpaBrive.Web.Controllers;
 using Microsoft.Extensions.Hosting;
+using AppAfpaBrive.Web.Layers;
 
 namespace Projet_Test
 {
@@ -83,7 +83,7 @@ namespace Projet_Test
             context.SaveChanges();
             var controller = new PeeLayer(context);
             //Act 
-            IEnumerable<Pee> result = controller.GetPeeEntrepriseWithBeneficiaire(20101, "19011");
+            IEnumerable<Pee> result = controller.(20101, "19011");
 
             //Assert
 

@@ -38,7 +38,30 @@ namespace AppAfpaBrive.Web.Layers
             _dbContext.Pees.Add(pee);
             _dbContext.SaveChanges();
         }
+        public IEnumerable<Pee> GetPeeEntrepriseWithBeneficiaireBy(int IdOffreFormation, string idEtablissement)
+        {
+            return _dbContext.Pees
+                .Include(P => P.MatriculeBeneficiaireNavigation)
+                .Include(S => S.IdEntrepriseNavigation)
+                .Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement);
+        }
+        public IEnumerable<PeriodePee> GetListPeriodePeeByIdPee(int IdOffreFormation, string idEtablissement)
+        {
+            var periodePees = _dbContext.PeriodePees.Include(pr => pr.IdPeeNavigation).ToList();
+            List<PeriodePee> listPeriode = new List<PeriodePee>();
+            foreach (var item in GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement))
+            {
+                foreach (var element in periodePees)
+                {
+                    if (element.IdPee == item.IdPee)
+                    {
+                        listPeriode.Add(element);
+                    }
+                }
 
+            }
+            return listPeriode;
+        }
         public decimal GetPeeBy_Idmatricule_idFormation_idetablissemnt(string matricule,int identreprise,string idetablissement)
         {
             return _dbContext.Pees.Where(e => e.MatriculeBeneficiaire == matricule && e.IdEntreprise == identreprise && e.IdEtablissement==idetablissement)
