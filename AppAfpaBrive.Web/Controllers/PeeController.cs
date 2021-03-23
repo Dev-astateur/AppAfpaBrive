@@ -1,7 +1,6 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
-
-using AppAfpaBrive.Web.Layers;
+using AppAfpaBrive.DAL.Layers;
 using AppAfpaBrive.Web.ModelView;
 using DocumentFormat.OpenXml.Packaging;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +18,8 @@ using System.Net.Mime;
 using Magnum.FileSystem;
 using DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using DocumentFormat.OpenXml.Wordprocessing;
+using AppAfpaBrive.Web.ModelView.ValidationPee;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -28,11 +29,11 @@ namespace AppAfpaBrive.Web.Controllers
         private readonly PeeLayer _peeLayer = null;
         private readonly AFPANADbContext _dbContext;
         private readonly IConfiguration _config;
-
         private readonly IHostEnvironment _env;
 
-
+       
         #endregion
+
         #region Constructeur
         //public PeeController()
         //{
@@ -167,42 +168,105 @@ namespace AppAfpaBrive.Web.Controllers
         }
         #endregion
         [HttpGet]
-        public IActionResult ListePeeAValider(string id)
+        public async Task<IActionResult> ListePeeAValider(string id,int? pageIndex)
         {
+            if (id is null)
+                return NotFound();
+            if (pageIndex is null)
+                pageIndex = 1;
             this.ViewBag.Titre = "Periode en entreprise à valider";
-            IEnumerable<Pee> pees = _peeLayer.GetPeeByMatriculeCollaborateurAfpa(id);
-            List<PeeModelView> peesModelView = new();
+            //IEnumerable<ListePeeAValiderModelView> pees = ;  
 
-            foreach (Pee item in pees)
+            return View(await _peeLayer.GetPeeByMatriculeCollaborateurAfpaAsync(id,(int) pageIndex));
+        }
+
+        /// <summary>
+        /// Page principale de validation de Pee
+        /// </summary>
+        /// <returns></returns>
+        [Route("/Pee/PeeEntrepriseValidation/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> PeeEntrepriseValidation(int? id)
+        {
+            if ( id is null )
+                return NotFound();
+
+            PeeEntrepriseModelView pee = await _peeLayer.GetPeeByIdPeeOffreEntreprisePaysAsync((int)id);
+            if (pee is null)
+                return NotFound();
+
+            return View(pee);
+        }
+       
+        /// <summary>
+        /// Iaction du controller qui fonctionne comme des web service
+        /// ici on charge la partie de saisie des remarques s'il y a lien
+        /// </summary>
+        /// <returns></returns>
+        [Route("/Pee/EnregistrementPeeInfo/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> EnregistrementPeeInfo(int? id)
+        {
+            if (id is null)
+                return NotFound();
+
+            PeeModelView pee = await _peeLayer.GetPeeByIdAsync((int)id);
+            return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml",pee) ;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EnregistrementPeeInfo(int IdPee, PeeModelView peeModelView)
+        {
+            if (IdPee != peeModelView.IdPee)
+                return NotFound();
+
+            string MatriculeCollaborateurAfpa = "1603870";
+
+            if (peeModelView.IsValid)
             {
-                peesModelView.Add(new PeeModelView(item));
+                try
+                {
+                    peeModelView.Etat = EntityPOCOState.Modified;
+                    _peeLayer.UpdatePeeAsync(peeModelView);
+                }
+                catch (DbUpdateConcurrencyException dbC)
+                {
+                   
+                }
+                catch(DbUpdateException dE)
+                {
+
+                }
             }
-            return View(peesModelView);
-        }
-        /// <summary>
-        /// IAction qui suit le système de validation
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult SuivantEntreprise(int id)
-        {
-            // données pour les tests faudra changé tous cela
-            Pee pee = _peeLayer.GetPeeByIdPee(id);
-            PeeModelView peeModelView = new PeeModelView(pee);
-            return View(peeModelView);
+            return RedirectToAction(nameof(ListePeeAValider),new { id = MatriculeCollaborateurAfpa });
         }
 
         /// <summary>
-        /// Action d'enregistrement des remarques sur la période en entreprise
+        /// IAction du controller qui fonctionne comme des web service
+        /// ici on charge la partie de saisie des remarques s'il y a lien
         /// </summary>
-        /// <param name="id">id de Pee</param>
         /// <returns></returns>
+        [Route("/Pee/ListeDocumentPee/{id}")]
+        [Route("/Pee/ListeDocumentPee/{id}/{page}")]
         [HttpGet]
-        public async Task<IActionResult> SuivantRemarques(int id)
+        public async Task<IActionResult> ListeDocumentPee(int? id,int? page)
         {
-            return View();
+            if (id is null)
+                return NotFound();
+
+            IEnumerable<PeeDocumentModelView> peeDocument = await _peeLayer.GetPeeDocumentByIdAsync((int)id);
+
+            if ( page is not null )
+            {
+                return peeDocument.Count() == 0 ? RedirectToAction(nameof(PeeEntrepriseValidation), new { id = id })
+                : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
+            }
+            else
+            {
+                return peeDocument.Count() == 0 ? RedirectToAction(nameof(EnregistrementPeeInfo), new { id = id })
+                : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
+            }
         }
-
-
     }
 }
+ 

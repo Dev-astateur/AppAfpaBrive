@@ -1,12 +1,13 @@
 ﻿using AppAfpaBrive.BOL;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.ModelView
 {
-    public class PeeModelView
+    public class PeeModelView : ModelViewBase
     {
         public PeeModelView()
         {
@@ -25,7 +26,8 @@ namespace AppAfpaBrive.Web.ModelView
                 IdEntreprise = pee.IdEntreprise;
                 IdOffreFormation = pee.IdOffreFormation;
                 IdEtablissement = pee.IdEtablissement;
-                Remarques = "";
+                Remarque = pee.Remarque;
+                EtatPee = pee.EtatPee;
                 Id = new OffreFormationModelView(pee.Id);
                 IdEntrepriseNavigation = new EntrepriseModelView(pee.IdEntrepriseNavigation);
                 MatriculeBeneficiaireNavigation = new BeneficiaireModelView(pee.MatriculeBeneficiaireNavigation);
@@ -41,7 +43,9 @@ namespace AppAfpaBrive.Web.ModelView
         public int IdEntreprise { get; set; }
         public int IdOffreFormation { get; set; }
         public string IdEtablissement { get; set; }
-        public string Remarques { get; set; }   // il n'existe pas dans la base pour le moment à rajouter par la suite
+        [StringLength(1024,ErrorMessage ="Les remarques ne doivent pas excéder 1024 caractères.")]
+        public string Remarque { get; set; }
+        public int EtatPee { get; set; }
 
         public virtual EntrepriseModelView IdEntrepriseNavigation { get; set; }
         public virtual OffreFormationModelView Id { get; set; }

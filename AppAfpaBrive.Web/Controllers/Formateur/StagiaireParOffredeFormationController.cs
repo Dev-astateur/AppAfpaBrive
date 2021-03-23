@@ -1,5 +1,4 @@
-﻿
-using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

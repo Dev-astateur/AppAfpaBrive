@@ -63,7 +63,6 @@ namespace AppAfpaBrive.Web
                 options.HtmlIndicatorUp = "<span class='text-primary'> <i class='fas fa-arrow-circle-up'></i></span>";
             });
             services.AddDistributedMemoryCache();
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
@@ -110,6 +109,35 @@ namespace AppAfpaBrive.Web
                 endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
 
                
+                        controller = "StagiaireParOffredeFormation",
+                        action = "ListeStagiaireParOffreFormation"
+                    }
+                    );
+                endpoints.MapControllerRoute(
+                    name: "offreFormation",
+                    pattern: "liste-offreFormation",
+                    defaults: new
+                    {
+                        controller = "OffreDeFormationBeneficiaireController",
+                        action = "OffreDeFormationBeneficiaire"
+                    }
+                    );
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=ProduitFormation}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+                endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
+                endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
+
+                endpoints.MapControllerRoute(
+                   name: "editstagiaire1",
+                   pattern: "edition-stagiaire",
+                   defaults: new { controller = "EditerInfosStagiaire", action = "ListeOffreFormation" });
+
+                endpoints.MapControllerRoute(
+                   name: "editstagiaire",
+                   pattern: "edition-stagiaire2",
+                   defaults: new { controller = "EditerInfosStagiaire2", action = "Edit" });
             });
         }
     }

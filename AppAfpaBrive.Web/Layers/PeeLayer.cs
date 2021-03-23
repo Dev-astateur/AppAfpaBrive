@@ -5,10 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
+using AppAfpaBrive.Web.ModelView.ValidationPee;
+using AppAfpaBrive.Web.ModelView;
+using ReflectionIT.Mvc.Paging;
 
 namespace AppAfpaBrive.Web.Layers
 {
-     public class PeeLayer
+    public class PeeLayer
     {
         private readonly AFPANADbContext _dbContext = null;
 
@@ -34,7 +37,7 @@ namespace AppAfpaBrive.Web.Layers
         }
 
         public void Pee_Create(Pee pee)
-        {
+                { 
             _dbContext.Pees.Add(pee);
             _dbContext.SaveChanges();
         }
@@ -59,9 +62,9 @@ namespace AppAfpaBrive.Web.Layers
             foreach (var item in GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement))
             {
                 foreach (var element in periodePees)
-                {
+            {
                     if (element.IdPee == item.IdPee)
-                    {
+                {
                         listPeriode.Add(element);
                     }
                 }

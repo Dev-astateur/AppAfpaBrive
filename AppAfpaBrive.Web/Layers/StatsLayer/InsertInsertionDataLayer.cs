@@ -1,11 +1,14 @@
 ﻿using AppAfpaBrive.BOL;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Linq;
 using System.Reflection;
+using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.Web.Layers.StatsLayer
+namespace AppAfpaBrive.Web.Layers
 {
     public class InsertInsertionDataLayer
     {
@@ -15,53 +18,32 @@ namespace AppAfpaBrive.Web.Layers.StatsLayer
             _dbContext = dbContext;
         }
 
-        public void InsertAnwser(IInsertion toInsert, string matriculeBeneficiaire, string type)
+        public void CreateNewLine(IInsertion toInsert)
         {
-            IInsertion InsertBase;
-            switch (type)
+            if (toInsert.IsValid())
             {
-                case "1":
-                    InsertBase = GetLineToUpdate((InsertionsTroisMois)toInsert);
+                _dbContext.InsertionTroisMois.Add((InsertionsTroisMois)toInsert);
+                _dbContext.InsertionSixMois.Add((InsertionsSixMois)toInsert);
+                _dbContext.InsertionDouzeMois.Add((InsertionsDouzeMois)toInsert);
 
-                    if (IsAlreadyAnwsered(matriculeBeneficiaire, type))
-                    {
-                        InsertBase = GetUpdatedLineSoustraction(InsertBase, matriculeBeneficiaire);
-                    }
-                    InsertBase = GetUpdatedLineAddition(InsertBase, toInsert);
-
-                    _dbContext.InsertionTroisMois.Update((InsertionsTroisMois)InsertBase);
-
-                    break;
-
-                case "2":
-                    InsertBase = GetLineToUpdate((InsertionsSixMois)toInsert);
-
-                    if (IsAlreadyAnwsered(matriculeBeneficiaire, type))
-                    {
-                        InsertBase = GetUpdatedLineSoustraction(InsertBase, matriculeBeneficiaire);
-                    }
-                    InsertBase = GetUpdatedLineAddition(InsertBase, toInsert);
-
-                    _dbContext.InsertionSixMois.Update((InsertionsSixMois)InsertBase);
-
-                    break;
-
-                case "3":
-                    InsertBase = GetLineToUpdate((InsertionsDouzeMois)toInsert);
-
-                    if (IsAlreadyAnwsered(matriculeBeneficiaire, type))
-                    {
-                        InsertBase = GetUpdatedLineSoustraction(InsertBase, matriculeBeneficiaire);
-                    }
-                    InsertBase = GetUpdatedLineAddition(InsertBase, toInsert);
-
-                    _dbContext.InsertionDouzeMois.Update((InsertionsDouzeMois)InsertBase);
-
-                    break;
-
-                default:
-                    throw new Exception("error");
+                try
+                {
+                    _dbContext.SaveChanges();
+                }
+                catch (Exception dbException)
+                {
+                    throw dbException;
+                }
             }
+            else throw new Exception("Les champs IdEtablissement, IdOffreFormation et Annee doivent etre rempli.");       
+        }
+
+        public void AddOneInsertion(IInsertion anwser)
+        {
+            if (anwser is InsertionsTroisMois obj3) AddOne(obj3);
+            else if (anwser is InsertionsSixMois obj6) AddOne(obj6);
+            else if (anwser is InsertionsDouzeMois obj12) AddOne(obj12);
+            else throw new Exception("Erreur inconnu.");
             try
             {
                 _dbContext.SaveChanges();
@@ -71,40 +53,9 @@ namespace AppAfpaBrive.Web.Layers.StatsLayer
                 throw dbException;
             }
         }
-        private bool IsAlreadyAnwsered(string matriculeBeneficiaire, string type)
-        {
-            bool isAnwsered = _dbContext.DestinataireEnquetes
-                .Join(_dbContext.PlanificationCampagneMails,
-                x => x.IdPlanificationCampagneMail,
-                x => x.IdPlanificationCampagneMail,
-                (t1, t2) => new
-                {
-                    Type = t2.Type,
-                    Beneficiaire = t1.MatriculeBeneficiaire,
-                    Repondu = t1.Repondu
-                }).Where(x => x.Type == type && x.Beneficiaire == matriculeBeneficiaire).Select(x => x.Repondu).First();
-            return isAnwsered;
-        }
-        private IInsertion GetLineToUpdate(IInsertion anwser)
-        {
-            if (anwser is InsertionsTroisMois)
-            {
-                return _dbContext.InsertionTroisMois.Where(x => x.IdEtablissement == anwser.IdEtablissement &&
-                x.IdOffreFormation == anwser.IdOffreFormation && x.Annee == anwser.Annee).First();
-            }
-            else if (anwser is InsertionsSixMois)
-            {
-                return _dbContext.InsertionSixMois.Where(x => x.IdEtablissement == anwser.IdEtablissement &&
-            x.IdOffreFormation == anwser.IdOffreFormation && x.Annee == anwser.Annee).First();
-            }
-            else if (anwser is InsertionsDouzeMois)
-            {
-                return _dbContext.InsertionDouzeMois.Where(x => x.IdEtablissement == anwser.IdEtablissement &&
-               x.IdOffreFormation == anwser.IdOffreFormation && x.Annee == anwser.Annee).First();
-            }
-            else throw new Exception("Type error.");
-        }
-        private IInsertion GetUpdatedLineAddition(IInsertion toUpdate, IInsertion anwser)
+
+        #region Get updatedLine (Addition ou soustraction)
+        private static IInsertion GetUpdatedLineAddition(IInsertion toUpdate, IInsertion anwser)
         {
             // ------------------------------
             Type myType = anwser.GetType();
@@ -155,37 +106,47 @@ namespace AppAfpaBrive.Web.Layers.StatsLayer
             // ------------------------------
             return toUpdate;
         }
-        private IInsertion GetUpdatedLineSoustraction(IInsertion toUpdate, string matriculeBeneficiaire)
+
+        private static IInsertion GetUpdatedLineSoustraction(IInsertion toUpdate, IInsertion anwser)
         {
-            int contrat = _dbContext.Contrats
-                .Where(x => x.DestinataireEnquetes.Select(x => x.MatriculeBeneficiaire).First() == matriculeBeneficiaire)
-                .Select(x => x.TypeContrat).First();
-            int tmp;
-            switch (contrat)
-            {
-                case 1:
-                    tmp = toUpdate.Cdi - 1;
-                    toUpdate.Cdi = tmp;
-                    break;
-                case 2:
-                    tmp = toUpdate.Cdd - 1;
-                    toUpdate.Cdd = tmp;
-                    break;
-                case 3:
-                    tmp = toUpdate.Alternance - 1;
-                    toUpdate.Alternance = tmp;
-                    break;
-                case 4:
-                    tmp = toUpdate.SansEmploie - 1;
-                    toUpdate.SansEmploie = tmp;
-                    break;
-                case 5:
-                    tmp = toUpdate.Autres - 1;
-                    toUpdate.Autres = tmp;
-                    break;
-            }
-            return toUpdate;
+            throw new NotImplementedException();
         }
+        #endregion
+
+        #region Get the line to update 
+        public IInsertion GetLineToUpdate(InsertionsTroisMois anwser)
+        {
+            return _dbContext.InsertionTroisMois.Where(x => x.IdEtablissement == anwser.IdEtablissement && 
+            x.IdOffreFormation == anwser.IdOffreFormation && x.Annee == anwser.Annee).First();
+        }
+        public IInsertion GetLineToUpdate(InsertionsSixMois anwser)
+        {
+            return _dbContext.InsertionSixMois.Where(x => x.IdEtablissement == anwser.IdEtablissement &&
+            x.IdOffreFormation == anwser.IdOffreFormation && x.Annee == anwser.Annee).First();
+        }
+        public IInsertion GetLineToUpdate(InsertionsDouzeMois anwser)
+        {
+            return _dbContext.InsertionDouzeMois.Where(x => x.IdEtablissement == anwser.IdEtablissement &&
+            x.IdOffreFormation == anwser.IdOffreFormation && x.Annee == anwser.Annee).First();
+        }
+        #endregion
+
+        #region Add one to an existing row
+        private void AddOne(InsertionsTroisMois obj)
+        {
+            var toUpdate = GetLineToUpdate(obj);
+            _dbContext.InsertionTroisMois.Update((InsertionsTroisMois)GetUpdatedLineAddition(toUpdate, obj));    
+        }
+        private void AddOne(InsertionsSixMois obj)
+        {
+            var toUpdate = GetLineToUpdate(obj);
+            _dbContext.InsertionSixMois.Update((InsertionsSixMois)GetUpdatedLineAddition(toUpdate, obj));   
+        }
+        private void AddOne(InsertionsDouzeMois obj)
+        {
+            var toUpdate = GetLineToUpdate(obj);
+            _dbContext.InsertionDouzeMois.Update((InsertionsDouzeMois)GetUpdatedLineAddition(toUpdate, obj));           
+        }
+        #endregion
     }
 }
-

@@ -39,6 +39,7 @@ namespace AppAfpaBrive.DAL
         public virtual DbSet<OffreFormation> OffreFormations { get; set; }
         public virtual DbSet<Pays> Pays { get; set; }
         public virtual DbSet<Pee> Pees { get; set; }
+        public virtual DbSet<PeeDocument> PeeDocuments { get; set; }
         public virtual DbSet<PeriodePee> PeriodePees { get; set; }
         public virtual DbSet<PeriodePeeEvenement> PeriodePeeEvenements { get; set; }
         public virtual DbSet<PlanificationCampagneMail> PlanificationCampagneMails { get; set; }
@@ -871,6 +872,27 @@ namespace AppAfpaBrive.DAL
                     .HasForeignKey(d => new { d.IdOffreFormation, d.IdEtablissement })
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Pee_OffreFormation");
+            });
+
+            modelBuilder.Entity<PeeDocument>(entity =>
+            {
+                entity.HasKey(e => new { e.IdPee, e.NumOrdre });
+
+                entity.ToTable("Pee_Document");
+
+                entity.Property(e => e.IdPee)
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.PathDocument)
+                    .IsRequired()
+                    .HasMaxLength(2048)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.idPeeNavigation)
+                    .WithMany(p => p.PeeDocument)
+                    .HasForeignKey(d => d.IdPee)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Pee_Document_Pee");
             });
 
             modelBuilder.Entity<PeriodePee>(entity =>

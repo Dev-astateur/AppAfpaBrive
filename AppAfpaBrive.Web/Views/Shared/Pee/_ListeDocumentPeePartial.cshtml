@@ -1,0 +1,14 @@
+﻿@model IEnumerable<AppAfpaBrive.Web.ModelView.PeeDocumentModelView>
+
+
+@foreach (AppAfpaBrive.Web.ModelView.PeeDocumentModelView item in Model)
+{
+    <div class="row text-center">
+        <div class="col-12">
+            <p>
+                <a href="~/@item.PathDocument" download="@item.NomDocument">@Html.DisplayNameFor(model=>model.PathDocument) : @item.NomDocument</a>
+            </p>
+        </div>
+    </div>
+}
+<input type="hidden" value="2" id="window" />

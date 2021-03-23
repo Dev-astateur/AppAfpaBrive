@@ -1,0 +1,39 @@
+﻿@*@model AppAfpaBrive.BOL.Entreprise*@
+@model AppAfpaBrive.Web.ModelView.ValidationPee.PeeEntrepriseModelView
+
+<div class="row">
+    <div class="col-sm text-center">
+        <h2>Récapitulatif</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm text-left">
+        <h3>Entreprise</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm col-lg-6">
+        <p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.NumeroSiret) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.NumeroSiret)</p>
+    </div>
+    <div class="col-sm col-lg-6">
+        <p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.RaisonSociale) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.RaisonSociale)</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.MailEntreprise) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.MailEntreprise)</p></div>
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.TelEntreprise) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.TelEntreprise)</p></div>
+</div>
+<div class="row">
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.Ligne1Adresse) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.Ligne1Adresse)</p></div>
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.Ligne2Adresse) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.Ligne2Adresse)</p></div>
+</div>
+<div class="row">
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.Ligne3Adresse) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.Ligne3Adresse)</p></div>
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.Ville) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.CodePostal) @Html.DisplayFor(item => item.IdEntrepriseNavigation.Ville)</p></div>
+</div>
+<div class="row">
+    <div class="col-sm col-lg-6"><p>@Html.DisplayNameFor(model => model.IdEntrepriseNavigation.Idpays2Navigation.LibellePays) : @Html.DisplayFor(item => item.IdEntrepriseNavigation.Idpays2Navigation.LibellePays)</p></div>
+</div>
+<input type="hidden" value="1" id="window" />
+
+
