@@ -11,8 +11,6 @@ namespace Projet_Test.InMemoryDb
 {
     public  class DbContextMocker
     {
-
-
         /// <summary>
         /// Initialise un context Afpana en mémoire
         /// </summary>

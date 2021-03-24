@@ -18,7 +18,8 @@ using System.Net.Mime;
 using DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using DocumentFormat.OpenXml.Wordprocessing;
 using AppAfpaBrive.Web.ModelView.ValidationPee;
-
+using AppAfpaBrive.Web.Utilitaires;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -29,8 +30,9 @@ namespace AppAfpaBrive.Web.Controllers
         private readonly AFPANADbContext _dbContext;
         private readonly IConfiguration _config;
         private readonly IHostEnvironment _env;
+        private readonly IEmailSender _emailSender;
 
-       
+
         #endregion
 
         #region Constructeur
@@ -41,12 +43,13 @@ namespace AppAfpaBrive.Web.Controllers
         //    //_peeLayer = new PeeLayer(context);
         //    ////_paysLayer = new PaysLayer(context);    //-- pour test
         //}
-        public PeeController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
+        public PeeController(AFPANADbContext context, IConfiguration config, IHostEnvironment env, IEmailSender emailSender)
         {
             _dbContext = context;
             _config = config;
             _env = env;
             _peeLayer = new PeeLayer(context);
+            _emailSender = emailSender;
         }
         #endregion
         #region Méthode IAction Index et AfficheBeneficiairePee
@@ -219,22 +222,31 @@ namespace AppAfpaBrive.Web.Controllers
             if (IdPee != peeModelView.IdPee)
                 return NotFound();
 
-            string MatriculeCollaborateurAfpa = "1603870";
+            string MatriculeCollaborateurAfpa = await _peeLayer.GetPeeMatriculeFormateurByIdAsync(IdPee);
 
             if (peeModelView.IsValid)
             {
                 try
                 {
-                    peeModelView.Etat = EntityPOCOState.Modified;
-                    _peeLayer.UpdatePeeAsync(peeModelView);
-                }
-                catch (DbUpdateConcurrencyException dbC)
-                {
-                   
-                }
-                catch(DbUpdateException dE)
-                {
+                    PeeModelView peeBaseDonnee = await _peeLayer.GetPeeByIdAsync(IdPee);
+                    if ( !peeModelView.ModificationBool(peeBaseDonnee) )
+                    {
+                        peeModelView.Etat = EntityPOCOState.Modified;
+                    }
 
+                    if ( await _peeLayer.UpdatePeeAsync(peeModelView) )
+                    {
+                        return RedirectToAction(nameof(PrevenirBeneficaire), new { id = MatriculeCollaborateurAfpa, idBenef = peeModelView.MatriculeBeneficiaire });
+                    }
+                    
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return RedirectToAction(nameof(ListePeeAValider), new { id = MatriculeCollaborateurAfpa });
+                }
+                catch(DbUpdateException)
+                {
+                    return RedirectToAction(nameof(ListePeeAValider), new { id = MatriculeCollaborateurAfpa });
                 }
             }
             return RedirectToAction(nameof(ListePeeAValider),new { id = MatriculeCollaborateurAfpa });
@@ -266,6 +278,14 @@ namespace AppAfpaBrive.Web.Controllers
                 : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> PrevenirBeneficaire(string id, string idBenef)
+        {
+            
+            return View();
+        }
+
     }
 }
  

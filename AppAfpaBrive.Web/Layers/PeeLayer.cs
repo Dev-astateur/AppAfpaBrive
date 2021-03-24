@@ -110,12 +110,18 @@ namespace AppAfpaBrive.Web.Layers
             return new PeeModelView(await _dbContext.Pees.FindAsync((decimal)idPee));
         }
 
+        public async Task<string> GetPeeMatriculeFormateurByIdAsync(int idPee)
+        {
+            return await _dbContext.Pees.Where(e=>e.IdPee == idPee)
+                .Include(e=>e.Id).Select(e=>e.Id.MatriculeCollaborateurAfpa).FirstAsync();
+        }
+
         public async Task<ICollection<PeeDocumentModelView>> GetPeeDocumentByIdAsync(int idPee)
         {
             return await _dbContext.PeeDocuments.Where(e => e.IdPee == idPee).Select(e=>new PeeDocumentModelView(e)).ToListAsync();
         }
 
-        public async void UpdatePeeAsync( PeeModelView peeModelView )
+        public async Task<bool> UpdatePeeAsync( PeeModelView peeModelView )
         {
             Pee pee = new Pee()
             {
@@ -137,8 +143,11 @@ namespace AppAfpaBrive.Web.Layers
                 {
                     _dbContext.Update(pee);
                     await _dbContext.SaveChangesAsync();
+                    return true;
                 }
+                return false;
             }
+            return false;
         }
     }
 }

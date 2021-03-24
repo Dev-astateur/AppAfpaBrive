@@ -53,5 +53,38 @@ namespace AppAfpaBrive.Web.ModelView
         public virtual ProfessionnelModelView IdTuteurNavigation { get; set; }
         public virtual BeneficiaireModelView MatriculeBeneficiaireNavigation { get; set; }
         public virtual ICollection<PeriodePee> PeriodePees { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PeeModelView pee &&
+                   IdPee == pee.IdPee;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(IdPee);
+        }
+
+        public int GetHasCodeObject ()
+        {
+            return IdPee.GetHashCode()^MatriculeBeneficiaire.GetHashCode()
+                ^IdTuteur.GetHashCode()^IdTuteur.GetHashCode()^IdResponsableJuridique.GetHashCode()
+                ^IdEntreprise.GetHashCode()^IdOffreFormation.GetHashCode()^IdEtablissement.GetHashCode()
+                ^Remarque.GetHashCode()^EtatPee.GetHashCode();
+        }
+
+        public bool ModificationBool(PeeModelView pee)
+        {
+            if ( this.Equals(pee) )
+            {
+                if ( this.GetHasCodeObject() == pee.GetHasCodeObject())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
+
+   
 }
