@@ -11,38 +11,36 @@ namespace AppAfpaBrive.Web.ModelView
     {
         public BeneficiaireModelView()
         {
-            //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+            BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
             Contrats = new HashSet<ContratModelView>();
             //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
             Pees = new HashSet<PeeModelView>();
+            
         }
             
         public BeneficiaireModelView( Beneficiaire beneficiaire  )
         {
-            if ( beneficiaire is not null )
-            {
-                MailBeneficiaire = beneficiaire.MatriculeBeneficiaire;
-                CodeTitreCivilite = beneficiaire.CodeTitreCivilite;
-                NomBeneficiaire = beneficiaire.NomBeneficiaire;
-                PrenomBeneficiaire = beneficiaire.PrenomBeneficiaire;
-                DateNaissanceBeneficiaire = beneficiaire.DateNaissanceBeneficiaire;
-                MailBeneficiaire = beneficiaire.MailBeneficiaire;
-                TelBeneficiaire = beneficiaire.TelBeneficiaire;
-                Ligne1Adresse = beneficiaire.Ligne1Adresse;
-                Ligne2Adresse = beneficiaire.Ligne2Adresse;
-                Ligne3Adresse = beneficiaire.Ligne3Adresse;
-                CodePostal = beneficiaire.CodePostal;
-                Ville = beneficiaire.Ville;
-                UserId = beneficiaire.UserId;
-                IdPays2 = beneficiaire.IdPays2;
-                PathPhoto = beneficiaire.PathPhoto;
-                MailingAutorise = beneficiaire.MailingAutorise;
-                //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
-                Contrats = new HashSet<ContratModelView>();
-                //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
-                Pees = new HashSet<PeeModelView>();
-            } 
             
+            MailBeneficiaire = beneficiaire.MatriculeBeneficiaire;
+            CodeTitreCivilite = beneficiaire.CodeTitreCivilite;
+            NomBeneficiaire = beneficiaire.NomBeneficiaire;
+            PrenomBeneficiaire = beneficiaire.PrenomBeneficiaire;
+            DateNaissanceBeneficiaire = beneficiaire.DateNaissanceBeneficiaire;
+            MailBeneficiaire = beneficiaire.MailBeneficiaire;
+            TelBeneficiaire = beneficiaire.TelBeneficiaire;
+            Ligne1Adresse = beneficiaire.Ligne1Adresse;
+            Ligne2Adresse = beneficiaire.Ligne2Adresse;
+            Ligne3Adresse = beneficiaire.Ligne3Adresse;
+            CodePostal = beneficiaire.CodePostal;
+            Ville = beneficiaire.Ville;
+            UserId = beneficiaire.UserId;
+            IdPays2 = beneficiaire.IdPays2;
+            PathPhoto = beneficiaire.PathPhoto;
+            MailingAutorise = beneficiaire.MailingAutorise;
+            BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+            Contrats = new HashSet<ContratModelView>();
+            //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
+            Pees = new HashSet<PeeModelView>();
         }
         [Display(Name ="Matricule du stagiaire")]
         public string MatriculeBeneficiaire { get; set; }
@@ -66,7 +64,7 @@ namespace AppAfpaBrive.Web.ModelView
         public bool? MailingAutorise { get; set; }
 
         //public virtual TitreCivilite CodeTitreCiviliteNavigation { get; set; }
-        //public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
+        public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
         public virtual ICollection<ContratModelView> Contrats { get; set; }
         //public virtual ICollection<DestinataireEnquete> DestinataireEnquetes { get; set; }
         public virtual ICollection<PeeModelView> Pees { get; set; }

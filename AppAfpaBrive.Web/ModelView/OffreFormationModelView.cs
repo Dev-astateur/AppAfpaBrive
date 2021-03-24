@@ -11,7 +11,7 @@ namespace AppAfpaBrive.Web.ModelView
     {
         public OffreFormationModelView()
         {
-            //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+            BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
             //CampagneMails = new HashSet<CampagneMail>();
             Pees = new HashSet<PeeModelView>();
         }
@@ -29,9 +29,10 @@ namespace AppAfpaBrive.Web.ModelView
                 DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
                 DateFinOffreFormation = offreFormation.DateFinOffreFormation;
                 CodeProduitFormation = offreFormation.CodeProduitFormation;
-                //BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+                BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+
+
             }
-          
         }
 
         public int IdOffreFormation { get; set; }
@@ -49,7 +50,17 @@ namespace AppAfpaBrive.Web.ModelView
         public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
         //public virtual ICollection<CampagneMail> CampagneMails { get; set; }
         public virtual ICollection<PeeModelView> Pees { get; set; }
+        public ICollection<OffreFormationModelView> OffreFormations { get; set; }
+
+        public void AlimenterListeOffreFormations(ICollection<OffreFormation> offre)
+        {
+            foreach (OffreFormation item in offre)
+            {
+                OffreFormations.Add(new OffreFormationModelView (item));
+            }
+        }
     }
+
 }
 
 
