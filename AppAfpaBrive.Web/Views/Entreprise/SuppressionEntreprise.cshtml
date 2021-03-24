@@ -1,0 +1,86 @@
+﻿@model AppAfpaBrive.Web.ModelView.EntrepriseListViewModel
+
+@{
+    ViewData["Title"] = "View";
+}
+
+
+
+<h3>Etes vous sûr de vouloir supprimer cette entreprise?</h3>
+<div>
+    
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RaisonSociale)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RaisonSociale)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumeroSiret)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumeroSiret)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MailEntreprise)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MailEntreprise)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TelEntreprise)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TelEntreprise)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ligne1Adresse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ligne1Adresse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ligne2Adresse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ligne2Adresse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ligne3Adresse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ligne3Adresse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CodePostal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CodePostal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ville)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ville)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Idpays2Navigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Idpays2Navigation.Idpays2)
+        </dd class>
+    </dl>
+    
+    <form asp-action="SupprimerEntreprise">
+        @*<input type="hidden" asp-for="IdEntreprise" />
+        <input type="submit" value="Delete" class="btn btn-danger" asp-for="IdEntreprise"  /> |*@
+
+        @Html.ActionLink("Valider", "SupprimerEntreprise", "Entreprise", new { id = Model.IdEntreprise})
+
+        @*@Html.ActionLink("Valider", "SupprimerEntreprise", "Entreprise", new { @class = "link-primary" })*@
+
+        <a asp-action="ListeEntreprisePourModification">Retour à la liste</a>
+    </form>
+</div>

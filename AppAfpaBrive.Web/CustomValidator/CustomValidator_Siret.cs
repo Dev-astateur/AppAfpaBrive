@@ -9,7 +9,7 @@ namespace AppAfpaBrive.Web.CustomValidator
     //[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
     public class CustomValidator_SiretAttribute:ValidationAttribute
     {
-        
+
         protected override ValidationResult IsValid(object value, ValidationContext context)
         {
             string siret = value.ToString();

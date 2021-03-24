@@ -16,7 +16,7 @@ namespace AppAfpaBrive.Web.ModelView
             Pees = new HashSet<PeeModelView>();
         }
 
-        public OffreFormationModelView( OffreFormation offreFormation)
+        public OffreFormationModelView(OffreFormation offreFormation)
         {
             if (offreFormation is not null)
             {
@@ -46,7 +46,7 @@ namespace AppAfpaBrive.Web.ModelView
         //public virtual ProduitFormation CodeProduitFormationNavigation { get; set; }
         //public virtual Etablissement IdEtablissementNavigation { get; set; }
         //public virtual CollaborateurAfpa MatriculeCollaborateurAfpaNavigation { get; set; }
-        //public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
+        public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
         //public virtual ICollection<CampagneMail> CampagneMails { get; set; }
         public virtual ICollection<PeeModelView> Pees { get; set; }
     }
