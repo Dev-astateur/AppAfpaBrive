@@ -1,6 +1,5 @@
 ﻿using AppAfpaBrive.DAL;
 using AppAfpaBrive.BOL;
-using AppAfpaBrive.DAL.Layers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AppAfpaBrive.Web.ModelView;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {

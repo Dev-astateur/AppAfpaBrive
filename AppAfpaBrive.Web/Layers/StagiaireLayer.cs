@@ -2,6 +2,7 @@
 using AppAfpaBrive.DAL;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 
@@ -36,6 +37,7 @@ namespace AppAfpaBrive.Web.Layers
                 .Include(x => x.MatriculeBeneficiaireNavigation)
                 .Select(x => x.MatriculeBeneficiaireNavigation).ToList();
         }
+
 
         //public PagingList<Beneficiaire> ListeBenefPagines(int page = 1, string libelle)
         //{
