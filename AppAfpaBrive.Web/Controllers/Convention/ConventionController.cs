@@ -113,6 +113,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 if (entreprise is null)
                 {
                     convention.Entreprise_Create = true;
+                    str = JsonConvert.SerializeObject(convention);
+                    HttpContext.Session.SetString("convention", str);
                     HttpContext.Session.SetString("siret", obj.NumeroSiret);
                     return RedirectToAction("Entreprise_creation");
                 }
