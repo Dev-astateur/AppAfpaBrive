@@ -16,8 +16,6 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         }
 
         public int IdLigneAnnuaire {get; set; }
-        
-        public int IdContact { get; set; }
         public string PublicConcerne { get; set; }
         public string ServiceAbrege { get; set; }
         public string Service { get; set; }

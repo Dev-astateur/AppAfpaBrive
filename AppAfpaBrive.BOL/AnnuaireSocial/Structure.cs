@@ -25,7 +25,6 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         public string Telephone { get; set; }
   
         public ICollection<LigneAnnuaire> LigneAnnuaires { get; set; }
-
         public ICollection<ContactStructure> ContactStructures { get; set; }
 
 
