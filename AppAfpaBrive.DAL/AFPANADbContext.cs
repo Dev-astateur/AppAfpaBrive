@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using AppAfpaBrive.BOL;
+using AppAfpaBrive.BOL.AnnuaireSocial;
 
 #nullable disable
 
@@ -11,7 +12,7 @@ namespace AppAfpaBrive.DAL
     {
         public AFPANADbContext()
         {
-           ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public AFPANADbContext(DbContextOptions<AFPANADbContext> options)
@@ -55,7 +56,16 @@ namespace AppAfpaBrive.DAL
         public virtual DbSet<InsertionsSixMois> InsertionSixMois { get; set; }
         public virtual DbSet<InsertionsDouzeMois> InsertionDouzeMois { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public virtual DbSet<Categorie> Categories {get; set;}
+        public virtual DbSet<CategorieLigneAnnuaire> CategorieLigneAnnuaires {get; set;}
+        public virtual DbSet<Contact> Contacts {get; set;}
+        public virtual DbSet<ContactLigneAnnuaire> ContactLigneAnnuaires   {get; set;}
+        public virtual DbSet<ContactStructure> ContactStructures {get; set;}
+        public virtual DbSet<LigneAnnuaire>  LigneAnnuaires {get; set;}
+        public virtual DbSet<Structure> Structures {get; set;}
+
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {

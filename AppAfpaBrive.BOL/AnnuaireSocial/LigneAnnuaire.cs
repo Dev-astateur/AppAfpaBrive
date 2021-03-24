@@ -26,7 +26,6 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         public int IdStructure { get; set; }
         public Structure Structure { get; set; }
 
-        public int IdCategorie { get; set; }
         public ICollection<CategorieLigneAnnuaire> CategorieLigneAnnuaires { get; set; }
 
         public ICollection<ContactLigneAnnuaire> ContactLigneAnnuaires { get; set; }
