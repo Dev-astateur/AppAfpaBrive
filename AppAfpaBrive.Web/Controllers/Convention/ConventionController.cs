@@ -221,9 +221,13 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-            List<Professionnel> pro = _pro.Get_Pro(convention.IdEntreprise);
-
             str = HttpContext.Session.GetString("pro");
+            List<Professionnel> pro = new List<Professionnel>();
+            if (str == null)
+            {
+               pro = _pro.Get_Pro(convention.IdEntreprise);
+            }
+            
             if (str != null)
             {
                 List<Professionnel_ModelView> professionnels = JsonConvert.DeserializeObject<List<Professionnel_ModelView>>(str);
@@ -382,8 +386,28 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [HttpPost]
         public IActionResult Recapitulatif(Creation_convention oui)
         {
+
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+
+            if(convention.Entreprise_Create == true)
+            {
+                Entreprise entreprise = new Entreprise
+                {
+                    CodePostal = convention.Entreprise_codePostal,
+                    Idpays2 = convention.Entreprise_IdPays,
+                    Ligne1Adresse = convention.Entreprise_Ligne1Adresse,
+                    Ligne2Adresse = convention.Entreprise_Ligne2Adresse,
+                    Ligne3Adresse = convention.Entreprise_Ligne3Adresse,
+                    RaisonSociale = convention.Entreprise_raison_social,
+                    MailEntreprise = convention.Entreprise_Mail,
+                    Ville = convention.Entreprise_Ville,
+                    TelEntreprise = convention.Entreprise_Tel,
+                    NumeroSiret = convention.Siret
+                };
+                _Entreprise.Create_entreprise(entreprise);
+            }
+
             Pee pee = new Pee
             {
                 IdEntreprise = convention.IdEntreprise,
