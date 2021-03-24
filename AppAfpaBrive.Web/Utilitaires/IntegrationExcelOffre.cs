@@ -68,6 +68,7 @@ namespace AppAfpaBrive.Web.Utilitaires
             }
         }
 
+
         private void TraiterDonnees(IExcelDataReader reader, int?[] positions, string matriculeCollaborateurAfpa, int codeProduitFormation)
         {
             bool offreTraitee = false;

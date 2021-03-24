@@ -1,14 +1,10 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
-using AppAfpaBrive.Web.Controllers;
 using Microsoft.Extensions.Configuration;
+using Moq;
 using NUnit.Framework;
 using Projet_Test.InMemoryDb;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Projet_Test
 {
@@ -17,11 +13,12 @@ namespace Projet_Test
 
         public DbContextMocker db = new DbContextMocker();
         AFPANADbContext dba;
-        
+
 
         [SetUp]
         public void Setup()
         {
+            ///Initialize db context in memory
             dba = db.GetAFPANADbContext("test");
             var s1 = new CollaborateurAfpa
             {
@@ -32,18 +29,16 @@ namespace Projet_Test
 
             dba.CollaborateurAfpas.Add(s1);
             dba.SaveChanges();
-           
-    }
+
+            ///Initialize config mocker
+          
+        }
 
 
         [Test]
         public void TestControllerUploadFileExcel_ShouldReturnIndexView()
         {
-            var inMemorySettings = new Dictionary<string, string>
-            { };
-
-            //FileUploadController controller = new FileUploadController(dba,);
-
+            
         }
     }
 }
