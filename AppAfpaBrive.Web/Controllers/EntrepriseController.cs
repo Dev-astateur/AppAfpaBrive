@@ -1,6 +1,5 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
-
 using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -215,10 +214,7 @@ namespace AppAfpaBrive.Web.Controllers
         // GET: EntrepriseController/creerEntreprise
         [HttpGet]
         public ActionResult CreerEntreprise()
-        {
-            
-
-
+        {       
             return View();
         }
 

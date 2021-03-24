@@ -67,7 +67,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string Ligne3Adresse { get; set; }
 
         [Required(ErrorMessage ="Le code postal est obligatoire")]
-        [RegularExpression("([0-9]+)", ErrorMessage = "Le code postal ne doit etre composé que de chiffres")]
+        //[RegularExpression("([0-9]+)", ErrorMessage = "Le code postal ne doit etre composé que de chiffres")]
         [DisplayName("Code postal: ")]
         public string CodePostal { get; set; }
 
