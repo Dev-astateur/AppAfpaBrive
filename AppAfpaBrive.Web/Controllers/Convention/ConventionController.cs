@@ -222,7 +222,24 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
             List<Professionnel> pro = _pro.Get_Pro(convention.IdEntreprise);
-            
+
+            str = HttpContext.Session.GetString("pro");
+            if (str != null)
+            {
+                List<Professionnel_ModelView> professionnels = JsonConvert.DeserializeObject<List<Professionnel_ModelView>>(str);
+                foreach (var item in professionnels)
+                {
+                    Professionnel professionnel = new Professionnel
+                    {
+                        NomProfessionnel = item.NomProfessionnel,
+                        PrenomProfessionnel = item.PrenomProfessionnel,
+                        CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel
+                    };
+                    pro.Add(professionnel);
+                }
+            }
+            str = JsonConvert.SerializeObject(pro);
+            HttpContext.Session.SetString("pro", str);
             return View(pro);
         }
 
@@ -233,19 +250,28 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+
+            string xd = HttpContext.Session.GetString("pro");
+            List<Professionnel> professionnels = JsonConvert.DeserializeObject<List<Professionnel>>(xd);
             if (Request.Form["tuteur"] != "")
             {
                 int tuteurID = int.Parse(Request.Form["tuteur"].ToString());
-                convention.TuteurNom = _pro.Get_Nom_Pro(tuteurID);
-                convention.TuteurPrenom = _pro.Get_Prenom_Pro(tuteurID);
-                convention.IdTuteur = tuteurID;
+                Professionnel professionnel = new Professionnel();
+                professionnel = professionnels[tuteurID];
+                convention.TuteurNom = professionnel.NomProfessionnel;
+                convention.TuteurPrenom = professionnel.PrenomProfessionnel;
+                convention.IdTuteur = professionnel.IdProfessionnel;
+                convention.Tuteur_create_Id = tuteurID;
             }
             if (Request.Form["Responsable"] != "")
             {
                 int ResponsableID = int.Parse(Request.Form["Responsable"].ToString());
-                convention.ResponsableNom = _pro.Get_Nom_Pro(ResponsableID);
-                convention.ResponsablePrenom = _pro.Get_Prenom_Pro(ResponsableID);
-                convention.IdResponsable = ResponsableID;
+                Professionnel professionnel = new Professionnel();
+                professionnel = professionnels[ResponsableID];
+                convention.ResponsableNom = professionnel.NomProfessionnel;
+                convention.ResponsablePrenom = professionnel.PrenomProfessionnel;
+                convention.IdResponsable = professionnel.IdProfessionnel;
+                convention.Responsable_create_Id = ResponsableID;
             }
             var x = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", x);
@@ -268,23 +294,15 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             if (ModelState.IsValid)
             {
-                string str = this.HttpContext.Session.GetString("convention");
-                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-                Professionnel pro = new Professionnel
+                List<Professionnel_ModelView> professionnels = new List<Professionnel_ModelView>();
+                string str = this.HttpContext.Session.GetString("pro");
+                if (str != null)
                 {
-                    CodeTitreCiviliteProfessionnel = obj.CodeTitreCiviliteProfessionnel,
-                    NomProfessionnel = obj.NomProfessionnel,
-                    PrenomProfessionnel = obj.PrenomProfessionnel,
-                };
-                //_pro.create(pro);
-                //EntrepriseProfessionnel entrepriseProfessionnel = new EntrepriseProfessionnel
-                //{
-                //    IdProfessionnel = _pro.Get_Id_pro(pro.NomProfessionnel, pro.PrenomProfessionnel),
-                //    AdresseMailPro = obj.AdresseMail,
-                //    TelephonePro = obj.NumerosTel,
-                //    IdEntreprise = convention.IdEntreprise
-                //};
-                //_entreprisepro.create(entrepriseProfessionnel);
+                    professionnels = JsonConvert.DeserializeObject<List<Professionnel_ModelView>>(str);
+                }
+                professionnels.Add(obj);
+                str = JsonConvert.SerializeObject(professionnels);
+                HttpContext.Session.SetString("pro", str);
                 return RedirectToAction("Professionel");
             }
 

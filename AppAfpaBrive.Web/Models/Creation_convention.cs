@@ -36,6 +36,8 @@ namespace AppAfpaBrive.Web.Models
         private string _Entreprise_Tel;
         private bool _Entreprise_Create;
 
+        private int _Tuteur_create_Id;
+        private int _Responsable_create_Id;
 
 
 
@@ -65,5 +67,7 @@ namespace AppAfpaBrive.Web.Models
         public string Entreprise_Mail { get => _Entreprise_Mail; set => _Entreprise_Mail = value; }
         public string Entreprise_Tel { get => _Entreprise_Tel; set => _Entreprise_Tel = value; }
         public bool Entreprise_Create { get => _Entreprise_Create; set => _Entreprise_Create = value; }
+        public int Tuteur_create_Id { get => _Tuteur_create_Id; set => _Tuteur_create_Id = value; }
+        public int Responsable_create_Id { get => _Responsable_create_Id; set => _Responsable_create_Id = value; }
     }
 }
