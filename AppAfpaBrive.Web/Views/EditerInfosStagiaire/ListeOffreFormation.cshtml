@@ -2,57 +2,71 @@
 
 @{
     ViewData["Title"] = "ListeOffreFormation";
-    //List<AppAfpaBrive.BOL.OffreFormation> listeOffreFormations = ViewBag.MaListe;
-    //var listeItemOffreFormation = listeOffreFormations.Select(o => new SelectListItem() { Text = o.LibelleOffreFormation, Value = o.IdOffreFormation.ToString()});
+
 }
 
-<h2 style="color:#0044ff">Sélectionnez une offre de formation</h2>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+</head>
+
+<h2>Sélectionnez une offre de formation</h2>
+<br />
 
 <div class="form-group">
     <form asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation">
         <div class="row">
-            <div class="col-md-6">
-                <input type="text" name="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
+            <div class="col-md-10 text-center w-auto ">
+                <input type="text" size="80" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
             </div>
-            <div class="col-md-6">
-                <a type="submit" value="Menu" class="btn btn-danger" asp-controller="EditerInfosStagiaire2" asp-action="Edit">Revenir au menu principal</a>
+            <div>
+                <input type="button" id="boutontest" class="btn btn-primary" value="Recherche" />
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <input type="submit" value="Rechercher" class="btn btn-primary">
-            </div>  
         </div>
     </form>
+</div>
+<div id="liste">
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.LibelleOffreFormation)
-                </th>*@
-            <h4>Libelle Offre Formation</h4>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LibelleOffreFormation)
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input type="submit" value="Sélectionner" name="btRechercherStagiaire" class="btn btn-primary" @*asp-route-id="@item.BeneficiaireOffreFormations" asp-controller="EditerInfosStagiaire2" asp-action="Edit"*@ />
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<div class="form-group">
-    <form asp-controller="EditerInfosStagiaires" asp-action="Details">
-    </form>
-</div>
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+
+    <script>
+        $(document).ready(function () {
+            $('#tbRechercherOFormation').autocomplete({
+                source: '/api/chargerlibelleformation/search',
+                minLength: 3
+            });
+        });
+        $(document).ready(function () {
+            $('#boutontest').on('click', function (e) {
+                var libelle = $('#tbRechercherOFormation').val();
+                const uri = '/EditerInfosStagiaire/ChargerListeStagiaires?libelle=' + libelle;
+                const encoded = encodeURI(uri);
+                $('#liste').load(encoded);
+            });
+        });
+        //$(document).ready(function () {
+        //    $('#tbRechercherOFormation').keypress(function (e) {
+        //        if (e.keyCode == 13) {
+        //            if ($("#tbRechercherOFormation").val().length == 0) {
+        //                e.preventDefault();
+        //                return false;
+        //            }
+        //        }
+        //        var libelle = $('#tbRechercherOFormation').val();
+        //        const uri = '/EditerInfosStagiaire/ChargerListeStagiaires?libelle=' + libelle;
+        //        const encoded = encodeURI(uri);
+        //        $('#liste').load(encoded);
+        //    });
+        //});
+       
+    </script>
+}
+
+

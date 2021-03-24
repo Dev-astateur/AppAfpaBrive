@@ -1,0 +1,50 @@
+﻿@model IEnumerable<AppAfpaBrive.BOL.Beneficiaire>
+
+@*@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.MVC.Paging*@
+
+@{
+    ViewData["Title"] = "VuePartielleStagiaires";
+}
+
+<h2>Sélectionnez un(e) stagiaire</h2>
+
+@*<nav aria-label="Suppliers navigation example">
+    @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+</nav>*@
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomBeneficiaire)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrenomBeneficiaire)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MatriculeBeneficiaire)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomBeneficiaire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrenomBeneficiaire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatriculeBeneficiaire)
+                </td>
+                <td>
+                    <a asp-controller="EditerInfosStagiaire2" asp-action="ChargerStagiaire" asp-route-id="@item.MatriculeBeneficiaire">Editer</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

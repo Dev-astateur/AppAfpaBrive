@@ -1,7 +1,11 @@
-﻿using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers;
+using AppAfpaBrive.DAL.Layers;
+using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,11 +14,14 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {
+
+
     public class EditerInfosStagiaireController : Controller
     {
-        //private AFPANADbContext _context = null;
+        private AFPANADbContext _context = null;
         private readonly StagiaireLayer _stagiaireLayer;
         private readonly OffreFormationLayer _offreFormation;
+        private readonly BeneficiaireLayer _beneficiaireLayer;
 
 
         public EditerInfosStagiaireController(AFPANADbContext context)
@@ -23,49 +30,35 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
             _stagiaireLayer = new StagiaireLayer(context);
         }
 
-        //public StagiaireLayer(AFPANADbContext context)
-        //{
-        //    _stagiaireLayer = new StagiaireLayer(context);
-        //}
-        //public EditerInfosStagiaireController(AFPANADbContext context)
-        //{
-        //    this _context = context;
-        //}
-
-        //Remplir DropDown
-        private void RemplirListOffreFormation()
-        {
-
-        }
-
         //GET: EditerInfosStagiaireController
         public async Task<ActionResult> ListeOffreFormation(string tbRechercherOFormation)
         {
             this.ViewBag.MonTitre = "ListeOffreFormation";
-            //var query = _offreFormation.GetAllOffreFormation();
-            //var query3 = _offreFormation.GetOffreFormationStartsWith(tbRechercherOFormation);
             var query2 = _offreFormation.GetOffreFormationByContains(tbRechercherOFormation);
-            //var query3 = _stagiaireLayer.GetAllStagiaires();
 
             return View(query2);
         }
 
-        //public ActionResult Create()
+        //Composant de pagination
+        //public async Task<IActionResult> ChargerListeStagiaires(int page = 1)
         //{
-        //    this.ViewBag.MonTitre = "Create";
-        //    var query = _offreFormation.GetAllOffreFormation().ToList();
-        //    return View(query);
+        //    var beneficiaires =_context.Beneficiaires.OrderBy(x => x.NomBeneficiaire);
+        //    var model = await PagingList.CreateAsync(beneficiaires, 5, page);
+        //    return PartialView("_VuePartielleStagiaires", model);
         //}
 
-        //// GET: EditerInfosStagiaireController/Details/5
-        public ActionResult Details(int? id)
+
+        //public IActionResult ChargerListeStagiaires(int idOffreFormation)
+        //{
+        //    var beneficiaires = _stagiaireLayer.GetBeneficiaireParIdOffreDeFormation(idOffreFormation);
+        //    return PartialView("_VuePartielleStagiaires", beneficiaires);
+        //}
+
+        
+        public async Task<IActionResult> ChargerListeStagiaires(string libelle)
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var obj = _stagiaireLayer.GetBeneficiaireParOffreDeFormation();
-            return View(obj);
+            var beneficiaires = _stagiaireLayer.GetBeneficiaireParLibelleOffreDeFormation(libelle);
+            return PartialView("_VuePartielleStagiaires", beneficiaires);
         }
 
         // GET: EditerInfosStagiaireController/Details/5
@@ -85,27 +78,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
-            string matricule = HttpContext.Request.Query["term"].ToString();
-
-
-            if (ModelState.IsValid)
-            {
-                //on enregistre en bdd
-            }
-             // Sinon on ne fait rien
-            
-            try
-            {
-                
-                  //  return View();
-                
-                return RedirectToAction("Edit", "EditerInfosStagiaire2");
-
-            }
-            catch
-            {
-                return View();
-            }
+            return View();
         }
 
         // GET: EditerInfosStagiaireController/Edit/5

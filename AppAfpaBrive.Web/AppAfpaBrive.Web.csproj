@@ -30,6 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
+    <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Formateur\EditerInfosStagiaire-Romgb\" />
     <Folder Include="Controllers\Stagiaire\" />
     <Folder Include="Controllers\ExtraireInformationStagiaireController\" />
     <Folder Include="Data\Documents\" />

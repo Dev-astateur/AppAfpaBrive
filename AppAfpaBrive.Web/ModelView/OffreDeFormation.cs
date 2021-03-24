@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AppAfpaBrive.Web.ModelView
+namespace AppAfpaBrive.Web.ModelViews
 {
     public class OffreDeFormation
     {

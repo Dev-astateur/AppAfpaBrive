@@ -20,5 +20,15 @@ namespace AppAfpaBrive.Web.Layers
         {
             return _context.Pays.Find(idPays);
         }
+
+        public IEnumerable<Pays> GetAll()
+        {
+            return _context.Pays.ToList();
+        }
+
+        public IEnumerable<string> GetAllLibelle()
+        {
+           return _context.Pays.Select(x => x.LibellePays).ToList();
+        }
     }
 }
