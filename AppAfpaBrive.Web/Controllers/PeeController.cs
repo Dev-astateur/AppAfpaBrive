@@ -236,7 +236,7 @@ namespace AppAfpaBrive.Web.Controllers
 
                     if ( await _peeLayer.UpdatePeeAsync(peeModelView) )
                     {
-                        return RedirectToAction(nameof(PrevenirBeneficaire), new { id = MatriculeCollaborateurAfpa, idBenef = peeModelView.MatriculeBeneficiaire });
+                        return RedirectToAction(nameof(PrevenirBeneficaire), new {id = IdPee ,idColl = MatriculeCollaborateurAfpa });
                     }
                     
                 }
@@ -260,12 +260,12 @@ namespace AppAfpaBrive.Web.Controllers
         [Route("/Pee/ListeDocumentPee/{id}")]
         [Route("/Pee/ListeDocumentPee/{id}/{page}")]
         [HttpGet]
-        public async Task<IActionResult> ListeDocumentPee(int? id,int? page)
+        public async Task<IActionResult> ListeDocumentPee(decimal? id,int? page)
         {
             if (id is null)
                 return NotFound();
 
-            IEnumerable<PeeDocumentModelView> peeDocument = await _peeLayer.GetPeeDocumentByIdAsync((int)id);
+            IEnumerable<PeeDocumentModelView> peeDocument = await _peeLayer.GetPeeDocumentByIdAsync((decimal)id);
 
             if ( page is not null )
             {
@@ -280,12 +280,21 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> PrevenirBeneficaire(string id, string idBenef)
+        public async Task<IActionResult> PrevenirBeneficaire(decimal id,string idColl)
         {
-            
+            MessageModelView messageView = await _peeLayer.GetElementByIdPeeForMessageAsync(id);
+            string sujet = _config.GetSection("MessagePee").GetSection("Sujet").Value;
+            string message = messageView.EtatPee == 0? _config.GetSection("MessagePee").GetSection("Non").Value:
+                _config.GetSection("MessagePee").GetSection("Oui").Value;
+            messageView.MatriculeCollaborateurAfpa = idColl;
+
+            message += string.IsNullOrWhiteSpace(messageView.Remarque) ? "" : " \r\nVoici le message qui a spécifié: " + messageView.Remarque;
+            message += "\r\n"+"Veuillez ne pas répondre à ce mail qui est envoyé automatiquement.";
+            message += "\r\n" + "Si vous avez des questions, veuillez contacter votre formateur.";
+
+            await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, sujet, message);
             return View();
         }
-
     }
 }
  

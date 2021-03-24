@@ -91,7 +91,7 @@ namespace AppAfpaBrive.Web.Layers
             return await model;
         }
 
-        public async Task<PeeEntrepriseModelView> GetPeeByIdPeeOffreEntreprisePaysAsync(int idPee)
+        public async Task<PeeEntrepriseModelView> GetPeeByIdPeeOffreEntreprisePaysAsync(decimal idPee)
         {
             return await _dbContext.Pees.Where(e=>e.IdPee==idPee)
                 .Include(e => e.Id)
@@ -105,7 +105,7 @@ namespace AppAfpaBrive.Web.Layers
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<PeeModelView> GetPeeByIdAsync(int idPee)
+        public async Task<PeeModelView> GetPeeByIdAsync(decimal idPee)
         {
             return new PeeModelView(await _dbContext.Pees.FindAsync((decimal)idPee));
         }
@@ -116,7 +116,7 @@ namespace AppAfpaBrive.Web.Layers
                 .Include(e=>e.Id).Select(e=>e.Id.MatriculeCollaborateurAfpa).FirstAsync();
         }
 
-        public async Task<ICollection<PeeDocumentModelView>> GetPeeDocumentByIdAsync(int idPee)
+        public async Task<ICollection<PeeDocumentModelView>> GetPeeDocumentByIdAsync(decimal idPee)
         {
             return await _dbContext.PeeDocuments.Where(e => e.IdPee == idPee).Select(e=>new PeeDocumentModelView(e)).ToListAsync();
         }
@@ -148,6 +148,21 @@ namespace AppAfpaBrive.Web.Layers
                 return false;
             }
             return false;
+        }
+
+        public async Task<MessageModelView> GetElementByIdPeeForMessageAsync(decimal idPee)
+        {
+            return await _dbContext.Pees.Where(e => e.IdPee == idPee)
+                .Include(e=>e.MatriculeBeneficiaireNavigation)
+                .ThenInclude(e=>e.CodeTitreCiviliteNavigation)
+                .Select(e=> new MessageModelView() { 
+                    Remarque = e.Remarque,
+                    EtatPee = e.EtatPee,
+                    NomBeneficiaire = e.MatriculeBeneficiaireNavigation.NomBeneficiaire,
+                    PrenomBeneficiaire = e.MatriculeBeneficiaireNavigation.PrenomBeneficiaire,
+                    MailBeneficiaire = e.MatriculeBeneficiaireNavigation.MailBeneficiaire,
+                    CodeTitreCiviliteNavigation = new TitreCiviliteModelView(e.MatriculeBeneficiaireNavigation.CodeTitreCiviliteNavigation)
+                } ).FirstAsync();
         }
     }
 }
