@@ -38,6 +38,7 @@ namespace AppAfpaBrive.Web.Models
 
 
 
+
         public string IdEtablissement { get => _idEtablissement; set => _idEtablissement = value; }
         public string Etablissement { get => _etablissement; set => _etablissement = value; }
         public int IdFormation { get => _idFormation; set => _idFormation = value; }

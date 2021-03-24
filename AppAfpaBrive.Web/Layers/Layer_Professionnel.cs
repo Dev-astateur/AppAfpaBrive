@@ -47,6 +47,16 @@ namespace AppAfpaBrive.Web.Layers
         {
             return _db.Professionnels.Where(x => x.IdProfessionnel == ID).FirstOrDefault();
         }
+
+        public string Get_Nom_Pro(int ID)
+        {
+            return _db.Professionnels.Where(x => x.IdProfessionnel == ID).Select(x => x.NomProfessionnel).FirstOrDefault();
+        }
+        public string Get_Prenom_Pro(int ID)
+        {
+            return _db.Professionnels.Where(x => x.IdProfessionnel == ID).Select(x => x.PrenomProfessionnel).FirstOrDefault();
+        }
+
     }
 
 }
