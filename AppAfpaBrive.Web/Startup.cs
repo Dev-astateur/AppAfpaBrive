@@ -47,7 +47,7 @@ namespace AppAfpaBrive.Web
             services.AddPaging(option =>
             {
                 option.ViewName = "Bootstrap4";
-                option.PageParameterName = "page";
+                //option.PageParameterName = "page";
             });
            
         }

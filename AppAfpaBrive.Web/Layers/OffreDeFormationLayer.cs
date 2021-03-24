@@ -1,4 +1,5 @@
 ﻿using AppAfpaBrive.DAL;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,9 +27,11 @@ namespace AppAfpaBrive.Web.Layers
            // return _context.OffreFormations.Where(b => b.MatriculeCollaborateurAfpa == idCollaborateurAFPA).FirstOrDefault();
                 
         }
-        public ICollection<BOL.OffreFormation> GetAllbyMatricule(string idCollaborateurAFPA)
+        public IEnumerable<SelectListItem> GetAllbyMatricule(string idCollaborateurAFPA)
         {
-            return _context.OffreFormations.Where(a => a.MatriculeCollaborateurAfpa == idCollaborateurAFPA).ToList();
+            return _context.OffreFormations.Where(a => a.MatriculeCollaborateurAfpa == idCollaborateurAFPA)
+                .Select(e => new SelectListItem() { Text = e.LibelleOffreFormation, Value = e.IdOffreFormation.ToString() })
+                .ToList();
                
         }
        

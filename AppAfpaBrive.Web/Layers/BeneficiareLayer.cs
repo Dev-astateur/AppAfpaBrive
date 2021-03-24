@@ -1,5 +1,6 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.ModelView;
 using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
 using System;
@@ -26,19 +27,21 @@ namespace AppAfpaBrive.Web.Layers
             return _context.BeneficiaireOffreFormations.Where(e => e.IdOffreFormation == id).Include(a => a.MatriculeBeneficiaireNavigation)
                  .Select(e => e.MatriculeBeneficiaireNavigation).ToList();
         }
-        public async Task<PagingList<ModelView.BeneficiaireModelView>> GetPage(int id, int page = 1, string sortExpression = "NomBeneficiaire")
+        public async Task<PagingList<ModelView.BeneficiaireSpecifiqueModelView>> GetPage(int id, int page = 1)
         {
             //var qry = _context.Beneficiaires.AsQueryable()
                 var qry = _context.BeneficiaireOffreFormations.Where(e => e.IdOffreFormation==id).Include(a => a.MatriculeBeneficiaireNavigation)
-                .Select(e => new ModelView.BeneficiaireModelView()
+                .Select(e => new BeneficiaireSpecifiqueModelView()
                 {
                     NomBeneficiaire = e.MatriculeBeneficiaireNavigation.NomBeneficiaire,
                     PrenomBeneficiaire = e.MatriculeBeneficiaireNavigation.PrenomBeneficiaire,
                     MailBeneficiaire = e.MatriculeBeneficiaireNavigation.MailBeneficiaire,
                     MailingAutorise = e.MatriculeBeneficiaireNavigation.MailingAutorise
+
+                    
                 }).AsQueryable() ;
 
-            return await PagingList.CreateAsync<ModelView.BeneficiaireModelView>(qry, 20, page, sortExpression, "NomBeneficiaire");
+            return await PagingList.CreateAsync<ModelView.BeneficiaireSpecifiqueModelView>((IOrderedQueryable<BeneficiaireSpecifiqueModelView>)qry, 5, page);
         }
         #endregion 
     }
