@@ -19,7 +19,7 @@
     <form asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation">
         <div class="row">
             <div class="col-md-10 text-center w-auto ">
-                <input type="text" size="100" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
+                <input type="text" size="80" id="tbRechercherOFormation" placeholder="Entrez le nom de la formation" />
             </div>
             <div>
                 <input type="button" id="boutontest" class="btn btn-primary" value="Recherche" />
@@ -51,6 +51,20 @@
                 $('#liste').load(encoded);
             });
         });
+        //$(document).ready(function () {
+        //    $('#tbRechercherOFormation').keypress(function (e) {
+        //        if (e.keyCode == 13) {
+        //            if ($("#tbRechercherOFormation").val().length == 0) {
+        //                e.preventDefault();
+        //                return false;
+        //            }
+        //        }
+        //        var libelle = $('#tbRechercherOFormation').val();
+        //        const uri = '/EditerInfosStagiaire/ChargerListeStagiaires?libelle=' + libelle;
+        //        const encoded = encodeURI(uri);
+        //        $('#liste').load(encoded);
+        //    });
+        //});
        
     </script>
 }

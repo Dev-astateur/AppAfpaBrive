@@ -37,10 +37,13 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
             {
                 return BadRequest();
             }
-            var beneficiaire = _stagiaireLayer.FinByMatricule(id);
-            BeneficiaireModelView beneficiaireModelView = new BeneficiaireModelView(beneficiaire);
-            IEnumerable<string> listePays = _paysLayer.GetAllLibelle();
-            ViewBag.IDPays2 = listePays;
+
+                var beneficiaire = _stagiaireLayer.FinByMatricule(id);
+                BeneficiaireModelView beneficiaireModelView = new BeneficiaireModelView(beneficiaire);
+                IEnumerable<string> listePays = _paysLayer.GetAllLibelle();
+                ViewBag.LibellePays = listePays;
+            
+
             return View(beneficiaireModelView);
         }           
 
@@ -58,6 +61,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         {
             var btnRadioGenre = Request.Form["Genre"].ToString();
             var btnRadioMailing = Request.Form["Mailing"].ToString();
+            var textArea = Request.Form["Ville"].ToString();
 
             if (ModelState.IsValid)
             {

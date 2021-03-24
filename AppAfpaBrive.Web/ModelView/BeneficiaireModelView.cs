@@ -91,5 +91,7 @@ namespace AppAfpaBrive.Web.ModelView
         public virtual ICollection<ContratModelView> Contrats { get; set; }
         //public virtual ICollection<DestinataireEnquete> DestinataireEnquetes { get; set; }
         public virtual ICollection<PeeModelView> Pees { get; set; }
+
+        public virtual ICollection<Pays> Pays { get; set; }
     }
 }

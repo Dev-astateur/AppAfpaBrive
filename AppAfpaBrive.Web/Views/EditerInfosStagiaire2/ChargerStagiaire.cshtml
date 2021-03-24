@@ -8,128 +8,141 @@
 
 <h1>Stagiaire</h1>
 
+
+<head>
     <Link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" />
+</head>
+    
 
 <hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit2">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="MatriculeBeneficiaire" />
-            <div class="row">
-                <div class="form-group form-check">
-                    <div>
-                        <label asp-for="CodeTitreCivilite" class="control-label">Code Titre Civilité</label>
-                    </div>
-                    <div class="form-check-label">
-                        <label>Monsieur</label>
-                        @Html.RadioButton("Genre", "0", true)
-                        <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
-                    </div>
-                    <div class="form-check-label">
-                        <label>Madame</label>
-                        @Html.RadioButton("Genre", "1")
-                        <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label asp-for="NomBeneficiaire" class="control-label">Nom</label>
-                    <input asp-for="NomBeneficiaire" class="form-control" />
-                    <span asp-validation-for="NomBeneficiaire" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label asp-for="PrenomBeneficiaire" class="control-label">Prénom</label>
-                    <input asp-for="PrenomBeneficiaire" class="form-control" />
-                    <span asp-validation-for="PrenomBeneficiaire" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label asp-for="DateNaissanceBeneficiaire" class="control-label">Date de naissance</label>
-                    <input asp-for="DateNaissanceBeneficiaire" class="form-control" />
-                    <span asp-validation-for="DateNaissanceBeneficiaire" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label asp-for="MailBeneficiaire" class="control-label">Adresse E-mail</label>
-                    <input asp-for="MailBeneficiaire" class="form-control" />
-                    <span asp-validation-for="MailBeneficiaire" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label asp-for="TelBeneficiaire" class="control-label">Téléphone</label>
-                    <input asp-for="TelBeneficiaire" class="form-control" />
-                    <span asp-validation-for="TelBeneficiaire" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label asp-for="Ligne1Adresse" class="control-label">Adresse</label>
-                    <textarea asp-for="Ligne1Adresse" class="form-control"></textarea>
-                    <span asp-validation-for="Ligne1Adresse" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 form-group">
-                    <label asp-for="CodePostal" class="control-label">Code Postal</label>
-                    <input asp-for="CodePostal" id="inputCodePostal" class="form-control" />
-                    <span asp-validation-for="CodePostal" class="text-danger"></span>
-                </div>
-                <div class="col-sm-3 form-group">
-                    <label asp-for="Ville" class="control-label">Ville</label>
-                    <input asp-for="Ville" id="inputVille" class="form-control" />
-                    <span asp-validation-for="Ville" class="text-danger"></span>
-                </div>
-                <div class="col-sm-2 form-group">
-                    <label asp-for="IdPays2" class="control-label">Id Pays</label>
-                    @Html.DropDownListFor(x => x.IdPays2, new SelectList(ViewBag.IdPays2 as IEnumerable<string>, selectedValue: "FR"), new { id = "ddlPays"} )
-                    <span asp-validation-for="IdPays2" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4 form-group">
-                    <label asp-for="PathPhoto" class="control-label">Photo</label>
-                    <input asp-for="PathPhoto" type="file" id="upload" accept="image/*" onchange="loadFile(event)" class="form-control" />
-                    <span asp-validation-for="PathPhoto" class="text-danger"></span>
-                </div>
-                <div class="col-sm-8 form-group">
-                    <img hidden id="output" height="200" width="200" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group form-check">
-                    <div>
-                        <label asp-for="MailingAutorise" class="control-label">Mailing Autorisé</label>
-                    </div>
-                    <div class="form-check-label">
-                        <label>Oui</label>
-                        @Html.RadioButton("Mailing", "0", true)
-                        <span asp-validation-for="MailingAutorise" class="text-danger"></span>
-                    </div>
-                    <div class="form-check-label">
-                        <label>Non</label>
-                        @Html.RadioButton("Mailing", "1")
-                        <span asp-validation-for="MailingAutorise" class="text-danger"></span>
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Edit2" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="MatriculeBeneficiaire" />
+                <div class="row">
+                    <div class="form-group form-check">
+                        <div>
+                            <label asp-for="CodeTitreCivilite" class="control-label">Civilité</label>
+                        </div>
+                        <div class="form-check-label">
+                            <label>Monsieur</label>
+                            @Html.RadioButton("Genre", "0", true)
+                            <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
+                        </div>
+                        <div class="form-check-label">
+                            <label>Madame</label>
+                            @Html.RadioButton("Genre", "1")
+                            <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Revenir au menu d'édition" class="btn btn-danger" asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation" />
-                <input type="submit" value="Enregistrer" class="btn btn-primary" asp-controller="EditerInfosStagiaire2" asp-action="Update" />
-            </div>
-        </form>
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label asp-for="NomBeneficiaire" class="control-label">Nom</label>
+                        <input asp-for="NomBeneficiaire" class="form-control" />
+                        <span asp-validation-for="NomBeneficiaire" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label asp-for="PrenomBeneficiaire" class="control-label">Prénom</label>
+                        <input asp-for="PrenomBeneficiaire" class="form-control" />
+                        <span asp-validation-for="PrenomBeneficiaire" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label asp-for="DateNaissanceBeneficiaire" class="control-label">Date de naissance</label>
+                        <input asp-for="DateNaissanceBeneficiaire" class="form-control" />
+                        <span asp-validation-for="DateNaissanceBeneficiaire" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label asp-for="MailBeneficiaire" class="control-label">Adresse E-mail</label>
+                        <input asp-for="MailBeneficiaire" class="form-control" />
+                        <span asp-validation-for="MailBeneficiaire" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 form-group">
+                        <label asp-for="TelBeneficiaire" class="control-label">Téléphone</label>
+                        <input asp-for="TelBeneficiaire" class="form-control" />
+                        <span asp-validation-for="TelBeneficiaire" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <label asp-for="Ligne1Adresse" class="control-label">Adresse</label>
+                        <input asp-for="Ligne1Adresse" class="form-control"/><br />
+                        <span asp-validation-for="Ligne1Adresse" class="text-danger"></span>
+                        <div>
+                            <input asp-for="Ligne2Adresse" class="form-control" placeholder="Ligne 2" /><br />
+                            <span asp-validation-for="Ligne2Adresse" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <input asp-for="Ligne3Adresse" class="form-control" placeholder="Ligne 3" />
+                            <span asp-validation-for="Ligne3Adresse" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 form-group">
+                        <label asp-for="CodePostal" class="control-label">Code Postal</label>
+                        <input asp-for="CodePostal" id="inputCodePostal" class="form-control" />
+                        <span asp-validation-for="CodePostal" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        <label asp-for="Ville" class="control-label">Ville</label>
+                        <input asp-for="Ville" id="inputVille" class="form-control" />
+                        <span asp-validation-for="Ville" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-2 form-group">
+                        <label asp-for="IdPays2" class="control-label">Pays</label>
+                        <div>
+                            @Html.DropDownListFor(model => model.Pays, new SelectList(ViewBag.LibellePays as IEnumerable<string>, selectedValue: "FRANCE"), new { id = "ddlPays" })
+                        </div>
+                        <span asp-validation-for="IdPays2" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5 form-group">
+                        <label asp-for="PathPhoto" class="control-label">Photo</label>
+                        <input asp-for="PathPhoto" type="file" id="upload" accept="image/*" onchange="loadFile(event)" class="form-control" />
+                        <span asp-validation-for="PathPhoto" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-8 form-group">
+                        <img hidden id="output" height="200" width="200" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group form-check">
+                        <div>
+                            <label asp-for="MailingAutorise" class="control-label">Mailing Autorisé</label>
+                        </div>
+                        <div class="form-check-label">
+                            <label>Oui</label>
+                            @Html.RadioButton("Mailing", "0", true)
+                            <span asp-validation-for="MailingAutorise" class="text-danger"></span>
+                        </div>
+                        <div class="form-check-label">
+                            <label>Non</label>
+                            @Html.RadioButton("Mailing", "1")
+                            <span asp-validation-for="MailingAutorise" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Revenir au menu d'édition" class="btn btn-danger" asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation" />
+                    <input type="submit" value="Enregistrer" class="btn btn-primary" asp-controller="EditerInfosStagiaire2" asp-action="Update" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 @section Scripts {
 
-    @*<script src="https://raw.githack.com/xcash/bootstrap-autocomplete/master/dist/latest/bootstrap-autocomplete.js"></script>*@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     @*//Test UpLoad Image//*@
@@ -157,13 +170,13 @@
             }
         };
 
-        //////Composant d'affichage des communes en fonction du code postal
+        //Composant d'affichage des communes en fonction du code postal
         $(document).ready(function () {
             $("[id*=inputVille]").focus(function () {
 
                 //var request = new XMLHttpRequest();
                 //request.open('GET', 'https://api.zippopotam.us/')
-                var url = "https://api.zippopotam.us/"
+                var url = "https://api.zippopotam.us/fr"
                 var Pays = $("[id*=ddlPays]").val()
                 var CP = $("[id*=inputCodePostal]").val()
                 $.ajax({
@@ -183,40 +196,6 @@
                 })
             })
         })
-
-
-                //Composant d'affichage des communes en fonction du code postal
-        //$(document).ready(function () {
-        //    $('#advancedAutoComplete').autoComplete({
-        //        resolver: 'custom',
-        //        autoSelect: 'true',
-        //        minLength: 2,
-        //        formatResult: function (item) {
-        //            console.log(item)
-        //            return {
-        //                value: item["state abreviation"],
-        //                text: item["place name"],
-        //            };
-
-        //            console.log(item)
-        //        },
-        //        events: {
-        //            search: function (qry, callback) {
-        //                var url = "https://api.zippopotam.us/fr";
-        //                var cp = $("[id*=inputCodePostal]").val();
-        //                var urlFull = url + "/" + cp;
-
-        //                $.ajax(
-        //                    urlFull,
-        //                ).done(function (res) {
-        //                    callback(res);
-        //                });
-
-        //            }
-        //        }
-        //    });
-        //});
-
 
     </script>
 }
