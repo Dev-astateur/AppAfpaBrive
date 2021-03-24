@@ -37,7 +37,6 @@
     <Folder Include="Views\OffreDeFormationBeneficiaire\" />
     <Folder Include="Views\Stagiaire\" />
     <Folder Include="Models\Layer\" />
-    <Folder Include="Script\" />
     <Folder Include="Repository\" />
     <Folder Include="wwwroot\PeeDocument\" />
   </ItemGroup>

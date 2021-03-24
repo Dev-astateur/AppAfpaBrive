@@ -49,6 +49,9 @@ namespace AppAfpaBrive.Web.Controllers
             
             return View(entrepriseModel);
         }
+
+       
+
         [HttpPost]
         public ActionResult ModifierEntreprise(Entreprise entreprise, string Pays)
         {
@@ -223,8 +226,9 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpPost]
         public ActionResult CreerEntreprise(EntrepriseListViewModel entrepriseVM, string InputPays)
         {
-            string libellePays = InputPays;
             
+
+            string libellePays = InputPays;
 
             Entreprise entreprise = new Entreprise();
             entreprise.CodePostal = entrepriseVM.CodePostal;
