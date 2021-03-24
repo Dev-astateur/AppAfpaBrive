@@ -51,35 +51,31 @@ namespace AppAfpaBrive.Web.ModelView
 
 
 
-        [Required(ErrorMessage = "Veuillez saisir un prénom")]
+        [Required(ErrorMessage = "Veuillez saisir un nom")]
         public string NomBeneficiaire { get; set; }
 
-        
-        [Display(Name ="Prénom du stagiaire")]
         [Required(ErrorMessage = "Veuillez saisir un prénom")]
         public string PrenomBeneficiaire { get; set; }
         
         public DateTime? DateNaissanceBeneficiaire { get; set; }
 
         [Required]
-        [RegularExpression(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b")]
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage ="Veuillez saisir une adresse email valide")]
         public string MailBeneficiaire { get; set; }
 
-        [Required]
-        [RegularExpression(@"(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}")]
+        [Required(ErrorMessage ="Veuillez saisir un numéro de téléphone")]
+        [RegularExpression(@"(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}", ErrorMessage ="Veuillez saisir un numéro de téléphone valide")]
         public string TelBeneficiaire { get; set; }
 
         public string Ligne1Adresse { get; set; }
         public string Ligne2Adresse { get; set; }
         public string Ligne3Adresse { get; set; }
 
-        [Required]
-        [MaxLength(5)]
-        [MinLength(5)]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Doit être un caractère numérique")]
+        [Required(ErrorMessage ="Veuillez saisir un code postal")]
+        [RegularExpression(@"^\d{5}(-\d{4})?$", ErrorMessage = "Code postal invalide")]
         public string CodePostal { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Veuillez séléctionner une ville")]
         public string Ville { get; set; }
         public string UserId { get; set; }
         public string IdPays2 { get; set; }
