@@ -15,7 +15,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
     public class EditerInfosStagiaire2Controller : Controller
     {
         private readonly StagiaireLayer _stagiaireLayer;
-        private AFPANADbContext _context = null;
+        //private AFPANADbContext _context = null;
         private readonly PaysLayer _paysLayer;
 
         public EditerInfosStagiaire2Controller(AFPANADbContext context)
@@ -31,6 +31,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         }
 
         // GET: EditerInfosStagiaire2Controller/Details/5
+        // Chargement de la page avec tous les champs
         public ActionResult ChargerStagiaire(string id)
         {
             if (id == null)
@@ -50,21 +51,20 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         // GET: EditerInfosStagiaire2Controller/Create
         public ActionResult Create()
         {
-
             return View();
         }
 
         // POST: EditerInfosStagiaire2Controller/Create
+        // Enregistrement des modifications
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(Beneficiaire beneficiaire)
+        public ActionResult ChargerStagiaire(Beneficiaire beneficiaire)
         {
             var btnRadioGenre = Request.Form["Genre"].ToString();
             var btnRadioMailing = Request.Form["Mailing"].ToString();
-            var textArea = Request.Form["Ville"].ToString();
 
             if (ModelState.IsValid)
-            {
+            {                       
                 if (btnRadioMailing == "0")
                 {
                     beneficiaire.MailingAutorise = true;
@@ -79,8 +79,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 
                 _stagiaireLayer.UpdateBeneficiaire(beneficiaire);
             }
-            return RedirectToAction("ListeOffreFormation", "EditerInfosStagiaire");
-        
+            return RedirectToAction("ListeOffreFormation", "EditerInfosStagiaire");       
         }
 
         // GET: EditerInfosStagiaire2Controller/Edit/5

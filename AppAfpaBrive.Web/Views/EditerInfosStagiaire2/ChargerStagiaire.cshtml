@@ -12,11 +12,11 @@
 <head>
     <Link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" />
 </head>
-    
 
-<hr />
-    <div class="row">
-        <div class="col-md-12">
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("ChargerStagiaire", "EditerInfosStagiaire2", FormMethod.Post))
+        {
             <form asp-action="Edit2" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="MatriculeBeneficiaire" />
@@ -75,14 +75,14 @@
                 <div class="row">
                     <div class="col-md-4 form-group">
                         <label asp-for="Ligne1Adresse" class="control-label">Adresse</label>
-                        <input asp-for="Ligne1Adresse" class="form-control"/><br />
+                        <input asp-for="Ligne1Adresse" class="form-control" /><br />
                         <span asp-validation-for="Ligne1Adresse" class="text-danger"></span>
                         <div>
-                            <input asp-for="Ligne2Adresse" class="form-control" placeholder="Ligne 2" /><br />
+                            <input asp-for="Ligne2Adresse" class="form-control" placeholder="Adresse 2" /><br />
                             <span asp-validation-for="Ligne2Adresse" class="text-danger"></span>
                         </div>
                         <div>
-                            <input asp-for="Ligne3Adresse" class="form-control" placeholder="Ligne 3" />
+                            <input asp-for="Ligne3Adresse" class="form-control" placeholder="Adresse 3" />
                             <span asp-validation-for="Ligne3Adresse" class="text-danger"></span>
                         </div>
                     </div>
@@ -135,30 +135,21 @@
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Revenir au menu d'édition" class="btn btn-danger" asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation" />
-                    <input type="submit" value="Enregistrer" class="btn btn-primary" asp-controller="EditerInfosStagiaire2" asp-action="Update" />
+                    <input type="submit" value="Enregistrer" class="btn btn-primary" asp-controller="EditerInfosStagiaire2" asp-action="ChargerStagiaire" />
                 </div>
             </form>
-        </div>
+        }
     </div>
+
+</div>
 
 @section Scripts {
 
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     @*//Test UpLoad Image//*@
     <script type="text/javascript">
-
-        //$(document).ready(
-        //    $("#upload").change(function () {
-        //        var oFReader = new FileReader();
-        //        oFReader.readAsDataURL(this.files[0]);
-        //        oFReader.onloadend = function (oFREvent) {
-        //            $("#output").attr('src', oFREvent.target.result);
-        //            $("#output").attr('visible', true);
-        //        };
-        //    })
-        //);
-
 
         //Chargement Image
         var loadFile = function (event) {
@@ -180,7 +171,7 @@
                 var Pays = $("[id*=ddlPays]").val()
                 var CP = $("[id*=inputCodePostal]").val()
                 $.ajax({
-                    url: url + Pays + "/" + CP,
+                    url: url + "/" + CP,
                     dataType: "json",
                     type: "GET",
                     success: function (result, success) {

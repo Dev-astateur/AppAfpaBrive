@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppAfpaBrive.BOL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.ModelViews
 {
-    public class Beneficiaire
+    public class ViewModelBeneficiaire
     {
         [Required]
         [Display(Name = "Civilité du bénéficiaire")]
@@ -15,7 +16,6 @@ namespace AppAfpaBrive.Web.ModelViews
         [Required]
         [Display(Name = "Matricule du bénéficiaire")]
         public string MatriculeBeneficiaire { get; set; }
-
 
         [Required]
         [Display(Name = "Nom du bénéficiaire")]

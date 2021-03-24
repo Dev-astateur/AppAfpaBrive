@@ -76,9 +76,7 @@ namespace AppAfpaBrive.DAL.Layers
                         MailingAutorise = b.MailingAutorise
                     })
                     .ToList();
-        }
-
-        
+        }     
 
         //Methodes CRUD
         public void InsertBeneficiaire(Beneficiaire beneficiaire)
