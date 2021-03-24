@@ -45,5 +45,12 @@ namespace AppAfpaBrive.Web.Layers
                 .Select(x=>x.IdPee)
                 .LastOrDefault();
         }
+
+        public decimal Pee_Create_ID_Back(Pee pee)
+        {
+            _dbContext.Pees.Add(pee);
+            _dbContext.SaveChanges();
+            return pee.IdPee;
+        }
     }
 }

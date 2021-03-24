@@ -133,6 +133,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
                 str = JsonConvert.SerializeObject(convention);
                 HttpContext.Session.SetString("convention", str);
+                //HttpContext.Session.SetString("pro", "");
+                //HttpContext.Session.SetString("date", "");
                 return RedirectToAction("Entreprise_Recap");
             }
             return View(obj);
@@ -389,7 +391,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-
+            int entrepriseID = 0;
             if(convention.Entreprise_Create == true)
             {
                 Entreprise entreprise = new Entreprise
@@ -405,7 +407,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     TelEntreprise = convention.Entreprise_Tel,
                     NumeroSiret = convention.Siret
                 };
-                _Entreprise.Create_entreprise(entreprise);
+                entrepriseID = _Entreprise.Create_entreprise_ID_Back(entreprise);
             }
 
             Pee pee = new Pee
@@ -420,13 +422,12 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
             string str_date = this.HttpContext.Session.GetString("date");
             List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
-            _peelayer.Pee_Create(pee);
-            decimal id = _peelayer.GetPeeBy_Idmatricule_idFormation_idetablissemnt(pee.MatriculeBeneficiaire, pee.IdEntreprise, pee.IdEtablissement);
+            decimal peeId = _peelayer.Pee_Create_ID_Back(pee);
             foreach (var item in dates)
             {
                 PeriodePee periodePee = new PeriodePee
                 {
-                    IdPee = id,
+                    IdPee = peeId,
                     DateDebutPeriodePee = item.Date1,
                     DateFinPeriodePee = item.Date2,
                     NumOrdre = item.Iddate
