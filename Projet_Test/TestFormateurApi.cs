@@ -11,6 +11,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
 
 namespace Projet_Test
 {
@@ -25,13 +27,18 @@ namespace Projet_Test
         public void Setup()
         {
             dba = db.GetAFPANADbContext("test");
-
-            dba.CollaborateurAfpas.Add(new CollaborateurAfpa
+            var s1 = new CollaborateurAfpa
             {
                 NomCollaborateur = "Titi",
                 MatriculeCollaborateurAfpa = "96AA011"
-            });
+            };
 
+            dba.CollaborateurAfpas.Add(s1);
+
+            dba.SaveChanges();
+
+            
+            
         }
 
         [Test]
@@ -52,10 +59,33 @@ namespace Projet_Test
 
             Assert.That(result is OkObjectResult);
             Assert.That((HttpStatusCode)result.StatusCode == HttpStatusCode.OK);
-            //Assert.That(result.Value);
-            
- 
         }
 
+
+
+        [Test]
+        public async Task TestGetFormateurStartWith_StartWithRightInput()
+        {
+
+            //arrange
+            var controller = new FormateurApiController(dba);
+
+
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.HttpContext = new DefaultHttpContext();
+            controller.ControllerContext.HttpContext.Request.Headers["term"] = "T";
+            controller.ControllerContext.HttpContext.Request.Method = HttpMethods.Get;
+            //controller.ControllerContext.HttpContext.Session.Set
+
+
+            var result = controller.GetFormateurStartWith().Result as ObjectResult;
+            //JObject actualResult = JObject.Parse((string)result.Value);
+
+
+            Assert.That(result is OkObjectResult);
+            Assert.That((HttpStatusCode)result.StatusCode == HttpStatusCode.OK);
+            //Assert.That(actualResult.ContainsKey("Nom"));
+            
+        }
     }
 }

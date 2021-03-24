@@ -17,10 +17,9 @@ namespace AppAfpaBrive.Web.Controllers
 {
     public class FileUploadController : Controller
     {
+
         private readonly AFPANADbContext _context;
         private readonly IConfiguration _config;
-        
-
         protected string Path { get; set; }
 
         public FileUploadController(AFPANADbContext context, IConfiguration config)

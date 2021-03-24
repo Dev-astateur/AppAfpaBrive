@@ -11,6 +11,7 @@ namespace AppAfpaBrive.Web.Layers
     {
 
         private readonly AFPANADbContext _context;
+
         public CollaborateurAfpaLayer(AFPANADbContext context)
         {
             _context = context;
