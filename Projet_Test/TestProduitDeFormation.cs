@@ -183,7 +183,6 @@ namespace Projet_Test
 
             var result = dba.ProduitFormations.Where(x => x.CodeProduitFormation == 7);
             Assert.IsTrue(result.Count() == 1);
-
         }
         
     }

@@ -1,0 +1,75 @@
+﻿@model AppAfpaBrive.Web.ModelView.EtablissementModelView
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Création d'un Etablissement</h1>
+
+<h4>Etablissement</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdEtablissement" class="control-label"></label>
+                <input asp-for="IdEtablissement" class="form-control" />
+                <span asp-validation-for="IdEtablissement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdEtablissementRattachement" class="control-label"></label>
+                <input asp-for="IdEtablissementRattachement" class="form-control" />
+                <span asp-validation-for="IdEtablissementRattachement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NomEtablissement" class="control-label"></label>
+                <input asp-for="NomEtablissement" class="form-control" />
+                <span asp-validation-for="NomEtablissement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MailEtablissement" class="control-label"></label>
+                <input asp-for="MailEtablissement" class="form-control" />
+                <span asp-validation-for="MailEtablissement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TelEtablissement" class="control-label"></label>
+                <input asp-for="TelEtablissement" class="form-control" />
+                <span asp-validation-for="TelEtablissement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ligne1Adresse" class="control-label"></label>
+                <input asp-for="Ligne1Adresse" class="form-control" />
+                <span asp-validation-for="Ligne1Adresse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ligne2Adresse" class="control-label"></label>
+                <input asp-for="Ligne2Adresse" class="form-control" />
+                <span asp-validation-for="Ligne2Adresse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ligne3Adresse" class="control-label"></label>
+                <input asp-for="Ligne3Adresse" class="form-control" />
+                <span asp-validation-for="Ligne3Adresse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodePostal" class="control-label"></label>
+                <input asp-for="CodePostal" class="form-control" />
+                <span asp-validation-for="CodePostal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ville" class="control-label"></label>
+                <input asp-for="Ville" class="form-control" />
+                <span asp-validation-for="Ville" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retour</a>
+</div>
+

@@ -29,10 +29,11 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
 
 
         // GET: ProduitFormation
-        public async Task<IActionResult> Index(string filter,int page, string sortExpression="CodeProduitFormation")
+        public async Task<IActionResult> Index(string filter,int pageIndex, string sortExpression="CodeProduitFormation")
         {
             ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
-            var model = await _produitDeFormationLayer.GetPage(filter,page, sortExpression);
+            var model = await _produitDeFormationLayer.GetPage(filter, pageIndex, sortExpression);
+            model.Action = "Index";
             model.RouteValue = new RouteValueDictionary
             {
                 {"filter", filter }
@@ -96,7 +97,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         public IActionResult Edit(ProduitFormationModelView obj)
         {
             ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
-            var x = Request.Form["Formation"].ToString();
+            //var x = Request.Form["Formation"].ToString();
             if (ModelState.IsValid)
             {
                 //if (x == "0")
