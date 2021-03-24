@@ -1,0 +1,142 @@
+﻿@*@model IEnumerable<AppAfpaBrive.Web.ModelView.OffreFormationSimplifieModelView>*@
+@model AppAfpaBrive.Web.ModelView.BeneficiaireSpecifiqueModelView
+@{
+    ViewData["Title"] = "Liste Beneficiaire";
+
+}
+
+@*@await Html.PartialAsync("_BeneficiairePartial", Model.BeneficiaireOffreFormations)*@
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+    
+
+
+
+
+
+    <label for="offreFormation">Offre de Formation :</label>
+  
+    <select id="listeoffre"
+            asp-items="@Model.SelectListItems">
+        <option> Sélectionnez une offre de formation</option>
+            @*@Html.DropDownListFor(m => m.IdOffreFormation, new SelectList(Model.OffreFormations, "IdOffreFormation", "LibelleOffreFormation"),"Veuillez sélectionner votre offre")*@
+            
+
+    </select>
+
+    <nav aria-label="">
+        @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.PagingBeneficiaires }) 
+    </nav>
+
+    <div id="listebenef">
+
+        @if (Model.PagingBeneficiaires.Count() > 0)
+        {
+            <table class="table table-striped table-reponsive-md" style="width:100%">
+                <thead>
+
+                    <tr class="table-primary">
+
+                        <th scope="col">
+
+                            @Html.DisplayNameFor(model => model.NomBeneficiaire)
+
+                        </th>
+
+                        <th scope="col">
+
+                            @Html.DisplayNameFor(model => model.PrenomBeneficiaire)
+
+                        </th>
+
+                        <th scope="col">
+
+                            @Html.DisplayNameFor(model => model.MailBeneficiaire)
+
+                        </th>
+
+                        <th scope="col">
+
+                            @Html.DisplayNameFor(model => model.MailingAutorise)
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tbody>
+                    @foreach (var item in Model.PagingBeneficiaires)
+                    {
+                        <tr>
+
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NomBeneficiaire)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PrenomBeneficiaire)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MailBeneficiaire)
+                            </td>
+                            <td>
+                                @Html.CheckBox("checked", true, item.MailingAutorise)
+                            </td>
+
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        }
+
+    </div>
+
+
+
+@section Scripts
+{
+    <script defer type="text/javascript">
+        $(document).ready(function () {
+            $('#listeoffre').on('change', function (e) {
+                var optionSelected = $('option:selected', this);
+
+                //$("#listebenef").load("/OffreDeFormationBeneficiaire/OffredeFormationBeneficiaire/" + optionSelected.val());
+                window.location.href = "/OffreDeFormationBeneficiaire/OffredeFormationBeneficiaire/" + optionSelected.val();
+
+            });
+
+        });
+
+
+        //$(document).ready(function () {
+        //    $('.page-link').on('click', function (e) {
+        //        var id = e.attr('id');
+        //        console.log("function page")
+        //        console.log(id)
+        //        //$("#container").load("/OffreDeFormationBeneficiaire/ListeBeneficiaire?id=" + optionSelected.val());
+
+
+        //    });
+
+        //});
+
+
+
+    </script>
+}
+
+
+
+
+
+
+
+
+

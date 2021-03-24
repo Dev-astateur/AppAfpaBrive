@@ -15,7 +15,7 @@ namespace AppAfpaBrive.Web.Layers
     {
         private readonly AFPANADbContext _dbContext = null;
 
-        public PeeLayer (AFPANADbContext context) 
+        public PeeLayer(AFPANADbContext context)
         {
             _dbContext = context;
         }
@@ -24,15 +24,15 @@ namespace AppAfpaBrive.Web.Layers
         {
             return _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.Etat == 0)
                 .Include(e => e.Id)
-                .Include(e=>e.IdEntrepriseNavigation)
+                .Include(e => e.IdEntrepriseNavigation)
                 .Include(e => e.MatriculeBeneficiaireNavigation);
         }
 
         public Pee GetPeeByIdPee(int idPee)
         {
-            return _dbContext.Pees.Where(e=>e.IdPee==idPee)
+            return _dbContext.Pees.Where(e => e.IdPee == idPee)
                 .Include(e => e.Id)
-                .Include(e=>e.IdEntrepriseNavigation).ThenInclude(e=>e.Idpays2Navigation)
+                .Include(e => e.IdEntrepriseNavigation).ThenInclude(e => e.Idpays2Navigation)
                 .FirstOrDefault();
         }
 
@@ -42,10 +42,10 @@ namespace AppAfpaBrive.Web.Layers
             _dbContext.SaveChanges();
         }
 
-        public decimal GetPeeBy_Idmatricule_idFormation_idetablissemnt(string matricule,int identreprise,string idetablissement)
+        public decimal GetPeeBy_Idmatricule_idFormation_idetablissemnt(string matricule, int identreprise, string idetablissement)
         {
-            return _dbContext.Pees.Where(e => e.MatriculeBeneficiaire == matricule && e.IdEntreprise == identreprise && e.IdEtablissement==idetablissement)
-                .Select(x=>x.IdPee)
+            return _dbContext.Pees.Where(e => e.MatriculeBeneficiaire == matricule && e.IdEntreprise == identreprise && e.IdEtablissement == idetablissement)
+                .Select(x => x.IdPee)
                 .FirstOrDefault();
         }
         public IEnumerable<Pee> GetPeeEntrepriseWithBeneficiaireBy(int IdOffreFormation, string idEtablissement)
@@ -55,7 +55,7 @@ namespace AppAfpaBrive.Web.Layers
                 .Include(S => S.IdEntrepriseNavigation)
                 .Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement);
         }
-		
+
         public IEnumerable<PeriodePee> GetListPeriodePeeByIdPee(int IdOffreFormation, string idEtablissement)
         {
             var periodePees = _dbContext.PeriodePees.Include(pr => pr.IdPeeNavigation).ToList();

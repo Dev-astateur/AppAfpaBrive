@@ -1,20 +1,18 @@
-﻿  @model AppAfpaBrive.Web.ModelView.EntrepriseListViewModel
+﻿@model AppAfpaBrive.Web.ModelView.EntrepriseListViewModel
 
 @{
-    ViewData["Title"] = "Creer une entreprise";
-    //List<AppAfpaBrive.BOL.Pays> ListeDePays = ViewBag.MaList;
-    //var listeItemPays = ListeDePays.Select(p => new SelectListItem() { Text = p.LibellePays, Value = p.Idpays2 });
-
+    ViewData["Title"] = "ModifierEntreprise";
 }
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<h1>CreerEntreprise</h1>
 
-<h4>Entreprise</h4>
+<h1>Modifier l'entreprise</h1>
+
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreerEntreprise">
+        <form asp-action="ModifierEntreprise">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdEntreprise" />
             <div class="form-group">
                 <label asp-for="RaisonSociale" class="control-label"></label>
                 <input asp-for="RaisonSociale" class="form-control" />
@@ -61,36 +59,29 @@
                 <span asp-validation-for="Ville" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Pays</label>
-                <input  class="form-control" name="InputPays" id="InputPays" />
+                <label asp-for="Idpays2" class="control-label">Pays</label>
+                <input asp-for="Idpays2" class="form-control"></input>
                 <span asp-validation-for="Idpays2" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Creer" class="btn btn-primary" />
+                <input type="submit" value="Enregistrer" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a class="btn btn-primary" asp-action="ListeEntreprisePourModification">Retour à la liste de modification</a>
+    <a asp-action="ListeEntreprisePourModification" class="btn btn-primary">Retour à la liste de modification</a>
 </div>
 
 @section Scripts {
-
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    <script>
+@*<script>
         $(document).ready(function () {
-            $('#InputPays').autocomplete({
+            $('#Pays').autocomplete({
                 source: '/api/AutoCompleteOffreFormationApi/searchPays'
             });
         });
-    </script>
-
-
-
-}
+</script>*@

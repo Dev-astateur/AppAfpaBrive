@@ -21,10 +21,10 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
             
         } 
         // GET: StagiaireParOffredeFormationController
-        public ActionResult ListeStagiaireParOffreFormation()
+        public ActionResult ListeStagiaireParOffreFormation(int id)
         {
             this.ViewBag.MonTitre = "Liste Stagiaire Par OffreDeFormation";
-          var query =_beneficiaireLayer.GetAllByOffredeFormation();
+          var query =_beneficiaireLayer.GetAllByOffredeFormation(id);
             
             return View(query);
         }

@@ -1,11 +1,14 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+@using AppAfpaBrive.Web.Utilitaires
+@Html.PageScripts()
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AppAfpaBrive.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
 </head>
 <body>
     <header>
@@ -35,6 +38,7 @@
             @RenderBody()
         </main>
     </div>
+   
 
     <footer class="border-top footer text-muted">
         <div class="container">
