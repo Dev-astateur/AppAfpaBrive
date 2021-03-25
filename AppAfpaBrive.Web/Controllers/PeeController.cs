@@ -20,6 +20,7 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using AppAfpaBrive.Web.ModelView.ValidationPee;
 using AppAfpaBrive.Web.Utilitaires;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Text;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -279,19 +280,23 @@ namespace AppAfpaBrive.Web.Controllers
         public async Task<IActionResult> PrevenirBeneficaire(decimal id,string idColl)
         {
             MessageModelView messageView = await _peeLayer.GetElementByIdPeeForMessageAsync(id);
-
-            string sujet = "Notification de votre présence en entreprise";
-            string message = messageView.EtatPee == 0? _config.GetSection("MessagePee").GetSection("Non").GetSection("Message").Value:
-                _config.GetSection("MessagePee").GetSection("Oui").GetSection("Message").Value;
-
             messageView.MatriculeCollaborateurAfpa = idColl;
+            string sujet = "Notification de votre présence en entreprise";
+            //string message = messageView.EtatPee == 0? _config.GetSection("MessagePee").GetSection("Non").GetSection("Message").Value:
+            //    _config.GetSection("MessagePee").GetSection("Oui").GetSection("Message").Value;
 
-            message += string.IsNullOrWhiteSpace(messageView.Remarque) ? "" : " \r\nVoici le message qui est spécifié: " + messageView.Remarque;
-            message += "\r\n"+"Veuillez ne pas répondre à ce mail qui est envoyé automatiquement.";
-            message += "\r\n" + "Si vous avez des questions, veuillez contacter votre formateur.";
+            string message = messageView.EtatPee == 0 ? "Votre formateur n'a pas pu validé les documents et la saisie des informations pour la période en entreprise " :
+                "Votre formateur a bien validé les documents et la saisie des informations ";
+
+            message += "pour l'entreprise "+messageView.RaisonSociale+".";
+
+            message += string.IsNullOrWhiteSpace(messageView.Remarque) ? "" : Environment.NewLine + Environment.NewLine + "Voici le message qui est spécifié: ";
+            message += Environment.NewLine +"\""+ messageView.Remarque + "\"" + Environment.NewLine;
+            message += Environment.NewLine + "Veuillez ne pas répondre à ce mail qui est envoyé automatiquement.";
+            message += Environment.NewLine + "Si vous avez des questions, veuillez contacter votre formateur.";
 
             messageView.Message = message;
-            await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, sujet, messageView.Message);
+            await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, sujet, message);
             return View(messageView);
         }
     }

@@ -155,13 +155,17 @@ namespace AppAfpaBrive.Web.Layers
             return await _dbContext.Pees.Where(e => e.IdPee == idPee)
                 .Include(e=>e.MatriculeBeneficiaireNavigation)
                 .ThenInclude(e=>e.CodeTitreCiviliteNavigation)
+                .Include(e=>e.IdEntrepriseNavigation)
+                .Include(e=>e.PeriodePees)
                 .Select(e=> new MessageModelView() { 
                     Remarque = e.Remarque,
                     EtatPee = e.EtatPee,
                     NomBeneficiaire = e.MatriculeBeneficiaireNavigation.NomBeneficiaire,
                     PrenomBeneficiaire = e.MatriculeBeneficiaireNavigation.PrenomBeneficiaire,
                     MailBeneficiaire = e.MatriculeBeneficiaireNavigation.MailBeneficiaire,
-                    CodeTitreCiviliteNavigation = new TitreCiviliteModelView(e.MatriculeBeneficiaireNavigation.CodeTitreCiviliteNavigation)
+                    CodeTitreCiviliteNavigation = new TitreCiviliteModelView(e.MatriculeBeneficiaireNavigation.CodeTitreCiviliteNavigation),
+                    RaisonSociale = e.IdEntrepriseNavigation.RaisonSociale,
+                    periodes = e.PeriodePees.Select(e=> new PeriodePeeModelView(e)).ToList()
                 } ).FirstAsync();
         }
     }

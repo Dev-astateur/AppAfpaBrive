@@ -9,7 +9,7 @@ namespace AppAfpaBrive.Web.ModelView.ValidationPee
     public class MessageModelView
     {
         public string MatriculeCollaborateurAfpa { get; set; }
-        [Display(Name = "Message envoyé au bénéficiaire dans son courriel")]
+        [Display(Name = "Message envoyé au bénéficiaire dans son courriel :")]
         public string Message { get; set; }
         
         public string Remarque { get; set; }
@@ -17,10 +17,14 @@ namespace AppAfpaBrive.Web.ModelView.ValidationPee
         [Display(Name = "Nom du stagiaire.")]
 
         public string NomBeneficiaire { get; set; }
-        [Display(Name = "Prénom du stagiaire.")]
+        [Display(Name = "Prénom du stagiaire :")]
         public string PrenomBeneficiaire { get; set; }
-        [Display(Name = "Courriel du bénéficiaire.")]
+        [Display(Name = "Courriel du bénéficiaire :")]
         public string MailBeneficiaire { get; set; }
+        [Display(Name = "Raison sociale de l'entreprise")]
+        public string RaisonSociale { get; set; }
+
+        public virtual ICollection<PeriodePeeModelView> periodes { get; set; }
         public virtual TitreCiviliteModelView CodeTitreCiviliteNavigation { get; set; }
     }
 }
