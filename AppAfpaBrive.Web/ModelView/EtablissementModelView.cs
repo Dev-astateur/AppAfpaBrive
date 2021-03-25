@@ -26,6 +26,7 @@ namespace AppAfpaBrive.Web.ModelView
         [Required(AllowEmptyStrings = false, ErrorMessage = "Le Nom de l'établissement est requis")]
         public string NomEtablissement { get; set; }
         public string MailEtablissement { get; set; }
+        [StringLength(20, ErrorMessage = "Le Telephone de l'etablissement ne peut pas etre plus long que 20 caracteres")]
         public string TelEtablissement { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "L'adresse est requise")]
@@ -34,7 +35,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string Ligne3Adresse { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Le code postal est requis")]
-        [StringLength(10, ErrorMessage = "Le Libelle Court Formation ne peut pas etre plus long que 10 caracteres")]
+        [StringLength(10, ErrorMessage = "Le Code Postal ne peut pas etre plus long que 10 caracteres")]
         public string CodePostal { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "La Ville est requise")]
