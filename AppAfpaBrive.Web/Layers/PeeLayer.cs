@@ -119,7 +119,7 @@ namespace AppAfpaBrive.Web.Layers
         public async Task<ICollection<PeeDocumentModelView>> GetPeeDocumentByIdAsync(decimal idPee)
         {
             return await _dbContext.PeeDocuments.Where(e => e.IdPee == idPee)
-                .Select(e=>new PeeDocumentModelView(e)).OrderBy(e=>e.NumOrdre).ToListAsync();
+                .Select(e=>new PeeDocumentModelView(e)).ToListAsync();
         }
 
         public async Task<bool> UpdatePeeAsync( PeeModelView peeModelView )
