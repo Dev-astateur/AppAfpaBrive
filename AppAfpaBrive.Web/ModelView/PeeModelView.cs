@@ -64,26 +64,6 @@ namespace AppAfpaBrive.Web.ModelView
         {
             return HashCode.Combine(IdPee);
         }
-
-        public int GetHasCodeObject ()
-        {
-            return IdPee.GetHashCode()^MatriculeBeneficiaire.GetHashCode()
-                ^IdTuteur.GetHashCode()^IdTuteur.GetHashCode()^IdResponsableJuridique.GetHashCode()
-                ^IdEntreprise.GetHashCode()^IdOffreFormation.GetHashCode()^IdEtablissement.GetHashCode()
-                ^Remarque.GetHashCode()^EtatPee.GetHashCode();
-        }
-
-        public bool ModificationBool(PeeModelView pee)
-        {
-            if ( this.Equals(pee) )
-            {
-                if ( this.GetHasCodeObject() == pee.GetHasCodeObject())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
 
    

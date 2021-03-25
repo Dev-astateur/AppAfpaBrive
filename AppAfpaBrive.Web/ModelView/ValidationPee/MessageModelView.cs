@@ -9,6 +9,7 @@ namespace AppAfpaBrive.Web.ModelView.ValidationPee
     public class MessageModelView
     {
         public string MatriculeCollaborateurAfpa { get; set; }
+        [Display(Name = "Message envoyé au bénéficiaire dans son courriel")]
         public string Message { get; set; }
         
         public string Remarque { get; set; }

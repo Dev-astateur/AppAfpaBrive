@@ -227,12 +227,8 @@ namespace AppAfpaBrive.Web.Controllers
             if (peeModelView.IsValid)
             {
                 try
-                {
-                    PeeModelView peeBaseDonnee = await _peeLayer.GetPeeByIdAsync(IdPee);
-                    if ( !peeModelView.ModificationBool(peeBaseDonnee) )
-                    {
-                        peeModelView.Etat = EntityPOCOState.Modified;
-                    }
+                {   
+                    peeModelView.Etat = EntityPOCOState.Modified;
 
                     if ( await _peeLayer.UpdatePeeAsync(peeModelView) )
                     {
@@ -283,17 +279,20 @@ namespace AppAfpaBrive.Web.Controllers
         public async Task<IActionResult> PrevenirBeneficaire(decimal id,string idColl)
         {
             MessageModelView messageView = await _peeLayer.GetElementByIdPeeForMessageAsync(id);
-            string sujet = _config.GetSection("MessagePee").GetSection("Sujet").Value;
-            string message = messageView.EtatPee == 0? _config.GetSection("MessagePee").GetSection("Non").Value:
-                _config.GetSection("MessagePee").GetSection("Oui").Value;
+
+            string sujet = "Notification de votre présence en entreprise";
+            string message = messageView.EtatPee == 0? _config.GetSection("MessagePee").GetSection("Non").GetSection("Message").Value:
+                _config.GetSection("MessagePee").GetSection("Oui").GetSection("Message").Value;
+
             messageView.MatriculeCollaborateurAfpa = idColl;
 
-            message += string.IsNullOrWhiteSpace(messageView.Remarque) ? "" : " \r\nVoici le message qui a spécifié: " + messageView.Remarque;
+            message += string.IsNullOrWhiteSpace(messageView.Remarque) ? "" : " \r\nVoici le message qui est spécifié: " + messageView.Remarque;
             message += "\r\n"+"Veuillez ne pas répondre à ce mail qui est envoyé automatiquement.";
             message += "\r\n" + "Si vous avez des questions, veuillez contacter votre formateur.";
 
-            await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, sujet, message);
-            return View();
+            messageView.Message = message;
+            await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, sujet, messageView.Message);
+            return View(messageView);
         }
     }
 }

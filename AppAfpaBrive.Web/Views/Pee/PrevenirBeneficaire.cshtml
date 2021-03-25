@@ -2,8 +2,22 @@
 @{
 
 }
-
+<h4>Notification du stagiaire</h4>
 <div class="container">
-    <div class="row"></div>
-    <div class="row"></div>
+    <div class="row">
+        <div class="col-sm-6">@Html.DisplayNameFor(model => model.MailBeneficiaire)</div>
+        <div class="col-sm-6">@Html.DisplayFor(model=>model.CodeTitreCiviliteNavigation.TitreCiviliteComplet) @Html.DisplayFor(model => model.MailBeneficiaire)</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">@Html.DisplayNameFor(model => model.NomBeneficiaire)</div>
+        <div class="col-sm-6">@Html.DisplayFor(model => model.NomBeneficiaire)</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">@Html.DisplayNameFor(model=>model.PrenomBeneficiaire)</div>
+        <div class="col-sm-6">@Html.DisplayFor(model => model.PrenomBeneficiaire)</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">@Html.DisplayNameFor(model=>model.Message)</div>
+        <div class="col-sm-6">@Html.DisplayFor(model=>model.Message)</div>
+    </div>
 </div>
