@@ -27,9 +27,7 @@ namespace Projet_Test
         public void ListPeeBeneficiaireIsValide()
         {
             //Range
-            
-
-             Beneficiaire CASTEL = new Beneficiaire {MatriculeBeneficiaire = "16174318", CodeTitreCivilite = 0, NomBeneficiaire= "CASTEL",PrenomBeneficiaire = "MAXIME" };
+            Beneficiaire CASTEL = new Beneficiaire {MatriculeBeneficiaire = "16174318", CodeTitreCivilite = 0, NomBeneficiaire= "CASTEL",PrenomBeneficiaire = "MAXIME" };
             Beneficiaire MORGAN = new Beneficiaire { MatriculeBeneficiaire = "18128730", CodeTitreCivilite = 1, NomBeneficiaire = "ELIAS", PrenomBeneficiaire = "MORGAN" };
             Beneficiaire ABRAHAM = new Beneficiaire { MatriculeBeneficiaire = "20022801", CodeTitreCivilite = 0, NomBeneficiaire = "ABRAHAM", PrenomBeneficiaire = "DENZEL" };
             Entreprise entreprise1 = new Entreprise { IdEntreprise = 2, RaisonSociale = "CAI", NumeroSiret = "42159769100029", Ligne1Adresse = "5, boulevard Mirabeau", CodePostal = "19100", Ville = "Brive la Gaillarde" };

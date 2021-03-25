@@ -170,6 +170,8 @@ namespace AppAfpaBrive.Web.Controllers
 
         }
         #endregion
+
+        #region Validation des Pee par le formateur
         [HttpGet]
         public async Task<IActionResult> ListePeeAValider(string id,int? pageIndex)
         {
@@ -218,6 +220,7 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EnregistrementPeeInfo(int IdPee, PeeModelView peeModelView)
         {
             if (IdPee != peeModelView.IdPee)
@@ -299,6 +302,7 @@ namespace AppAfpaBrive.Web.Controllers
             await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, sujet, message);
             return View(messageView);
         }
+        #endregion
     }
 }
  
