@@ -18,6 +18,7 @@ namespace AppAfpaBrive.Web.ModelView
         [Required(AllowEmptyStrings = false, ErrorMessage = "Le matricule du collaborateur est requis")]
         [StringLength(7, ErrorMessage = "Le matricule du collaborateur ne peut pas etre plus long que 7 caracteres")]
         public string MatriculeCollaborateurAfpa { get; set; }
+        [StringLength(5, ErrorMessage = "L'Id etablissement du collaborateur ne peut pas etre plus long que 5 caracteres")]
         public string IdEtablissement { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Le CodeTitreCivilite est requis")]
@@ -30,6 +31,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string PrenomCollaborateur { get; set; }
 
         public string MailCollaborateurAfpa { get; set; }
+        [StringLength(20, ErrorMessage = "Le telephone du collaborateur ne peut pas etre plus long que 20 caracteres")]
         public string TelCollaborateurAfpa { get; set; }
         [StringLength(3, ErrorMessage = "L'unité organisationnelle du collaborateur ne peut pas etre plus longue que 3 caracteres")]
         public string Uo { get; set; }

@@ -67,7 +67,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
                 //{
                 //    obj.FormationContinue = true;
                 //}
-                //else obj.FormationDiplomante = true; 
+                //else obj.FormationDiplomante = true;
                 _produitDeFormationLayer.InsertProduit(obj.GetProduitFormation());
                 return RedirectToAction("Index");
             }

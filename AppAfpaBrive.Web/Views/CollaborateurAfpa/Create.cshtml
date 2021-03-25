@@ -22,10 +22,24 @@
                 <input asp-for="IdEtablissement" class="form-control" />
                 <span asp-validation-for="IdEtablissement" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CodeTitreCivilite" class="control-label"></label>
-                <input asp-for="CodeTitreCivilite" class="form-control" />
-                <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
+            @*<div class="form-group">
+            <label asp-for="CodeTitreCivilite" class="control-label"></label>
+            <input asp-for="CodeTitreCivilite" class="form-control" />
+            <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
+        </div>*@
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                   
+                    <label>Monsieur</label>
+                    @Html.RadioButton("TitreCivilite", "0")
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                   
+                    <label>Madame</label>
+                    @Html.RadioButton("TitreCivilite", "1", true)
+                </label>
             </div>
             <div class="form-group">
                 <label asp-for="NomCollaborateur" class="control-label"></label>

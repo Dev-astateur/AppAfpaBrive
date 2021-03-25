@@ -371,36 +371,36 @@ namespace Projet_Test
             Assert.IsTrue(result.Count() == 1);
         }
 
-        [Test]
-        public void TestEditionEtablissement()
-        {
+        //[Test]
+        //public void TestEditionEtablissement()
+        //{
 
-            dba = db.GetAFPANADbContext("xxx");
-            var bloub = new EtablissementModelView
-            {
-                IdEtablissement = "37700",
-                IdEtablissementRattachement = "87000",
-                NomEtablissement = "MOMA",
-                MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
-                Ligne1Adresse = "44 rue Hoche",
-                CodePostal = "37700",
-                Ville = "Tours"
-            };
+        //    dba = db.GetAFPANADbContext("xxx");
+        //    var bloub = new EtablissementModelView
+        //    {
+        //        IdEtablissement = "37700",
+        //        IdEtablissementRattachement = "87000",
+        //        NomEtablissement = "MOMA",
+        //        MailEtablissement = "besancon.gabriel@hotmail.fr",
+        //        TelEtablissement = "067067300106706730010670673001",
+        //        Ligne1Adresse = "44 rue Hoche",
+        //        CodePostal = "37700",
+        //        Ville = "Tours"
+        //    };
             
             
-            dba.Etablissements.Add(bloub.GetEtablissement());
+        //    dba.Etablissements.Add(bloub.GetEtablissement());
            
-            EtablissementController controleur = new EtablissementController(dba);
+        //    EtablissementController controleur = new EtablissementController(dba);
             
          
-            bloub.NomEtablissement = "EtablissementCentral";
+        //    bloub.NomEtablissement = "EtablissementCentral";
             
-            var view = controleur.Edit(bloub);
+        //    var view = controleur.Edit(bloub);
         
-            var result = dba.Etablissements.Where(x => x.NomEtablissement == "EtablissementCentral");
-            Assert.IsTrue(result.Count() == 1);
+        //    var result = dba.Etablissements.Where(x => x.NomEtablissement == "EtablissementCentral");
+        //    Assert.IsTrue(result.Count() == 1);
 
-        }
+        //}
     }
 }

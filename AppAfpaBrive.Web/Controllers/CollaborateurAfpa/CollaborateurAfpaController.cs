@@ -50,9 +50,15 @@ namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
         [ValidateAntiForgeryToken]
         public IActionResult Create(CollaborateurAfpaModelView obj)
         {
+            var x = Request.Form["TitreCivilite"].ToString();
             CollaborateurAfpaLayer _collaborateurLayer = new CollaborateurAfpaLayer(_db);
             if (ModelState.IsValid)
             {
+                if (x == "0")
+                {
+                    obj.CodeTitreCivilite = 0;
+                }
+                else obj.CodeTitreCivilite = 1;
                 _collaborateurLayer.InsertProduit(obj.GetCollaborateur());
                 return RedirectToAction("Index");
             }
