@@ -269,12 +269,12 @@ namespace AppAfpaBrive.Web.Controllers
 
             if ( page is not null )
             {
-                return peeDocument.Count() == 0 ? RedirectToAction(nameof(PeeEntrepriseValidation), new { id = id })
+                return peeDocument.Any() ? RedirectToAction(nameof(PeeEntrepriseValidation), new { id })
                 : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
             }
             else
             {
-                return peeDocument.Count() == 0 ? RedirectToAction(nameof(EnregistrementPeeInfo), new { id = id })
+                return peeDocument.Any() ? RedirectToAction(nameof(EnregistrementPeeInfo), new { id })
                 : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
             }
         }
