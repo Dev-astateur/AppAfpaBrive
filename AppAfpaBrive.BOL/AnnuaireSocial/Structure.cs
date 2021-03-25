@@ -20,7 +20,9 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         public int IdStructure { get; set; }
 
         public string NomStructure {get; set;}
-        public string Adresse { get; set; }
+        public string LigneAdresse1 { get; set; }
+        public string LigneAdresse2 { get; set; }
+        public string LigneAdresse3 { get; set; }
         public string CodePostal { get; set; }
         public string Ville { get; set; }
         public string Mail { get; set; }

@@ -235,7 +235,6 @@ namespace AppAfpaBrive.DAL
                 entity.Property(e => e.Autres).HasDefaultValue(0);
             });
 
-
             modelBuilder.Entity<BeneficiaireOffreFormation>(entity =>
             {
                 entity.HasKey(e => new { e.MatriculeBeneficiaire, e.IdOffreFormation, e.Idetablissement });
@@ -622,6 +621,7 @@ namespace AppAfpaBrive.DAL
                     .HasMaxLength(20)
                     .IsUnicode(false);
             });
+
 
             modelBuilder.Entity<Etablissement>(entity =>
             {
@@ -1073,6 +1073,8 @@ namespace AppAfpaBrive.DAL
                     .IsRequired()
                     .HasMaxLength(15)
                     .IsUnicode(false);
+
+                
             });
 
             modelBuilder.Entity<TypeContrat>(entity =>
@@ -1139,7 +1141,6 @@ namespace AppAfpaBrive.DAL
             });
 
 
-
             modelBuilder.Entity<CategorieLigneAnnuaire>(entity =>
             {
                 entity.HasKey(cla => new { cla.IdCategorie, cla.IdLigneAnnuaire });
@@ -1152,9 +1153,7 @@ namespace AppAfpaBrive.DAL
                     .WithMany(s => s.CategorieLigneAnnuaires)
                     .HasForeignKey(la => la.IdLigneAnnuaire);
 
-            }
-            );
-
+            });
 
             modelBuilder.Entity<ContactLigneAnnuaire>(x =>
             {
@@ -1169,7 +1168,6 @@ namespace AppAfpaBrive.DAL
                     .HasForeignKey(x => x.IdLigneAnnuaire);
 
             });
-
 
             modelBuilder.Entity<ContactStructure>(x =>
             {
@@ -1194,7 +1192,6 @@ namespace AppAfpaBrive.DAL
                     .HasForeignKey(s => s.IdStructure);
             });
 
-
             modelBuilder.Entity<Categorie>(x =>
             {
                 x.HasKey(k => k.IdCategorie);
@@ -1203,14 +1200,16 @@ namespace AppAfpaBrive.DAL
             modelBuilder.Entity<Contact>(x =>
             {
                 x.HasKey(k => k.IdContact);
+
+                x.HasOne<TitreCivilite>(t => t.TitreCivilite)
+                    .WithMany(s => s.Contacts)
+                    .HasForeignKey(fk => fk.IdContact);
             });
 
             modelBuilder.Entity<Structure>(x =>
             {
                 x.HasKey(k => k.IdStructure);
             });
-
-
 
             OnModelCreatingPartial(modelBuilder);
         }
