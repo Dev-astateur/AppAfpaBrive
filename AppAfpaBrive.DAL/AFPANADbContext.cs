@@ -1152,7 +1152,7 @@ namespace AppAfpaBrive.DAL
                     .WithMany(s => s.CategorieLigneAnnuaires)
                     .HasForeignKey(la => la.IdLigneAnnuaire);
 
-                }
+            }
             );
 
 
@@ -1182,14 +1182,32 @@ namespace AppAfpaBrive.DAL
                 x.HasOne<Structure>(y => y.Structure)
                     .WithMany(x => x.ContactStructures)
                     .HasForeignKey(x => x.IdStructure);
-                 
+
             });
 
             modelBuilder.Entity<LigneAnnuaire>(x =>
             {
+                x.HasKey(k => k.IdLigneAnnuaire);
+
                 x.HasOne<Structure>(x => x.Structure)
                     .WithMany(s => s.LigneAnnuaires)
                     .HasForeignKey(s => s.IdStructure);
+            });
+
+
+            modelBuilder.Entity<Categorie>(x =>
+            {
+                x.HasKey(k => k.IdCategorie);
+            });
+
+            modelBuilder.Entity<Contact>(x =>
+            {
+                x.HasKey(k => k.IdContact);
+            });
+
+            modelBuilder.Entity<Structure>(x =>
+            {
+                x.HasKey(k => k.IdStructure);
             });
 
 

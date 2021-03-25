@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +16,9 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
             ContactStructures = new HashSet<ContactStructure>();
         }
 
-
+        [Key]
         public int IdStructure { get; set; }
+
         public string NomStructure {get; set;}
         public string Adresse { get; set; }
         public string CodePostal { get; set; }

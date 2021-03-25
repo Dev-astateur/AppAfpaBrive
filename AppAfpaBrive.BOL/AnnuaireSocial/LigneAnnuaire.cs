@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,9 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
             ContactLigneAnnuaires = new HashSet<ContactLigneAnnuaire>();
         }
 
+        [Key]
         public int IdLigneAnnuaire {get; set; }
+
         public string PublicConcerne { get; set; }
         public string ServiceAbrege { get; set; }
         public string Service { get; set; }
