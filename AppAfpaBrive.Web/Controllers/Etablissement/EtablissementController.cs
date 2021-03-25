@@ -116,6 +116,7 @@ namespace AppAfpaBrive.Web.Controllers.Etablissement
             if (obj == null)
             {
                 return NotFound();
+                
             }
             _etablissementLayer.Remove(obj.GetEtablissement());
             return RedirectToAction("Index");

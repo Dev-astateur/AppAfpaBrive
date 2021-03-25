@@ -64,9 +64,9 @@ namespace AppAfpaBrive.Web.Layers
             return obj as EtablissementModelView;
         }
 
-        public Etablissement GetByIdEtablissementDelete(string idCodeProduitFormation)
+        public Etablissement GetByIdEtablissementDelete(string idEtablissement)
         {
-            return _context.Etablissements.Find(idCodeProduitFormation);
+            return _context.Etablissements.Find(idEtablissement);
         }
     }
 }

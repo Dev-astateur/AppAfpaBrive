@@ -1,0 +1,70 @@
+﻿@model AppAfpaBrive.Web.ModelView.CollaborateurAfpaModelView
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Création d'un collaborateur</h1>
+
+<h4>CollaborateurAfpaModelView</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MatriculeCollaborateurAfpa" class="control-label"></label>
+                <input asp-for="MatriculeCollaborateurAfpa" class="form-control" />
+                <span asp-validation-for="MatriculeCollaborateurAfpa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdEtablissement" class="control-label"></label>
+                <input asp-for="IdEtablissement" class="form-control" />
+                <span asp-validation-for="IdEtablissement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodeTitreCivilite" class="control-label"></label>
+                <input asp-for="CodeTitreCivilite" class="form-control" />
+                <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NomCollaborateur" class="control-label"></label>
+                <input asp-for="NomCollaborateur" class="form-control" />
+                <span asp-validation-for="NomCollaborateur" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrenomCollaborateur" class="control-label"></label>
+                <input asp-for="PrenomCollaborateur" class="form-control" />
+                <span asp-validation-for="PrenomCollaborateur" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MailCollaborateurAfpa" class="control-label"></label>
+                <input asp-for="MailCollaborateurAfpa" class="form-control" />
+                <span asp-validation-for="MailCollaborateurAfpa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TelCollaborateurAfpa" class="control-label"></label>
+                <input asp-for="TelCollaborateurAfpa" class="form-control" />
+                <span asp-validation-for="TelCollaborateurAfpa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Uo" class="control-label"></label>
+                <input asp-for="Uo" class="form-control" />
+                <span asp-validation-for="Uo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retour</a>
+</div>
+

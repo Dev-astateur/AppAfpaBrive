@@ -1,5 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.ModelView;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +24,51 @@ namespace AppAfpaBrive.Web.Layers
             return _context.CollaborateurAfpas.Where(x => x.NomCollaborateur.StartsWith(name)).ToList();
         }
 
+        public async Task<PagingList<CollaborateurAfpa>> GetPage(string filter, int page = 1, string sortExpression = "NomCollaborateur")
+        {
+            var qry = _context.CollaborateurAfpas.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                qry = qry.Where(p => p.NomCollaborateur.Contains(filter));
+            }
+
+            return await PagingList.CreateAsync<CollaborateurAfpa>(qry, 10, page, sortExpression, "NomCollaborateur");
+        }
+
+        public void InsertProduit(CollaborateurAfpa prod)
+        {
+            _context.CollaborateurAfpas.Add(prod);
+            _context.SaveChanges();
+        }
+        public void Remove(CollaborateurAfpa prod)
+        {
+            _context.CollaborateurAfpas.Remove(prod);
+            _context.SaveChanges();
+        }
+        public void Update(CollaborateurAfpa prod)
+        {
+            _context.CollaborateurAfpas.Update(prod);
+            _context.SaveChanges();
+        }
+        public CollaborateurAfpaModelView GetByMatriculeCollaborateur(string id)
+        {
+            var obj = _context.CollaborateurAfpas.Select(e => new CollaborateurAfpaModelView()
+            {
+                MatriculeCollaborateurAfpa = e.MatriculeCollaborateurAfpa,
+                IdEtablissement = e.IdEtablissement,
+                CodeTitreCivilite = e.CodeTitreCivilite,
+                NomCollaborateur = e.NomCollaborateur,
+                PrenomCollaborateur = e.PrenomCollaborateur,
+                MailCollaborateurAfpa = e.MailCollaborateurAfpa,
+                TelCollaborateurAfpa = e.TelCollaborateurAfpa,
+                Uo = e.Uo,
+                UserId = e.UserId
+            }).First(p => p.MatriculeCollaborateurAfpa == id);
+            return obj as CollaborateurAfpaModelView;
+        }
+        public CollaborateurAfpa GetByMatriculeCollaborateurDelete(string matriculeCollaborateur)
+        {
+            return _context.CollaborateurAfpas.Find(matriculeCollaborateur);
+        }
     }
 }
