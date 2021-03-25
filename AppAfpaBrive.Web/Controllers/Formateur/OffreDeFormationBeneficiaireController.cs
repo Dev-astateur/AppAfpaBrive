@@ -94,7 +94,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
         [HttpGet]
         public async Task<IActionResult> OffredeFormationBeneficiaire(int id, int? pageIndex)
         {
-            
+           
             //var offreFormations = _offreDeFormationLayer.GetAllbyMatricule("96GB011");
             //var beneficiaires = _beneficiaireLayer.GetAllByOffredeFormation(id);
             if (pageIndex is null) 
