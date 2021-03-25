@@ -30,7 +30,7 @@ namespace AppAfpaBrive.Web.Layers
         public IEnumerable<SelectListItem> GetAllbyMatricule(string idCollaborateurAFPA)
         {
             return _context.OffreFormations.Where(a => a.MatriculeCollaborateurAfpa == idCollaborateurAFPA)
-                .Select(e => new SelectListItem() { Text = e.LibelleOffreFormation, Value = e.IdOffreFormation.ToString() })
+                .Select(e => new SelectListItem() { Text = e.LibelleOffreFormation, Value = e.IdOffreFormation.ToString()})
                 .ToList();
                
         }

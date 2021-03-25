@@ -94,7 +94,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
         [HttpGet]
         public async Task<IActionResult> OffredeFormationBeneficiaire(int id, int? pageIndex)
         {
-            
+           
             //var offreFormations = _offreDeFormationLayer.GetAllbyMatricule("96GB011");
             //var beneficiaires = _beneficiaireLayer.GetAllByOffredeFormation(id);
             if (pageIndex is null) 
@@ -103,6 +103,11 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
             }
             BeneficiaireSpecifiqueModelView modelView = new BeneficiaireSpecifiqueModelView();
             modelView.SelectListItems = _offreDeFormationLayer.GetAllbyMatricule("96GB011");
+            var selected =  modelView.SelectListItems.Where(e => e.Value == id.ToString()).FirstOrDefault();
+            
+            if ( selected is not null )
+                selected.Selected = true;
+
             modelView.PagingBeneficiaires = await _beneficiaireLayer.GetPage(id, (int)pageIndex);
             modelView.PagingBeneficiaires.Action = "OffredeFormationBeneficiaire";
             //modelView.Action = "OffreDeFormationBeneficiaire";

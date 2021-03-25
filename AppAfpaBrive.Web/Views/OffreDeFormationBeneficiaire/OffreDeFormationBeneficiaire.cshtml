@@ -103,17 +103,18 @@
 @section Scripts
 {
     <script defer type="text/javascript">
+       
         $(document).ready(function () {
             $('#listeoffre').on('change', function (e) {
                 var optionSelected = $('option:selected', this);
-
-                //$("#listebenef").load("/OffreDeFormationBeneficiaire/OffredeFormationBeneficiaire/" + optionSelected.val());
-                window.location.href = "/OffreDeFormationBeneficiaire/OffredeFormationBeneficiaire/" + optionSelected.val();
-
+                    
+                    window.location.href = "/OffreDeFormationBeneficiaire/OffredeFormationBeneficiaire/" + optionSelected.val();
+                      //$("#listebenef").load("/OffreDeFormationBeneficiaire/OffredeFormationBeneficiaire/" + optionSelected.val());
+                
             });
-
+   
         });
-
+       
 
         //$(document).ready(function () {
         //    $('.page-link').on('click', function (e) {
@@ -126,8 +127,6 @@
         //    });
 
         //});
-
-
 
     </script>
 }
