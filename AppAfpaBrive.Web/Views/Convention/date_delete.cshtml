@@ -1,0 +1,14 @@
+﻿@model AppAfpaBrive.Web.ModelView.Date_ModelView
+<form method="post">
+
+    @Model.Iddate
+    <input hidden="hidden" value="@Model.Iddate" asp-for="@Model.Iddate"/>
+
+    @Model.Date1.ToString("yyyy-MM-dd")
+
+    @Model.Date2.ToString("yyyy-MM-dd")
+
+    <a asp-action="date" class="btn btn-primary m-2">Retour</a>
+    <input type="submit" class="btn btn-danger m-2" value="Supprimer" />
+
+</form>

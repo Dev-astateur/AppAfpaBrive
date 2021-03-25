@@ -28,14 +28,14 @@
                 @foreach (var obj in Model)
                 {
                     <tr id="ligne">
-                        <td width="50%">@obj.Date1</td>
-                        <td width="30%">@obj.Date2</td>
+                        <td width="50%">@obj.Date1.ToString("yyyy-MM-dd")</td>
+                        <td width="30%">@obj.Date2.ToString("yyyy-MM-dd")</td>
                         <td>
                             <div class="w-75 btn-group" role="group">
-                                @*<a asp-controller="Convention" asp-route-Id="@obj.Iddate" asp-action="date_delete" class="btn btn-danger">
+                                <a asp-controller="Convention" asp-route-Id="@obj.Iddate" asp-action="date_delete" class="btn btn-danger">
                                         Supprimer
-                                    </a>*@
-                                <input type="submit" asp-for="@obj.Iddate" value="Supprimer" />
+                                    </a>
+                               @* <input type="submit" asp-for="@obj.Iddate" value="Supprimer" />*@
                             </div>
                         </td>
                     </tr>

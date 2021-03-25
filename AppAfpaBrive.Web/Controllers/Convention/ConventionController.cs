@@ -346,13 +346,14 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [HttpPost]
         public IActionResult date_create(Date_ModelView date)
         {
+            
             List<Date_ModelView> listDate = new List<Date_ModelView>();
             string str = this.HttpContext.Session.GetString("date");
             if (str != "")
             {
                 listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
             }
-            date.Iddate = listDate.Count() + 1;
+            date.Iddate = listDate.Count();
             listDate.Add(date);
             str = JsonConvert.SerializeObject(listDate);
             HttpContext.Session.SetString("date", str);
@@ -361,16 +362,24 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         }
 
         // get date
-        public IActionResult date_delete()
+        public IActionResult date_delete(int id)
         {
-            return View();
+            string str = HttpContext.Session.GetString("date");
+            List<Date_ModelView> listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
+            Date_ModelView date = listDate[id];
+            return View(date);
         }
 
         // get post
         [HttpPost]
         public IActionResult date_delete(Date_ModelView date)
         {
-            return View();
+            string str = HttpContext.Session.GetString("date");
+            List<Date_ModelView> listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
+            listDate.RemoveAt(date.Iddate);
+            str = JsonConvert.SerializeObject(listDate);
+            HttpContext.Session.SetString("date", str);
+            return RedirectToAction("date");
         }
 
         // get recapitulatif
