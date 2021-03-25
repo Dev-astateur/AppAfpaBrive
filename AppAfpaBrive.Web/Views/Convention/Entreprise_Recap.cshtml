@@ -6,53 +6,44 @@
         <h2 class="text-info pl-3">Information de l'entreprise</h2>
     </div>
     <div class="row">
-        <div class="col-8">
+        <div class="col-12">
             <div class="form-group row">
-                <div class="col-8">
-                    <label class="col-4"> Siret: </label>
-                    <label class="col-4">@Model.NumeroSiret</label>
+                <div class="col-12">
+                    <h6 class="col-12 text-info"> Siret: @Model.NumeroSiret </h6>
                 </div>
-                <div class="col-8">
-                    <label class="col-4"> Raison sociale: </label>
-                    <label class="col-4">@Model.RaisonSociale </label>
+                <div class="col-12">
+                    <h6 class="col-12 text-info"> Raison sociale: @Model.RaisonSociale</h6>
                 </div>
-                <div class="col-8">
-                    <label class="col-4"> Ville: </label>
-                    <label class="col-4">@Model.Ville </label>
+                <div class="col-12">
+                    <h6 class="col-12 text-info"> Ville: @Model.Ville</h6>
                 </div>
-                <div class="col-8">
-                    <label class="col-4"> Code Postal: </label>
-                    <label class="col-4">@Model.CodePostal </label>
+                <div class="col-12">
+                    <h6 class="col-12 text-info"> Code Postal: @Model.CodePostal</h6>
                 </div>
-                <div class="col-8">
-                    <label class="col-4"> Adresse: </label>
-                    <label class="col-4">@Model.Ligne1Adresse </label>
+                <div class="col-12">
+                    <h6 class="col-12 text-info"> Adresse: @Model.Ligne1Adresse</h6>
                 </div>
-                <div class="col-8">
-                    <label class="col-4"> Adresse suite: </label>
-                    <label class="col-4">@Model.Ligne2Adresse </label>
+                <div class="col-12">
+                    <h6 class="col-12 text-info"> Adresse suite: @Model.Ligne2Adresse</h6>
                 </div>
-                <div class="col-8">
-                    <label class="col-4"> Adresse suite: </label>
-                    <label class="col-4">@Model.Ligne3Adresse </label>
+                <div class="col-12">
+                    <label class="col-12 text-info"> Adresse suite: @Model.Ligne3Adresse</label>
                 </div>
-                <div class="col-8">
-                    <label class="col-4"> Télephone: </label>
-                    <label class="col-4">@Model.TelEntreprise </label>
+                <div class="col-12">
+                    <label class="col-12 text-info"> Télephone: @Model.TelEntreprise</label>
                 </div>
-                <div class="col-8">
-                    <label class="col-4"> Mail: </label>
-                    <label class="col-4">@Model.MailEntreprise </label>
+                <div class="col-12">
+                    <label class="col-12 text-info"> Mail: @Model.MailEntreprise</label>
                 </div>
 
             </div>
             <div class="form-group row">
                 <div class="col-8 offset-4 row">
                     <div class="col">
-                        <a asp-action="entreprise" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Retour</a>
+                        <a asp-action="entreprise" class="btn btn-success w-100 m-2"><i class="fas fa-sign-out-alt"></i> Retour</a>
                     </div>
                     <div class="col">
-                        <a asp-action="Professionel" class="btn btn-info w-100"><i class="fas fa-sign-out-alt"></i> Continuer</a>
+                        <a asp-action="Professionel" class="btn btn-info w-100 m-2" ><i class="fas fa-sign-out-alt"></i> Continuer</a>
                     </div>
                     
                 </div>

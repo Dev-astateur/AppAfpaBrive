@@ -6,21 +6,23 @@
             <h2 class="text-info pl-3">Veuillez saisir vos dates de stages:</h2>
         </div>
         <div>
-            <label> </label>
             <div>
-                <div>
-                    <label>Date du début du stage:</label>
+                <div class="text-center">
+                    <label class="m-2">Début du stage:</label><br />
                     <input type="date"  asp-for="Date1" />
                     <span asp-validation-for="Date1"></span>
                 </div>
-                <div>
-                    <label>Date de fin du stage:</label>
+                <div class="text-center">
+                    <label class="m-2">Fin du stage:</label><br />
                     <input type="date"  asp-for="Date2" />
                     <span asp-validation-for="Date2"></span>
                 </div>
             </div>
-            <a asp-action="date" class="btn btn-primary">Retour</a>
-            <input type="submit" value="Creation" class="text-right btn btn-primary" />
+            <div class="text-center m-2">
+                <a asp-action="date" class="btn btn-primary">Retour</a>
+                <input type="submit" value="Creation" class="text-right btn btn-primary" />
+            </div>
+            
 
         </div>
     </div>

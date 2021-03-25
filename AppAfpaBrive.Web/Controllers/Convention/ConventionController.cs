@@ -166,6 +166,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             };
             str = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", str);
+            HttpContext.Session.SetString("date", "");
+            HttpContext.Session.SetString("pro", "");
             return View(entreprise);
         }
 
@@ -225,12 +227,12 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
             str = HttpContext.Session.GetString("pro");
             List<Professionnel> pro = new List<Professionnel>();
-            if (str == null)
+            if (str == "")
             {
                pro = _pro.Get_Pro(convention.IdEntreprise);
             }
             
-            if (str != null)
+            if (str != "")
             {
                 List<Professionnel_ModelView> professionnels = JsonConvert.DeserializeObject<List<Professionnel_ModelView>>(str);
                 foreach (var item in professionnels)
@@ -346,7 +348,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             List<Date_ModelView> listDate = new List<Date_ModelView>();
             string str = this.HttpContext.Session.GetString("date");
-            if (str != null)
+            if (str != "")
             {
                 listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
             }
