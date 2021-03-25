@@ -1154,7 +1154,19 @@ namespace AppAfpaBrive.DAL
                     .HasForeignKey(la => la.IdLigneAnnuaire);
 
             });
+            modelBuilder.Entity<CategorieLigneAnnuaire>(entity =>
+            {
+                entity.HasKey(cla => new { cla.IdCategorie, cla.IdLigneAnnuaire });
 
+                entity.HasOne<Categorie>(cat => cat.Categorie)
+                    .WithMany(la => la.CategorieLigneAnnuaires)
+                    .HasForeignKey(sc => sc.IdCategorie);
+
+                entity.HasOne<LigneAnnuaire>(la => la.LigneAnnuaire)
+                    .WithMany(s => s.CategorieLigneAnnuaires)
+                    .HasForeignKey(la => la.IdLigneAnnuaire);
+
+            });
             modelBuilder.Entity<ContactLigneAnnuaire>(x =>
             {
                 x.HasKey(y => new { y.IdContact, y.IdLigneAnnuaire });
@@ -1168,6 +1180,7 @@ namespace AppAfpaBrive.DAL
                     .HasForeignKey(x => x.IdLigneAnnuaire);
 
             });
+
 
             modelBuilder.Entity<ContactStructure>(x =>
             {
@@ -1190,25 +1203,94 @@ namespace AppAfpaBrive.DAL
                 x.HasOne<Structure>(x => x.Structure)
                     .WithMany(s => s.LigneAnnuaires)
                     .HasForeignKey(s => s.IdStructure);
+
+                x.Property(x => x.PublicConcerne)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                x.Property(x => x.ServiceAbrege)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                x.Property(x => x.Conditions)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
             });
+
 
             modelBuilder.Entity<Categorie>(x =>
             {
                 x.HasKey(k => k.IdCategorie);
+
+                x.Property(x => x.LibelleCategorie)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
             });
+
 
             modelBuilder.Entity<Contact>(x =>
             {
                 x.HasKey(k => k.IdContact);
 
-                x.HasOne<TitreCivilite>(t => t.TitreCivilite)
+                x.HasOne<TitreCivilite>(x => x.TitreCivilite)
                     .WithMany(s => s.Contacts)
-                    .HasForeignKey(fk => fk.IdContact);
+                    .HasForeignKey(s => s.IdTitreCivilite);
+
+                x.Property(x => x.Nom)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                x.Property(x => x.Prenom)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                x.Property(x => x.Telephone)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                x.Property(x => x.Mail)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
             });
+
 
             modelBuilder.Entity<Structure>(x =>
             {
                 x.HasKey(k => k.IdStructure);
+
+                x.Property(x => x.NomStructure)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                x.Property(x => x.LigneAdresse1)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                x.Property(x => x.LigneAdresse2)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                x.Property(x => x.LigneAdresse3)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                x.Property(x => x.CodePostal)
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
+
+                x.Property(x => x.Ville)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                x.Property(x => x.Mail)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                x.Property(x => x.Telephone)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);
