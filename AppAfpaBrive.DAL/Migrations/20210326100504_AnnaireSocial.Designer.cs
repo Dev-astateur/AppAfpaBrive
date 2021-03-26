@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppAfpaBrive.DAL.Migrations
 {
     [DbContext(typeof(AFPANADbContext))]
-    [Migration("20210326092950_AnnuaireSocial")]
-    partial class AnnuaireSocial
+    [Migration("20210326100504_AnnaireSocial")]
+    partial class AnnaireSocial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

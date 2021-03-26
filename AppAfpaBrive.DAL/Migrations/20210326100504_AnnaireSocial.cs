@@ -2,16 +2,10 @@
 
 namespace AppAfpaBrive.DAL.Migrations
 {
-    public partial class AnnuaireSocial : Migration
+    public partial class AnnaireSocial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "Repondu",
-                table: "DestinataireEnquete",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
 
             migrationBuilder.CreateTable(
                 name: "Categories",
@@ -194,21 +188,12 @@ namespace AppAfpaBrive.DAL.Migrations
                 table: "LigneAnnuaires",
                 column: "IdStructure");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Professionnel_TitreCivilite",
-                table: "Professionnel",
-                column: "CodeTitreCiviliteProfessionnel",
-                principalTable: "TitreCivilite",
-                principalColumn: "CodeTitreCivilite",
-                onDelete: ReferentialAction.Restrict);
+           
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Professionnel_TitreCivilite",
-                table: "Professionnel");
-
+         
             migrationBuilder.DropTable(
                 name: "CategorieLigneAnnuaires");
 
@@ -234,9 +219,13 @@ namespace AppAfpaBrive.DAL.Migrations
                 name: "IX_Professionnel_CodeTitreCiviliteProfessionnel",
                 table: "Professionnel");
 
-            migrationBuilder.DropColumn(
-                name: "Repondu",
-                table: "DestinataireEnquete");
+            migrationBuilder.AddColumn<int>(
+                name: "CodeTitreCivilite",
+                table: "Professionnel",
+                type: "int",
+                nullable: true);
+
+           
         }
     }
 }
