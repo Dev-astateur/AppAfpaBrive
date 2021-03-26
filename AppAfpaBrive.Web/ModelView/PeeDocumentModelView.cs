@@ -29,8 +29,16 @@ namespace AppAfpaBrive.Web.ModelView
         public string NomDocument {
             get
             {
-                string retour = PathDocument.Substring(PathDocument.LastIndexOf('\\')+1,PathDocument.Length-PathDocument.LastIndexOf('\\')-1);
+                string retour = PathDocument.Substring(PathDocument.LastIndexOf('/')+1,PathDocument.Length-PathDocument.LastIndexOf('/')-1);
                 return retour;
+            }
+        }
+
+        public string PathFichierPhysique
+        {
+            get
+            {
+                return PathDocument.Substring(0, 1).Equals("/") ? PathDocument.Substring(1, PathDocument.Length - 1) : PathDocument;
             }
         }
     }
