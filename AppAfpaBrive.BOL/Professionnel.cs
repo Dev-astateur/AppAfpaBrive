@@ -27,5 +27,6 @@ namespace AppAfpaBrive.BOL
         
         public virtual ICollection<Pee> PeeIdTuteurNavigations { get; set; }
         public virtual ICollection<EntrepriseProfessionnel> EntrepriseProfessionnels { get; set; }
+
     }
 }

@@ -1021,6 +1021,7 @@ namespace AppAfpaBrive.DAL
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
                 entity.HasOne(d => d.TitreCiviliteNavigation)
                    .WithMany(p => p.Professionnels)
                    .HasForeignKey(d => d.CodeTitreCiviliteProfessionnel)
@@ -1140,6 +1141,19 @@ namespace AppAfpaBrive.DAL
                     .HasConstraintName("FK_Uo_ChampProfessionnel_UniteOrganisationnelle");
             });
 
+            modelBuilder.Entity<CategorieLigneAnnuaire>(entity =>
+            {
+                entity.HasKey(cla => new { cla.IdCategorie, cla.IdLigneAnnuaire });
+
+                entity.HasOne<Categorie>(cat => cat.Categorie)
+                    .WithMany(la => la.CategorieLigneAnnuaires)
+                    .HasForeignKey(sc => sc.IdCategorie);
+
+                entity.HasOne<LigneAnnuaire>(la => la.LigneAnnuaire)
+                    .WithMany(s => s.CategorieLigneAnnuaires)
+                    .HasForeignKey(la => la.IdLigneAnnuaire);
+
+            });
 
             modelBuilder.Entity<CategorieLigneAnnuaire>(entity =>
             {
@@ -1154,19 +1168,7 @@ namespace AppAfpaBrive.DAL
                     .HasForeignKey(la => la.IdLigneAnnuaire);
 
             });
-            modelBuilder.Entity<CategorieLigneAnnuaire>(entity =>
-            {
-                entity.HasKey(cla => new { cla.IdCategorie, cla.IdLigneAnnuaire });
 
-                entity.HasOne<Categorie>(cat => cat.Categorie)
-                    .WithMany(la => la.CategorieLigneAnnuaires)
-                    .HasForeignKey(sc => sc.IdCategorie);
-
-                entity.HasOne<LigneAnnuaire>(la => la.LigneAnnuaire)
-                    .WithMany(s => s.CategorieLigneAnnuaires)
-                    .HasForeignKey(la => la.IdLigneAnnuaire);
-
-            });
             modelBuilder.Entity<ContactLigneAnnuaire>(x =>
             {
                 x.HasKey(y => new { y.IdContact, y.IdLigneAnnuaire });
@@ -1180,7 +1182,6 @@ namespace AppAfpaBrive.DAL
                     .HasForeignKey(x => x.IdLigneAnnuaire);
 
             });
-
 
             modelBuilder.Entity<ContactStructure>(x =>
             {
