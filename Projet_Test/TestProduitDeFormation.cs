@@ -143,17 +143,17 @@ namespace Projet_Test
             
             dba = db.GetAFPANADbContext("bloub");
 
-            var bloub = new ProduitFormation
+            var produitformation = new ProduitFormation
             {
                 CodeProduitFormation = 7,
                 NiveauFormation = "3",
                 LibelleCourtFormation = "abc",
                 LibelleProduitFormation = "dkazkdakanfpoakfjha"
             };
-            dba.ProduitFormations.Add(bloub);
+            dba.ProduitFormations.Add(produitformation);
 
             dba.SaveChanges();
-            dba.Entry<ProduitFormation>(bloub).State =EntityState.Detached;
+            dba.Entry<ProduitFormation>(produitformation).State =EntityState.Detached;
 
             ProduitFormationController controleur = new ProduitFormationController(dba);
             var view = controleur.Delete(7);
@@ -166,24 +166,52 @@ namespace Projet_Test
         public void TestMethodeCreateValide()
         {
             dba = db.GetAFPANADbContext("xxx");
-            var bloub = new ProduitFormationModelView
+            var produitformation = new ProduitFormationModelView
             {
                 CodeProduitFormation = 7,
                 NiveauFormation = "3",
                 LibelleCourtFormation = "abc",
                 LibelleProduitFormation = "dkazkdakanfpoakfjha"
             };
-            var item = bloub.GetProduitFormation();
+            var item = produitformation.GetProduitFormation();
            
             dba.Entry<ProduitFormation>(item).State = EntityState.Detached;
 
             ProduitFormationController controleur = new ProduitFormationController(dba);
 
-            var view = controleur.Create(bloub);
+            var view = controleur.Create(produitformation);
 
             var result = dba.ProduitFormations.Where(x => x.CodeProduitFormation == 7);
             Assert.IsTrue(result.Count() == 1);
         }
         
+        [Test]
+        public void NiveauFormationTropLong()
+        {
+            var produitformation = new ProduitFormationModelView
+            {
+                CodeProduitFormation = 7,
+                NiveauFormation = "345687",
+                LibelleCourtFormation = "abc",
+                LibelleProduitFormation = "dkazkdakanfpoakfjha"
+            };
+           Assert.IsTrue(ValidationService.ValidateModel(produitformation).Any(va =>
+           va.MemberNames.Contains("NiveauFormation")
+           && va.ErrorMessage.Contains("Le Niveau de Formation ne peut pas etre plus long que 5 caracteres")));
+        }
+        [Test]
+        public void NiveauFormationValide()
+        {
+            var produitformation = new ProduitFormationModelView
+            {
+                CodeProduitFormation = 7,
+                NiveauFormation = "3",
+                LibelleCourtFormation = "abc",
+                LibelleProduitFormation = "dkazkdakanfpoakfjha"
+            };
+            Assert.IsFalse(ValidationService.ValidateModel(produitformation).Any(va =>
+            va.MemberNames.Contains("NiveauFormation")
+            && va.ErrorMessage.Contains("Le Niveau de Formation ne peut pas etre plus long que 5 caracteres")));
+        }
     }
 }
