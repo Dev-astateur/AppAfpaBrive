@@ -15,7 +15,8 @@ namespace AppAfpaBrive.Web.ModelView
             IdPee = peeDocument.IdPee;
             NumOrdre = peeDocument.NumOrdre;
             PathDocument = peeDocument.PathDocument;
-            idPeeNavigation = new PeeModelView(peeDocument.idPeeNavigation);
+            if ( peeDocument is not null )
+                IdPeeNavigation = new PeeModelView(peeDocument.idPeeNavigation);
         }
 
         public decimal IdPee { get; set; }
@@ -24,7 +25,7 @@ namespace AppAfpaBrive.Web.ModelView
         [Display(Name ="Document")]
         public string PathDocument { get; set; }
 
-        public virtual PeeModelView idPeeNavigation { get; set; }
+        public virtual PeeModelView IdPeeNavigation { get; set; }
 
         public string NomDocument {
             get
@@ -38,7 +39,7 @@ namespace AppAfpaBrive.Web.ModelView
         {
             get
             {
-                return PathDocument.Substring(0, 1).Equals("/") ? PathDocument.Substring(1, PathDocument.Length - 1) : PathDocument;
+                return PathDocument.Substring(0, 1).Equals("/") ? PathDocument[1..] : PathDocument;
             }
         }
     }

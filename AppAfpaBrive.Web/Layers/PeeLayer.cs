@@ -124,7 +124,7 @@ namespace AppAfpaBrive.Web.Layers
 
         public async Task<bool> UpdatePeeAsync( PeeModelView peeModelView )
         {
-            Pee pee = new Pee()
+            Pee pee = new ()
             {
                 IdPee = peeModelView.IdPee,
                 MatriculeBeneficiaire = peeModelView.MatriculeBeneficiaire,
