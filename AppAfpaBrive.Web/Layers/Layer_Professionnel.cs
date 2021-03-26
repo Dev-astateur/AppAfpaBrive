@@ -38,6 +38,13 @@ namespace AppAfpaBrive.Web.Layers
             _db.SaveChanges();
         }
 
+        public int create_get_ID(Professionnel pro)
+        {
+            _db.Add(pro);
+            _db.SaveChanges();
+            return pro.IdProfessionnel;
+        }
+
         public int Get_Id_pro(string nom , string prenom)
         {
             return _db.Professionnels.Where(x => x.NomProfessionnel == nom && x.PrenomProfessionnel == prenom).FirstOrDefault().IdProfessionnel;

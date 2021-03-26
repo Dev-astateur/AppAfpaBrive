@@ -14,6 +14,7 @@ using AppAfpaBrive.Web.ModelView;
 using DocumentFormat.OpenXml;
 using AppAfpaBrive.DAL.Layers;
 using AppAfpaBrive.Web.Layers;
+using AppAfpaBrive.Web.Utilitaires;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
@@ -40,6 +41,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _peelayer = new PeeLayer(context);
             _periode = new Periode_pee_Layer(context);
         }
+        
+
 
         // get index
         public IActionResult Index()
@@ -231,55 +234,72 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             {
                pro = _pro.Get_Pro(convention.IdEntreprise);
             }
-            
+
+            List<Pro_Session_ModelView> pro_Sessions = new List<Pro_Session_ModelView>();
+
+            foreach (var item in pro)
+            {
+                Pro_Session_ModelView pro_Session_ = new Pro_Session_ModelView
+                {
+                    CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel,
+                    NomProfessionnel = item.NomProfessionnel,
+                    PrenomProfessionnel = item.PrenomProfessionnel,
+                    ID = item.IdProfessionnel
+                };
+                pro_Sessions.Add(pro_Session_);
+            }
+
             if (str != "")
             {
-                List<Professionnel_ModelView> professionnels = JsonConvert.DeserializeObject<List<Professionnel_ModelView>>(str);
+                List<Pro_Session_ModelView> professionnels = JsonConvert.DeserializeObject<List<Pro_Session_ModelView>>(str);
                 foreach (var item in professionnels)
                 {
-                    Professionnel professionnel = new Professionnel
+                    Pro_Session_ModelView professionnel = new Pro_Session_ModelView
                     {
                         NomProfessionnel = item.NomProfessionnel,
                         PrenomProfessionnel = item.PrenomProfessionnel,
-                        CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel
+                        CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel,
+                        Create = item.Create
                     };
-                    pro.Add(professionnel);
+                    pro_Sessions.Add(professionnel);
                 }
             }
-            str = JsonConvert.SerializeObject(pro);
+            str = JsonConvert.SerializeObject(pro_Sessions);
             HttpContext.Session.SetString("pro", str);
-            return View(pro);
+            return View(pro_Sessions);
         }
 
         //post Professionel
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Professionel(List<Professionnel> obj)
+        public IActionResult Professionel(List<Pro_Session_ModelView> obj)
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
 
             string xd = HttpContext.Session.GetString("pro");
-            List<Professionnel> professionnels = JsonConvert.DeserializeObject<List<Professionnel>>(xd);
+            List<Pro_Session_ModelView> professionnels = JsonConvert.DeserializeObject<List<Pro_Session_ModelView>>(xd);
             if (Request.Form["tuteur"] != "")
             {
                 int tuteurID = int.Parse(Request.Form["tuteur"].ToString());
-                Professionnel professionnel = new Professionnel();
+                Pro_Session_ModelView professionnel = new Pro_Session_ModelView();
                 professionnel = professionnels[tuteurID];
                 convention.TuteurNom = professionnel.NomProfessionnel;
                 convention.TuteurPrenom = professionnel.PrenomProfessionnel;
-                convention.IdTuteur = professionnel.IdProfessionnel;
+                convention.IdTuteur = professionnel.ID;
                 convention.Tuteur_create_Id = tuteurID;
+                convention.Tuteur_create = professionnel.Create;
             }
             if (Request.Form["Responsable"] != "")
             {
                 int ResponsableID = int.Parse(Request.Form["Responsable"].ToString());
-                Professionnel professionnel = new Professionnel();
+                Pro_Session_ModelView professionnel = new Pro_Session_ModelView();
                 professionnel = professionnels[ResponsableID];
                 convention.ResponsableNom = professionnel.NomProfessionnel;
                 convention.ResponsablePrenom = professionnel.PrenomProfessionnel;
-                convention.IdResponsable = professionnel.IdProfessionnel;
+                convention.IdResponsable = professionnel.ID;
                 convention.Responsable_create_Id = ResponsableID;
+                convention.Responsable_create = professionnel.Create;
             }
             var x = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", x);
@@ -300,16 +320,25 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [ValidateAntiForgeryToken]
         public IActionResult Professionel_Creation(Professionnel_ModelView obj)
         {
-            obj.Create = true;
             if (ModelState.IsValid)
             {
-                List<Professionnel_ModelView> professionnels = new List<Professionnel_ModelView>();
+                List<Pro_Session_ModelView> professionnels = new List<Pro_Session_ModelView>();
                 string str = this.HttpContext.Session.GetString("pro");
                 if (str != null)
                 {
-                    professionnels = JsonConvert.DeserializeObject<List<Professionnel_ModelView>>(str);
+                    professionnels = JsonConvert.DeserializeObject<List<Pro_Session_ModelView>>(str);
                 }
-                professionnels.Add(obj);
+                Pro_Session_ModelView pro = new Pro_Session_ModelView
+                {
+                    AdresseMail = obj.AdresseMail,
+                    Create = true,
+                    CodeTitreCiviliteProfessionnel = obj.CodeTitreCiviliteProfessionnel,
+                    Fonction = obj.Fonction,
+                    NomProfessionnel = obj.NomProfessionnel,
+                    PrenomProfessionnel = obj.PrenomProfessionnel,
+                    NumerosTel = obj.NumerosTel
+                };
+                professionnels.Add(pro);
                 str = JsonConvert.SerializeObject(professionnels);
                 HttpContext.Session.SetString("pro", str);
                 return RedirectToAction("Professionel");
@@ -392,13 +421,14 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             string str_date = this.HttpContext.Session.GetString("date");
             List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
             ViewBag.dates = dates;
+            ViewBag.convention = convention;
 
-            return View(convention);
+            return View();
         }
 
         //post Recapitulatif
         [HttpPost]
-        public IActionResult Recapitulatif(Creation_convention oui)
+        public IActionResult Recapitulatif(FilesModel uploadFile)
         {
 
             string str = this.HttpContext.Session.GetString("convention");
@@ -434,6 +464,27 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 pee.IdEntreprise = entrepriseID;
             }
 
+            if(convention.Tuteur_create == true)
+            {
+                Professionnel professionnel = new Professionnel
+                {
+                    CodeTitreCiviliteProfessionnel = 1,
+                    NomProfessionnel = convention.TuteurNom,
+                    PrenomProfessionnel = convention.TuteurPrenom
+                };
+                convention.IdTuteur = _pro.create_get_ID(professionnel);
+            }
+
+            if (convention.Responsable_create == true)
+            {
+                Professionnel professionnel = new Professionnel
+                {
+                    CodeTitreCiviliteProfessionnel = 0,
+                    NomProfessionnel = convention.ResponsableNom,
+                    PrenomProfessionnel = convention.ResponsablePrenom
+                };
+                convention.IdResponsable = _pro.create_get_ID(professionnel);
+            }
 
             string str_date = this.HttpContext.Session.GetString("date");
             List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
@@ -450,8 +501,39 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 _periode.Pee_Create(periodePee);
             }
 
+            //if (ModelState.IsValid)
+            //{
+            //    var postedFile = uploadFile.file;
+            //    try
+            //    {
+            //        var Response = UploadFiles.UploadFile(postedFile, Path);
+
+            //        if (Response.Done)
+            //        {
+            //            return View(viewName: "Index");
+            //        }
+            //        else
+            //        {
+            //            return BadRequest();
+            //        }
+
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Response.WriteAsync("<script>alert('" + e + "')</script>");
+            //        return View(viewName: "Index");
+            //    }
+            //}
 
             return RedirectToAction("index");
         }
+        //protected string Path { get; set; }
+
+        //public ConventionController()
+        //{
+        //    Path = "./Data/Documents";
+
+        //}
+
     }
 }

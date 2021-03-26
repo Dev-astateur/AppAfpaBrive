@@ -22,7 +22,6 @@ namespace AppAfpaBrive.Web.ModelView
         public string NumerosTel { get; set; }
         public string Fonction { get; set; }
 
-        public bool Create { get; set; }
 
     }
 }

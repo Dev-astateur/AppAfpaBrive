@@ -71,5 +71,7 @@ namespace AppAfpaBrive.Web.Models
         public bool Entreprise_Create { get => _Entreprise_Create; set => _Entreprise_Create = value; }
         public int Tuteur_create_Id { get => _Tuteur_create_Id; set => _Tuteur_create_Id = value; }
         public int Responsable_create_Id { get => _Responsable_create_Id; set => _Responsable_create_Id = value; }
+        public bool Responsable_create { get => _Responsable_create; set => _Responsable_create = value; }
+        public bool Tuteur_create { get => _Tuteur_create; set => _Tuteur_create = value; }
     }
 }
