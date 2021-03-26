@@ -300,6 +300,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [ValidateAntiForgeryToken]
         public IActionResult Professionel_Creation(Professionnel_ModelView obj)
         {
+            obj.Create = true;
             if (ModelState.IsValid)
             {
                 List<Professionnel_ModelView> professionnels = new List<Professionnel_ModelView>();
@@ -403,23 +404,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
             int entrepriseID = 0;
-            if(convention.Entreprise_Create == true)
-            {
-                Entreprise entreprise = new Entreprise
-                {
-                    CodePostal = convention.Entreprise_codePostal,
-                    Idpays2 = convention.Entreprise_IdPays,
-                    Ligne1Adresse = convention.Entreprise_Ligne1Adresse,
-                    Ligne2Adresse = convention.Entreprise_Ligne2Adresse,
-                    Ligne3Adresse = convention.Entreprise_Ligne3Adresse,
-                    RaisonSociale = convention.Entreprise_raison_social,
-                    MailEntreprise = convention.Entreprise_Mail,
-                    Ville = convention.Entreprise_Ville,
-                    TelEntreprise = convention.Entreprise_Tel,
-                    NumeroSiret = convention.Siret
-                };
-                entrepriseID = _Entreprise.Create_entreprise_ID_Back(entreprise);
-            }
 
             Pee pee = new Pee
             {
@@ -430,6 +414,26 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 IdOffreFormation = convention.IdFormation,
                 IdEtablissement = convention.IdEtablissement
             };
+
+            if (convention.Entreprise_Create == true)
+            {
+                Entreprise entreprise = new Entreprise
+                {
+                    CodePostal = convention.Entreprise_codePostal,
+                    Idpays2 = "Fr",
+                    Ligne1Adresse = convention.Entreprise_Ligne1Adresse,
+                    Ligne2Adresse = convention.Entreprise_Ligne2Adresse,
+                    Ligne3Adresse = convention.Entreprise_Ligne3Adresse,
+                    RaisonSociale = convention.Entreprise_raison_social,
+                    MailEntreprise = convention.Entreprise_Mail,
+                    Ville = convention.Entreprise_Ville,
+                    TelEntreprise = convention.Entreprise_Tel,
+                    NumeroSiret = convention.Siret
+                };
+                entrepriseID = _Entreprise.Create_entreprise_ID_Back(entreprise);
+                pee.IdEntreprise = entrepriseID;
+            }
+
 
             string str_date = this.HttpContext.Session.GetString("date");
             List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);

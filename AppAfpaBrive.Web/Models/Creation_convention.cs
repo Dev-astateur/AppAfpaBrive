@@ -39,6 +39,8 @@ namespace AppAfpaBrive.Web.Models
         private int _Tuteur_create_Id;
         private int _Responsable_create_Id;
 
+        private bool _Tuteur_create;
+        private bool _Responsable_create;
 
 
         public string IdEtablissement { get => _idEtablissement; set => _idEtablissement = value; }
