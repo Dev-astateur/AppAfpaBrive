@@ -13,6 +13,7 @@ namespace AppAfpaBrive.Web.CustomValidator
         protected override ValidationResult IsValid(object value, ValidationContext context)
         {
             string siret = value.ToString();
+            siret = String.Concat(siret.Where(c => !Char.IsWhiteSpace(c))); //enlève tous les espaces de la chaîne
             int total = 0;
             for (int i = 0; i < siret.Length; i++)
             {

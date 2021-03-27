@@ -1,9 +1,5 @@
 ﻿@model AppAfpaBrive.BOL.Contrat
 
-@{
-    //Layout = "~Views/Shared/_Layout.cshtml";
-}
-
 <h4 class="text-center col-sm-4 col-md-12">Votre dernière situation connue :</h4>
 
 @await Html.PartialAsync("_ContratPartial") @*Bloc réutilisable pour la vue récap*@
@@ -12,15 +8,15 @@
     <p class="font-weight-bold">Êtes-vous toujours dans cette situation ?</p>
     <div class="buttons_yes_no">
         <a asp-action="DisplayRecap" class="btn btn-outline-primary btn-sm" id="same_situation">Oui</a>
-        <a data-toggle="collapse" data-target="#changement_entreprise" class="btn btn-outline-primary btn-sm" id="not_same_situation" role="button">Non</a>
+        <a href="#changement_entreprise" class="btn btn-outline-primary btn-sm" data-toggle="collapse" id="not_same_situation" >Non</a>
     </div>
 </div>
 <br />
-<div id="changement_entreprise" class="text-center collapse">
+<div id="changement_entreprise" class="collapse text-center">
     <p class="font-weight-bold">Avez-vous changé d'entreprise ?</p>
     <div class="buttons_yes_no">
         <a asp-action="ChercherEntreprise" role="button" class="btn btn-outline-primary btn-sm" id="change_entreprise">Oui</a>
-        <a role="button" class="btn btn-outline-primary btn-sm" id="same_entreprise">Non</a>
+        <a asp-action="ModifierContrat" role="button" class="btn btn-outline-primary btn-sm" id="same_entreprise">Non</a>
     </div>
 </div>
 

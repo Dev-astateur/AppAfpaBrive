@@ -14,9 +14,29 @@ namespace AppAfpaBrive.DAL.Layers
             _db = context;
         }
 
+        public List<TypeContrat> GetAll()
+        {
+            return _db.TypeContrats.ToList(); 
+        }
+
         public TypeContrat GetTypeContratById(int id)
         {
             return _db.TypeContrats.Where(tc => tc.IdTypeContrat == id).FirstOrDefault();
+        }
+
+        public TypeContrat GetTypeContratByDesignation(string designation)
+        {
+            return _db.TypeContrats.Where(tc => tc.DesignationTypeContrat == designation).FirstOrDefault();
+        }
+
+        public List<string> GetDesignationsTypeContrat()
+        {
+            return _db.TypeContrats.Select(tc => tc.DesignationTypeContrat).ToList(); 
+        }
+
+        public int GetIdTypeContratByDesignation(string desgignation)
+        {
+            return _db.TypeContrats.Where(tc => tc.DesignationTypeContrat == desgignation).Select(tc => tc.IdTypeContrat).FirstOrDefault(); 
         }
     }
 
