@@ -29,6 +29,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_EntrepriseProfessionnel _entreprisepro = null;
         private PeeLayer _peelayer = null;
         private Periode_pee_Layer _periode = null;
+        protected string Path { get; set; }
+
         public ConventionController(AFPANADbContext context)
         {
             _beneficiaireOffre = new Layer_Offres_Formation(context);
@@ -40,6 +42,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _entreprisepro = new Layer_EntrepriseProfessionnel(context);
             _peelayer = new PeeLayer(context);
             _periode = new Periode_pee_Layer(context);
+            Path = "./Data/Documents";
         }
         
 
@@ -194,18 +197,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             {
                 string str = this.HttpContext.Session.GetString("convention");
                 Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-                //Entreprise entreprise1 = new Entreprise
-                //{
-                //    CodePostal = entreprise.CodePostal,
-                //    Ligne1Adresse = entreprise.Ligne1Adresse,
-                //    Ligne2Adresse = entreprise.Ligne2Adresse,
-                //    Ligne3Adresse = entreprise.Ligne3Adresse,
-                //    RaisonSociale = entreprise.RaisonSociale,
-                //    NumeroSiret = entreprise.NumeroSiret,
-                //    Ville = entreprise.Ville,
-                //    Idpays2 = _Pays.Get_pays_ID(entreprise.Idpays2)
-                //};
-                //_Entreprise.Create_entreprise(entreprise1);
                 convention.Entreprise_codePostal = entreprise.CodePostal;
                 convention.Entreprise_IdPays = entreprise.Idpays2;
                 convention.Entreprise_Ligne1Adresse = entreprise.Ligne1Adresse;
@@ -472,7 +463,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     NomProfessionnel = convention.TuteurNom,
                     PrenomProfessionnel = convention.TuteurPrenom
                 };
-                convention.IdTuteur = _pro.create_get_ID(professionnel);
+                _pro.create(professionnel);
             }
 
             if (convention.Responsable_create == true)
@@ -483,7 +474,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     NomProfessionnel = convention.ResponsableNom,
                     PrenomProfessionnel = convention.ResponsablePrenom
                 };
-                convention.IdResponsable = _pro.create_get_ID(professionnel);
+                _pro.create(professionnel);
             }
 
             string str_date = this.HttpContext.Session.GetString("date");
@@ -501,39 +492,34 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 _periode.Pee_Create(periodePee);
             }
 
-            //if (ModelState.IsValid)
-            //{
-            //    var postedFile = uploadFile.file;
-            //    try
-            //    {
-            //        var Response = UploadFiles.UploadFile(postedFile, Path);
+            if (ModelState.IsValid)
+            {
+                var postedFile = uploadFile.file;
+                try
+                {
+                    var Response = UploadFiles.UploadFile(postedFile, Path);
 
-            //        if (Response.Done)
-            //        {
-            //            return View(viewName: "Index");
-            //        }
-            //        else
-            //        {
-            //            return BadRequest();
-            //        }
+                    if (Response.Done)
+                    {
+                        return RedirectToAction("index");
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
 
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Response.WriteAsync("<script>alert('" + e + "')</script>");
-            //        return View(viewName: "Index");
-            //    }
-            //}
+                }
+                catch (Exception e)
+                {
+                    Response.WriteAsync("<script>alert('" + e + "')</script>");
+                    return View();
+                }
+            }
 
             return RedirectToAction("index");
         }
-        //protected string Path { get; set; }
-
-        //public ConventionController()
-        //{
-        //    Path = "./Data/Documents";
-
-        //}
+        
+        
 
     }
 }
