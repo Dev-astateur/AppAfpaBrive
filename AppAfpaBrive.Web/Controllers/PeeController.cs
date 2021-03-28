@@ -172,6 +172,12 @@ namespace AppAfpaBrive.Web.Controllers
         #endregion
 
         #region Validation des Pee par le formateur
+        /// <summary>
+        /// liste des Pee par formateur
+        /// </summary>
+        /// <param name="id">id du matricule du formateur</param>
+        /// <param name="pageIndex">page à afficher non obligatoire</param>
+        /// <returns>View</returns>
         [HttpGet]
         public async Task<IActionResult> ListePeeAValider(string id,int? pageIndex)
         {
@@ -188,6 +194,7 @@ namespace AppAfpaBrive.Web.Controllers
         /// <summary>
         /// Page principale de validation de Pee
         /// </summary>
+        /// <param name="id">id IdPee, id de la Pee</param>
         /// <returns></returns>
         [Route("/Pee/PeeEntrepriseValidation/{id}")]
         [HttpGet]
@@ -202,11 +209,12 @@ namespace AppAfpaBrive.Web.Controllers
 
             return View(pee);
         }
-       
+
         /// <summary>
         /// Iaction du controller qui fonctionne comme des web service
         /// ici on charge la partie de saisie des remarques s'il y a lien
         /// </summary>
+        /// <param name="id">id IdPee, id de la Pee</param>
         /// <returns></returns>
         [Route("/Pee/EnregistrementPeeInfo/{id}")]
         [HttpGet]
@@ -284,22 +292,9 @@ namespace AppAfpaBrive.Web.Controllers
         {
             MessageModelView messageView = await _peeLayer.GetElementByIdPeeForMessageAsync(id);
             messageView.MatriculeCollaborateurAfpa = idColl;
-            string sujet = "Notification de votre présence en entreprise";
-            //string message = messageView.EtatPee == 0? _config.GetSection("MessagePee").GetSection("Non").GetSection("Message").Value:
-            //    _config.GetSection("MessagePee").GetSection("Oui").GetSection("Message").Value;
+            messageView.MessagePee = _config.GetSection("MessagePee").Get<MessagePee>();
 
-            string message = messageView.EtatPee == 0 ? "Votre formateur n'a pas pu validé les documents et la saisie des informations pour la période en entreprise " :
-                "Votre formateur a bien validé les documents et la saisie des informations ";
-
-            message += "pour l'entreprise "+messageView.RaisonSociale+".";
-
-            message += string.IsNullOrWhiteSpace(messageView.Remarque) ? "" : Environment.NewLine + Environment.NewLine + "Voici le message qui est spécifié: ";
-            message += Environment.NewLine +"\""+ messageView.Remarque + "\"" + Environment.NewLine;
-            message += Environment.NewLine + "Veuillez ne pas répondre à ce mail qui est envoyé automatiquement.";
-            message += Environment.NewLine + "Si vous avez des questions, veuillez contacter votre formateur.";
-
-            messageView.Message = message;
-            await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, sujet, message);
+            await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, messageView.MessagePee.Sujet, messageView.GetMessageCourriel());
             return View(messageView);
         }
         #endregion
