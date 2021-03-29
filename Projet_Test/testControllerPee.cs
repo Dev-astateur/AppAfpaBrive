@@ -52,12 +52,12 @@ namespace Projet_Test
             };
 
             contextMock.Request.Setup(r => r.Query["id"]).Returns("1603870");
-            var result = await controller.ListePeeAValider("1603870", null) as Task<ViewResult>; 
+            var result = controller.ListePeeAValider("1603870", null).Result as ViewResult; 
             Assert.Pass();
         }
 
         [Test]
-        public async Task ListePeeAValiderIsValidePagination()
+        public void ListePeeAValiderIsValidePagination()
         {
             HttpMock.MockHTTPContext contextMock = new();
             PeeController controller = new PeeController(_dbContext, _configuration, _hostEnvironment, _mailSenderMock)
@@ -69,9 +69,9 @@ namespace Projet_Test
             };
 
             contextMock.Request.Setup(r => r.Query["id"]).Returns("1603870");
-            var result = await controller.ListePeeAValider("1603870", null) as Task<ViewResult>;
+            var result = controller.ListePeeAValider("1603870", null).Result as ViewResult;
 
-            Assert.IsInstanceOf<Task<PagingList<ListePeeAValiderModelView>>>(result.Result.Model);
+            Assert.IsInstanceOf<PagingList<ListePeeAValiderModelView>>(result.Model);
         }
 
         [Test]
