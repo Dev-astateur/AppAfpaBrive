@@ -10,6 +10,8 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
     public class StructureModelView
     {
 
+        public int IdStructure { get; set; }
+
         [Required]
         public string NomStructure { get; set; }
 
