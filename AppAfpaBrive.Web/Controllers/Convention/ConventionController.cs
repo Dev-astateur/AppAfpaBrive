@@ -8,14 +8,13 @@ using AppAfpaBrive.DAL;
 using AppAfpaBrive.BOL;
 using System.Diagnostics;
 using AppAfpaBrive.Web.Models;
-using System.Web.Providers.Entities;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using AppAfpaBrive.Web.ModelView;
 using DocumentFormat.OpenXml;
+using AppAfpaBrive.DAL.Layers;
 using AppAfpaBrive.Web.Layers;
-using AppAfpaBrive.Web.Layer;
-using AppAfpaBrive.DAL.Layer;
+using AppAfpaBrive.Web.Utilitaires;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
@@ -30,6 +29,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_EntrepriseProfessionnel _entreprisepro = null;
         private PeeLayer _peelayer = null;
         private Periode_pee_Layer _periode = null;
+        protected string Path { get; set; }
+
         public ConventionController(AFPANADbContext context)
         {
             _beneficiaireOffre = new Layer_Offres_Formation(context);
@@ -41,12 +42,15 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _entreprisepro = new Layer_EntrepriseProfessionnel(context);
             _peelayer = new PeeLayer(context);
             _periode = new Periode_pee_Layer(context);
+            Path = "./Data/Documents";
         }
+        
+
 
         // get index
         public IActionResult Index()
         {
-            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations("16174318");
+            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations("20061760");
             List<Creation_convention> obj = new List<Creation_convention>();
 
             foreach (var item in beneficiaires)
@@ -87,7 +91,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-
+            
             if (id == 0)
             {
                 id = convention.IdFormation;
@@ -109,17 +113,34 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             if (ModelState.IsValid)
             {
+                string str = this.HttpContext.Session.GetString("convention");
+                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
                 var entreprise = _Entreprise.get_Entreprise(obj.NumeroSiret).FirstOrDefault();
                 if (entreprise is null)
                 {
+                    convention.Entreprise_Create = true;
+                    str = JsonConvert.SerializeObject(convention);
+                    HttpContext.Session.SetString("convention", str);
+                    HttpContext.Session.SetString("siret", obj.NumeroSiret);
                     return RedirectToAction("Entreprise_creation");
                 }
-                string str = this.HttpContext.Session.GetString("convention");
-                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+                convention.Entreprise_Create = false;
                 convention.Siret = obj.NumeroSiret;
+                convention.IdEntreprise = entreprise.IdEntreprise;
+                convention.Entreprise_codePostal = entreprise.CodePostal;
+                convention.Entreprise_IdPays = entreprise.Idpays2;
+                convention.Entreprise_Ligne1Adresse = entreprise.Ligne1Adresse;
+                convention.Entreprise_Ligne2Adresse = entreprise.Ligne2Adresse;
+                convention.Entreprise_Ligne3Adresse = entreprise.Ligne3Adresse;
+                convention.Entreprise_Mail = entreprise.MailEntreprise;
+                convention.Entreprise_raison_social = entreprise.RaisonSociale;
+                convention.Entreprise_Tel = entreprise.TelEntreprise;
+                convention.Entreprise_Ville = entreprise.Ville;
 
                 str = JsonConvert.SerializeObject(convention);
                 HttpContext.Session.SetString("convention", str);
+                //HttpContext.Session.SetString("pro", "");
+                //HttpContext.Session.SetString("date", "");
                 return RedirectToAction("Entreprise_Recap");
             }
             return View(obj);
@@ -131,19 +152,36 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+            //Entreprise obj = _Entreprise.get_Entreprise(convention.Siret).FirstOrDefault();
+            //convention.Siret = obj.NumeroSiret;
+            //convention.IdEntreprise = obj.IdEntreprise;
+            //convention.Entreprise_raison_social = obj.RaisonSociale;
 
-            Entreprise obj = _Entreprise.get_Entreprise(convention.Siret).FirstOrDefault();
-            convention.Siret = obj.NumeroSiret;
-            convention.IdEntreprise = obj.IdEntreprise;
-            convention.Raison_social = obj.RaisonSociale;
+            Entreprise entreprise = new Entreprise
+            {
+                CodePostal = convention.Entreprise_codePostal,
+                Idpays2 = convention.Entreprise_IdPays,
+                Ligne1Adresse = convention.Entreprise_Ligne1Adresse,
+                Ligne2Adresse = convention.Entreprise_Ligne2Adresse,
+                Ligne3Adresse = convention.Entreprise_Ligne3Adresse,
+                MailEntreprise = convention.Entreprise_Mail,
+                TelEntreprise = convention.Entreprise_Tel,
+                NumeroSiret = convention.Siret,
+                RaisonSociale = convention.Entreprise_raison_social,
+                Ville = convention.Entreprise_Ville
+            };
             str = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", str);
-            return View(obj);
+            HttpContext.Session.SetString("date", "");
+            HttpContext.Session.SetString("pro", "");
+            return View(entreprise);
         }
 
         // get Entreprise_creation
         public IActionResult Entreprise_creation()
         {
+            string siret = this.HttpContext.Session.GetString("siret");
+            ViewBag.siret = siret;
             IQueryable<string> pays = _Pays.Get_pays();
             ViewBag.pays = pays;
             return View();
@@ -159,24 +197,18 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             {
                 string str = this.HttpContext.Session.GetString("convention");
                 Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-
-                Entreprise entreprise1 = new Entreprise
-                {
-                    CodePostal = entreprise.CodePostal,
-                    Ligne1Adresse = entreprise.Ligne1Adresse,
-                    Ligne2Adresse = entreprise.Ligne2Adresse,
-                    Ligne3Adresse = entreprise.Ligne3Adresse,
-                    RaisonSociale = entreprise.RaisonSociale,
-                    NumeroSiret = entreprise.NumeroSiret,
-                    Ville = entreprise.Ville,
-                    Idpays2 = _Pays.Get_pays_ID(entreprise.Idpays2)
-                };
-                _Entreprise.Create_entreprise(entreprise1);
-
+                convention.Entreprise_codePostal = entreprise.CodePostal;
+                convention.Entreprise_IdPays = entreprise.Idpays2;
+                convention.Entreprise_Ligne1Adresse = entreprise.Ligne1Adresse;
+                convention.Entreprise_Ligne2Adresse = entreprise.Ligne2Adresse;
+                convention.Entreprise_Ligne3Adresse = entreprise.Ligne3Adresse;
+                convention.Entreprise_Mail = entreprise.MailEntreprise;
+                convention.Entreprise_raison_social = entreprise.RaisonSociale;
+                convention.Entreprise_Tel = entreprise.TelEntreprise;
+                convention.Entreprise_Ville = entreprise.Ville;
                 convention.Siret = entreprise.NumeroSiret;
                 str = JsonConvert.SerializeObject(convention);
                 HttpContext.Session.SetString("convention", str);
-
                 return RedirectToAction("Entreprise_Recap");
             }
             return View(entreprise);
@@ -187,39 +219,82 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-            List<Professionnel> pro = _pro.Get_Pro(convention.IdEntreprise);
-            ViewBag.pro = pro;
-            return View(pro);
+            str = HttpContext.Session.GetString("pro");
+            List<Professionnel> pro = new List<Professionnel>();
+            if (str == "")
+            {
+               pro = _pro.Get_Pro(convention.IdEntreprise);
+            }
+
+            List<Pro_Session_ModelView> pro_Sessions = new List<Pro_Session_ModelView>();
+
+            foreach (var item in pro)
+            {
+                Pro_Session_ModelView pro_Session_ = new Pro_Session_ModelView
+                {
+                    CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel,
+                    NomProfessionnel = item.NomProfessionnel,
+                    PrenomProfessionnel = item.PrenomProfessionnel,
+                    ID = item.IdProfessionnel
+                };
+                pro_Sessions.Add(pro_Session_);
+            }
+
+            if (str != "")
+            {
+                List<Pro_Session_ModelView> professionnels = JsonConvert.DeserializeObject<List<Pro_Session_ModelView>>(str);
+                foreach (var item in professionnels)
+                {
+                    Pro_Session_ModelView professionnel = new Pro_Session_ModelView
+                    {
+                        NomProfessionnel = item.NomProfessionnel,
+                        PrenomProfessionnel = item.PrenomProfessionnel,
+                        CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel,
+                        Create = item.Create
+                    };
+                    pro_Sessions.Add(professionnel);
+                }
+            }
+            str = JsonConvert.SerializeObject(pro_Sessions);
+            HttpContext.Session.SetString("pro", str);
+            return View(pro_Sessions);
         }
 
         //post Professionel
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Professionel(List<Professionnel> obj)
+        public IActionResult Professionel(List<Pro_Session_ModelView> obj)
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+
+            string xd = HttpContext.Session.GetString("pro");
+            List<Pro_Session_ModelView> professionnels = JsonConvert.DeserializeObject<List<Pro_Session_ModelView>>(xd);
             if (Request.Form["tuteur"] != "")
             {
-                string tuteurID = Request.Form["tuteur"].ToString();
-                Professionnel professionnel = new Professionnel();
-                professionnel = _pro.GetProfessionnel(int.Parse(tuteurID));
+                int tuteurID = int.Parse(Request.Form["tuteur"].ToString());
+                Pro_Session_ModelView professionnel = new Pro_Session_ModelView();
+                professionnel = professionnels[tuteurID];
                 convention.TuteurNom = professionnel.NomProfessionnel;
                 convention.TuteurPrenom = professionnel.PrenomProfessionnel;
-                convention.IdTuteur = professionnel.IdProfessionnel;
+                convention.IdTuteur = professionnel.ID;
+                convention.Tuteur_create_Id = tuteurID;
+                convention.Tuteur_create = professionnel.Create;
             }
             if (Request.Form["Responsable"] != "")
             {
-                string ResponsableID = Request.Form["Responsable"].ToString();
-                Professionnel professionnel = new Professionnel();
-                professionnel = _pro.GetProfessionnel(int.Parse(ResponsableID));
+                int ResponsableID = int.Parse(Request.Form["Responsable"].ToString());
+                Pro_Session_ModelView professionnel = new Pro_Session_ModelView();
+                professionnel = professionnels[ResponsableID];
                 convention.ResponsableNom = professionnel.NomProfessionnel;
                 convention.ResponsablePrenom = professionnel.PrenomProfessionnel;
-                convention.IdResponsable = professionnel.IdProfessionnel;
+                convention.IdResponsable = professionnel.ID;
+                convention.Responsable_create_Id = ResponsableID;
+                convention.Responsable_create = professionnel.Create;
             }
             var x = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", x);
-            return RedirectToAction("date");
+            return RedirectToAction("date_create");
         }
 
         
@@ -238,23 +313,25 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             if (ModelState.IsValid)
             {
-                string str = this.HttpContext.Session.GetString("convention");
-                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-                Professionnel pro = new Professionnel
+                List<Pro_Session_ModelView> professionnels = new List<Pro_Session_ModelView>();
+                string str = this.HttpContext.Session.GetString("pro");
+                if (str != null)
                 {
+                    professionnels = JsonConvert.DeserializeObject<List<Pro_Session_ModelView>>(str);
+                }
+                Pro_Session_ModelView pro = new Pro_Session_ModelView
+                {
+                    AdresseMail = obj.AdresseMail,
+                    Create = true,
                     CodeTitreCiviliteProfessionnel = obj.CodeTitreCiviliteProfessionnel,
+                    Fonction = obj.Fonction,
                     NomProfessionnel = obj.NomProfessionnel,
-                    PrenomProfessionnel = obj.PrenomProfessionnel
+                    PrenomProfessionnel = obj.PrenomProfessionnel,
+                    NumerosTel = obj.NumerosTel
                 };
-                _pro.create(pro);
-                EntrepriseProfessionnel entrepriseProfessionnel = new EntrepriseProfessionnel
-                {
-                    IdProfessionnel = _pro.Get_Id_pro(pro.NomProfessionnel, pro.PrenomProfessionnel),
-                    AdresseMailPro = obj.AdresseMail,
-                    TelephonePro = obj.NumerosTel,
-                    IdEntreprise = convention.IdEntreprise
-                };
-                _entreprisepro.create(entrepriseProfessionnel);
+                professionnels.Add(pro);
+                str = JsonConvert.SerializeObject(professionnels);
+                HttpContext.Session.SetString("pro", str);
                 return RedirectToAction("Professionel");
             }
 
@@ -290,33 +367,40 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [HttpPost]
         public IActionResult date_create(Date_ModelView date)
         {
+            
             List<Date_ModelView> listDate = new List<Date_ModelView>();
             string str = this.HttpContext.Session.GetString("date");
-            if (str != null)
+            if (str != "")
             {
                 listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
             }
-            date.Iddate = listDate.Count() + 1;
+            date.Iddate = listDate.Count();
             listDate.Add(date);
             str = JsonConvert.SerializeObject(listDate);
             HttpContext.Session.SetString("date", str);
             return RedirectToAction("date");
-
-
             //return View(date);
         }
 
         // get date
-        public IActionResult date_delete()
+        public IActionResult date_delete(int id)
         {
-            return View();
+            string str = HttpContext.Session.GetString("date");
+            List<Date_ModelView> listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
+            Date_ModelView date = listDate[id];
+            return View(date);
         }
 
         // get post
         [HttpPost]
         public IActionResult date_delete(Date_ModelView date)
         {
-            return View();
+            string str = HttpContext.Session.GetString("date");
+            List<Date_ModelView> listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
+            listDate.RemoveAt(date.Iddate);
+            str = JsonConvert.SerializeObject(listDate);
+            HttpContext.Session.SetString("date", str);
+            return RedirectToAction("date");
         }
 
         // get recapitulatif
@@ -328,16 +412,20 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             string str_date = this.HttpContext.Session.GetString("date");
             List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
             ViewBag.dates = dates;
+            ViewBag.convention = convention;
 
-            return View(convention);
+            return View();
         }
 
         //post Recapitulatif
         [HttpPost]
-        public IActionResult Recapitulatif(Creation_convention oui)
+        public IActionResult Recapitulatif(FilesModel uploadFile)
         {
+
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+            int entrepriseID = 0;
+
             Pee pee = new Pee
             {
                 IdEntreprise = convention.IdEntreprise,
@@ -348,15 +436,55 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 IdEtablissement = convention.IdEtablissement
             };
 
+            if (convention.Entreprise_Create == true)
+            {
+                Entreprise entreprise = new Entreprise
+                {
+                    CodePostal = convention.Entreprise_codePostal,
+                    Idpays2 = "Fr",
+                    Ligne1Adresse = convention.Entreprise_Ligne1Adresse,
+                    Ligne2Adresse = convention.Entreprise_Ligne2Adresse,
+                    Ligne3Adresse = convention.Entreprise_Ligne3Adresse,
+                    RaisonSociale = convention.Entreprise_raison_social,
+                    MailEntreprise = convention.Entreprise_Mail,
+                    Ville = convention.Entreprise_Ville,
+                    TelEntreprise = convention.Entreprise_Tel,
+                    NumeroSiret = convention.Siret
+                };
+                entrepriseID = _Entreprise.Create_entreprise_ID_Back(entreprise);
+                pee.IdEntreprise = entrepriseID;
+            }
+
+            if(convention.Tuteur_create == true)
+            {
+                Professionnel professionnel = new Professionnel
+                {
+                    CodeTitreCiviliteProfessionnel = 1,
+                    NomProfessionnel = convention.TuteurNom,
+                    PrenomProfessionnel = convention.TuteurPrenom
+                };
+                _pro.create(professionnel);
+            }
+
+            if (convention.Responsable_create == true)
+            {
+                Professionnel professionnel = new Professionnel
+                {
+                    CodeTitreCiviliteProfessionnel = 0,
+                    NomProfessionnel = convention.ResponsableNom,
+                    PrenomProfessionnel = convention.ResponsablePrenom
+                };
+                _pro.create(professionnel);
+            }
+
             string str_date = this.HttpContext.Session.GetString("date");
             List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
-            _peelayer.Pee_Create(pee);
-            decimal id = _peelayer.GetPeeBy_Idmatricule_idFormation_idetablissemnt(pee.MatriculeBeneficiaire, pee.IdEntreprise, pee.IdEtablissement);
+            decimal peeId = _peelayer.Pee_Create_ID_Back(pee);
             foreach (var item in dates)
             {
                 PeriodePee periodePee = new PeriodePee
                 {
-                    IdPee = id,
+                    IdPee = peeId,
                     DateDebutPeriodePee = item.Date1,
                     DateFinPeriodePee = item.Date2,
                     NumOrdre = item.Iddate
@@ -364,8 +492,34 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 _periode.Pee_Create(periodePee);
             }
 
+            if (ModelState.IsValid)
+            {
+                var postedFile = uploadFile.file;
+                try
+                {
+                    var Response = UploadFiles.UploadFile(postedFile, Path);
+
+                    if (Response.Done)
+                    {
+                        return RedirectToAction("index");
+                    }
+                    else
+                    {
+                        return BadRequest();
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Response.WriteAsync("<script>alert('" + e + "')</script>");
+                    return View();
+                }
+            }
 
             return RedirectToAction("index");
         }
+        
+        
+
     }
 }

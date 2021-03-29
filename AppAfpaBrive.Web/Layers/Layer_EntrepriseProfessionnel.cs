@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.DAL.Layer
+namespace AppAfpaBrive.Web.Layers
 {
     public class Layer_EntrepriseProfessionnel
     {

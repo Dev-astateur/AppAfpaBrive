@@ -24,6 +24,13 @@ namespace AppAfpaBrive.Web.Layer
             _db.SaveChanges();
         }
 
+        public int Create_entreprise_ID_Back(Entreprise entreprise)
+        {
+            _db.Entreprises.Add(entreprise);
+            _db.SaveChanges();
+            return entreprise.IdEntreprise;
+        }
+
         public Entreprise GetEntrepriseById(int id)
         {
             Entreprise entreprise = _db.Entreprises.Where(e => e.IdEntreprise == id).FirstOrDefault();

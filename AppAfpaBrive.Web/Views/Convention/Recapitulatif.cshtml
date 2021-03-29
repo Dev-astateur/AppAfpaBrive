@@ -1,66 +1,76 @@
-﻿@model AppAfpaBrive.Web.Models.Creation_convention
-
-
-<form method="post">
-
+﻿@model AppAfpaBrive.Web.Models.FilesModel;
 
     <div class="border p-3">
         <div class="form-group row">
             <h2 class="text-info pl-3">Récapitulatif de votre convention de stage: </h2>
         </div>
         <div class="row">
-            <div class="col-8">
+            <div class="col-12">
                 <div class="form-group row">
-                    <div class="col-8">
+                    <div class="col-12">
                         <label class="col-4"> Etablissement </label>
-                        <label class="col-4">@Model.Etablissement</label>
+                        <label class="col-6">@ViewBag.convention.Etablissement</label>
                     </div>
-                    <div class="col-8">
+                    <div class="col-12">
                         <label class="col-4"> Raison sociale: </label>
-                        <label class="col-4">@Model.Formation </label>
+                        <label class="col-6">@ViewBag.convention.Formation </label>
                     </div>
-                    <div class="col-8">
+                    <div class="col-12">
                         <label class="col-4"> Entreprise </label>
-                        <label class="col-4">@Model.Raison_social </label>
+                        <label class="col-6">@ViewBag.convention.Entreprise_raison_social </label>
                     </div>
-                    <div class="col-8">
+                    <div class="col-12">
                         <label class="col-4"> Siret: </label>
-                        <label class="col-4">@Model.Siret</label>
+                        <label class="col-6">@ViewBag.convention.Siret</label>
                     </div>
-                    <div class="col-8">
+                    <div class="col-12">
                         <label class="col-4"> Tuteur: </label>
-                        <label class="col-4">@Model.TuteurNom @Model.TuteurPrenom </label>
+                        <label class="col-6">@ViewBag.convention.TuteurNom @ViewBag.convention.TuteurPrenom </label>
                     </div>
-                    <div class="col-8">
+                    <div class="col-12">
                         <label class="col-4"> Responsable: </label>
-                        <label class="col-4">@Model.ResponsableNom @Model.ResponsablePrenom </label>
-                        <input type="date" asp-for="@Model.IdResponsable" hidden="hidden" />
+                        <label class="col-6">@ViewBag.convention.ResponsableNom @ViewBag.convention.ResponsablePrenom </label>
                     </div>
-
                     @foreach (var item in ViewBag.dates)
                     {
-                        <label>
-                            Date de Début du stage : @item.Date1
-                        </label>
-
-                        <label>
-                            Date de Fin du stage : @item.Date1
-                        </label>
+                        <div class="col-12">
+                            <label class="col-4"> Date de Début du stage: </label>
+                            <label class="col-6">@item.Date1.ToString("yyyy-MM-dd") </label>
+                        </div>
+                        <div class="col-12">
+                            <label class="col-4"> Date de fin du stage: </label>
+                            <label class="col-6">@item.Date2.ToString("yyyy-MM-dd") </label>
+                        </div>
                     }
-
                 </div>
                 <div class="form-group row">
                     <div class="col-8 offset-4 row">
-
-                        <div class="col">
-                            <input type="submit" class="btn btn-primary" value="Terminer" />
-                        </div>
-                        <div class="col">
-                            <a asp-action="date" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Retour</a>
-                        </div>
+                        
+                        
                     </div>
                 </div>
             </div>
         </div>
+        <div>
+            <div>
+                <h5 class="text-info">
+                    Vous pouvez rajouter des douments:
+                </h5>
+            </div>
+            <form method="post"
+                  enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input asp-for="file" />
+                <span asp-validation-for="file" class="text-danger"></span>
+                <div class="text-center m-1">
+                    <a asp-action="date" class="btn btn-info m-2"> Retour</a>
+                </div>
+                <div class="text-center m-1">
+                    <input class="btn btn-success m-2" type="submit" value="Terminer" />
+                </div>
+            </form>
+        </div>
     </div>
-</form>
+
+<div class=""></div>

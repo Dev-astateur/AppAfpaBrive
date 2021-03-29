@@ -16,7 +16,7 @@ namespace Projet_Test
             Validator.TryValidateObject(model, ctx, validationResults, true);
             return validationResults;
         }
-       
+
     }
 
 }
