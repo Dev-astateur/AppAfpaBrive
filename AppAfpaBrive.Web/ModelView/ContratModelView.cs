@@ -24,6 +24,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string LibelleFonction { get; set; }
         //[Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez sélectionner un type de contrat dans la liste déroulante")]
         //public string TypeContrat { get; set; }
+        public int? CodeAppellation { get; set; }
 
 
 

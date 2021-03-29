@@ -1,5 +1,8 @@
 ﻿@model AppAfpaBrive.Web.ModelView.ContratModelView
 
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
 <h4 class="text-center">Complétez les informations sur votre poste actuel :</h4>
 <hr />
 <div class="row">
@@ -9,14 +12,14 @@
 
             <div class="form-group">
                 <label asp-for="LibelleFonction" class="control-label">Intitulé du poste</label>
-                <input asp-for="LibelleFonction" class="form-control" />
+                <input asp-for="LibelleFonction" class="form-control" id="appellationsRome" />
                 <span asp-validation-for="LibelleFonction" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="TypeContrat" class="control-label">Type de contrat</label>
-                <select asp-for="TypeContrat" class="form-control" asp-items="@(new SelectList(ViewBag.TypesContratsList, Model.TypeContrat))"></select>
-                <span asp-validation-for="TypeContrat" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="TypeContrat" class="control-label">Type de contrat</label>
+                    <select asp-for="TypeContrat" class="form-control" asp-items="@(new SelectList(ViewBag.TypesContratsList, Model.TypeContrat))"></select>
+                    <span asp-validation-for="TypeContrat" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="DateEntreeFonction" class="control-label">Date d'embauche</label>
                 <input asp-for="DateEntreeFonction" class="form-control" />
@@ -35,7 +38,36 @@
     </div>
 </div>
 
-
-@section Scripts {
+@section Scripts 
+{
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#appellationsRome').autocomplete({
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: '/api/appelationsRome/search',
+                        type: "GET",
+                        data: request,
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data)
+                            response($.map(data, function (item) {
+                               return {
+                                   label: item
+                               }
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 3
+            });
+        });
+
+    </script>
 }

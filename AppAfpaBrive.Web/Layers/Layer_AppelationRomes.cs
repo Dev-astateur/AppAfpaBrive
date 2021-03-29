@@ -19,5 +19,15 @@ namespace AppAfpaBrive.Web.Layers
         {
             return _db.AppelationRomes.Select(ar => ar.LibelleAppelationRome).ToList(); 
         }
+
+        public List<string> SearchLibellesAppellationsRome(string userInput)
+        {
+            return _db.AppelationRomes.Where(ar => ar.LibelleAppelationRome.Contains(userInput)).Select(ar=>ar.LibelleAppelationRome).ToList();
+        }
+
+        public List<AppelationRome> SearchApellationsRome(string userInput)
+        {
+            return _db.AppelationRomes.Where(ar => ar.LibelleAppelationRome.Contains(userInput)).ToList(); 
+        }
     }
 }

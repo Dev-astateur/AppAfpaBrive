@@ -146,14 +146,14 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public IActionResult ModifierContrat()
         {
-            string str = this.HttpContext.Session.GetString("contrat");
-            Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str);
+            //string str = this.HttpContext.Session.GetString("contrat");
+            //Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str);
 
             ContratModelView contratModelView = new ContratModelView
             {
-                LibelleFonction = contrat.LibelleFonction,
-                DateEntreeFonction = contrat.DateEntreeFonction,
-                DateSortieFonction = contrat.DateSortieFonction,
+                //LibelleFonction = contrat.LibelleFonction,
+                //DateEntreeFonction = contrat.DateEntreeFonction,
+                //DateSortieFonction = contrat.DateSortieFonction,
                 //TypeContrat = contrat.TypeContratNavigation.DesignationTypeContrat
             };
 
