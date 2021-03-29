@@ -18,7 +18,6 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
             _context = context;
         }
 
-
         public async Task<PagingList<Structure>> GetPage(string filter, int page = 1, string sortExpression = "NomStructure")
         {
             var qry = _context.Structures.AsQueryable();
@@ -62,7 +61,8 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
 
         public void Update(Structure structure)
         {
-
+            _context.Structures.Update(structure);
+            _context.SaveChanges();
         }
 
     }

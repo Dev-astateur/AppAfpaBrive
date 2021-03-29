@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.Layers.AnnuaireSocialLayer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +12,25 @@ namespace AppAfpaBrive.Web.Controllers
 {
     public class StructureAnnuaireController : Controller
     {
-        // GET: StructureAnnuaireController
-        public ActionResult Index()
+
+        private readonly AFPANADbContext _context;
+        private readonly StructureLayer _structureLayer;
+
+        public StructureAnnuaireController(AFPANADbContext context)
         {
-            return View();
+            _context = context;
+            _structureLayer = new StructureLayer(context);
+        }
+
+        // GET: StructureAnnuaireController
+        public async Task<IActionResult> Index(string filter, int page, string sortExpression = "NomStructure")
+        {
+            var model = await _structureLayer.GetPage(filter, page, sortExpression);
+            model.RouteValue = new RouteValueDictionary
+            {
+                {"filter", filter }
+            };
+            return View(model);
         }
 
         // GET: StructureAnnuaireController/Details/5
