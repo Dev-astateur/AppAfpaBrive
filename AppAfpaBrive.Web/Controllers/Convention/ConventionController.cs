@@ -419,7 +419,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
         //post Recapitulatif
         [HttpPost]
-        public IActionResult Recapitulatif(FilesModel uploadFile)
+        public IActionResult Recapitulatif(FilesModelConvention uploadFile)
         {
 
             string str = this.HttpContext.Session.GetString("convention");
@@ -441,7 +441,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 Entreprise entreprise = new Entreprise
                 {
                     CodePostal = convention.Entreprise_codePostal,
-                    Idpays2 = "Fr",
+                    Idpays2 = _Pays.Get_pays_ID(convention.Entreprise_IdPays),
                     Ligne1Adresse = convention.Entreprise_Ligne1Adresse,
                     Ligne2Adresse = convention.Entreprise_Ligne2Adresse,
                     Ligne3Adresse = convention.Entreprise_Ligne3Adresse,
