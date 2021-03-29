@@ -38,6 +38,9 @@
                             </td>
                             <td width="15%">
                                 @item.PrenomProfessionnel
+                                <input hidden="hidden" value="@item.AdresseMail" />
+                                <input hidden="hidden" value="@item.NumerosTel" />
+                                <input hidden="hidden" value="@item.Fonction" />
                             </td>
                             <td width="10%">
                                 @Html.RadioButton("tuteur", i,true)

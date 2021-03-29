@@ -15,6 +15,7 @@ namespace AppAfpaBrive.Web.Layers
             _db.Add(entreprise);
             _db.SaveChanges();
         }
+        
     }
 
 }

@@ -42,6 +42,15 @@ namespace AppAfpaBrive.Web.Models
         private bool _Tuteur_create;
         private bool _Responsable_create;
 
+        private string _Tuteur_AdresseMail;
+        private string _Tuteur_Telephone;
+        private string _Tuteur_Fonction;
+        private int _Tuteur_genre;
+
+        private string _Responsable_AdresseMail;
+        private string _Responsable_Telephone;
+        private string _Responsable_Fonction;
+        private int _Responsable_genre;
 
         public string IdEtablissement { get => _idEtablissement; set => _idEtablissement = value; }
         public string Etablissement { get => _etablissement; set => _etablissement = value; }
@@ -73,5 +82,13 @@ namespace AppAfpaBrive.Web.Models
         public int Responsable_create_Id { get => _Responsable_create_Id; set => _Responsable_create_Id = value; }
         public bool Responsable_create { get => _Responsable_create; set => _Responsable_create = value; }
         public bool Tuteur_create { get => _Tuteur_create; set => _Tuteur_create = value; }
+        public string Tuteur_AdresseMail { get => _Tuteur_AdresseMail; set => _Tuteur_AdresseMail = value; }
+        public string Tuteur_Telephone { get => _Tuteur_Telephone; set => _Tuteur_Telephone = value; }
+        public string Tuteur_Fonction { get => _Tuteur_Fonction; set => _Tuteur_Fonction = value; }
+        public string Responsable_AdresseMail { get => _Responsable_AdresseMail; set => _Responsable_AdresseMail = value; }
+        public string Responsable_Telephone { get => _Responsable_Telephone; set => _Responsable_Telephone = value; }
+        public string Responsable_Fonction { get => _Responsable_Fonction; set => _Responsable_Fonction = value; }
+        public int Tuteur_genre { get => _Tuteur_genre; set => _Tuteur_genre = value; }
+        public int Responsable_genre { get => _Responsable_genre; set => _Responsable_genre = value; }
     }
 }

@@ -220,27 +220,25 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
             str = HttpContext.Session.GetString("pro");
-            List<Professionnel> pro = new List<Professionnel>();
-            if (str == "")
-            {
-               pro = _pro.Get_Pro(convention.IdEntreprise);
-            }
 
             List<Pro_Session_ModelView> pro_Sessions = new List<Pro_Session_ModelView>();
-
-            foreach (var item in pro)
+            // 1er fois
+            if (str == "")
             {
-                Pro_Session_ModelView pro_Session_ = new Pro_Session_ModelView
+                List<Professionnel> pro = _pro.Get_Pro(convention.IdEntreprise);
+                foreach (var item in pro)
                 {
-                    CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel,
-                    NomProfessionnel = item.NomProfessionnel,
-                    PrenomProfessionnel = item.PrenomProfessionnel,
-                    ID = item.IdProfessionnel
-                };
-                pro_Sessions.Add(pro_Session_);
+                    Pro_Session_ModelView pro_Session_ = new Pro_Session_ModelView
+                    {
+                        CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel,
+                        NomProfessionnel = item.NomProfessionnel,
+                        PrenomProfessionnel = item.PrenomProfessionnel,
+                        ID = item.IdProfessionnel
+                    };
+                    pro_Sessions.Add(pro_Session_);
+                }
             }
-
-            if (str != "")
+            else
             {
                 List<Pro_Session_ModelView> professionnels = JsonConvert.DeserializeObject<List<Pro_Session_ModelView>>(str);
                 foreach (var item in professionnels)
@@ -250,7 +248,11 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                         NomProfessionnel = item.NomProfessionnel,
                         PrenomProfessionnel = item.PrenomProfessionnel,
                         CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel,
-                        Create = item.Create
+                        ID = item.ID,
+                        Create = item.Create,
+                        AdresseMail = item.AdresseMail,
+                        Fonction = item.Fonction,
+                        NumerosTel = item.NumerosTel
                     };
                     pro_Sessions.Add(professionnel);
                 }
@@ -280,6 +282,10 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 convention.IdTuteur = professionnel.ID;
                 convention.Tuteur_create_Id = tuteurID;
                 convention.Tuteur_create = professionnel.Create;
+                convention.Tuteur_AdresseMail = professionnel.AdresseMail;
+                convention.Tuteur_Fonction = professionnel.Fonction;
+                convention.Tuteur_Telephone = professionnel.NumerosTel;
+                convention.Tuteur_genre = professionnel.CodeTitreCiviliteProfessionnel;
             }
             if (Request.Form["Responsable"] != "")
             {
@@ -291,6 +297,10 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 convention.IdResponsable = professionnel.ID;
                 convention.Responsable_create_Id = ResponsableID;
                 convention.Responsable_create = professionnel.Create;
+                convention.Responsable_AdresseMail = professionnel.AdresseMail;
+                convention.Responsable_Fonction = professionnel.Fonction;
+                convention.Responsable_Telephone = professionnel.NumerosTel;
+                convention.Responsable_genre = professionnel.CodeTitreCiviliteProfessionnel;
             }
             var x = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", x);
@@ -459,22 +469,43 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             {
                 Professionnel professionnel = new Professionnel
                 {
-                    CodeTitreCiviliteProfessionnel = 1,
+                    CodeTitreCiviliteProfessionnel = convention.Tuteur_genre,
                     NomProfessionnel = convention.TuteurNom,
                     PrenomProfessionnel = convention.TuteurPrenom
                 };
-                _pro.create(professionnel);
+                pee.IdTuteur= _pro.create_get_ID(professionnel);
+                EntrepriseProfessionnel tuteur = new EntrepriseProfessionnel
+                {
+                    IdEntreprise = convention.IdEntreprise,
+                    IdProfessionnel = pee.IdTuteur,
+                    AdresseMailPro = convention.Tuteur_AdresseMail,
+                    TelephonePro = convention.Tuteur_Telephone,
+                    Fonction = convention.Tuteur_Fonction
+                };
+                _entreprisepro.create(tuteur);
             }
 
             if (convention.Responsable_create == true)
             {
-                Professionnel professionnel = new Professionnel
+                if(convention.Tuteur_create_Id != convention.Responsable_create_Id)
                 {
-                    CodeTitreCiviliteProfessionnel = 0,
-                    NomProfessionnel = convention.ResponsableNom,
-                    PrenomProfessionnel = convention.ResponsablePrenom
-                };
-                _pro.create(professionnel);
+                    Professionnel professionnel = new Professionnel
+                    {
+                        CodeTitreCiviliteProfessionnel = convention.Responsable_genre,
+                        NomProfessionnel = convention.ResponsableNom,
+                        PrenomProfessionnel = convention.ResponsablePrenom
+                    };
+                    pee.IdResponsableJuridique = _pro.create_get_ID(professionnel);
+                    EntrepriseProfessionnel Responsable = new EntrepriseProfessionnel
+                    {
+                        IdEntreprise = convention.IdEntreprise,
+                        IdProfessionnel = pee.IdResponsableJuridique,
+                        AdresseMailPro = convention.Responsable_AdresseMail,
+                        TelephonePro = convention.Responsable_Telephone,
+                        Fonction = convention.Responsable_Fonction
+                    };
+                    _entreprisepro.create(Responsable);
+                }
             }
 
             string str_date = this.HttpContext.Session.GetString("date");
