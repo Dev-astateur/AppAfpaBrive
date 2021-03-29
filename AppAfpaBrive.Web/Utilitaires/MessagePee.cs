@@ -10,7 +10,6 @@ namespace AppAfpaBrive.Web.Utilitaires
         public string Sujet { get; set; }
         public string Positive { get; set; }
         public string Negative { get; set; }
-        public string Message { get; set; }
 
         public string GetText ( int choix )
         {

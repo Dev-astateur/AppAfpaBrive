@@ -294,7 +294,7 @@ namespace AppAfpaBrive.Web.Controllers
             messageView.MatriculeCollaborateurAfpa = idColl;
             messageView.MessagePee = _config.GetSection("MessagePee").Get<MessagePee>();
 
-            await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, messageView.MessagePee.Sujet, messageView.GetMessageCourriel());
+            await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, messageView.MessagePee.Sujet.Normalize(), messageView.Message.Normalize());
             return View(messageView);
         }
         #endregion

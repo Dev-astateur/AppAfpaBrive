@@ -13,22 +13,28 @@ namespace AppAfpaBrive.Web.ModelView.ValidationPee
         public string Remarque { get; set; }
         public int EtatPee { get; set; }
 
-        [Display(Name = "Nom du stagiaire.")]
+        [Display(Name = "Nom du stagiaire :")]
         public string NomBeneficiaire { get; set; }
         [Display(Name = "Prénom du stagiaire :")]
         public string PrenomBeneficiaire { get; set; }
         [Display(Name = "Courriel du bénéficiaire :")]
         public string MailBeneficiaire { get; set; }
-        [Display(Name = "Raison sociale de l'entreprise")]
+        [Display(Name = "Raison sociale de l'entreprise :")]
         public string RaisonSociale { get; set; }
+
+        [Display(Name = "Message envoyé au bénéficiaire dans son courriel :")]
+        public string Message { 
+            get{
+                return GetMessageCourriel();
+            }
+        }
 
         public MessagePee MessagePee { get; set; }
 
         public virtual ICollection<PeriodePeeModelView> periodes { get; set; }
         public virtual TitreCiviliteModelView CodeTitreCiviliteNavigation { get; set; }
 
-        [Display(Name = "Message envoyé au bénéficiaire dans son courriel :")]
-        public string GetMessageCourriel()
+        private string GetMessageCourriel()
         {
             string message = MessagePee.GetText(EtatPee);
             message += "pour l'entreprise " + RaisonSociale + ".";
