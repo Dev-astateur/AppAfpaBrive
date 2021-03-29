@@ -58,7 +58,6 @@ namespace AppAfpaBrive.Web.Layers
 
         public void InsertProduit(ProduitFormation prod)
         {
-            
             _context.ProduitFormations.Add(prod);
             _context.SaveChanges();
         }

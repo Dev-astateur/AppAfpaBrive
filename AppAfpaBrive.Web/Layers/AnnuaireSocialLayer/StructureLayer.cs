@@ -48,8 +48,22 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
             return obj as StructureModelView;
         }
 
+        public void Insert(Structure structure)
+        {
+            _context.Structures.Add(structure);
+            _context.SaveChanges();
+        }
 
+        public void Delete(Structure structure)
+        {
+            _context.Structures.Remove(structure);
+            _context.SaveChanges();
+        }
 
+        public void Update(Structure structure)
+        {
+
+        }
 
     }
 }
