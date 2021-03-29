@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Layers
 {
-   public class EntrepriseLayer
+    public class EntrepriseLayer
     {
         private readonly AFPANADbContext _context;
 
@@ -19,7 +19,7 @@ namespace AppAfpaBrive.Web.Layers
             _context = context;
         }
 
-       public List<Entreprise> GetAllEntreprise()
+        public List<Entreprise> GetAllEntreprise()
         {
             return _context.Entreprises.ToList();
         }
@@ -89,50 +89,36 @@ namespace AppAfpaBrive.Web.Layers
         {
             List<Entreprise> query = _context.ProduitFormations
                                           .Where(pro => pro.LibelleProduitFormation.Contains(produit))
-                                            .Join(_context.OffreFormations
-                                           , p => p.CodeProduitFormation
-                                           , o => o.CodeProduitFormation
-                                           , (p, o) => new
-                                           {
-                                               idoffre = o.IdOffreFormation
-                                           })
-                                           .Join(_context.Pees
-                                           , o => o.idoffre
-                                           , p => p.IdOffreFormation
-                                           , (o, pee) => new
-                                           {
+                                           .Join(_context.OffreFormations
+                                          , p => p.CodeProduitFormation
+                                          , o => o.CodeProduitFormation
+                                          , (p, o) => new
+                                          {
+                                              idoffre = o.IdOffreFormation
+                                          })
+                                          .Join(_context.Pees
+                                          , o => o.idoffre
+                                          , p => p.IdOffreFormation
+                                          , (o, pee) => new
+                                          {
                                               IdEntreprise = pee.IdEntreprise
-                                           })
-                                           .Join(_context.Beneficiaires,
-                                           p => p.matriculeBenef
-                                           , bene => bene.MatriculeBeneficiaire,
-                                           (bene, pee) => new
-                                           {
-                                               matriculeBenef = pee.MatriculeBeneficiaire
-                                           })
-                                           .Join(_context.Contrats
-                                           , b => b.matriculeBenef
-                                           , c => c.MatriculeBeneficiaire
-                                           , (b, c) => new
-                                           {
+                                          })
 
-                                               idEntrepretrise = c.IdEntreprise
-                                           })
-                                           .Join(_context.Entreprises,
+                                          .Join(_context.Entreprises,
                                           c => c.IdEntreprise
-                                           , ent => ent.IdEntreprise
-                                           , (c, e) => new Entreprise
-                                           {
-                                               IdEntreprise = e.IdEntreprise,
-                                               RaisonSociale = e.RaisonSociale,
-                                               NumeroSiret = e.NumeroSiret,
-                                               MailEntreprise = e.MailEntreprise,
-                                               TelEntreprise = e.TelEntreprise,
-                                               Ligne1Adresse = e.Ligne1Adresse,
-                                               CodePostal = e.CodePostal,
-                                               Ville = e.Ville,
-                                               Idpays2 = e.Idpays2
-                                           }).Where(e => e.CodePostal.StartsWith(departement)).ToList();
+                                          , ent => ent.IdEntreprise
+                                          , (c, e) => new Entreprise
+                                          {
+                                              IdEntreprise = e.IdEntreprise,
+                                              RaisonSociale = e.RaisonSociale,
+                                              NumeroSiret = e.NumeroSiret,
+                                              MailEntreprise = e.MailEntreprise,
+                                              TelEntreprise = e.TelEntreprise,
+                                              Ligne1Adresse = e.Ligne1Adresse,
+                                              CodePostal = e.CodePostal,
+                                              Ville = e.Ville,
+                                              Idpays2 = e.Idpays2
+                                          }).Where(e => e.CodePostal.StartsWith(departement)).ToList();
             return query;
 
         }
@@ -182,33 +168,26 @@ namespace AppAfpaBrive.Web.Layers
         {
             List<Entreprise> query2 = _context.ProduitFormations
                                           .Where(pro => pro.LibelleProduitFormation == produit)
-                                            .Join(_context.OffreFormations
-                                           , p => p.CodeProduitFormation
-                                           , o => o.CodeProduitFormation
-                                           , (p, o) => new
-                                           {
-                                               idoffre = o.IdOffreFormation
-                                           })
-                                           .Join(_context.Pees
-                                           , o => o.idoffre
-                                           , p => p.IdOffreFormation
-                                           , (o, pee) => new
-                                           {
+                                           .Join(_context.OffreFormations
+                                          , p => p.CodeProduitFormation
+                                          , o => o.CodeProduitFormation
+                                          , (p, o) => new
+                                          {
+                                              idoffre = o.IdOffreFormation
+                                          })
+                                          .Join(_context.Pees
+                                          , o => o.idoffre
+                                          , p => p.IdOffreFormation
+                                          , (o, pee) => new
+                                          {
                                               IdEntreprise = pee.IdEntreprise
-                                           })
-                                           .Join(_context.Contrats
-                                           , b => b.matriculeBenef
-                                           , c => c.MatriculeBeneficiaire
-                                           , (b, c) => new
-                                           {
+                                          })
 
-                                               idEntrepretrise = c.IdEntreprise
-                                           })
-                                           .Join(_context.Entreprises,
+                                          .Join(_context.Entreprises,
                                           c => c.IdEntreprise
-                                           , ent => ent.IdEntreprise
-                                           , (c, e) => new Entreprise
-                                           {
+                                          , ent => ent.IdEntreprise
+                                          , (c, e) => new Entreprise
+                                          {
                                               IdEntreprise = e.IdEntreprise,
                                               RaisonSociale = e.RaisonSociale,
                                               NumeroSiret = e.NumeroSiret,
@@ -218,8 +197,7 @@ namespace AppAfpaBrive.Web.Layers
                                               CodePostal = e.CodePostal,
                                               Ville = e.Ville,
                                               Idpays2 = e.Idpays2
-                                           }).ToList();
-
+                                          }).ToList();
             return query2;
         }
         public PagingList<Entreprise> GetEntrepriseByProduitFormationForPaging(string produit, int page)
