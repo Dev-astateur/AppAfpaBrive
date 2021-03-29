@@ -15,13 +15,12 @@ namespace AppAfpaBrive.Web.Controllers
 {
     public class EntrepriseController : Controller
     {
-       // private readonly AFPANADbContext _dbContext;
+      
         private readonly EntrepriseLayer _layer;
 
         public EntrepriseController(AFPANADbContext Db)
         {
             _layer = new EntrepriseLayer(Db);
-           // _dbContext = new AFPANADbContext();
         }
 
        
@@ -55,11 +54,8 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpPost]
         public ActionResult ModifierEntreprise(Entreprise entreprise, string Pays)
         {
-            //entreprise.Idpays2 = _layer.GetIdPaysByMatriculePays(Pays);
             if (ModelState.IsValid)
             {
-                //_dbContext.Entry(entreprise).State = EntityState.Modified;
-                //_dbContext.SaveChanges();
                 _layer.ModifierEntreprise(entreprise);
                 return RedirectToAction("ListeEntreprisePourModification");
             }
@@ -80,62 +76,33 @@ namespace AppAfpaBrive.Web.Controllers
         public ActionResult ListeEntreprise(string departement, string formation, int page)
         {
 
-          //  List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
+          
 
             ViewData["GetDepartement"] = departement;
              ViewData["GetProduitForm"] = formation;
 
-            //Essai pour pagination
+            
 
             var query = _layer.GetAllEntrepriseForPaging(page);
 
-            //List<Entreprise> query=null;
-
-
             if (!String.IsNullOrEmpty(departement) && (!String.IsNullOrEmpty(formation)))
             {
-                // query = _layer.GetEntrepriseByDepartementEtOffre(formation, departement);
-
-                //pagination
-
+               
                 query =  _layer.GetEntrepriseByDepartementEtOffreForPaging(formation,departement,page);
 
             }
 
             else if (!String.IsNullOrEmpty(departement) && String.IsNullOrEmpty(formation))
             {
-                //query = _layer.GetEntreprisesByDepartement(departement);
-
-                //pagination
+                
                  query =_layer.GetEntreprisesByDepartementPaging(departement, page);
             }
 
             else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
             {
 
-                // query = _layer.GetEntrepriseByProduitFormation(formation);
-
-                //pagination
                 query = _layer.GetEntrepriseByProduitFormationForPaging(formation, page);
             }
-
-            //if (query != null)
-            //{
-            //    foreach (var entreprise in query)
-            //    {
-            //        EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
-            //        //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
-            //        //entrepriseModel.Ville = entreprise.Ville;
-            //        //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
-            //        //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
-
-            //        ListentrepriseListViewModel.Add(entrepriseModel);
-
-            //    };
-            //    //var model = await PagingList.CreateAsync(ListentrepriseListViewModel, 10, page);
-
-            //    return View(ListentrepriseListViewModel);
-            //}
 
             //Test pour paging
 
@@ -159,7 +126,7 @@ namespace AppAfpaBrive.Web.Controllers
         #region ListeEntrepriseModification
         public async Task<IActionResult> ListeEntreprisePourModification(string departement, string formation, int page)
         {
-           // List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
+          
 
             ViewData["GetDepartement"] = departement;
             ViewData["GetProduitForm"] = formation;
@@ -179,23 +146,6 @@ namespace AppAfpaBrive.Web.Controllers
             {
                 query = _layer.GetEntrepriseByProduitFormationForPaging(formation, page);
             }
-            //if (query != null)
-            //{
-            //    foreach (var entreprise in query)
-            //    {
-            //        EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
-            //        //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
-            //        //entrepriseModel.Ville = entreprise.Ville;
-            //        //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
-            //        //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
-            //        //entrepriseModel.NumeroSiret = entreprise.NumeroSiret;
-            //        //entrepriseModel.IdEntreprise = entreprise.IdEntreprise;
-            //        //entrepriseModel.Ligne1Adresse = entreprise.Ligne1Adresse;
-            //        ListentrepriseListViewModel.Add(entrepriseModel);
-            //    }
-            //    return View(ListentrepriseListViewModel);
-            //}
-
             //Test pour pagination
             //var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
             // var model = PagingList.Create(qry, 10, page);
@@ -245,8 +195,6 @@ namespace AppAfpaBrive.Web.Controllers
             try
             {
                 _layer.AddEntreprise(entreprise);
-                //_dbContext.Entreprises.Add(entreprise);
-                //_dbContext.SaveChanges();
                 return RedirectToAction("ListeEntreprisePourModification", "Entreprise");
             }
             catch
@@ -271,14 +219,6 @@ namespace AppAfpaBrive.Web.Controllers
                 return NotFound();
             }
             EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
-            //entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
-            //entrepriseModel.Ville = entreprise.Ville;
-            //entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
-            //entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
-            //entrepriseModel.NumeroSiret = entreprise.NumeroSiret;
-            //entrepriseModel.IdEntreprise = entreprise.IdEntreprise;
-            //entrepriseModel.Ligne1Adresse = entreprise.Ligne1Adresse;
-
             return View(entrepriseModel);
         }
 
@@ -296,9 +236,6 @@ namespace AppAfpaBrive.Web.Controllers
         }
         #endregion
 
-
-      
-
         // GET: EntrepriseController/Edit/5
         public ActionResult Details(int id)
         {
@@ -307,41 +244,7 @@ namespace AppAfpaBrive.Web.Controllers
             
             return View(entrepriseListViewModel);
         }
-
         // POST: EntrepriseController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: EntrepriseController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: EntrepriseController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+      
     }
 }

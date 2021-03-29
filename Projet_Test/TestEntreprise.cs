@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Controllers;
+using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,18 +23,12 @@ namespace Projet_Test
         public DbContextMocker db = new DbContextMocker();
         AFPANADbContext dba;
         [SetUp]
-        public void setup()
-        {
-        }
+        //public void setup()
+        //{
+        //}
         [Test]
         public void TestActionListeEntrepriseRenvoiePagingListEntreprise()
-        {
-            //DbContextOptionsBuilder<AFPANADbContext> optionsBuilder = new DbContextOptionsBuilder<AFPANADbContext>();
-            //string path = Directory.GetCurrentDirectory();
-
-            //optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
-            //AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
-           
+        {          
                dba= db.GetAFPANADbContext("test");
 
             EntrepriseController controller = new EntrepriseController(dba);
@@ -43,16 +38,11 @@ namespace Projet_Test
 
             Assert.IsInstanceOf<PagingList<Entreprise>>(view.Model);
         }
+      
 
         [Test]
-        public void TestActionListeEntreprisePourModifRenvoieView()
+        public void Test_Action_Liste_Entreprise_Pour_Modif_DoitRenvoyer_PagingListEntreprise()
         {
-            //DbContextOptionsBuilder<AFPANADbContext> optionsBuilder = new DbContextOptionsBuilder<AFPANADbContext>();
-            //string path = Directory.GetCurrentDirectory();
-
-            //optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
-            //AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
-
             dba = db.GetAFPANADbContext("test");
 
             EntrepriseController controller = new EntrepriseController(dba);
@@ -64,9 +54,9 @@ namespace Projet_Test
         }
 
         [Test]  
-        public void TestInsertionEntrepriseOK()
+        public void TestInsertion_EntrepriseValide_NeDoitpasRenvoyerDerreur()
         {
-            Entreprise entreprise = new Entreprise
+            EntrepriseListViewModel entreprise = new EntrepriseListViewModel
             {
                 RaisonSociale = "Xiaomi",
                 NumeroSiret = "42159769100029",
@@ -80,12 +70,30 @@ namespace Projet_Test
                 (e => e.MemberNames.Contains("RaisonSociale")
                  && e.ErrorMessage.Contains("sociale")));
         }
+
         [Test]
-        public void TestInsertionEntrepriseRaisonSocialeAbsente()
+        public void TestInsertionEntrepriseNotOK()
         {
-            Entreprise entreprise = new Entreprise
+            EntrepriseListViewModel entreprise = new EntrepriseListViewModel
             {
-               
+                RaisonSociale = "Xiaomi",
+                Ligne1Adresse = "13, Avenue Charles De Gaulle",
+                CodePostal = "75000",
+                Ville = "Paris",
+                Idpays2 = "FR"
+            };
+
+            Assert.IsTrue(ValidationService.ValidateModel(entreprise).Any
+                (e => e.MemberNames.Contains("NumeroSiret")
+                 && e.ErrorMessage.Contains("sociale")));
+        }
+
+        [Test]
+        public void Test_InsertionEntreprise_RaisonSocialeAbsente_DoitRenvoyerErreur()
+        {
+            EntrepriseListViewModel entreprise = new EntrepriseListViewModel
+            {
+                RaisonSociale="",
                 NumeroSiret = "42159769100029",
                 Ligne1Adresse = "13, Avenue Charles De Gaulle",
                 CodePostal = "75000",
@@ -97,5 +105,81 @@ namespace Projet_Test
                 (e => e.MemberNames.Contains("RaisonSociale")
                  && e.ErrorMessage.Contains("sociale")));
         }
+
+        [Test]
+        public void Test_CodePostalAbsentAbsent_Insertion_Doit_RetournerErreur()
+        {
+            EntrepriseListViewModel entreprise = new EntrepriseListViewModel
+            {
+                RaisonSociale = "Xiaomi",
+                NumeroSiret = "42159769100029",
+                Ligne1Adresse = "13, Avenue Charles De Gaulle",
+                CodePostal = "",
+                Ville = "Paris",
+                Idpays2 = "FR"
+            };
+            Assert.IsTrue(ValidationService.ValidateModel(entreprise).Any
+                 (e => e.MemberNames.Contains("CodePostal")
+                  && e.ErrorMessage.Contains("code")));
+        }
+
+        [Test]
+        public void Test_IdPAYS_Absent_doitRenvoyerErreur()
+        {
+            EntrepriseListViewModel entreprise = new EntrepriseListViewModel
+            {
+                RaisonSociale = "Xiaomi",
+                NumeroSiret = "42159769100029",
+                Ligne1Adresse = "13, Avenue Charles De Gaulle",
+                CodePostal = "75000",
+                Ville = "Paris",
+                Idpays2 = ""
+            };
+            Assert.IsTrue(ValidationService.ValidateModel(entreprise).Any
+                 (e => e.MemberNames.Contains("Idpays2")
+                  && e.ErrorMessage.Contains("pays")));
+        }
+
+        [Test]
+        public void Test_Numero_Siret_Invalide_doit_retournerMessageErreur()
+        {
+            EntrepriseListViewModel entreprise = new EntrepriseListViewModel
+            {
+                RaisonSociale = "Xiaomi",
+                NumeroSiret = "111111111111111",
+                Ligne1Adresse = "13, Avenue Charles De Gaulle",
+                CodePostal = "75000",
+                Ville = "Paris",
+                Idpays2 = "FR"
+            };
+            Assert.IsTrue(ValidationService.ValidateModel(entreprise).Any
+                 (e => e.ErrorMessage.Contains("Siret")));
+           
+        }
+
+        //[Test]
+        //public void Test_layer_GetAllEntrepriseForPaging()
+        //{
+        //    Entreprise entreprise = new Entreprise
+        //    {
+        //        RaisonSociale = "Xiaomi",
+        //        NumeroSiret = "42159769100029",
+        //        Ligne1Adresse = "13, Avenue Charles De Gaulle",
+        //        CodePostal = "75000",
+        //        Ville = "Paris",
+        //        Idpays2 = "FR"
+        //    };
+        //    List<Entreprise> liste = new List<Entreprise>();
+        //    liste.Add(entreprise);
+        //    PagingList<Entreprise> pagingList = new PagingList<Entreprise>(liste);
+
+        //    dba = db.GetAFPANADbContext("test");
+        //    EntrepriseLayer layer = new EntrepriseLayer(dba);
+        //  var Result= layer.GetAllEntrepriseForPaging();
+        //    Assert.AreEqual(Result,entreprise);
+
+        //}
+
+
     }
 }

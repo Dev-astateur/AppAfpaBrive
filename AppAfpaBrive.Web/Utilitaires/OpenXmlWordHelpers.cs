@@ -160,7 +160,7 @@ namespace OpenXmlHelpers.Word
 
         private static string GetMergeFieldStartString(string mergeFieldName)
         {
-            return " MERGEFIELD " + (!string.IsNullOrWhiteSpace(mergeFieldName) ? mergeFieldName : "<NoNameMergeField>");
+            return " MERGEFIELD ,; n" + (!string.IsNullOrWhiteSpace(mergeFieldName) ? mergeFieldName : "<NoNameMergeField>");
         }
 
         #endregion Private Methods
