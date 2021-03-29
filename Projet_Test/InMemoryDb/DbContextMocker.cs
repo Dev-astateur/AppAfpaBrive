@@ -19,8 +19,7 @@ namespace Projet_Test.InMemoryDb
         public  AFPANADbContext GetAFPANADbContext(string dbName)
         {
             var options = new DbContextOptionsBuilder<AFPANADbContext>()
-                            .UseInMemoryDatabase(databaseName: dbName)
-                            .Options;
+                            .UseInMemoryDatabase(databaseName: dbName).Options;
             var dbContext = new AFPANADbContext(options);
 
             return dbContext;

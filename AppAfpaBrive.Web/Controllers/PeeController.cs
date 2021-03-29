@@ -181,7 +181,7 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> ListePeeAValider(string id,int? pageIndex)
         {
-            if (id is null)
+            if (string.IsNullOrWhiteSpace(id) || id == "")
                 return NotFound();
             if (pageIndex is null)
                 pageIndex = 1;
@@ -198,14 +198,14 @@ namespace AppAfpaBrive.Web.Controllers
         /// <returns></returns>
         [Route("/Pee/PeeEntrepriseValidation/{id}")]
         [HttpGet]
-        public async Task<IActionResult> PeeEntrepriseValidation(int? id)
+        public async Task<IActionResult> PeeEntrepriseValidation(decimal? id)
         {
             if ( id is null )
                 return NotFound();
 
-            PeeEntrepriseModelView pee = await _peeLayer.GetPeeByIdPeeOffreEntreprisePaysAsync((int)id);
+            PeeEntrepriseModelView pee = await _peeLayer.GetPeeByIdPeeOffreEntreprisePaysAsync((decimal)id);
             if (pee is null)
-                return NotFound();
+                return BadRequest();
 
             return View(pee);
         }
@@ -215,24 +215,27 @@ namespace AppAfpaBrive.Web.Controllers
         /// ici on charge la partie de saisie des remarques s'il y a lien
         /// </summary>
         /// <param name="id">id IdPee, id de la Pee</param>
-        /// <returns></returns>
+        /// <returns>charge la page de modification de la Pee</returns>
         [Route("/Pee/EnregistrementPeeInfo/{id}")]
         [HttpGet]
-        public async Task<IActionResult> EnregistrementPeeInfo(int? id)
+        public async Task<IActionResult> EnregistrementPeeInfo(decimal? id)
         {
             if (id is null)
                 return NotFound();
 
-            PeeModelView pee = await _peeLayer.GetPeeByIdAsync((int)id);
+            PeeModelView pee = await _peeLayer.GetPeeByIdAsync((decimal)id);
+            if (pee is null)
+                return BadRequest();
+
             return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml",pee) ;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EnregistrementPeeInfo(int IdPee, PeeModelView peeModelView)
+        public async Task<IActionResult> EnregistrementPeeInfo(decimal IdPee, PeeModelView peeModelView)
         {
             if (IdPee != peeModelView.IdPee)
-                return NotFound();
+                return BadRequest();
 
             string MatriculeCollaborateurAfpa = await _peeLayer.GetPeeMatriculeFormateurByIdAsync(IdPee);
 
@@ -242,11 +245,8 @@ namespace AppAfpaBrive.Web.Controllers
                 {   
                     peeModelView.Etat = EntityPOCOState.Modified;
 
-                    if ( await _peeLayer.UpdatePeeAsync(peeModelView) )
-                    {
-                        return RedirectToAction(nameof(PrevenirBeneficaire), new {id = IdPee ,idColl = MatriculeCollaborateurAfpa });
-                    }
-                    
+                    await _peeLayer.UpdatePeeAsync(peeModelView);
+                    return RedirectToAction(nameof(PrevenirBeneficaire), new {id = IdPee ,idColl = MatriculeCollaborateurAfpa });
                 }
                 catch (DbUpdateConcurrencyException)
                 {

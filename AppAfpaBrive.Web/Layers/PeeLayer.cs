@@ -107,13 +107,29 @@ namespace AppAfpaBrive.Web.Layers
 
         public async Task<PeeModelView> GetPeeByIdAsync(decimal idPee)
         {
-            return new PeeModelView(await _dbContext.Pees.FindAsync((decimal)idPee));
+            return await _dbContext.Pees.Where(e => e.IdPee == idPee).Select(e=>new PeeModelView() 
+            { 
+                IdPee = e.IdPee,
+                MatriculeBeneficiaire = e.MatriculeBeneficiaire,
+                IdTuteur = e.IdTuteur,
+                IdResponsableJuridique = e.IdResponsableJuridique,
+                IdEntreprise = e.IdEntreprise,
+                IdOffreFormation = e.IdOffreFormation,
+                IdEtablissement = e.IdEtablissement,
+                Remarque = e.Remarque,
+                EtatPee = e.EtatPee,
+                Id = new OffreFormationModelView(e.Id),
+                IdEntrepriseNavigation = new EntrepriseModelView(e.IdEntrepriseNavigation),
+                MatriculeBeneficiaireNavigation = new BeneficiaireModelView(e.MatriculeBeneficiaireNavigation),
+                IdResponsableJuridiqueNavigation = new ProfessionnelModelView(e.IdResponsableJuridiqueNavigation),
+                IdTuteurNavigation = new ProfessionnelModelView(e.IdTuteurNavigation),
+            }).FirstOrDefaultAsync();
         }
 
-        public async Task<string> GetPeeMatriculeFormateurByIdAsync(int idPee)
+        public async Task<string> GetPeeMatriculeFormateurByIdAsync(decimal idPee)
         {
             return await _dbContext.Pees.Where(e=>e.IdPee == idPee)
-                .Include(e=>e.Id).Select(e=>e.Id.MatriculeCollaborateurAfpa).FirstAsync();
+                .Include(e=>e.Id).Select(e=>e.Id.MatriculeCollaborateurAfpa).FirstOrDefaultAsync();
         }
 
         public async Task<ICollection<PeeDocumentModelView>> GetPeeDocumentByIdAsync(decimal idPee)
@@ -122,7 +138,7 @@ namespace AppAfpaBrive.Web.Layers
                 .OrderBy(e=>e.NumOrdre).Select(e=>new PeeDocumentModelView(e)).ToListAsync();
         }
 
-        public async Task<bool> UpdatePeeAsync( PeeModelView peeModelView )
+        public async Task<PeeModelView> UpdatePeeAsync( PeeModelView peeModelView )
         {
             Pee pee = new ()
             {
@@ -144,11 +160,9 @@ namespace AppAfpaBrive.Web.Layers
                 {
                     _dbContext.Update(pee);
                     await _dbContext.SaveChangesAsync();
-                    return true;
                 }
-                return false;
             }
-            return false;
+            return peeModelView;
         }
 
         public async Task<MessageModelView> GetElementByIdPeeForMessageAsync(decimal idPee)

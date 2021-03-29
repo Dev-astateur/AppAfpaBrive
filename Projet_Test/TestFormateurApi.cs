@@ -35,7 +35,7 @@ namespace Projet_Test
         }
 
         [Test]
-        public async Task TestGetFormateurStartWith_EmptyParamsReturnsNothing()
+        public void TestGetFormateurStartWith_EmptyParamsReturnsNothing()
         {
 
             //arrange
