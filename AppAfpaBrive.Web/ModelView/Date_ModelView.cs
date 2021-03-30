@@ -18,7 +18,7 @@ namespace AppAfpaBrive.Web.ModelView
 
 
         [Required(ErrorMessage = "Sélectionner une date")]
-        [DateGreaterThan("Date1")]
+        [CheckDateRange(ErrorMessage ="La date doit être supérieur à aujourd'hui")]
         public DateTime Date2 { get => _date2; set => _date2 = value; }
     }
 

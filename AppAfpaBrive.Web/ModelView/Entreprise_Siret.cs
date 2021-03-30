@@ -6,6 +6,7 @@ namespace AppAfpaBrive.Web.ModelView
     public class Entreprise_Siret
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Le Siret doit etre composer uniquement de chiffre")]
         [CustomValidator_Siret(ErrorMessage = "Siret invalide")]
         [MinLength(14,ErrorMessage ="Le siret est composer de 14 charactère")]
         [MaxLength(14, ErrorMessage = "Le siret est composer de 14 charactère")]

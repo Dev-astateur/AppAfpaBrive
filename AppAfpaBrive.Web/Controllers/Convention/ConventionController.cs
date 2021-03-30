@@ -548,7 +548,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                         }
 
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         return RedirectToAction("Erreur");
                     }
