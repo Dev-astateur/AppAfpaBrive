@@ -16,6 +16,7 @@ using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.Utilitaires;
 using AppAfpaBrive.Web.Layer;
 using System.IO;
+using static AppAfpaBrive.Web.Layers.PeeLayer;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
@@ -30,6 +31,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_EntrepriseProfessionnel _entreprisepro = null;
         private PeeLayer _peelayer = null;
         private Periode_pee_Layer _periode = null;
+        private Layer_PeeDocument _PeeDocument = null;
 
         public ConventionController(AFPANADbContext context)
         {
@@ -42,7 +44,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _entreprisepro = new Layer_EntrepriseProfessionnel(context);
             _peelayer = new PeeLayer(context);
             _periode = new Periode_pee_Layer(context);
-            
+            _PeeDocument = new Layer_PeeDocument(context);
         }
         
 
@@ -516,20 +518,21 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 try
                 {
                     string Path = "./wwwroot/Documents/"+peeId;
-                    System.IO.FileInfo file = new System.IO.FileInfo(Path);
-
-                    (new FileInfo(Path)).Directory.Create();
-
                     if(!Directory.Exists(Path))
                     {
                         Directory.CreateDirectory(Path);
                     }
-
                     var Response = UploadFiles.UploadFile(postedFile, Path);
 
                     if (Response.Done)
                     {
-                        return RedirectToAction("index");
+                        PeeDocument peeDocument = new PeeDocument
+                        {
+                            IdPee = peeId,
+                            PathDocument = Path
+                        };
+                        _PeeDocument.create(peeDocument);
+                        return RedirectToAction("Reussite");
                     }
                     else
                     {
@@ -540,14 +543,24 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 catch (Exception e)
                 {
                     Response.WriteAsync("<script>alert('" + e + "')</script>");
-                    return View();
+                    return RedirectToAction("Erreur");
                 }
             }
 
             return View();
         }
-        
-        
+
+        // get Reussite
+        public IActionResult Reussite()
+        {   
+            return View();
+        }
+
+        // get Erreur
+        public IActionResult Erreur()
+        {
+            return View();
+        }
 
     }
 }
