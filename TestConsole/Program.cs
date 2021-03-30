@@ -12,6 +12,7 @@ namespace TestConsole
         static void Main(string[] args)
         {
             AFPANADbContext context = new AFPANADbContext();
+
             Pee pee = new Pee();
             IQueryable<Pee> pees = context.Pees
                 .Include(P => P.MatriculeBeneficiaireNavigation)
@@ -67,6 +68,17 @@ namespace TestConsole
 
             var date = context.PeriodePees.Where(p => p.IdPee == Convention.IdPee).FirstOrDefault();
             Console.WriteLine(date.DateDebutPeriodePee);
+
+
+
+            Console.WriteLine("------------------------------------------------");
+
+            var obj = context.Contacts.Include(x => x.TitreCivilite).ToList();
+            foreach(var el in obj)
+            {
+                Console.WriteLine(el.TitreCivilite);
+                Console.WriteLine(el.TitreCivilite.TitreCiviliteComplet + " " + el.Nom  );
+            }
         }
     }
 }

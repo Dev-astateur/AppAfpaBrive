@@ -4,6 +4,7 @@ using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +22,8 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
 
         public async Task<PagingList<Contact>> GetPage(string filter, int page = 1, string sortExpression = "Nom")
         {
-            var qry = _context.Contacts.AsQueryable();
+            var obj = _context.Contacts.Include(x => x.TitreCivilite).ToList();
+            var qry = _context.Contacts.Include(x => x.TitreCivilite);
             if (!string.IsNullOrWhiteSpace(filter))
             {
                 qry = qry.Where(p => p.Nom.Contains(filter));
@@ -32,14 +34,18 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
 
         public ContactModelView GetContactModelViewById(int id)
         {
-            var obj = _context.Contacts.Select(x => new ContactModelView
+            
+            var obj = _context.Contacts.Include(y => y.TitreCivilite).Select(x => new ContactModelView
             {
                 IdContact = x.IdContact,
                 Nom = x.Nom,
                 Prenom = x.Prenom,
                 Mail = x.Mail,
                 Telephone = x.Telephone,
-                IdTitreCivilite = x.IdTitreCivilite
+                IdTitreCivilite = x.IdTitreCivilite,
+                TitreCivilite = x.TitreCivilite,
+                ContactLigneAnnuaires = x.ContactLigneAnnuaires,
+                ContactStructures = x.ContactStructures
             });
 
             return obj as ContactModelView;
@@ -47,7 +53,8 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
 
         public Contact GetContact(int id)
         {
-            return _context.Contacts.Find(id);
+            var obj = _context.Contacts.Include(y => y.TitreCivilite).ToList().First(x => x.IdContact == id);
+            return obj as Contact;
         }
 
         public void Insert(Contact contact)
