@@ -550,7 +550,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     }
                     catch (Exception e)
                     {
-                        //Response.WriteAsync("<script>alert('" + e + "')</script>");
                         return RedirectToAction("Erreur");
                     }
                 }
