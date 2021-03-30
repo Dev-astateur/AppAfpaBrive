@@ -11,6 +11,8 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
     {
         [Key]
         public int IdCategorie { get; set; }
+
+        [Required(ErrorMessage="Libellé obligatoire")]
         public string LibelleCategorie { get; set; }
 
         public Categorie GetCategorie()
