@@ -158,7 +158,7 @@ namespace AppAfpaBrive.Web.Layers
             {
                 if (pee.Etat == EntityPOCOState.Modified)
                 {
-                    _dbContext.Update(pee);
+                    _dbContext.Pees.Update(pee);
                     await _dbContext.SaveChangesAsync();
                 }
             }

@@ -38,10 +38,12 @@ namespace Projet_Test
         [SetUp]
         public void Setup()
         {
-            _dbContext = new DbContextMocker().GetAFPANADbContext("AFPANA");
             Dictionary<string, string> keys = new();
             _configuration = IConfigurationMock.IConfigurationMock.GetIConfiguration(keys);
             _hostEnvironment = IHostEnvironmentMock.GetHostEnvironment();
+            _dbContext = DbContextMocker.GetAFPANADbContext("AFPANA");
+            AjoutEnregistrement();
+            
         }
 
         [Test]
@@ -55,7 +57,6 @@ namespace Projet_Test
                 }
             };
 
-            //contextMock.Request.Setup(r => r.Query["id"]).Returns("1603870");
             var result = controller.ListePeeAValider("1603870", null).Result;
             Assert.IsInstanceOf<ViewResult>(result);
             
@@ -163,8 +164,6 @@ namespace Projet_Test
                     HttpContext = contextMock.Http.Object,
                 }
             };
-
-            //contextMock.Request.Setup(r => r.Query["id"]).Returns("4");
             var result = controller.EnregistrementPeeInfo(4).Result;
 
             Assert.IsInstanceOf<PartialViewResult>(result);
@@ -182,9 +181,7 @@ namespace Projet_Test
                 }
             };
 
-            //contextMock.Request.Setup(r => r.Query["id"]).Returns(string.Empty);
             var result = controller.EnregistrementPeeInfo(null).Result;
-
             Assert.IsInstanceOf<NotFoundResult>(result);
         }
 
@@ -253,6 +250,7 @@ namespace Projet_Test
                 "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
                 ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632"
             };
+
             Assert.IsTrue(ValidationService.ValidateModel(peeModelView).Any
                 (va => va.MemberNames.Contains("Remarque")
                 && va.ErrorMessage.Contains("Les remarques ne doivent pas excéder 1024 caractères.")));
@@ -283,8 +281,7 @@ namespace Projet_Test
                 ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto"
             };
 
-            var result = controller.EnregistrementPeeInfo(4,peeModelView).Result as RedirectToActionResult;
-            Assert.That(result.ControllerName, Is.EqualTo("PeeController"));
+            var result = controller.EnregistrementPeeInfo(4, peeModelView).Result as RedirectToActionResult;
             Assert.That(result.ActionName, Is.EqualTo("PrevenirBeneficaire"));
 
         }
@@ -300,38 +297,105 @@ namespace Projet_Test
                     HttpContext = contextMock.Http.Object,
                 }
             };
-            //PeeModelView peeModelView = new PeeModelView()
-            //{
-            //    IdPee = 4,
-            //    MatriculeBeneficiaire = "20022801",
-            //    IdTuteur = 1,
-            //    IdResponsableJuridique = 1,
-            //    IdEntreprise = 2,
-            //    IdOffreFormation = 20101,
-            //    IdEtablissement = "19011",
-            //    EtatPee = 0,
-            //    Remarque = "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
-            //    ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632" +
-            //    "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
-            //    ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632" +
-            //    "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
-            //    ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632" +
-            //    "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
-            //    ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632" +
-            //    "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
-            //    ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632" +
-            //    "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
-            //    ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632"
-            //};
-            //contextMock.Request.Setup(r => r.Query["IdPee"]).Returns("1603870");
+            PeeModelView peeModelView = new PeeModelView()
+            {
+                IdPee = 4,
+                MatriculeBeneficiaire = "20022801",
+                IdTuteur = 1,
+                IdResponsableJuridique = 1,
+                IdEntreprise = 2,
+                IdOffreFormation = 20101,
+                IdEtablissement = "19011",
+                EtatPee = 0,
+                Remarque = "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
+                ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632" +
+                "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
+                ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632" +
+                "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
+                ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632" +
+                "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
+                ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632" +
+                "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
+                ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632" +
+                "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
+                ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto 123456+789912345698745632"
+            };
 
-            Mock<PeeModelView> parameter = new Mock<PeeModelView>();
-            parameter.Setup(i=>i.IdPee).Returns(4);
-
-            var result = controller.EnregistrementPeeInfo(4, parameter.Object).Result as RedirectToActionResult;
-            
-            Assert.That(result.ControllerName, Is.EqualTo("PeeController"));
+            var result = controller.EnregistrementPeeInfo(4, peeModelView).Result as RedirectToActionResult;
+      
             Assert.That(result.ActionName, Is.EqualTo("ListePeeAValider"));
+        }
+
+        private void AjoutEnregistrement ()
+        {
+            _dbContext.Pees.Add(new Pee()
+            {
+                IdPee = 4,
+                MatriculeBeneficiaire = "20022801",
+                IdTuteur = 1,
+                IdResponsableJuridique = 1,
+                IdEntreprise = 2,
+                IdOffreFormation = 20101,
+                IdEtablissement = "19011",
+                EtatPee = 0,
+                Remarque = "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
+                ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto"
+            });
+            _dbContext.OffreFormations.Add(new OffreFormation()
+            {
+                IdOffreFormation = 20101,
+                IdEtablissement = "19011",
+                MatriculeCollaborateurAfpa = "1603870",
+                CodeProduitFormation = 12226,
+                LibelleOffreFormation = "Technicien supérieur systèmes et réseaux JO2018.1",
+                LibelleReduitOffreFormation = null,
+                DateDebutOffreFormation = new DateTime(2020, 09, 07),
+                DateFinOffreFormation = new DateTime(2021, 06, 11)
+            });
+
+            _dbContext.Entreprises.Add(new Entreprise() {
+                IdEntreprise = 2,
+                RaisonSociale = "CAI",
+                NumeroSiret = "42159769100029",
+                MailEntreprise = null,
+                TelEntreprise = null,
+                Ligne1Adresse = "42159769100029",
+                Ligne2Adresse = null,
+                Ligne3Adresse = null,
+                CodePostal  = "19100",
+                Ville = "Brive la Gaillarde",
+                Idpays2 = "FR"
+            });
+
+            _dbContext.Beneficiaires.Add(new Beneficiaire()
+            {
+                MatriculeBeneficiaire = "20022801",
+                CodeTitreCivilite = 0,
+                NomBeneficiaire = "ABRAHAM",
+                PrenomBeneficiaire = "DENZEL",
+                DateNaissanceBeneficiaire = new DateTime(1996,09,13),
+                MailBeneficiaire = "louloulabeille@hotmail.com",
+                TelBeneficiaire = "0690521150",
+                Ligne1Adresse = null,
+                Ligne2Adresse = null,
+                Ligne3Adresse = null,
+                CodePostal = null,
+                Ville = null,
+                UserId = null,
+                IdPays2 = null,
+                PathPhoto = null,
+                MailingAutorise = true,
+            });
+
+            _dbContext.Professionnels.Add(new Professionnel() 
+            {
+                IdProfessionnel = 1,
+                NomProfessionnel = "Domme",
+                PrenomProfessionnel = "Sébastien",
+                CodeTitreCiviliteProfessionnel = 0,
+            });
+
+            _dbContext.SaveChanges();
         }
     }
 }

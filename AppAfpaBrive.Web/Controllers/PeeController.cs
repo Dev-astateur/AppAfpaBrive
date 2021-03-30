@@ -256,6 +256,10 @@ namespace AppAfpaBrive.Web.Controllers
                 {
                     return RedirectToAction(nameof(ListePeeAValider), new { id = MatriculeCollaborateurAfpa });
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             return RedirectToAction(nameof(ListePeeAValider),new { id = MatriculeCollaborateurAfpa });
         }

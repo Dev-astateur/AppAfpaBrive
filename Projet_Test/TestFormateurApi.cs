@@ -17,16 +17,16 @@ namespace Projet_Test
     class TestFormateurApi
     {
 
-        public DbContextMocker db = new DbContextMocker();
-        AFPANADbContext dba;
+        public AFPANADbContext  db = null;
+        //AFPANADbContext dba;
 
 
         [SetUp]
         public void Setup()
         {
-            dba = db.GetAFPANADbContext("test");
+            db = DbContextMocker.GetAFPANADbContext("test");
 
-            dba.CollaborateurAfpas.Add(new CollaborateurAfpa
+            db.CollaborateurAfpas.Add(new CollaborateurAfpa
             {
                 NomCollaborateur = "Titi",
                 MatriculeCollaborateurAfpa = "96AA011"
@@ -41,7 +41,7 @@ namespace Projet_Test
             //arrange
           
          
-            var controller = new FormateurApiController(dba);
+            var controller = new FormateurApiController(db);
 
 
             controller.ControllerContext = new ControllerContext();

@@ -9,17 +9,18 @@ using Microsoft.EntityFrameworkCore.InMemory;
 
 namespace Projet_Test.InMemoryDb
 {
-    public  class DbContextMocker
+    public static class DbContextMocker
     {
         /// <summary>
         /// Initialise un context Afpana en mémoire
         /// </summary>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        public  AFPANADbContext GetAFPANADbContext(string dbName)
+        public static AFPANADbContext GetAFPANADbContext(string dbName)
         {
             var options = new DbContextOptionsBuilder<AFPANADbContext>()
-                            .UseInMemoryDatabase(databaseName: dbName).Options;
+                            .UseInMemoryDatabase(databaseName: dbName)
+                            .EnableSensitiveDataLogging().Options;
             var dbContext = new AFPANADbContext(options);
 
             return dbContext;
