@@ -30,7 +30,6 @@ namespace AppAfpaBrive.Web.ModelView.ValidationPee
         }
 
         public MessagePee MessagePee { get; set; }
-
         public virtual ICollection<PeriodePeeModelView> periodes { get; set; }
         public virtual TitreCiviliteModelView CodeTitreCiviliteNavigation { get; set; }
 

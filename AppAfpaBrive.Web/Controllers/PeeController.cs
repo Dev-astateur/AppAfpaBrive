@@ -230,6 +230,12 @@ namespace AppAfpaBrive.Web.Controllers
             return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml",pee) ;
         }
 
+        /// <summary>
+        /// action du update de la Pee
+        /// </summary>
+        /// <param name="IdPee"></param>
+        /// <param name="peeModelView"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EnregistrementPeeInfo(decimal IdPee, PeeModelView peeModelView)
@@ -250,15 +256,15 @@ namespace AppAfpaBrive.Web.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    return RedirectToAction(nameof(ListePeeAValider), new { id = MatriculeCollaborateurAfpa });
+                    return BadRequest();
                 }
                 catch(DbUpdateException)
                 {
-                    return RedirectToAction(nameof(ListePeeAValider), new { id = MatriculeCollaborateurAfpa });
+                    return BadRequest();
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    return BadRequest();
                 }
             }
             return RedirectToAction(nameof(ListePeeAValider),new { id = MatriculeCollaborateurAfpa });
@@ -278,7 +284,6 @@ namespace AppAfpaBrive.Web.Controllers
                 return NotFound();
 
             IEnumerable<PeeDocumentModelView> peeDocument = await _peeLayer.GetPeeDocumentByIdAsync((decimal)id);
-
             if ( page is not null )
             {
                 return peeDocument.Count() == 0 ? RedirectToAction(nameof(PeeEntrepriseValidation), new { id })
@@ -291,6 +296,12 @@ namespace AppAfpaBrive.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// action qui envoi un courriel au bénéficiaire
+        /// </summary>
+        /// <param name="id">idPee</param>
+        /// <param name="idColl">id collaborateur Afpa</param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> PrevenirBeneficaire(decimal id,string idColl)
         {
@@ -298,7 +309,14 @@ namespace AppAfpaBrive.Web.Controllers
             messageView.MatriculeCollaborateurAfpa = idColl;
             messageView.MessagePee = _config.GetSection("MessagePee").Get<MessagePee>();
 
-            await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, messageView.MessagePee.Sujet.Normalize(), messageView.Message.Normalize());
+            try
+            {
+                await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, messageView.MessagePee.Sujet.Normalize(), messageView.Message.Normalize());
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
             return View(messageView);
         }
         #endregion

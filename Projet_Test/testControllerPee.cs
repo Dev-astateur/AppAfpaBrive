@@ -24,7 +24,7 @@ using ReflectionIT.Mvc.Paging;
 using System.Net;
 using Projet_Test.Utilitaire;
 using Moq;
-using Microsoft.AspNetCore.Http;
+using AppAfpaBrive.Web.Utilitaires;
 
 namespace Projet_Test
 {
@@ -35,14 +35,19 @@ namespace Projet_Test
         private IHostEnvironment _hostEnvironment = null;
         private IMailSenderMock.IMailSenderMock _mailSenderMock = null;
 
-        [SetUp]
-        public void Setup()
+        public TestControllerPee()
         {
             Dictionary<string, string> keys = new();
+
             _configuration = IConfigurationMock.IConfigurationMock.GetIConfiguration(keys);
             _hostEnvironment = IHostEnvironmentMock.GetHostEnvironment();
             _dbContext = DbContextMocker.GetAFPANADbContext("AFPANA");
             AjoutEnregistrement();
+        }
+
+        [SetUp]
+        public void Setup()
+        {
             
         }
 
@@ -73,8 +78,6 @@ namespace Projet_Test
                     HttpContext = contextMock.Http.Object,
                 }
             };
-
-            //contextMock.Request.Setup(r => r.Query["id"]).Returns("1603870");
             var result = controller.ListePeeAValider("1603870", null).Result as ViewResult;
 
             Assert.IsInstanceOf<PagingList<ListePeeAValiderModelView>>(result.Model);
@@ -257,36 +260,6 @@ namespace Projet_Test
         }
 
         [Test]
-        public void EnregistrementPeeInfoIsValueOK()
-        {
-            HttpMock.MockHTTPContext contextMock = new();
-            PeeController controller = new PeeController(_dbContext, _configuration, _hostEnvironment, _mailSenderMock)
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = contextMock.Http.Object,
-                }
-            };
-            PeeModelView peeModelView = new PeeModelView() 
-            { 
-                IdPee = 4,
-                MatriculeBeneficiaire= "20022801",
-                IdTuteur = 1,
-                IdResponsableJuridique = 1,
-                IdEntreprise = 2,
-                IdOffreFormation = 20101,
-                IdEtablissement = "19011",
-                EtatPee = 0,
-                Remarque = "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
-                ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto"
-            };
-
-            var result = controller.EnregistrementPeeInfo(4, peeModelView).Result as RedirectToActionResult;
-            Assert.That(result.ActionName, Is.EqualTo("PrevenirBeneficaire"));
-
-        }
-
-        [Test]
         public void EnregistrementPeeInfo_Enregistrement_NonValide_Redirection()
         {
             HttpMock.MockHTTPContext contextMock = new();
@@ -297,6 +270,7 @@ namespace Projet_Test
                     HttpContext = contextMock.Http.Object,
                 }
             };
+
             PeeModelView peeModelView = new PeeModelView()
             {
                 IdPee = 4,
@@ -322,11 +296,78 @@ namespace Projet_Test
             };
 
             var result = controller.EnregistrementPeeInfo(4, peeModelView).Result as RedirectToActionResult;
-      
             Assert.That(result.ActionName, Is.EqualTo("ListePeeAValider"));
         }
 
-        private void AjoutEnregistrement ()
+        [Test]
+        public void ListeDocumentPeeValidPageNull()
+        {
+            HttpMock.MockHTTPContext contextMock = new();
+            PeeController controller = new PeeController(_dbContext, _configuration, _hostEnvironment, _mailSenderMock)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = contextMock.Http.Object,
+                }
+            };
+
+            var result = controller.ListeDocumentPee(4, null).Result;
+            Assert.IsInstanceOf<PartialViewResult>(result);
+
+        }
+
+        [Test]
+        public void ListeDocumentPeeValidPageNullDocumentNull()
+        {
+            HttpMock.MockHTTPContext contextMock = new();
+            PeeController controller = new PeeController(_dbContext, _configuration, _hostEnvironment, _mailSenderMock)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = contextMock.Http.Object,
+                }
+            };
+
+            var result = controller.ListeDocumentPee(5, null).Result as RedirectToActionResult;
+
+            Assert.That(result.ActionName, Is.EqualTo("EnregistrementPeeInfo"));
+
+        }
+
+
+        [Test]
+        public void ListeDocumentPeeValidPageNotNull()
+        {
+            HttpMock.MockHTTPContext contextMock = new();
+            PeeController controller = new PeeController(_dbContext, _configuration, _hostEnvironment, _mailSenderMock)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = contextMock.Http.Object,
+                }
+            };
+
+            var result = controller.ListeDocumentPee(4, 1).Result;
+            Assert.IsInstanceOf<PartialViewResult>(result);
+
+        }
+        [Test]
+        public void ListeDocumentPeeValidPageNotNulldocumentNull()
+        {
+            HttpMock.MockHTTPContext contextMock = new();
+            PeeController controller = new PeeController(_dbContext, _configuration, _hostEnvironment, _mailSenderMock)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = contextMock.Http.Object,
+                }
+            };
+
+            var result = controller.ListeDocumentPee(5, 1).Result as RedirectToActionResult;
+            Assert.That(result.ActionName, Is.EqualTo("PeeEntrepriseValidation"));
+        }
+
+        private void AjoutEnregistrement()
         {
             _dbContext.Pees.Add(new Pee()
             {
@@ -341,6 +382,20 @@ namespace Projet_Test
                 Remarque = "Besoin de plus de renseignements au niveau pédagogique.Et quelques informations de plus à voir" +
                 ".Recontacter l'entreprise pour avoir des informations complémentaires.Merci.Toto"
             });
+
+            _dbContext.Pees.Add(new Pee()
+            {
+                IdPee = 5,
+                MatriculeBeneficiaire = "20035347",
+                IdTuteur = 3,
+                IdResponsableJuridique = 2,
+                IdEntreprise = 4,
+                IdOffreFormation = 20101,
+                IdEtablissement = "19011",
+                EtatPee = 0,
+                Remarque = null
+            });
+
             _dbContext.OffreFormations.Add(new OffreFormation()
             {
                 IdOffreFormation = 20101,
@@ -353,17 +408,32 @@ namespace Projet_Test
                 DateFinOffreFormation = new DateTime(2021, 06, 11)
             });
 
-            _dbContext.Entreprises.Add(new Entreprise() {
+            _dbContext.Entreprises.Add( new Entreprise() {
                 IdEntreprise = 2,
                 RaisonSociale = "CAI",
                 NumeroSiret = "42159769100029",
                 MailEntreprise = null,
                 TelEntreprise = null,
-                Ligne1Adresse = "42159769100029",
+                Ligne1Adresse = "5, boulevard Mirabeau",
                 Ligne2Adresse = null,
                 Ligne3Adresse = null,
-                CodePostal  = "19100",
+                CodePostal = "19100",
                 Ville = "Brive la Gaillarde",
+                Idpays2 = "FR"
+            });
+
+            _dbContext.Entreprises.Add(new Entreprise()
+            {
+                IdEntreprise = 4,
+                RaisonSociale = "ANDROS SNC",
+                NumeroSiret = "42868244700019",
+                MailEntreprise = null,
+                TelEntreprise = null,
+                Ligne1Adresse = "ZI",
+                Ligne2Adresse = null,
+                Ligne3Adresse = null,
+                CodePostal = "46130",
+                Ville = "Biars-sur-Cère",
                 Idpays2 = "FR"
             });
 
@@ -373,7 +443,7 @@ namespace Projet_Test
                 CodeTitreCivilite = 0,
                 NomBeneficiaire = "ABRAHAM",
                 PrenomBeneficiaire = "DENZEL",
-                DateNaissanceBeneficiaire = new DateTime(1996,09,13),
+                DateNaissanceBeneficiaire = new DateTime(1996, 09, 13),
                 MailBeneficiaire = "louloulabeille@hotmail.com",
                 TelBeneficiaire = "0690521150",
                 Ligne1Adresse = null,
@@ -387,12 +457,71 @@ namespace Projet_Test
                 MailingAutorise = true,
             });
 
-            _dbContext.Professionnels.Add(new Professionnel() 
+            _dbContext.Beneficiaires.Add(new Beneficiaire()
+            {
+                MatriculeBeneficiaire = "20035347",
+                CodeTitreCivilite = 0,
+                NomBeneficiaire = "ETCHART",
+                PrenomBeneficiaire = "PIERRE",
+                DateNaissanceBeneficiaire = new DateTime(1985, 12, 19),
+                MailBeneficiaire = "loudieres@mailo.com",
+                TelBeneficiaire = "0781760241",
+                Ligne1Adresse = null,
+                Ligne2Adresse = null,
+                Ligne3Adresse = null,
+                CodePostal = null,
+                Ville = null,
+                UserId = null,
+                IdPays2 = null,
+                PathPhoto = null,
+                MailingAutorise = true,
+            });
+
+
+            _dbContext.Professionnels.Add(new Professionnel()
             {
                 IdProfessionnel = 1,
                 NomProfessionnel = "Domme",
                 PrenomProfessionnel = "Sébastien",
                 CodeTitreCiviliteProfessionnel = 0,
+            });
+
+            _dbContext.Professionnels.Add(new Professionnel()
+            {
+                IdProfessionnel = 2,
+                NomProfessionnel = "Domme",
+                PrenomProfessionnel = "Sébastien",
+                CodeTitreCiviliteProfessionnel = 0,
+            });
+
+            _dbContext.Professionnels.Add(new Professionnel()
+            {
+                IdProfessionnel = 3,
+                NomProfessionnel = "Domme",
+                PrenomProfessionnel = "Sébastien",
+                CodeTitreCiviliteProfessionnel = 0,
+            });
+
+            _dbContext.PeeDocuments.Add(new PeeDocument()
+            {
+                IdPee = 4,
+                NumOrdre = 0,
+                PathDocument = "/Pee/4/external-content.duckduckgo.com.jpg",
+            });
+
+            _dbContext.PeriodePees.Add(new PeriodePee()
+            {
+                IdPee = 4,
+                NumOrdre = 0,
+                DateDebutPeriodePee = new DateTime(2020, 09, 01),
+                DateFinPeriodePee = new DateTime(2021,06,30),
+            });
+
+            _dbContext.TitreCivilites.Add(new TitreCivilite()
+            {
+                CodeTitreCivilite = 0,
+                TitreCiviliteAbrege = "",
+                TitreCiviliteComplet = "",
             });
 
             _dbContext.SaveChanges();
