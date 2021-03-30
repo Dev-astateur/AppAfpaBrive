@@ -23,5 +23,11 @@ namespace AppAfpaBrive.Web.Layer
                 Where(x => x.MatriculeBeneficiaire == matricule && x.IdOffreFormation==Idformation).ToList();
         }
 
+        public string GetIdetablissemnt_Id_Etablissement(string matricule, int Idformation)
+        {
+            return _db.BeneficiaireOffreFormations.
+                Where(x => x.MatriculeBeneficiaire == matricule && x.IdOffreFormation == Idformation).FirstOrDefault().Idetablissement;
+        }
+
     }
 }

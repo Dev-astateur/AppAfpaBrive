@@ -15,6 +15,7 @@ using DocumentFormat.OpenXml;
 using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.Utilitaires;
 using AppAfpaBrive.Web.Layer;
+using System.IO;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
@@ -29,7 +30,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_EntrepriseProfessionnel _entreprisepro = null;
         private PeeLayer _peelayer = null;
         private Periode_pee_Layer _periode = null;
-        protected string Path { get; set; }
 
         public ConventionController(AFPANADbContext context)
         {
@@ -42,7 +42,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _entreprisepro = new Layer_EntrepriseProfessionnel(context);
             _peelayer = new PeeLayer(context);
             _periode = new Periode_pee_Layer(context);
-            Path = "./Data/Documents";
+            
         }
         
 
@@ -62,7 +62,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     IdEtablissement = item.Idetablissement,
                     DateDebut = item.DateEntreeBeneficiaire,
                     Datefin = item.DateSortieBeneficiaire,
-                    Etablissement = _Etablissement.Get_Etablissement_Nom(item.Idetablissement).FirstOrDefault().NomEtablissement,
+                    Etablissement = _Etablissement.Get_Etablissement_Nom_Etablissement(item.Idetablissement),
                     Formation = _Produit_Formation.Get_Formation_Nom(item.IdOffreFormation).FirstOrDefault()
                 };
                 obj.Add(convention);
@@ -75,16 +75,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             HttpContext.Session.SetString("convention", str);
             return View(obj);
         }
-
-        // post index
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Index(Creation_convention convention)
-        //{
-        //    var str = JsonConvert.SerializeObject(convention);
-        //    HttpContext.Session.SetString("convention", str);
-        //    return RedirectToAction("Entreprise");
-        //}
 
         // get Entreprise
         public IActionResult Entreprise(int id)
@@ -99,8 +89,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
             convention.Formation = _Produit_Formation.Get_Formation_Nom(id).FirstOrDefault();
             convention.IdFormation = id;
-            convention.IdEtablissement = _beneficiaireOffre.GetIdetablissemnt(convention.Idmatricule, id).FirstOrDefault().Idetablissement;
-            convention.Etablissement = _Etablissement.Get_Etablissement_Nom(convention.IdEtablissement).FirstOrDefault().NomEtablissement;
+            convention.IdEtablissement = _beneficiaireOffre.GetIdetablissemnt_Id_Etablissement(convention.Idmatricule, id);
+            convention.Etablissement = _Etablissement.Get_Etablissement_Nom(convention.IdEtablissement);
             var obj = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", obj);
             return View();
@@ -139,8 +129,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
                 str = JsonConvert.SerializeObject(convention);
                 HttpContext.Session.SetString("convention", str);
-                //HttpContext.Session.SetString("pro", "");
-                //HttpContext.Session.SetString("date", "");
                 return RedirectToAction("Entreprise_Recap");
             }
             return View(obj);
@@ -152,11 +140,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-            //Entreprise obj = _Entreprise.get_Entreprise(convention.Siret).FirstOrDefault();
-            //convention.Siret = obj.NumeroSiret;
-            //convention.IdEntreprise = obj.IdEntreprise;
-            //convention.Entreprise_raison_social = obj.RaisonSociale;
-
             Entreprise entreprise = new Entreprise
             {
                 CodePostal = convention.Entreprise_codePostal,
@@ -356,6 +339,10 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             {
                 date = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
             }
+            if(date == null)
+            {
+                return RedirectToAction("professionel");
+            }
             return View(date);
         }
 
@@ -528,6 +515,16 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 var postedFile = uploadFile.file;
                 try
                 {
+                    string Path = "./wwwroot/Documents/"+peeId;
+                    System.IO.FileInfo file = new System.IO.FileInfo(Path);
+
+                    (new FileInfo(Path)).Directory.Create();
+
+                    if(!Directory.Exists(Path))
+                    {
+                        Directory.CreateDirectory(Path);
+                    }
+
                     var Response = UploadFiles.UploadFile(postedFile, Path);
 
                     if (Response.Done)
@@ -547,7 +544,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 }
             }
 
-            return RedirectToAction("index");
+            return View();
         }
         
         
