@@ -1,5 +1,6 @@
 ﻿using AppAfpaBrive.BOL.AnnuaireSocial;
 using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,40 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
             }
 
             return await PagingList.CreateAsync<Categorie>(qry, 20, page, sortExpression, "LibelleCategorie");
+        }
+
+
+        public CategorieModelView GetCategorieById(int id)
+        {
+            var cat = _context.Categories.Select(x => new CategorieModelView
+            {
+                IdCategorie = x.IdCategorie,
+                LibelleCategorie = x.LibelleCategorie
+            }).Where(x => x.IdCategorie == id);
+            return cat as CategorieModelView;
+        }
+
+        public Categorie GetCategorie(int id)
+        {
+            return _context.Categories.Find(id);
+        }
+
+        public void Update(Categorie cat)
+        {
+            _context.Categories.Update(cat);
+            _context.SaveChanges();
+        }
+
+        public void Delete(Categorie cat)
+        {
+            _context.Categories.Remove(cat);
+            _context.SaveChanges();
+        }
+
+        public void Insert(Categorie cat)
+        {
+            _context.Categories.Add(cat);
+            _context.SaveChanges();
         }
 
     }
