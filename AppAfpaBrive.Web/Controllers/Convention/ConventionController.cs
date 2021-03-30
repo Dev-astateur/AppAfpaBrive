@@ -426,17 +426,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 {
                     string str = this.HttpContext.Session.GetString("convention");
                     Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-                    int entrepriseID = 0;
-
-                    Pee pee = new Pee
-                    {
-                        IdEntreprise = convention.IdEntreprise,
-                        MatriculeBeneficiaire = convention.Idmatricule,
-                        IdTuteur = convention.IdTuteur,
-                        IdResponsableJuridique = convention.IdResponsable,
-                        IdOffreFormation = convention.IdFormation,
-                        IdEtablissement = convention.IdEtablissement
-                    };
 
                     if (convention.Entreprise_Create == true)
                     {
@@ -453,9 +442,18 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                             TelEntreprise = convention.Entreprise_Tel,
                             NumeroSiret = convention.Siret
                         };
-                        entrepriseID = _Entreprise.Create_entreprise_ID_Back(entreprise);
-                        pee.IdEntreprise = entrepriseID;
+                        convention.IdEntreprise = _Entreprise.Create_entreprise_ID_Back(entreprise);
                     }
+
+                    Pee pee = new Pee
+                    {
+                        IdEntreprise = convention.IdEntreprise,
+                        MatriculeBeneficiaire = convention.Idmatricule,
+                        IdTuteur = convention.IdTuteur,
+                        IdResponsableJuridique = convention.IdResponsable,
+                        IdOffreFormation = convention.IdFormation,
+                        IdEtablissement = convention.IdEtablissement
+                    };
 
                     if (convention.Tuteur_create == true)
                     {
@@ -521,35 +519,44 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     RedirectToAction("Erreur");
                 }
                 var postedFile = uploadFile.file;
-                try
+                if (postedFile != null)
                 {
-                    string Path = "./wwwroot/Documents/"+peeId;
-                    if(!Directory.Exists(Path))
-                    {
-                        Directory.CreateDirectory(Path);
-                    }
-                    var Response = UploadFiles.UploadFile(postedFile, Path);
 
-                    if (Response.Done)
+
+                    try
                     {
-                        PeeDocument peeDocument = new PeeDocument
+                        string Path = "./wwwroot/Documents/" + peeId;
+                        if (!Directory.Exists(Path))
                         {
-                            IdPee = peeId,
-                            PathDocument = Path
-                        };
-                        _PeeDocument.create(peeDocument);
-                        return RedirectToAction("Reussite");
-                    }
-                    else
-                    {
-                        return BadRequest();
-                    }
+                            Directory.CreateDirectory(Path);
+                        }
+                        var Response = UploadFiles.UploadFile(postedFile, Path);
 
+                        if (Response.Done)
+                        {
+                            PeeDocument peeDocument = new PeeDocument
+                            {
+                                IdPee = peeId,
+                                PathDocument = Path
+                            };
+                            _PeeDocument.create(peeDocument);
+                            return RedirectToAction("Reussite");
+                        }
+                        else
+                        {
+                            return BadRequest();
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        //Response.WriteAsync("<script>alert('" + e + "')</script>");
+                        return RedirectToAction("Erreur");
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    Response.WriteAsync("<script>alert('" + e + "')</script>");
-                    return RedirectToAction("Erreur");
+                    return RedirectToAction("Reussite");
                 }
             }
 
