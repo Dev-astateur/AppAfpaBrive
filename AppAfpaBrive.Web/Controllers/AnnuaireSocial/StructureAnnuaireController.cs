@@ -1,5 +1,7 @@
-﻿using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.BOL.AnnuaireSocial;
+using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers.AnnuaireSocialLayer;
+using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -48,58 +50,67 @@ namespace AppAfpaBrive.Web.Controllers
         // POST: StructureAnnuaireController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(StructureModelView structure)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _structureLayer.Insert(structure.GetStructure());
+                return RedirectToAction("Index");
+
             }
-            catch
-            {
-                return View();
-            }
+            return View(structure);
         }
 
         // GET: StructureAnnuaireController/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
-            return View();
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            StructureModelView obj = _structureLayer.GetStructureById(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
         }
 
         // POST: StructureAnnuaireController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(StructureModelView obj)
         {
-            try
+
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _structureLayer.Update(obj.GetStructure());
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View(obj);
+
         }
 
-        // GET: StructureAnnuaireController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
         // POST: StructureAnnuaireController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+
+
+        public ActionResult Delete(int id)
         {
-            try
+            if (id == 0)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
+
+            Structure structure = _structureLayer.GetStructure(id);
+
+            if (structure == null)
             {
-                return View();
+                return NotFound();
             }
+
+            _structureLayer.Delete(structure);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

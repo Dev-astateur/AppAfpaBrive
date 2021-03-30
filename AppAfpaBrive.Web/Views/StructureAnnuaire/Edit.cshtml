@@ -1,17 +1,21 @@
 ﻿@model AppAfpaBrive.Web.ModelView.AnnuaireModelView.StructureModelView;
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "View";
 }
 
-<h1>Création d'une structure</h1>
+<h1>Modification d'une structure</h1>
 
 <h4>Structure</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="IdStructure" class="form-control" type="hidden" />
+                <span asp-validation-for="NomStructure" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="NomStructure" class="control-label"></label>
                 <input asp-for="NomStructure" class="form-control" />
@@ -29,7 +33,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="LigneAdresse3" class="control-label"></label>
-                <input asp-for="LigneAdresse3" class="form-control"/>
+                <input asp-for="LigneAdresse3" class="form-control" />
                 <span asp-validation-for="LigneAdresse3" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,7 +43,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Ville" class="control-label"></label>
-                <input asp-for="Ville" class="form-control"/>
+                <input asp-for="Ville" class="form-control" />
                 <span asp-validation-for="Ville" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,7 +59,7 @@
 
 
             <div class="form-group">
-                <input type="submit" value="Enregistrer" class="btn btn-primary" />
+                <input type="submit" value="Valider" class="btn btn-primary" />
             </div>
         </form>
     </div>

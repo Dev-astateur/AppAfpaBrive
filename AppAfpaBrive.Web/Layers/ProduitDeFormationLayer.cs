@@ -45,6 +45,10 @@ namespace AppAfpaBrive.Web.Layers
             }).First(p => p.CodeProduitFormation == idCodeProduitFormation);
             return obj as ProduitFormationModelView;
         }
+
+
+
+
         public async Task<PagingList<ProduitFormation>> GetPage(string filter,int page = 1,string sortExpression ="CodeProduitFormation")
         {
             var qry = _context.ProduitFormations.AsQueryable();
