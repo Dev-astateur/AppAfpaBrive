@@ -292,8 +292,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             return RedirectToAction("date_create");
         }
 
-        
-
         // get Professionel_creation
         public IActionResult Professionel_Creation()
         {
@@ -554,6 +552,14 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     return RedirectToAction("Erreur");
                 }
             }
+
+            string str2 = this.HttpContext.Session.GetString("convention");
+            Creation_convention convention2 = JsonConvert.DeserializeObject<Creation_convention>(str2);
+
+            string str_date2 = this.HttpContext.Session.GetString("date");
+            List<Date_ModelView> dates2 = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date2);
+            ViewBag.dates = dates2;
+            ViewBag.convention = convention2;
 
             return View();
         }
