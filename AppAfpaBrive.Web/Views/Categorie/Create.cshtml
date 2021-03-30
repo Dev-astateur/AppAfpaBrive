@@ -1,0 +1,36 @@
+﻿@model AppAfpaBrive.Web.ModelView.AnnuaireModelView.CategorieModelView;
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Création d'une Categorie</h1>
+
+<h4>Structure</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="LibelleCategorie" class="control-label">Libelle de la categorie</label>
+                <input asp-for="LibelleCategorie" class="form-control" />
+                <span asp-validation-for="LibelleCategorie" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Enregistrer" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retour</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

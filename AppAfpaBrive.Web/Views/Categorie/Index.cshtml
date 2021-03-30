@@ -1,0 +1,78 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.BOL.AnnuaireSocial.Categorie>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
+<nav aria-label="structure navigation">
+    @await this.Component.InvokeAsync("Pager", new { paginglist = this.Model })
+</nav>
+
+
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Liste des catégories</h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-controller="Categorie" asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus-square"></i> &nbsp; Ajouter une nouvelle categorie
+            </a>
+        </div>
+        <form method="get" class="form-inline">
+            <input name="filter" class="form-control" placeholder="filtre" value="@Model.RouteValue["filter"]" />
+
+        </form>
+    </div>
+
+    <br /><br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.SortableHeaderFor(Model => Model.IdCategorie)
+                    </th>
+                    <th>
+                        @Html.SortableHeaderFor(model => model.LibelleCategorie)
+                    </th>
+                 
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr id="ligne">
+                        <td >@obj.IdCategorie</td>
+                        <td >@obj.LibelleCategorie</td>
+                
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Categorie" asp-route-Id="@obj.IdCategorie" asp-action="Edit" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> Modifier
+                                </a>
+                                <a asp-controller="Categorie" asp-route-Id="@obj.IdCategorie" asp-action="Delete" class="btn btn-danger" onclick="return confirm('Confirmer')">
+                                    <i class="fas fa-trash"></i> Supprimer
+                                </a>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+    else
+    {
+        <p> Il n'y a pas de categories</p>
+    }
+
+    <nav aria-label="structures navigation example">
+        <vc:pager paging-list="@Model" />
+    </nav>
+
+</div>
+

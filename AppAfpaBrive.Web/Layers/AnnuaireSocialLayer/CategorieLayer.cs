@@ -36,7 +36,7 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
             {
                 IdCategorie = x.IdCategorie,
                 LibelleCategorie = x.LibelleCategorie
-            }).Where(x => x.IdCategorie == id);
+            }).FirstOrDefault(x => x.IdCategorie == id);
             return cat as CategorieModelView;
         }
 
