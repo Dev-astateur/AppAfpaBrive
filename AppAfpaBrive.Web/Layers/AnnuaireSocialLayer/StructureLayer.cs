@@ -47,6 +47,7 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
             return obj as StructureModelView;
         }
 
+
         public Structure GetStructure(int id)
         {
             return _context.Structures.Find(id);
