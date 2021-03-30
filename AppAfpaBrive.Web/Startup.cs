@@ -19,7 +19,7 @@ using ReflectionIT.Mvc.Paging;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using ReflectionIT.Mvc.Paging;
-
+using Rotativa.AspNetCore;
 
 namespace AppAfpaBrive.Web
 {
@@ -88,7 +88,7 @@ namespace AppAfpaBrive.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -116,9 +116,9 @@ namespace AppAfpaBrive.Web
                 endpoints.MapRazorPages();
                 endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
                 endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
-
-               
             });
+            
+            
         }
     }
 }

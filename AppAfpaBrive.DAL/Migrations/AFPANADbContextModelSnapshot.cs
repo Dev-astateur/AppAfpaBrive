@@ -1162,7 +1162,7 @@ namespace AppAfpaBrive.DAL.Migrations
                   
                     b.HasKey("IdProfessionnel");
 
-                    b.HasIndex("TitreCiviliteNavigationCodeTitreCivilite");
+                    //b.HasIndex("CodeTitreCivilite");
 
                     b.ToTable("Professionnel");
                 });

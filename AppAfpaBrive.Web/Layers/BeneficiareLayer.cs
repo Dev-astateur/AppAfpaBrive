@@ -1,4 +1,6 @@
-﻿using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace AppAfpaBrive.Web.Layers
    public  class BeneficiaireLayer
     {
         private readonly AFPANADbContext _context;
-        
+       
         #region Constructeur
         public BeneficiaireLayer(AFPANADbContext context)
         {
@@ -24,5 +26,6 @@ namespace AppAfpaBrive.Web.Layers
             
         }
         #endregion 
+       
     }
 }
