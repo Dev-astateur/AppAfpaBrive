@@ -28,15 +28,15 @@ namespace Projet_Test
         {
             db = DbContextMocker.GetAFPANADbContext("test");
 
-            db.CollaborateurAfpas.Add(new CollaborateurAfpa
+            db.CollaborateurAfpas.Add(new CollaborateurAfpa()
             {
                 NomCollaborateur = "Titi",
-                MatriculeCollaborateurAfpa = "96AA011"
-            };
+                MatriculeCollaborateurAfpa = "96AA011",
+            });
 
-            dba.CollaborateurAfpas.Add(s1);
+            db.CollaborateurAfpas.Add(s1);
 
-            dba.SaveChanges();
+            db.SaveChanges();
 
             
             
@@ -69,7 +69,7 @@ namespace Projet_Test
         {
 
             //arrange
-            var controller = new FormateurApiController(dba);
+            var controller = new FormateurApiController(db);
 
 
             controller.ControllerContext = new ControllerContext();
