@@ -20,6 +20,8 @@ namespace AppAfpaBrive.BOL
         public virtual CategorieEvenement IdCategorieEventNavigation { get; set; }
         public virtual Etablissement IdEtablissementNavigation { get; set; }
         public virtual ICollection<EvenementDocument> EvenementDocuments { get; set; }
+        
+        public Guid IdGroupe { get; set; }
 
         
     }
