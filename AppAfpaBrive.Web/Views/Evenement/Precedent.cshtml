@@ -1,0 +1,43 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model AppAfpaBrive.Web.ModelView.EvenementModelView
+
+<section>
+    <calendar month="@Model.Month" year="@Model.Year" events="@Model.CalendarEvents" />
+
+
+</section>
+
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            $('#btnP').on('click', function (e) {
+                var val = ($('#titre').text());
+                var res = val.split(" ");
+                var mois = res[0];
+                var annee = res[1];
+                //console.log(mois);
+                //console.log(annee);
+
+                window.location.href = "/Evenement/precedent?" + "precedent=" + mois + "&year=" + annee;
+
+
+            });
+            $('#btnS').on('click', function (e) {
+                var val = ($('#titre').text());
+                var res = val.split(" ");
+                var mois = res[0];
+                var annee = res[1];
+                //console.log(mois);
+                //console.log(annee);
+
+                window.location.href = "/Evenement/suivant?" + "suivant=" + mois + "&year=" + annee;
+
+
+            });
+
+        });
+
+    </script>
+}
