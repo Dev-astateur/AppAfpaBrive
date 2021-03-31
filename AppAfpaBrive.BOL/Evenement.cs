@@ -21,7 +21,7 @@ namespace AppAfpaBrive.BOL
         public virtual Etablissement IdEtablissementNavigation { get; set; }
         public virtual ICollection<EvenementDocument> EvenementDocuments { get; set; }
         
-        public Guid IdGroupe { get; set; }
+        public Guid? IdGroupe { get; set; }
 
         
     }
