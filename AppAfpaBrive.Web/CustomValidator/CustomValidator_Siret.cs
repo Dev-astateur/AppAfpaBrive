@@ -16,6 +16,7 @@ namespace AppAfpaBrive.Web.CustomValidator
             string siret = value.ToString();
             siret = String.Concat(siret.Where(c => !Char.IsWhiteSpace(c)));
             int total = 0;
+            // Poste cas particulier
             if(siret.StartsWith("356000000"))
             {
                 for (int i = 0; i < siret.Length; i++)

@@ -192,6 +192,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 convention.Entreprise_Tel = entreprise.TelEntreprise;
                 convention.Entreprise_Ville = entreprise.Ville;
                 convention.Siret = entreprise.NumeroSiret;
+                convention.IdEntreprise = 0;
                 str = JsonConvert.SerializeObject(convention);
                 HttpContext.Session.SetString("convention", str);
                 return RedirectToAction("Entreprise_Recap");
@@ -441,6 +442,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                             Ville = convention.Entreprise_Ville,
                             TelEntreprise = convention.Entreprise_Tel,
                             NumeroSiret = convention.Siret
+                         
                         };
                         convention.IdEntreprise = _Entreprise.Create_entreprise_ID_Back(entreprise);
                     }
@@ -496,11 +498,18 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                             };
                             _entreprisepro.create(Responsable);
                         }
+                        else
+                        {
+                            convention.IdResponsable = convention.IdTuteur;
+                            pee.IdResponsableJuridique = convention.IdTuteur;
+                        }
                     }
+                    
 
                     string str_date = this.HttpContext.Session.GetString("date");
                     List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
                     peeId = _peelayer.Pee_Create_ID_Back(pee);
+                    
                     foreach (var item in dates)
                     {
                         PeriodePee periodePee = new PeriodePee
@@ -508,7 +517,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                             IdPee = peeId,
                             DateDebutPeriodePee = item.Date1,
                             DateFinPeriodePee = item.Date2,
-                            NumOrdre = item.Iddate
+                            NumOrdre = item.Iddate,
+                            
                         };
                         _periode.Pee_Create(periodePee);
                     }
