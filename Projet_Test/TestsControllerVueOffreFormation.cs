@@ -19,8 +19,8 @@ namespace Projet_Test
 {
     public class TestsControllerVueOffreFormation
     {
-        public DbContextMocker db = new DbContextMocker();
-        AFPANADbContext dba;
+        private readonly AFPANADbContext db = DbContextMocker.GetAFPANADbContext("test");
+
         [SetUp]
         public void Setup()
         {
@@ -66,10 +66,8 @@ namespace Projet_Test
 
             //optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
             //AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
-            dba = db.GetAFPANADbContext("test");
 
-
-            OffreDeFormationBeneficiaireController controller = new OffreDeFormationBeneficiaireController(dba);
+            OffreDeFormationBeneficiaireController controller = new OffreDeFormationBeneficiaireController(db);
 
             var view = await controller.OffredeFormationBeneficiaire(id, page);
 
@@ -85,8 +83,7 @@ namespace Projet_Test
 
             //optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
             //AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
-            dba = db.GetAFPANADbContext("test");
-            OffreDeFormationBeneficiaireController controller = new OffreDeFormationBeneficiaireController(dba);
+            OffreDeFormationBeneficiaireController controller = new OffreDeFormationBeneficiaireController(db);
 
             var view = await controller.OffredeFormationBeneficiaire(id, page);
             ViewResult result= view as ViewResult;

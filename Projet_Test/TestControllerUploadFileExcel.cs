@@ -11,15 +11,13 @@ namespace Projet_Test
     class TestControllerUploadFileExcel
     {
 
-        public DbContextMocker db = new DbContextMocker();
-        AFPANADbContext dba;
+        private readonly AFPANADbContext db = DbContextMocker.GetAFPANADbContext("test");        
 
 
         [SetUp]
         public void Setup()
         {
             ///Initialize db context in memory
-            dba = db.GetAFPANADbContext("test");
             var s1 = new CollaborateurAfpa
             {
                 NomCollaborateur = "Titi",
@@ -27,8 +25,8 @@ namespace Projet_Test
             };
 
 
-            dba.CollaborateurAfpas.Add(s1);
-            dba.SaveChanges();
+            db.CollaborateurAfpas.Add(s1);
+            db.SaveChanges();
 
             ///Initialize config mocker
           

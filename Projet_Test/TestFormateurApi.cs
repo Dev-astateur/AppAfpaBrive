@@ -34,12 +34,8 @@ namespace Projet_Test
                 MatriculeCollaborateurAfpa = "96AA011",
             });
 
-            db.CollaborateurAfpas.Add(s1);
-
             db.SaveChanges();
 
-            
-            
         }
 
         [Test]
@@ -56,7 +52,7 @@ namespace Projet_Test
             controller.ControllerContext.HttpContext = new DefaultHttpContext();
             controller.ControllerContext.HttpContext.Request.Headers["term"] = "";
 
-            var result = controller.GetFormateurStartWith().Result as ObjectResult;
+            var result = controller.GetFormateurStartWith() as ObjectResult;
 
             Assert.That(result is OkObjectResult);
             Assert.That((HttpStatusCode)result.StatusCode == HttpStatusCode.OK);
@@ -65,7 +61,7 @@ namespace Projet_Test
 
 
         [Test]
-        public async Task TestGetFormateurStartWith_StartWithRightInput()
+        public void TestGetFormateurStartWith_StartWithRightInput()
         {
 
             //arrange
@@ -79,7 +75,7 @@ namespace Projet_Test
             //controller.ControllerContext.HttpContext.Session.Set
 
 
-            var result = controller.GetFormateurStartWith().Result as ObjectResult;
+            var result = controller.GetFormateurStartWith() as ObjectResult;
             //JObject actualResult = JObject.Parse((string)result.Value);
 
 

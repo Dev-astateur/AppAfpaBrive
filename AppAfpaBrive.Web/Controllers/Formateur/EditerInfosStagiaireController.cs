@@ -34,7 +34,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         public async Task<ActionResult> ListeOffreFormation(string tbRechercherOFormation)
         {
             this.ViewBag.MonTitre = "ListeOffreFormation";
-            var query2 = _offreFormation.GetOffreFormationByContains(tbRechercherOFormation);
+            var query2 = await _offreFormation.GetOffreFormationByContainsAsync(tbRechercherOFormation);
 
             return View(query2);
         }
@@ -57,7 +57,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         
         public async Task<IActionResult> ChargerListeStagiaires(string libelle)
         {
-            var beneficiaires = _stagiaireLayer.GetBeneficiaireParLibelleOffreDeFormation(libelle);
+            var beneficiaires = await _stagiaireLayer.GetBeneficiaireParLibelleOffreDeFormationAsync(libelle);
             return PartialView("_VuePartielleStagiaires", beneficiaires);
         }
 

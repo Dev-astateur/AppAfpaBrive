@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Layers
 {
@@ -44,9 +45,9 @@ namespace AppAfpaBrive.Web.Layers
         //    var qry = _context.Beneficiaires.OrderBy(x => x.NomBeneficiaire);
         //}
 
-        public ICollection<Beneficiaire> GetBeneficiaireParLibelleOffreDeFormation(string libelle)
+        public async Task<ICollection<Beneficiaire>> GetBeneficiaireParLibelleOffreDeFormationAsync(string libelle)
         {
-            return _context.OffreFormations
+            return await _context.OffreFormations
                     .Where(x => x.LibelleOffreFormation == libelle)
                     .Join(_context.BeneficiaireOffreFormations
                     , p => p.IdOffreFormation
@@ -77,7 +78,7 @@ namespace AppAfpaBrive.Web.Layers
                         PathPhoto = b.PathPhoto,
                         MailingAutorise = b.MailingAutorise
                     })
-                    .ToList();
+                    .ToListAsync();
         }
 
         //Methodes CRUD

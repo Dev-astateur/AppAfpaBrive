@@ -154,7 +154,7 @@ namespace AppAfpaBrive.Web.Controllers
 
 
         #region ListeEntrepriseModification
-        public async Task<IActionResult> ListeEntreprisePourModification(string departement, string formation, int page)
+        public IActionResult ListeEntreprisePourModification(string departement, string formation, int page)
         {
            // List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
 
