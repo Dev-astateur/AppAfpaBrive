@@ -33,8 +33,12 @@ namespace AppAfpaBrive.Web.Layers
 
         public void InsertProduit(Etablissement prod)
         {
-            _context.Etablissements.Add(prod);
-            _context.SaveChanges();
+            var check = CheckIdEtablissementExiste(prod.IdEtablissement);
+            if (check == true)
+            {
+                _context.Etablissements.Add(prod);
+                _context.SaveChanges();
+            }
         }
         public void Remove(Etablissement prod)
         {
@@ -67,6 +71,17 @@ namespace AppAfpaBrive.Web.Layers
         public Etablissement GetByIdEtablissementDelete(string idEtablissement)
         {
             return _context.Etablissements.Find(idEtablissement);
+        }
+
+        public bool CheckIdEtablissementExiste(string id)
+        {
+            var idetablissement = _context.Etablissements.Find(id);
+
+            if (idetablissement == null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

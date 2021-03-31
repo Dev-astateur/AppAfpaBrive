@@ -12,15 +12,18 @@ using AppAfpaBrive.Web.ModelView;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.AspNetCore.Routing;
 using AppAfpaBrive.Web.Layers;
+using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using AppAfpaBrive.Web.Logging;
 
 namespace AppAfpaBrive.Web.Controllers.ProduitFormation
 {
     public class ProduitFormationController : Controller
     {
+       
         private readonly AFPANADbContext _db;
         //private readonly ProduitDeFormationLayer _produitDeFormationLayer;
 
-        
         public ProduitFormationController(AFPANADbContext db)
         {
             _db = db;
@@ -60,7 +63,12 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         {
             ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
             //var x = Request.Form["Formation"].ToString();
-            
+            var check = _produitDeFormationLayer.CheckCodeProduitExiste(obj.CodeProduitFormation);
+            if (check == false)
+            {
+                ModelState.AddModelError("CodeProduitFormation", "Le code produit formation existe deja");
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 //if (x == "0")
@@ -68,8 +76,8 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
                 //    obj.FormationContinue = true;
                 //}
                 //else obj.FormationDiplomante = true;
-                _produitDeFormationLayer.InsertProduit(obj.GetProduitFormation());
-                return RedirectToAction("Index");
+                  _produitDeFormationLayer.InsertProduit(obj.GetProduitFormation());
+                  return RedirectToAction("Index");  
             }
             return this.View(obj);
             
@@ -100,6 +108,11 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
             //var x = Request.Form["Formation"].ToString();
             if (ModelState.IsValid)
             {
+                using (EventLog eventLog = new EventLog("LogAfpa"))
+                {
+                    eventLog.Source = "AppAfpaBrive";
+                    eventLog.WriteEntry("Mise a jour du produit de formation", EventLogEntryType.Information, 101, 1);
+                }
                 //if (x == "0")
                 //{
                 //    obj.FormationContinue = true;

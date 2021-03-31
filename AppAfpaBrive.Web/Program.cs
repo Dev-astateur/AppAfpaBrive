@@ -26,6 +26,13 @@ namespace AppAfpaBrive.Web
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+            .ConfigureLogging(logging=>
+            { logging.AddEventLog(eventLogSettings =>
+             {
+                 eventLogSettings.SourceName = "AppAfpaBrive";
+                 eventLogSettings.LogName = "LogAfpa";
+             });
+            })
             .ConfigureAppConfiguration((hostContext, builder) =>
             {
                 // Add other providers for JSON, etc.

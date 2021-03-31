@@ -4,6 +4,7 @@ using AppAfpaBrive.Web.ModelView;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -69,6 +70,17 @@ namespace AppAfpaBrive.Web.Layers
         public CollaborateurAfpa GetByMatriculeCollaborateurDelete(string matriculeCollaborateur)
         {
             return _context.CollaborateurAfpas.Find(matriculeCollaborateur);
+        }
+
+        public bool CheckMatriculeCollaborateurExiste(string id)
+        {
+            var matriculeCollaborateur = _context.CollaborateurAfpas.Find(id);
+
+            if (matriculeCollaborateur == null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

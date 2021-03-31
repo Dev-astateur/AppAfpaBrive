@@ -52,6 +52,12 @@ namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
         {
             var x = Request.Form["TitreCivilite"].ToString();
             CollaborateurAfpaLayer _collaborateurLayer = new CollaborateurAfpaLayer(_db);
+            var check = _collaborateurLayer.CheckMatriculeCollaborateurExiste(obj.MatriculeCollaborateurAfpa);
+            if (check == false)
+            {
+                ModelState.AddModelError("MatriculeCollaborateurAfpa", "Ce Matricule Collaborateur existe deja");
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 if (x == "0")

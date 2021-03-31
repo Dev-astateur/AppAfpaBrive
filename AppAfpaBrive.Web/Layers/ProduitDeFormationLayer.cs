@@ -60,9 +60,13 @@ namespace AppAfpaBrive.Web.Layers
 
         public void InsertProduit(ProduitFormation prod)
         {
+            var check=CheckCodeProduitExiste(prod.CodeProduitFormation);
+            if (check == true)
+            {
+                _context.ProduitFormations.Add(prod);
+                _context.SaveChanges();
+            }
             
-            _context.ProduitFormations.Add(prod);
-            _context.SaveChanges();
         }
         public void Remove(ProduitFormation prod)
         {
@@ -75,6 +79,16 @@ namespace AppAfpaBrive.Web.Layers
             _context.SaveChanges();
         }
         
+        public bool CheckCodeProduitExiste(int id)
+        {
+            var codeproduit = _context.ProduitFormations.Find(id);
+
+            if (codeproduit == null)
+            {
+                return true;
+            }
+            return false;
+        }
         #endregion
     }
 }

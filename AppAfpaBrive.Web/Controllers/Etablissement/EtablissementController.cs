@@ -1,5 +1,6 @@
 ﻿using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers;
+
 using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace AppAfpaBrive.Web.Controllers.Etablissement
 {
     public class EtablissementController : Controller
     {
-
+        
         private readonly AFPANADbContext _db;
 
         public EtablissementController(AFPANADbContext db)
@@ -52,6 +53,12 @@ namespace AppAfpaBrive.Web.Controllers.Etablissement
         public IActionResult Create(EtablissementModelView obj)
         {
             EtablissementLayer _etablissementLayer = new EtablissementLayer(_db);
+            var check = _etablissementLayer.CheckIdEtablissementExiste(obj.IdEtablissement);
+            if (check == false)
+            {
+                ModelState.AddModelError("IdEtablissement", "L'id d'établissement existe deja");
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 _etablissementLayer.InsertProduit(obj.GetEtablissement());
