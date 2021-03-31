@@ -419,7 +419,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [HttpPost]
         public IActionResult Recapitulatif(FilesModelConvention uploadFile)
         {
-
+            AFPANADbContext context = new AFPANADbContext();
             if (ModelState.IsValid)
             {
                 decimal peeId = 0;
@@ -442,9 +442,11 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                             Ville = convention.Entreprise_Ville,
                             TelEntreprise = convention.Entreprise_Tel,
                             NumeroSiret = convention.Siret
-                         
+
                         };
-                        convention.IdEntreprise = _Entreprise.Create_entreprise_ID_Back(entreprise);
+                        _Entreprise.Create_entreprise(entreprise);
+                        context.Add(entreprise);
+                        convention.IdEntreprise = entreprise.IdEntreprise;
                     }
 
                     Pee pee = new Pee
@@ -465,16 +467,20 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                             NomProfessionnel = convention.TuteurNom,
                             PrenomProfessionnel = convention.TuteurPrenom
                         };
-                        pee.IdTuteur = _pro.create_get_ID(professionnel);
+                        _pro.create_get_ID(professionnel);
+                        context.Add(professionnel);
                         EntrepriseProfessionnel tuteur = new EntrepriseProfessionnel
                         {
                             IdEntreprise = convention.IdEntreprise,
-                            IdProfessionnel = pee.IdTuteur,
+                            IdProfessionnel = professionnel.IdProfessionnel,
                             AdresseMailPro = convention.Tuteur_AdresseMail,
                             TelephonePro = convention.Tuteur_Telephone,
                             Fonction = convention.Tuteur_Fonction
                         };
                         _entreprisepro.create(tuteur);
+
+                        convention.IdTuteur = tuteur.IdProfessionnel;
+                        pee.IdTuteur = tuteur.IdProfessionnel;
                     }
 
                     if (convention.Responsable_create == true)
@@ -487,11 +493,11 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                                 NomProfessionnel = convention.ResponsableNom,
                                 PrenomProfessionnel = convention.ResponsablePrenom
                             };
-                            pee.IdResponsableJuridique = _pro.create_get_ID(professionnel);
+                            _pro.create(professionnel);
                             EntrepriseProfessionnel Responsable = new EntrepriseProfessionnel
                             {
                                 IdEntreprise = convention.IdEntreprise,
-                                IdProfessionnel = pee.IdResponsableJuridique,
+                                IdProfessionnel = professionnel.IdProfessionnel,
                                 AdresseMailPro = convention.Responsable_AdresseMail,
                                 TelephonePro = convention.Responsable_Telephone,
                                 Fonction = convention.Responsable_Fonction
@@ -504,21 +510,21 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                             pee.IdResponsableJuridique = convention.IdTuteur;
                         }
                     }
-                    
+
 
                     string str_date = this.HttpContext.Session.GetString("date");
                     List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
-                    peeId = _peelayer.Pee_Create_ID_Back(pee);
-                    
+                    _peelayer.Pee_Create(pee);
+
                     foreach (var item in dates)
                     {
                         PeriodePee periodePee = new PeriodePee
                         {
-                            IdPee = peeId,
+                            IdPee = pee.IdPee,
                             DateDebutPeriodePee = item.Date1,
                             DateFinPeriodePee = item.Date2,
                             NumOrdre = item.Iddate,
-                            
+
                         };
                         _periode.Pee_Create(periodePee);
                     }
@@ -528,6 +534,9 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 {
                     RedirectToAction("Erreur");
                 }
+
+
+
                 var postedFile = uploadFile.file;
                 if (postedFile != null)
                 {
