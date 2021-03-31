@@ -13,7 +13,7 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         public int IdCategorie { get; set; }
         public string LibelleCategorie { get; set; }
 
-        public ICollection<CategorieLigneAnnuaire> CategorieLigneAnnuaires { get; set; }
+        public virtual ICollection<CategorieLigneAnnuaire> CategorieLigneAnnuaires { get; set; }
 
     }
 }

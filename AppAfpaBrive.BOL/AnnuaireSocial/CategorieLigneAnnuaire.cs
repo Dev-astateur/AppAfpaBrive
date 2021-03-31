@@ -16,6 +16,5 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         public Categorie Categorie { get; set; }
 
 
-
     }
 }

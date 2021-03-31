@@ -28,8 +28,8 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         public string Mail { get; set; }
         public string Telephone { get; set; }
   
-        public ICollection<LigneAnnuaire> LigneAnnuaires { get; set; }
-        public ICollection<ContactStructure> ContactStructures { get; set; }
+        public virtual ICollection<LigneAnnuaire> LigneAnnuaires { get; set; }
+        public virtual ICollection<ContactStructure> ContactStructures { get; set; }
 
 
     }

@@ -18,6 +18,7 @@ namespace AppAfpaBrive.DAL
         public AFPANADbContext(DbContextOptions<AFPANADbContext> options)
             : base(options)
         {
+           
         }
 
         public virtual DbSet<AppelationRome> AppelationRomes { get; set; }
@@ -55,7 +56,6 @@ namespace AppAfpaBrive.DAL
         public virtual DbSet<InsertionsTroisMois> InsertionTroisMois { get; set; }
         public virtual DbSet<InsertionsSixMois> InsertionSixMois { get; set; }
         public virtual DbSet<InsertionsDouzeMois> InsertionDouzeMois { get; set; }
-
         public virtual DbSet<Categorie> Categories { get; set; }
         public virtual DbSet<CategorieLigneAnnuaire> CategorieLigneAnnuaires { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }

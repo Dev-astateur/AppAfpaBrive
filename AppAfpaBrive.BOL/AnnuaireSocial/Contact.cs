@@ -22,10 +22,11 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         public string Prenom { get; set; }
         public string Mail { get; set; }
         public string Telephone { get; set; }
+
         public int IdTitreCivilite { get; set; }
         public TitreCivilite TitreCivilite { get; set; }
 
-        public ICollection<ContactStructure> ContactStructures { get; set; }
-        public ICollection<ContactLigneAnnuaire> ContactLigneAnnuaires { get; set; }
+        public virtual ICollection<ContactStructure> ContactStructures { get; set; }
+        public virtual ICollection<ContactLigneAnnuaire> ContactLigneAnnuaires { get; set; }
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Microsoft.EntityFrameworkCore.Proxies;
 using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -23,10 +24,10 @@ namespace AppAfpaBrive.Web
 {
     public class Startup
     {
-        
+
         public Startup(IConfiguration configuration)
         {
-            
+
             Configuration = configuration;
         }
 
@@ -38,11 +39,17 @@ namespace AppAfpaBrive.Web
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DbSecurite")));
+
             services.AddDbContext<AFPANADbContext>(options =>
-                options.UseSqlServer(
+                  
+                    options.UseSqlServer(
                     Configuration.GetConnectionString("DbAfpaNA"),
-                    assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName)));
+                    assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName))     
+                    );
+            
             services.AddDatabaseDeveloperPageExceptionFilter();
+           
+
 
             services.AddSingleton<IFileProvider>(
            new PhysicalFileProvider(
@@ -96,14 +103,14 @@ namespace AppAfpaBrive.Web
 
             app.UseEndpoints(endpoints =>
             {
-                
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-               
+
                 endpoints.MapRazorPages();
                 endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
-                endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
+                endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
             });
         }
     }

@@ -12,6 +12,6 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         public Contact Contact { get; set; }
 
         public int IdLigneAnnuaire { get; set; }
-        public LigneAnnuaire LigneAnnuaire { get; set; }
+        public virtual LigneAnnuaire LigneAnnuaire { get; set; }
     }
 }
