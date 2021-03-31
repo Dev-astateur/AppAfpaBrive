@@ -1,0 +1,92 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    
+}
+
+    <h2>Veuillez renseigner votre motif d'absence:</h2>
+
+    <h3>Absence légale:</h3>
+    <form asp-action="CompleterInfoAbsence">
+
+        <input type="radio" id="JournéeDefense" value="JournéeDefense" name="motifAbsence" checked>
+
+        <label for="JournéeDefense">Journée défense et citoyenneté / Céremonie d'accueil dans la citoyenneté (1 jour ouvré)</label>
+        <br />
+        <input type="radio" id="MariagePacs" value="MariagePacs" name="motifAbsence">
+
+        <label for="MariagePacs">Mariage ou Pacs (4 jours ouvrés)</label>
+        <br />
+        <input type="radio" id="Naissance" value="Naissance" name="motifAbsence">
+
+        <label for="Naissance">Naissance ou adoption (3 jours ouvrés)</label>
+        <br />
+
+        <input type="radio" id="MariageEnfant" value="MariageEnfant" name="motifAbsence">
+
+        <label for="Naissance">Mariage d'un enfant (1 jour ouvré)</label>
+        <br />
+
+        <input type="radio" id="DecesEnfant" value="DecesEnfant" name="motifAbsence">
+
+        <label for="DecesEnfant">Décès d'un enfant (5 jours ouvrés)</label>
+        <br />
+
+        <input type="radio" id="Deces" value="Deces" name="motifAbsence">
+
+        <label for="Deces">Décès d'un conjoint, père, mère, beau-père, belle-mère, frère ou soeur du stagiaire (3 jours ouvrés)</label>
+        <br />
+
+        <input type="radio" id="EnfantMalade" value="EnfantMalade" name="motifAbsence">
+
+        <label for="EnfantMalade">Enfant malade de moins de 16 ans (3 jours ouvrés sur la durée de la formation)</label>
+        <br />
+
+        <input type="radio" id="ExamPrenatal" value="ExamPrenatal" name="motifAbsence">
+
+        <label for="ExamPrenatal">Absence pour examen prénatal de grossesse obligatoire à compter du 3ème mois de grossesse<br />(1/2 journée par examen et par mois)</label>
+        <br />
+
+        <input type="radio" id="HandicapEnfant" value="HandicapEnfant" name="motifAbsence">
+
+        <label for="HandicapEnfant">Annonce de la survenue d'un handicap chez un enfant (2 jours ouvrés)</label>
+        <br />
+
+
+        <h3>Absence autorisée non remunerée:</h3>
+
+        <input type="radio" id="FeteReligieuse" value="FeteReligieuse" name="motifAbsence">
+
+        <label for="FeteReligieuse">Absence pour fêtes religieuses hors jours fériés légaux</label>
+        <br />
+
+        <input type="radio" id="GreveDesTransports" value="GreveDesTransports" name="motifAbsence">
+
+        <label for="GreveDesTransports">Grève des transports</label>
+        <br />
+
+        <input type="radio" id="Intemperies" value="Intemperies" name="motifAbsence">
+
+        <label for="Intemperies">Intempéries</label>
+        <br />
+
+        <input type="radio" id="RdvMilitaire" value="RdvMilitaire" name="motifAbsence">
+
+        <label for="RdvMilitaire">Rdv avec le conseiller militaire</label>
+        <br />
+
+        <input type="radio" id="RechercheLogement" value="RechercheLogement" name="motifAbsence">
+
+        <label for="RechercheLogement">Recherche de logement, rdv organismes divers</label>
+        <br />
+        <input type="radio" id="Autre" value="Autre" name="motifAbsence">
+
+        <label for="RechercheLogement">Autre, à preciser: </label>
+        <br />
+       
+        <textarea id="motifSpecial" name="motifSpecial" rows="5" cols="50"></textarea>
+        <br />
+        <input type="submit" value="Valider" />
+    </form>

@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repository\**" />
+    <Content Remove="Repository\**" />
+    <EmbeddedResource Remove="Repository\**" />
+    <None Remove="Repository\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.12.3" />
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
@@ -38,7 +45,6 @@
     <Folder Include="Views\OffreDeFormationBeneficiaire\" />
     <Folder Include="Views\Stagiaire\" />
     <Folder Include="Models\Layer\" />
-    <Folder Include="Repository\" />
     <Folder Include="wwwroot\PeeDocument\" />
   </ItemGroup>
 

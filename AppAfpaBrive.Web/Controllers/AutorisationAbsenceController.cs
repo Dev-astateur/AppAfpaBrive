@@ -11,39 +11,82 @@ using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXmlHelpers.Word;
+using System.Net.Mime;
 
 namespace AppAfpaBrive.Web.Controllers
 {
     public class AutorisationAbsenceController : Controller
     {
         
-        private readonly AFPANADbContext _dbContext;
+        //private readonly AFPANADbContext _dbContext;
         private readonly IConfiguration _config;
         private readonly IHostEnvironment _env;
         public AutorisationAbsenceController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
         {
-            _dbContext = context;
+           // _dbContext = context;
             _config = config;
             _env = env;
            
         }
-
-        public IActionResult ChargerDocAutorisation()
+        [HttpGet]
+        public ActionResult CompleterInfoAbsence()
         {
+            //Faire un choix parmi les motifs d'absence
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult CompleterInfoAbsence(string motifAbsence)
+        {
+            string motif="";
+           string motifSpecial= Request.Form["motifSpecial"];
+            //Je dois recuperer le motif d'absence choisi dans les radioButtons
+            switch (motifAbsence)
+            {
+                case "JournéeDefense":
+                    motif = "Journée défense et citoyenneté / Céremonie d'accueil dans la citoyenneté (1 jour ouvré)";
+                    break;
+                case "MariagePacs":
+                    motif = "Mariage ou Pacs (4 jours ouvrés)";
+                    break;
+                default:
+                motif = "";
+                    break;
+            }
+            
+            string mergeFieldMotif = motif;
+
+
+            return View();
+        }
+
+
+        public ActionResult ChargerDocAutorisation()
+        {
+            string racine = _env.ContentRootPath;
            //recuperer modele
-            string path = Path.Combine(_env.ContentRootPath, "ModelesOffice\\AutorisationAbsence.docx");
-            // destination
-            string destinationPath = Path.Combine(_env.ContentRootPath, @$"\AutorisationAbsence\Autorisation_{DateTime.Now-DateTime.MinValue}");
-            //Copie du fifchier avec possibilite d'écrire"
+            string path = Path.Combine(racine, "ModelesOffice\\Autorisation.docx");
+            // destination avec nom unique
+            string destinationPath = Path.Combine(racine, @$"AutorisationAbsence\Autorisation{(DateTime.Now-DateTime.MinValue).TotalMinutes}.docx");
+            //Copie du fichier avec possibilite d'écrire"
             System.IO.File.Copy(path, destinationPath, true);
-            //Remplacer les MergeFields
+            //Remplacer les MergeFields par valeurs
             using (WordprocessingDocument document=WordprocessingDocument.Open(destinationPath, true))
             {
                 var mergeFields = document.GetMergeFields().ToList();
                 mergeFields.WhereNameIs("Nom").ReplaceWithText("SIRE");
-                mergeFields.WhereNameIs("prenom").ReplaceWithText("Romain");
+                mergeFields.WhereNameIs("Prenom").ReplaceWithText("Romain");
+                mergeFields.WhereNameIs("Formation").ReplaceWithText("CDA");
+                mergeFields.WhereNameIs("DateDuJour").ReplaceWithText($"{DateTime.Today}");
+                mergeFields.WhereNameIs("DateDebut").ReplaceWithText($"{DateTime.Today}");
+                mergeFields.WhereNameIs("DateFin").ReplaceWithText($"{DateTime.Today}");
+                mergeFields.WhereNameIs("NbJour").ReplaceWithText("0");
+
                 document.MainDocumentPart.Document.Save();
+                
             }
+           // ContentDisposition content = new ContentDisposition()
+           // { FileName=}
             return View();
 
             
@@ -53,7 +96,7 @@ namespace AppAfpaBrive.Web.Controllers
 
             //Acceder au corps de la partie principale du document
            // Body body = document.MainDocumentPart.Document.Body;
-            return View();
+            //return View();
         }
         // GET: AutorisationAbsence
         public ActionResult Index()
