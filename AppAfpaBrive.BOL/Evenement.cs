@@ -17,9 +17,10 @@ namespace AppAfpaBrive.BOL
         public DateTime DateEvent { get; set; }
         public string IdEtablissement { get; set; }
         public string DétailsEvent { get; set; }
-
         public virtual CategorieEvenement IdCategorieEventNavigation { get; set; }
         public virtual Etablissement IdEtablissementNavigation { get; set; }
         public virtual ICollection<EvenementDocument> EvenementDocuments { get; set; }
+
+        
     }
 }
