@@ -1015,7 +1015,7 @@ namespace AppAfpaBrive.DAL
                    .WithMany(p => p.Professionnels)
                    .HasForeignKey(d => d.CodeTitreCiviliteProfessionnel)
                    .OnDelete(DeleteBehavior.ClientSetNull)
-                   .HasConstraintName("FK_Professionnel_TitreCivilite");
+                   .HasConstraintName("CodeTitreCiviliteProfessionnel");
             });
 
             modelBuilder.Entity<Rome>(entity =>

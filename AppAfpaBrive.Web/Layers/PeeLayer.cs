@@ -116,7 +116,29 @@ namespace AppAfpaBrive.Web.Layers
 
         public async Task<PeeModelView> GetPeeByIdAsync(decimal idPee)
         {
-            return new PeeModelView(await _dbContext.Pees.FindAsync((decimal)idPee));
+            return await _dbContext.Pees.Where(e => e.IdPee == idPee).Select(e=>new PeeModelView() 
+            { 
+                IdPee = e.IdPee,
+                MatriculeBeneficiaire = e.MatriculeBeneficiaire,
+                IdTuteur = e.IdTuteur,
+                IdResponsableJuridique = e.IdResponsableJuridique,
+                IdEntreprise = e.IdEntreprise,
+                IdOffreFormation = e.IdOffreFormation,
+                IdEtablissement = e.IdEtablissement,
+                Remarque = e.Remarque,
+                EtatPee = e.EtatPee,
+                Id = new OffreFormationModelView(e.Id),
+                IdEntrepriseNavigation = new EntrepriseModelView(e.IdEntrepriseNavigation),
+                MatriculeBeneficiaireNavigation = new BeneficiaireModelView(e.MatriculeBeneficiaireNavigation),
+                IdResponsableJuridiqueNavigation = new ProfessionnelModelView(e.IdResponsableJuridiqueNavigation),
+                IdTuteurNavigation = new ProfessionnelModelView(e.IdTuteurNavigation),
+            }).FirstOrDefaultAsync();
+        }
+
+        public async Task<string> GetPeeMatriculeFormateurByIdAsync(decimal idPee)
+        {
+            return await _dbContext.Pees.Where(e=>e.IdPee == idPee)
+                .Include(e=>e.Id).Select(e=>e.Id.MatriculeCollaborateurAfpa).FirstOrDefaultAsync();
         }
 
         public async Task<string> GetPeeMatriculeFormateurByIdAsync(int idPee)
@@ -128,12 +150,12 @@ namespace AppAfpaBrive.Web.Layers
         public async Task<ICollection<PeeDocumentModelView>> GetPeeDocumentByIdAsync(decimal idPee)
         {
             return await _dbContext.PeeDocuments.Where(e => e.IdPee == idPee)
-                .OrderBy(e => e.NumOrdre).Select(e => new PeeDocumentModelView(e)).ToListAsync();
+                .OrderBy(e=>e.NumOrdre).Select(e=>new PeeDocumentModelView(e)).ToListAsync();
         }
 
-        public async Task<bool> UpdatePeeAsync(PeeModelView peeModelView)
+        public async Task<PeeModelView> UpdatePeeAsync( PeeModelView peeModelView )
         {
-            Pee pee = new()
+            Pee pee = new ()
             {
                 IdPee = peeModelView.IdPee,
                 MatriculeBeneficiaire = peeModelView.MatriculeBeneficiaire,
@@ -151,13 +173,30 @@ namespace AppAfpaBrive.Web.Layers
             {
                 if (pee.Etat == EntityPOCOState.Modified)
                 {
-                    _dbContext.Update(pee);
+                    _dbContext.Pees.Update(pee);
                     await _dbContext.SaveChangesAsync();
-                    return true;
                 }
-                return false;
             }
-            return false;
+            return peeModelView;
+        }
+
+        public async Task<MessageModelView> GetElementByIdPeeForMessageAsync(decimal idPee)
+        {
+            return await _dbContext.Pees.Where(e => e.IdPee == idPee)
+                .Include(e=>e.MatriculeBeneficiaireNavigation)
+                .ThenInclude(e=>e.CodeTitreCiviliteNavigation)
+                .Include(e=>e.IdEntrepriseNavigation)
+                .Include(e=>e.PeriodePees)
+                .Select(e=> new MessageModelView() { 
+                    Remarque = e.Remarque,
+                    EtatPee = e.EtatPee,
+                    NomBeneficiaire = e.MatriculeBeneficiaireNavigation.NomBeneficiaire,
+                    PrenomBeneficiaire = e.MatriculeBeneficiaireNavigation.PrenomBeneficiaire,
+                    MailBeneficiaire = e.MatriculeBeneficiaireNavigation.MailBeneficiaire,
+                    CodeTitreCiviliteNavigation = new TitreCiviliteModelView(e.MatriculeBeneficiaireNavigation.CodeTitreCiviliteNavigation),
+                    RaisonSociale = e.IdEntrepriseNavigation.RaisonSociale,
+                    periodes = e.PeriodePees.Select(e=> new PeriodePeeModelView(e)).ToList()
+                } ).FirstAsync();
         }
 
         

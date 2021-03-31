@@ -1189,7 +1189,7 @@ namespace AppAfpaBrive.DAL.Migrations
                   
                     b.HasKey("IdProfessionnel");
 
-                    b.HasIndex("TitreCiviliteNavigationCodeTitreCivilite");
+                    //b.HasIndex("IX_Professionnel_TitreCiviliteNavigationCodeTitreCivilite");
 
                     b.ToTable("Professionnel");
                 });

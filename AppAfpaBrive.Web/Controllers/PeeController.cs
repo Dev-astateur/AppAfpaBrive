@@ -18,7 +18,9 @@ using System.Net.Mime;
 using DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using DocumentFormat.OpenXml.Wordprocessing;
 using AppAfpaBrive.Web.ModelView.ValidationPee;
-
+using AppAfpaBrive.Web.Utilitaires;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Text;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -29,8 +31,9 @@ namespace AppAfpaBrive.Web.Controllers
         private readonly AFPANADbContext _dbContext;
         private readonly IConfiguration _config;
         private readonly IHostEnvironment _env;
+        private readonly IEmailSender _emailSender;
 
-       
+
         #endregion
 
         #region Constructeur
@@ -41,12 +44,13 @@ namespace AppAfpaBrive.Web.Controllers
         //    //_peeLayer = new PeeLayer(context);
         //    ////_paysLayer = new PaysLayer(context);    //-- pour test
         //}
-        public PeeController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
+        public PeeController(AFPANADbContext context, IConfiguration config, IHostEnvironment env, IEmailSender emailSender)
         {
             _dbContext = context;
             _config = config;
             _env = env;
             _peeLayer = new PeeLayer(context);
+            _emailSender = emailSender;
         }
         #endregion
         #region Méthode IAction Index et AfficheBeneficiairePee
@@ -166,10 +170,18 @@ namespace AppAfpaBrive.Web.Controllers
 
         }
         #endregion
+
+        #region Validation des Pee par le formateur
+        /// <summary>
+        /// liste des Pee par formateur
+        /// </summary>
+        /// <param name="id">id du matricule du formateur</param>
+        /// <param name="pageIndex">page à afficher non obligatoire</param>
+        /// <returns>View</returns>
         [HttpGet]
         public async Task<IActionResult> ListePeeAValider(string id,int? pageIndex)
         {
-            if (id is null)
+            if (string.IsNullOrWhiteSpace(id) || id == "")
                 return NotFound();
             if (pageIndex is null)
                 pageIndex = 1;
@@ -182,59 +194,77 @@ namespace AppAfpaBrive.Web.Controllers
         /// <summary>
         /// Page principale de validation de Pee
         /// </summary>
+        /// <param name="id">id IdPee, id de la Pee</param>
         /// <returns></returns>
         [Route("/Pee/PeeEntrepriseValidation/{id}")]
         [HttpGet]
-        public async Task<IActionResult> PeeEntrepriseValidation(int? id)
+        public async Task<IActionResult> PeeEntrepriseValidation(decimal? id)
         {
             if ( id is null )
                 return NotFound();
 
-            PeeEntrepriseModelView pee = await _peeLayer.GetPeeByIdPeeOffreEntreprisePaysAsync((int)id);
+            PeeEntrepriseModelView pee = await _peeLayer.GetPeeByIdPeeOffreEntreprisePaysAsync((decimal)id);
             if (pee is null)
-                return NotFound();
+                return BadRequest();
 
             return View(pee);
         }
-       
+
         /// <summary>
         /// Iaction du controller qui fonctionne comme des web service
         /// ici on charge la partie de saisie des remarques s'il y a lien
         /// </summary>
-        /// <returns></returns>
+        /// <param name="id">id IdPee, id de la Pee</param>
+        /// <returns>charge la page de modification de la Pee</returns>
         [Route("/Pee/EnregistrementPeeInfo/{id}")]
         [HttpGet]
-        public async Task<IActionResult> EnregistrementPeeInfo(int? id)
+        public async Task<IActionResult> EnregistrementPeeInfo(decimal? id)
         {
             if (id is null)
                 return NotFound();
 
-            PeeModelView pee = await _peeLayer.GetPeeByIdAsync((int)id);
+            PeeModelView pee = await _peeLayer.GetPeeByIdAsync((decimal)id);
+            if (pee is null)
+                return BadRequest();
+
             return PartialView("~/Views/Shared/Pee/_AddRemarque.cshtml",pee) ;
         }
 
+        /// <summary>
+        /// action du update de la Pee
+        /// </summary>
+        /// <param name="IdPee"></param>
+        /// <param name="peeModelView"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> EnregistrementPeeInfo(int IdPee, PeeModelView peeModelView)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EnregistrementPeeInfo(decimal IdPee, PeeModelView peeModelView)
         {
             if (IdPee != peeModelView.IdPee)
-                return NotFound();
+                return BadRequest();
 
-            string MatriculeCollaborateurAfpa = "1603870";
+            string MatriculeCollaborateurAfpa = await _peeLayer.GetPeeMatriculeFormateurByIdAsync(IdPee);
 
             if (peeModelView.IsValid)
             {
                 try
-                {
+                {   
                     peeModelView.Etat = EntityPOCOState.Modified;
-                    _peeLayer.UpdatePeeAsync(peeModelView);
-                }
-                catch (DbUpdateConcurrencyException dbC)
-                {
-                   
-                }
-                catch(DbUpdateException dE)
-                {
 
+                    await _peeLayer.UpdatePeeAsync(peeModelView);
+                    return RedirectToAction(nameof(PrevenirBeneficaire), new {id = IdPee ,idColl = MatriculeCollaborateurAfpa });
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return BadRequest();
+                }
+                catch(DbUpdateException)
+                {
+                    return BadRequest();
+                }
+                catch (Exception e)
+                {
+                    return BadRequest();
                 }
             }
             return RedirectToAction(nameof(ListePeeAValider),new { id = MatriculeCollaborateurAfpa });
@@ -248,24 +278,48 @@ namespace AppAfpaBrive.Web.Controllers
         [Route("/Pee/ListeDocumentPee/{id}")]
         [Route("/Pee/ListeDocumentPee/{id}/{page}")]
         [HttpGet]
-        public async Task<IActionResult> ListeDocumentPee(int? id,int? page)
+        public async Task<IActionResult> ListeDocumentPee(decimal? id,int? page)
         {
             if (id is null)
                 return NotFound();
 
-            IEnumerable<PeeDocumentModelView> peeDocument = await _peeLayer.GetPeeDocumentByIdAsync((int)id);
-
+            IEnumerable<PeeDocumentModelView> peeDocument = await _peeLayer.GetPeeDocumentByIdAsync((decimal)id);
             if ( page is not null )
             {
-                return peeDocument.Count() == 0 ? RedirectToAction(nameof(PeeEntrepriseValidation), new { id = id })
+                return peeDocument.Count() == 0 ? RedirectToAction(nameof(PeeEntrepriseValidation), new { id })
                 : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
             }
             else
             {
-                return peeDocument.Count() == 0 ? RedirectToAction(nameof(EnregistrementPeeInfo), new { id = id })
+                return peeDocument.Count()==0 ? RedirectToAction(nameof(EnregistrementPeeInfo), new { id })
                 : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
             }
         }
+
+        /// <summary>
+        /// action qui envoi un courriel au bénéficiaire
+        /// </summary>
+        /// <param name="id">idPee</param>
+        /// <param name="idColl">id collaborateur Afpa</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> PrevenirBeneficaire(decimal id,string idColl)
+        {
+            MessageModelView messageView = await _peeLayer.GetElementByIdPeeForMessageAsync(id);
+            messageView.MatriculeCollaborateurAfpa = idColl;
+            messageView.MessagePee = _config.GetSection("MessagePee").Get<MessagePee>();
+
+            try
+            {
+                await _emailSender.SendEmailAsync(messageView.MailBeneficiaire, messageView.MessagePee.Sujet.Normalize(), messageView.Message.Normalize());
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+            return View(messageView);
+        }
+        #endregion
     }
 }
  

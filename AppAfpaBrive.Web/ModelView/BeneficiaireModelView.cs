@@ -20,9 +20,9 @@ namespace AppAfpaBrive.Web.ModelView
             
         public BeneficiaireModelView( Beneficiaire beneficiaire  )
         {
-            if (beneficiaire is not null)
+            if ( beneficiaire is not null )
             {
-                MatriculeBeneficiaire = beneficiaire.MatriculeBeneficiaire;
+                MailBeneficiaire = beneficiaire.MatriculeBeneficiaire;
                 CodeTitreCivilite = beneficiaire.CodeTitreCivilite;
                 NomBeneficiaire = beneficiaire.NomBeneficiaire;
                 PrenomBeneficiaire = beneficiaire.PrenomBeneficiaire;
@@ -43,9 +43,9 @@ namespace AppAfpaBrive.Web.ModelView
                 //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
                 Pees = new HashSet<PeeModelView>();
             }
-           
+            
         }
-
+        [Display(Name ="Matricule du stagiaire")]
         public string MatriculeBeneficiaire { get; set; }
 
         public int? CodeTitreCivilite { get; set; }
@@ -83,7 +83,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string PathPhoto { get; set; }
         public bool? MailingAutorise { get; set; }
 
-        //public virtual TitreCivilite CodeTitreCiviliteNavigation { get; set; }
+        public virtual TitreCiviliteModelView CodeTitreCiviliteNavigation { get; set; }
         public virtual ICollection<BeneficiaireOffreFormation> BeneficiaireOffreFormations { get; set; }
         public virtual ICollection<ContratModelView> Contrats { get; set; }
         //public virtual ICollection<DestinataireEnquete> DestinataireEnquetes { get; set; }

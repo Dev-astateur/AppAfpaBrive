@@ -32,5 +32,16 @@ namespace AppAfpaBrive.BOL
         public virtual Beneficiaire MatriculeBeneficiaireNavigation { get; set; }
         public virtual ICollection<PeriodePee> PeriodePees { get; set; }
         public virtual ICollection<PeeDocument> PeeDocument { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Pee pee &&
+                   IdPee == pee.IdPee;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(IdPee);
+        }
     }
 }

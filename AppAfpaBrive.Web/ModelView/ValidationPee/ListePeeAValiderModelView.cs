@@ -15,6 +15,5 @@ namespace AppAfpaBrive.Web.ModelView.ValidationPee
         public decimal IdPee { get; set; }
 
         public ListePeeAValiderModelView(){}
-
     }
 }
