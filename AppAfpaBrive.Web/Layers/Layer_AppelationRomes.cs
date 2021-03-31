@@ -29,5 +29,10 @@ namespace AppAfpaBrive.Web.Layers
         {
             return _db.AppelationRomes.Where(ar => ar.LibelleAppelationRome.Contains(userInput)).ToList(); 
         }
+
+        public AppelationRome GetAppellationRomeByLibelle(string LibelleAppellationRome)
+        {
+            return _db.AppelationRomes.Where(ar => ar.LibelleAppelationRome == LibelleAppellationRome).FirstOrDefault(); 
+        }
     }
 }

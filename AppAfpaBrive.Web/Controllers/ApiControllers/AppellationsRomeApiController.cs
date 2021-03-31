@@ -27,7 +27,7 @@ namespace AppAfpaBrive.Web.Controllers
             try
             {
                 string term = HttpContext.Request.Query["term"].ToString();
-                var libellesAppelations = _AppelationRomes.SearchLibellesAppellationsRome(term); //.SearchApellationsRome(term).Select(x => new { CodeAppellation = x.CodeAppelationRome, Libelle = x.LibelleAppelationRome });   
+                var libellesAppelations = _AppelationRomes.SearchLibellesAppellationsRome(term); 
                 return Ok(libellesAppelations);
             }
             catch

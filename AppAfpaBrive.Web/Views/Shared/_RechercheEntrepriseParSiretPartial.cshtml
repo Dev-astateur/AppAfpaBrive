@@ -1,4 +1,4 @@
-﻿@model AppAfpaBrive.BOL.Entreprise
+﻿@model AppAfpaBrive.Web.ModelView.Entreprise_Siret
 
 <form method="post">
     <div class="border p-3">
@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-8">
                         <input asp-for="NumeroSiret" id="Siret" class="form-control" />
-                        <span class="text-danger"></span>
+                        <span asp-validation-for="NumeroSiret" class="text-danger"></span>
                     </div>
 
                 </div>

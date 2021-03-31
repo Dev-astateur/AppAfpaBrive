@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AppAfpaBrive.BOL;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AppAfpaBrive.DAL.Layers
 {
@@ -14,9 +15,16 @@ namespace AppAfpaBrive.DAL.Layers
             _db = context;
         }
 
-        public List<TypeContrat> GetAll()
+        public IEnumerable<SelectListItem> GetAllToDropDownList()
         {
-            return _db.TypeContrats.ToList(); 
+            return _db.TypeContrats
+                .Select(tc => new SelectListItem
+                {
+                    Text = tc.DesignationTypeContrat,
+                    Value = tc.IdTypeContrat
+                .ToString()
+                })
+                .ToList();
         }
 
         public TypeContrat GetTypeContratById(int id)

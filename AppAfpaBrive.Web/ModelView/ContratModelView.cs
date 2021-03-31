@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL ;
 using AppAfpaBrive.Web.CustomValidator;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AppAfpaBrive.Web.ModelView
 {
@@ -23,8 +23,9 @@ namespace AppAfpaBrive.Web.ModelView
         [LibelleFonctionContratValidator()]
         public string LibelleFonction { get; set; }
         //[Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez sélectionner un type de contrat dans la liste déroulante")]
-        //public string TypeContrat { get; set; }
-        public int? CodeAppellation { get; set; }
+        public string TypeContrat { get; set; }
+        public IEnumerable<SelectListItem>  TypesContrats { get; set; }
+
 
 
 

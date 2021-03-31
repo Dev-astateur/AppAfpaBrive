@@ -9,32 +9,32 @@
     <div class="col-md-4">
         <form asp-action="ModifierContrat" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
 
-            <div class="form-group">
-                <label asp-for="LibelleFonction" class="control-label">Intitulé du poste</label>
-                <input asp-for="LibelleFonction" class="form-control" id="appellationsRome" />
-                <span asp-validation-for="LibelleFonction" class="text-danger"></span>
+                <label asp-for="TypeContrat" class="control-label">Type de contrat</label>
+                @Html.DropDownListFor(m => m.TypeContrat, Model.TypesContrats, new { @class = "form-control" })
+                <span asp-validation-for="TypeContrat" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-                    <label asp-for="TypeContrat" class="control-label">Type de contrat</label>
-                    <select asp-for="TypeContrat" class="form-control" asp-items="@(new SelectList(ViewBag.TypesContratsList, Model.TypeContrat))"></select>
-                    <span asp-validation-for="TypeContrat" class="text-danger"></span>
-                </div>*@
-            <div class="form-group">
-                <label asp-for="DateEntreeFonction" class="control-label">Date d'embauche</label>
-                <input asp-for="DateEntreeFonction" class="form-control" />
-                <span asp-validation-for="DateEntreeFonction" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateSortieFonction" class="control-label">Date de fin de contrat</label>
-                <input asp-for="DateSortieFonction" class="form-control" />
-                <input type="checkbox" />
-                <span asp-validation-for="DateSortieFonction" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Valider" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="LibelleFonction" class="control-label">Intitulé du poste</label>
+                    <input asp-for="LibelleFonction" class="form-control" id="appellationsRome" />
+                    <span asp-validation-for="LibelleFonction" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateEntreeFonction" class="control-label">Date d'embauche</label>
+                    <input asp-for="DateEntreeFonction" class="form-control" />
+                    <span asp-validation-for="DateEntreeFonction" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateSortieFonction" class="control-label">Date de fin de contrat</label>
+                    <input asp-for="DateSortieFonction" class="form-control" />
+                    <input type="checkbox" /><label class="small">Mon contrat est toujours en cours !</label>
+                    <span asp-validation-for="DateSortieFonction" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Valider" class="btn btn-primary" />
+                </div>
+</form>
     </div>
 </div>
 
