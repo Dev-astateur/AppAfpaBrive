@@ -24,7 +24,7 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         public string Telephone { get; set; }
 
         public int IdTitreCivilite { get; set; }
-        public TitreCivilite TitreCivilite { get; set; }
+        public virtual TitreCivilite TitreCivilite { get; set; }
 
         public virtual ICollection<ContactStructure> ContactStructures { get; set; }
         public virtual ICollection<ContactLigneAnnuaire> ContactLigneAnnuaires { get; set; }

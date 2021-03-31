@@ -25,11 +25,11 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
         public string Conditions { get; set; }
 
         public int IdStructure { get; set; }
-        public Structure Structure { get; set; }
+        public virtual Structure Structure { get; set; }
 
-        public ICollection<CategorieLigneAnnuaire> CategorieLigneAnnuaires { get; set; }
+        public virtual ICollection<CategorieLigneAnnuaire> CategorieLigneAnnuaires { get; set; }
 
-        public ICollection<ContactLigneAnnuaire> ContactLigneAnnuaires { get; set; }
+        public virtual ICollection<ContactLigneAnnuaire> ContactLigneAnnuaires { get; set; }
 
 
 

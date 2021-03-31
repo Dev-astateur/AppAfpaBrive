@@ -10,10 +10,10 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
     {
         
         public int IdLigneAnnuaire { get; set; }
-        public LigneAnnuaire LigneAnnuaire { get; set; }
+        public virtual LigneAnnuaire LigneAnnuaire { get; set; }
 
         public int IdCategorie { get; set; }
-        public Categorie Categorie { get; set; }
+        public virtual Categorie Categorie { get; set; }
 
 
     }

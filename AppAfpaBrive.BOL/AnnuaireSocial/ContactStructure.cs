@@ -10,11 +10,11 @@ namespace AppAfpaBrive.BOL.AnnuaireSocial
     {
        
         public int IdContact { get; set; }
-        public Contact Contact { get; set; }
+        public virtual Contact Contact { get; set; }
 
 
         public int IdStructure { get; set; }
-        public Structure Structure { get; set; }
+        public virtual Structure Structure { get; set; }
 
 
     }

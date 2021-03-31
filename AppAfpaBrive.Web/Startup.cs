@@ -42,7 +42,8 @@ namespace AppAfpaBrive.Web
 
             services.AddDbContext<AFPANADbContext>(options =>
                   
-                    options.UseSqlServer(
+                    options.UseLazyLoadingProxies()
+                    .UseSqlServer(
                     Configuration.GetConnectionString("DbAfpaNA"),
                     assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName))     
                     );
