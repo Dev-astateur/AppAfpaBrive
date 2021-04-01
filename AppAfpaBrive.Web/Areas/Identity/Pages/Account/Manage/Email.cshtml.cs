@@ -10,18 +10,19 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using AppAfpaBrive.Web.Areas.Identity.Data;
 
 namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
 {
     public partial class EmailModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<AppAfpaBriveUser> _userManager;
+        private readonly SignInManager<AppAfpaBriveUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
         public EmailModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<AppAfpaBriveUser> userManager,
+            SignInManager<AppAfpaBriveUser> signInManager,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -43,13 +44,13 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage ="Nouvelle adresse mail requise")]
             [EmailAddress]
-            [Display(Name = "New email")]
+            [Display(Name = "Nouveau email")]
             public string NewEmail { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(AppAfpaBriveUser user)
         {
             var email = await _userManager.GetEmailAsync(user);
             Email = email;
@@ -67,7 +68,7 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Utiliseur inconnu avec ce matricule '{_userManager.GetUserId(User)}'.");
             }
 
             await LoadAsync(user);
@@ -79,7 +80,7 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Utiliseur inconnu avec ce matricule '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -101,14 +102,14 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
                     protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Confirmer votre adresse email",
+                    $"Merci de confirmer votre compte <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Cliquez ici</a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = "Lien de confirmation de votre email envoyé. Merci de vérifier votre boite mail.";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "Votre mail n'a pas changé.";
             return RedirectToPage();
         }
 
@@ -117,7 +118,7 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Utiliseur inconnu avec ce matricule '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -137,10 +138,10 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "Confirmez votre email",
+                $"Merci de confirmer votre email <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Cliquez ici</a>.");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = "Mail de vérification envoyé. Consultez votre boite mail.";
             return RedirectToPage();
         }
     }

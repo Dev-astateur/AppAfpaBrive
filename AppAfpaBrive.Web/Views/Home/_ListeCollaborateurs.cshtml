@@ -1,0 +1,70 @@
+﻿@model IEnumerable<AppAfpaBrive.BOL.CollaborateurAfpa>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MatriculeCollaborateurAfpa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdEtablissement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodeTitreCivilite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomCollaborateur)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrenomCollaborateur)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MailCollaborateurAfpa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TelCollaborateurAfpa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Uo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MatriculeCollaborateurAfpa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdEtablissement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodeTitreCivilite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomCollaborateur)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrenomCollaborateur)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MailCollaborateurAfpa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TelCollaborateurAfpa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+           
+        </tr>
+}
+    </tbody>
+</table>

@@ -815,9 +815,6 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Property<int>("IdEntreprise")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdEntrepriseNavigationIdEntreprise")
-                        .HasColumnType("int");
-
                     b.Property<string>("IdEtablissement")
                         .IsRequired()
                         .HasMaxLength(5)
@@ -843,10 +840,8 @@ namespace AppAfpaBrive.DAL.Migrations
 
                     b.HasKey("IdPee");
 
-                    b.HasIndex("IdEntrepriseNavigationIdEntreprise");
-
                     b.HasIndex("IdResponsableJuridique");
-
+                    b.HasIndex("IdEntreprise");
                     b.HasIndex("IdTuteur");
 
                     b.HasIndex("MatriculeBeneficiaire");
@@ -1353,9 +1348,11 @@ namespace AppAfpaBrive.DAL.Migrations
             modelBuilder.Entity("AppAfpaBrive.BOL.Pee", b =>
                 {
                     b.HasOne("AppAfpaBrive.BOL.Entreprise", "IdEntrepriseNavigation")
-                        .WithMany()
-                        .HasForeignKey("IdEntrepriseNavigationIdEntreprise");
-
+                        .WithMany("Pees")
+                        .HasForeignKey("IdEntrepriseNavigation")
+                        .HasConstraintName("FK_Pee_Entreprise")
+                        .IsRequired();
+                   
                     b.HasOne("AppAfpaBrive.BOL.Professionnel", "IdResponsableJuridiqueNavigation")
                         .WithMany("PeeIdResponsableJuridiqueNavigations")
                         .HasForeignKey("IdResponsableJuridique")

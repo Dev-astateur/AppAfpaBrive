@@ -787,6 +787,12 @@ namespace AppAfpaBrive.DAL
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
+                entity.HasOne(d=>d.IdEntrepriseNavigation)
+                                       .WithMany(p=>p.Pees)
+                                       .HasForeignKey(d=>d.IdEntreprise)
+                                       .OnDelete(DeleteBehavior.ClientSetNull)
+                                       .HasConstraintName("FK_Pee_Entreprise");
+
                 entity.HasOne(d => d.IdResponsableJuridiqueNavigation)
                     .WithMany(p => p.PeeIdResponsableJuridiqueNavigations)
                     .HasForeignKey(d => d.IdResponsableJuridique)

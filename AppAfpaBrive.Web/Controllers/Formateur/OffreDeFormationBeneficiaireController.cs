@@ -34,7 +34,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
             OffreFormationModelView model = new OffreFormationModelView(query);
             foreach (var item in query.BeneficiaireOffreFormations)
             {
-                model.BeneficiaireOffreFormations.Add(item);
+               // model.BeneficiaireOffreFormations.Add(item);
             }
             return View(model);
         }

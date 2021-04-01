@@ -1,0 +1,26 @@
+﻿@model List<AppAfpaBrive.BOL.Etablissement>
+
+@{
+    ViewData["Title"] = "Liste Etablissements";
+}
+
+<h1>Liste des collaborateurs par établissements</h1>
+<select id="Etablissements"
+        asp-items="@(new SelectList(Model,"IdEtablissement","NomEtablissement"))">
+    <option>Sélectionnez un établissement</option>
+</select>
+<div id="liste">
+
+</div>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('select').on('change', function (e) {
+                var optionSelected = $("option:selected", this);
+                $("#liste").load("/Home/ListeCollaborateurs2?etablissement=" + this.value);
+            });
+        });
+    </script>
+}
+

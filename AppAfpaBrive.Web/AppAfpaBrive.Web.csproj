@@ -28,8 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ModelesOffice\" />
     <Folder Include="Models\Layer\" />
+    <Folder Include="Views\Collaborateur\" />
   </ItemGroup>
 
 </Project>

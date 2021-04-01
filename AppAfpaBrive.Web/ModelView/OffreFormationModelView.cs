@@ -16,24 +16,24 @@ namespace AppAfpaBrive.Web.ModelView
             Pees = new HashSet<PeeModelView>();
         }
 
-        public OffreFormationModelView( OffreFormation offreFormation)
+        public OffreFormationModelView(OffreFormation offreFormation)
         {
-            if ( offreFormation is not null )
-        {
-            IdOffreFormation = offreFormation.IdOffreFormation;
-            IdEtablissement = offreFormation.IdEtablissement;
-            MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
-            CodeProduitFormation = offreFormation.CodeProduitFormation;
-            LibelleOffreFormation = offreFormation.LibelleOffreFormation;
-            LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
-            DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
-            DateFinOffreFormation = offreFormation.DateFinOffreFormation;
-            CodeProduitFormation = offreFormation.CodeProduitFormation;
-            BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
+            if (offreFormation is not null)
+            {
+                IdOffreFormation = offreFormation.IdOffreFormation;
+                IdEtablissement = offreFormation.IdEtablissement;
+                MatriculeCollaborateurAfpa = offreFormation.MatriculeCollaborateurAfpa;
+                CodeProduitFormation = offreFormation.CodeProduitFormation;
+                LibelleOffreFormation = offreFormation.LibelleOffreFormation;
+                LibelleReduitOffreFormation = offreFormation.LibelleReduitOffreFormation;
+                DateDebutOffreFormation = offreFormation.DateDebutOffreFormation;
+                DateFinOffreFormation = offreFormation.DateFinOffreFormation;
+                CodeProduitFormation = offreFormation.CodeProduitFormation;
+         //       BeneficiaireOffreFormation = new HashSet<BeneficiaireOffreFormation>();
 
-          
+
+            }
         }
-
         public int IdOffreFormation { get; set; }
         public string IdEtablissement { get; set; }
         public string MatriculeCollaborateurAfpa { get; set; }

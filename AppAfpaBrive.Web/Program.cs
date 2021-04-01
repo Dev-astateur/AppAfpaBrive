@@ -20,7 +20,8 @@ namespace AppAfpaBrive.Web
             Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((hostContext, builder) =>
             {
-                // Add other providers for JSON, etc.
+                // Add
+                // other providers for JSON, etc.
 
                 if (hostContext.HostingEnvironment.IsDevelopment())
                 {

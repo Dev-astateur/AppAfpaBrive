@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class Pee
+    public partial class Pee : EntityBase
     {
         public Pee()
         {
