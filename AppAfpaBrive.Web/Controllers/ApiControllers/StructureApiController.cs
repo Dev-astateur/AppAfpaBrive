@@ -23,14 +23,34 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
         }
 
         [Produces("application/json")]
-        [HttpGet("getFormateur")]
+        [HttpGet("getByName")]
         public async Task<IActionResult> GetStructureNameStartWith()
         {
             try
             {
                 string term = HttpContext.Request.Query["term"].ToString();
-                StructureLayer ofl = new StructureLayer(db);
-                var names;
+                StructureLayer sl = new StructureLayer(db);
+                var names = sl.GetStructuresStartWith(term);
+
+                return Ok(names);
+
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+
+        [Produces("application/json")]
+        [HttpGet("getByLocation")]
+        public async Task<IActionResult> GetStructureByLocation()
+        {
+            try
+            {
+                string term = HttpContext.Request.Query["term"].ToString();
+                StructureLayer sl = new StructureLayer(db);
+                var names = sl.GetStructuresByLocation(term);
 
                 return Ok(names);
 

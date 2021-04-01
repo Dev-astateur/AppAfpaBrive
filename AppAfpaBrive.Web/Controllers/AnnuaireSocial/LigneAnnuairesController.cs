@@ -35,28 +35,12 @@ namespace AppAfpaBrive.Web.Controllers.AnnuaireSocial
         }
 
         // GET: LigneAnnuaires/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var ligneAnnuaire = await _context.LigneAnnuaires
-                .Include(l => l.Structure)
-                .FirstOrDefaultAsync(m => m.IdLigneAnnuaire == id);
-            if (ligneAnnuaire == null)
-            {
-                return NotFound();
-            }
-
-            return View(ligneAnnuaire);
-        }
+   
 
         // GET: LigneAnnuaires/Create
         public IActionResult Create()
         {
-            ViewData["IdStructure"] = new SelectList(_context.Structures, "IdStructure", "IdStructure");
+          
             return View();
         }
 

@@ -79,7 +79,7 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
 
         public IQueryable<Structure> GetStructuresByLocation(string town)
         {
-            return _context.Structures.Where(x => x.CodePostal.ToString().StartsWith(town));
+            return _context.Structures.Where(x => x.CodePostal.StartsWith(town));
         }
 
         
