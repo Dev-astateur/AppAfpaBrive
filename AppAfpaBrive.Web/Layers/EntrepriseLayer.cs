@@ -203,7 +203,7 @@ namespace AppAfpaBrive.Web.Layers
         public PagingList<Entreprise> GetEntrepriseByProduitFormationForPaging(string produit, int page)
         {
             var query = _context.ProduitFormations
-                                         .Where(pro => pro.LibelleProduitFormation == produit)
+                                         .Where(pro => pro.LibelleProduitFormation.Contains(produit))
                                           .Join(_context.OffreFormations
                                          , p => p.CodeProduitFormation
                                          , o => o.CodeProduitFormation
