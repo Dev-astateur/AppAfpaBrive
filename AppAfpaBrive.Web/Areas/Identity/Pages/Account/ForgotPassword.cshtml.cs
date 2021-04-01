@@ -10,16 +10,17 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using AppAfpaBrive.Web.Areas.Identity.Data;
 
 namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppAfpaBriveUser> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<AppAfpaBriveUser> userManager, IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
@@ -30,8 +31,8 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage ="Votre adresse mail est requise")]
+            [EmailAddress(ErrorMessage ="Cette adresse n'est pas valide")]
             public string Email { get; set; }
         }
 
@@ -58,8 +59,8 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Réinitialiser votre mot de passe",
+                    $"Merci de réinitialiser votre mot de passe <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Cliquez ici</a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

@@ -19,4 +19,14 @@ namespace AppAfpaBrive.Web.Utilitaires
     {
         public string ListeColonnes { get; set; }
     }
+    public class AdministrateurSettings
+    {
+        public string UserName { get; set; }
+        public string Mail { get; set; }
+        public string InitialPassWord { get; set; }
+    }
+    public class RolesSettings
+    {
+        public string Liste { get; set; }
+    }
 }

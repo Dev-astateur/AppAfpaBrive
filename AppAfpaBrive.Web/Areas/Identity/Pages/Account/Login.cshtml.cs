@@ -11,19 +11,20 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using AppAfpaBrive.Web.Areas.Identity.Data;
 
 namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<AppAfpaBriveUser> _userManager;
+        private readonly SignInManager<AppAfpaBriveUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, 
+        public LoginModel(SignInManager<AppAfpaBriveUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<AppAfpaBriveUser> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -42,16 +43,20 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            [Required(ErrorMessage ="Le matricule est requis")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Matricule")]
+            public string UserName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage ="Le mot de passe est requis")]
             [DataType(DataType.Password)]
+            [Display(Name = "Mot de passe")]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Se souvenir de moi ?")]
             public bool RememberMe { get; set; }
+
+          
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -81,10 +86,15 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    _logger.LogInformation("Utilisateur connecté");
+                    AppAfpaBriveUser user =  await _userManager.FindByNameAsync(Input.UserName);
+                    if (user.MotPasseAChanger)
+                    {
+                        return RedirectToPage("./Manage/ChangePassword");
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -93,12 +103,12 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    _logger.LogWarning("Utilisateur bloqué.");
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Connexion invalide");
                     return Page();
                 }
             }

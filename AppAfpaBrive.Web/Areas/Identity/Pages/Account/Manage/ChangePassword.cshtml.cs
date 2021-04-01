@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AppAfpaBrive.Web.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,18 +12,19 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<AppAfpaBriveUser> _userManager;
+        private readonly SignInManager<AppAfpaBriveUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
         public ChangePasswordModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<AppAfpaBriveUser> userManager,
+            SignInManager<AppAfpaBriveUser> signInManager,
             ILogger<ChangePasswordModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            Input = new InputModel();
         }
 
         [BindProperty]
@@ -33,21 +35,23 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage ="Le mot de passe actuel est requis")]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "Mot de passe actuel")]
             public string OldPassword { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = "Un nouveau mot de passe est requis")]
+            [StringLength(100, ErrorMessage = "Le {0} doit comporter au moins {2} et a plus {1} caractères.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Nouveau mot de passe")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Confirmez votre mot de passe")]
+            [Compare("NewPassword", ErrorMessage = "Nouveau mot de passe et confirmé doivent être identiques.")]
             public string ConfirmPassword { get; set; }
+
+            public bool MotPasseAChanger { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -55,14 +59,16 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Utilisateur inconnu avec le matricule '{_userManager.GetUserId(User)}'.");
             }
+            Input.MotPasseAChanger = user.MotPasseAChanger;
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
             if (!hasPassword)
             {
                 return RedirectToPage("./SetPassword");
             }
+           
 
             return Page();
         }
@@ -77,7 +83,7 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Utilisateur inconnu avec le matricule '{_userManager.GetUserId(User)}'.");
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
@@ -91,8 +97,14 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            if (user.MotPasseAChanger)
+                {
+                    user.MotPasseAChanger = false;
+                    await _userManager.UpdateAsync(user);
+                }
+           
+            _logger.LogInformation("Utilisateur a changé son mot de passe avec succès.");
+            StatusMessage = "Votre mot de passe a été modifié.";
 
             return RedirectToPage();
         }

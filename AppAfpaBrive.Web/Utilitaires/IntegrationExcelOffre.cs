@@ -171,7 +171,7 @@ namespace AppAfpaBrive.Web.Utilitaires
                     beneficiaire.DateNaissanceBeneficiaire = dateNaissance.Value;
                     beneficiaire.TelBeneficiaire = telephone1;
                     beneficiaire.MailBeneficiaire = mail;
-
+                     
 
                     _context.Entry<Beneficiaire>(beneficiaire).State = (EntityState)beneficiaire.Etat;
                     beneficiaireOffre = _context.BeneficiaireOffreFormations.Find(new object[] { numeroClient, idOffre, idEtab });

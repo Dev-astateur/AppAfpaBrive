@@ -1,14 +1,24 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-@using AppAfpaBrive.Web.Utilitaires
-@Html.PageScripts()
+@using Microsoft.AspNetCore.Identity
+@using AppAfpaBrive.Web.Areas.Identity.Data
+@inject SignInManager<AppAfpaBriveUser> SignInManager
+@inject UserManager<AppAfpaBriveUser> UserManager
+@{AppAfpaBriveUser user = null;
+    string urlStyle = string.Empty;}
+
+<html lang="fr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AppAfpaBrive.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <script src="~/lib/jquery/dist/jquery.js"></script>
+    @if (SignInManager.IsSignedIn(User))
+    { user = await UserManager.FindByNameAsync(User.Identity.Name);
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/@user.Theme/bootstrap.min.css" />
+}
+else{
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/cerulean/bootstrap.min.css" />
+}
+<link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
@@ -28,7 +38,28 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav">
+                        @if (SignInManager.IsSignedIn(User))
+        {
+                           
+                            <li class="nav-item">
+
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bonjour @user.Prenom @user.Nom !</a>
+                            </li>
+                            <li class="nav-item">
+                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Se déconnecter</button>
+                                </form>
+                            </li>
+                        }
+                        else
+    {
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Se connecter</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>

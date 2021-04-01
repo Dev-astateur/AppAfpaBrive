@@ -56,6 +56,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
     <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
+    <Folder Include="Views\Collaborateur\" />
   </ItemGroup>
 
 </Project>
