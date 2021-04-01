@@ -19,27 +19,31 @@ namespace AppAfpaBrive.Web.Layers
 {
     public class ImpressionFicheSuivi /*: Controller*/
     {
-        private string _pathFile = null;
+        //private string _pathFile = null;
 
-        private readonly AFPANADbContext _dbContext;
-        private readonly IConfiguration _config;
+        private AFPANADbContext _dbContext;
+       
 
-        private readonly IHostEnvironment _env;
+        private IHostEnvironment _env;
+        //public ImpressionFicheSuivi(AFPANADbContext context)
+        //{
+        //    _dbContext = context;
+        //}
 
-        public ImpressionFicheSuivi(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
+        public ImpressionFicheSuivi(AFPANADbContext context, IHostEnvironment env)
         {
             _dbContext = context;
-            _config = config;
+            
             _env = env;
 
         }
-        public string PathFile { get; private set; }
+        //public string PathFile { get; private set; }
         public string FolderFile { get => Path.Combine(_env.ContentRootPath, "ModelesOffice"); }
 
-        public Pee GetDataBeneficiairePeeById(int id)
+        public async Task<Pee> GetDataBeneficiairePeeById(int id)
         {
 
-            return _dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation)
+            return await _dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation)
                 .ThenInclude(S => S.CodeTitreCiviliteNavigation)
                 .Include(pee => pee.IdResponsableJuridiqueNavigation)
                 .ThenInclude(T => T.TitreCiviliteNavigation)
@@ -48,23 +52,23 @@ namespace AppAfpaBrive.Web.Layers
                 .Include(Offre => Offre.Id)
                 .Include(P => P.IdEntrepriseNavigation)
                 .Include(E => E.IdResponsableJuridiqueNavigation.TitreCiviliteNavigation)
-                .FirstOrDefault(pee => pee.IdPee == id);
+                .FirstOrDefaultAsync(pee => pee.IdPee == id);
         }
-        public OffreFormation GetEntrepriseProfessionnel(int id)
+        public async Task<OffreFormation> GetEntrepriseProfessionnel(int id)
         {
-            var pee = GetDataBeneficiairePeeById(id);
-            return _dbContext.OffreFormations.Include(O => O.MatriculeCollaborateurAfpaNavigation)
-                .Where(C => C.IdOffreFormation == pee.IdOffreFormation && C.IdEtablissement == pee.IdEtablissement).FirstOrDefault();
+            var pee = GetDataBeneficiairePeeById(id).Result;
+            return await _dbContext.OffreFormations.Include(O => O.MatriculeCollaborateurAfpaNavigation)
+                .Where(C => C.IdOffreFormation == pee.IdOffreFormation && C.IdEtablissement == pee.IdEtablissement).FirstOrDefaultAsync();
         }
-        public EntrepriseProfessionnel GetEntrepriseProfessionnelData(int id)
+        public async Task<EntrepriseProfessionnel> GetEntrepriseProfessionnelData(int id)
         {
-            var pee = GetDataBeneficiairePeeById(id);
-            return _dbContext.EntrepriseProfessionnels
-                .FirstOrDefault(F => F.IdProfessionnel == pee.IdResponsableJuridique);
+            var pee =  await GetDataBeneficiairePeeById(id);
+            return await _dbContext.EntrepriseProfessionnels
+                .FirstOrDefaultAsync(F => F.IdProfessionnel == pee.IdResponsableJuridique);
         }
-        public PeriodePee GetPeriodePeeByPeeId(int id)
+       public async Task<PeriodePee> GetPeriodePeeByPeeId(int id)
         {
-            return _dbContext.PeriodePees.FirstOrDefault(p => p.IdPee == id);
+            return await _dbContext.PeriodePees.FirstOrDefaultAsync(p => p.IdPee == id);
         }
         /// <summary>
         /// 
@@ -72,10 +76,10 @@ namespace AppAfpaBrive.Web.Layers
         /// <param name="value"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<string> pathFileModelFollowUpDocumentPee(int value, int id)
+        public async Task<List<string>> pathFileModelFollowUpDocumentPee(int value, int id)
         {
             List<string> listPath = new List<string>();
-            var pee = GetDataBeneficiairePeeById(id);
+            var pee = await GetDataBeneficiairePeeById(id);
             if (value == 1)
             {
                 string PathFileEnvoie = Path.Combine(FolderFile, "2-Lettre_Envoi_Convention.docx");
@@ -99,7 +103,7 @@ namespace AppAfpaBrive.Web.Layers
                     break;
 
             }
-            return listPath;
+            return  listPath;
         }
         /// <summary>
         /// Get WordprocessingDocument Document 
@@ -110,7 +114,7 @@ namespace AppAfpaBrive.Web.Layers
         /// <param name="Periodepee"></param>
         /// <param name="docPath"></param>
         /// <returns></returns>
-        public WordprocessingDocument GetModifiedDocument(Pee pee, OffreFormation Collaborateur, EntrepriseProfessionnel poste, PeriodePee Periodepee, string docPath)
+        private WordprocessingDocument GetModifiedDocument(Pee pee, OffreFormation Collaborateur, EntrepriseProfessionnel poste, PeriodePee Periodepee, string docPath)
         {
             
             WordprocessingDocument doc;
@@ -150,21 +154,21 @@ namespace AppAfpaBrive.Web.Layers
         /// <param name="value"></param>
         /// <returns></returns>
 
-        public List<string> GetPathFile(int id, int value)
+        public async Task<List<string>> GetPathFile(int id, int value)
         {
-            List<string> ListPathDoc = new List<string>();
-            var pee = GetDataBeneficiairePeeById(id);
-            List<string> pathModele = pathFileModelFollowUpDocumentPee(value, id);
-            var poste = GetEntrepriseProfessionnelData(id);
-            var Collaborateur = GetEntrepriseProfessionnel(id);
-            var Periodepee = GetPeriodePeeByPeeId(id);
+           List<string> ListPathDoc = new List<string>();
+            var pee = await GetDataBeneficiairePeeById (id);
+            List<string> pathModele = await pathFileModelFollowUpDocumentPee(value, id);
+            var poste = await GetEntrepriseProfessionnelData (id);
+            var Collaborateur = await GetEntrepriseProfessionnel (id);
+            var Periodepee = await GetPeriodePeeByPeeId (id);
             string PathDoc = null;
             if (pathModele.Count() == 1)
             {
                 for (int i = 0; i < pathModele.Count(); i++)
                 {
                     PathDoc = pathModele[i];
-                    string newNameFile = PathDoc.Replace(".docx", $"_{(DateTime.Now - DateTime.MinValue).TotalMilliseconds}.docx");
+                    string newNameFile = PathDoc.Replace(".docx", $"_{pee.MatriculeBeneficiaireNavigation.NomBeneficiaire}_{(DateTime.Now - DateTime.MinValue).TotalMilliseconds}.docx");
                     string docPath = @$"{newNameFile}";
                     System.IO.File.Copy($"{PathDoc}", docPath, true);
                     GetModifiedDocument(pee, Collaborateur, poste, Periodepee, docPath);
@@ -190,15 +194,15 @@ namespace AppAfpaBrive.Web.Layers
 
         ///code Romain
         ///
-        public BeneficiaireOffreFormation GetDemandeurAbsence(string matricule)
+        public async Task<BeneficiaireOffreFormation> GetDemandeurAbsence(string matricule)
         {
-            return _dbContext.BeneficiaireOffreFormations
+            return await _dbContext.BeneficiaireOffreFormations
                 .Include(b => b.MatriculeBeneficiaireNavigation)
-                .Include(b => b.Id).FirstOrDefault();
+                .Include(b => b.Id).FirstOrDefaultAsync();
         }
         public string RequestForSuchLeave(string matricule)
         {
-            var benenificiaire = GetDemandeurAbsence(matricule);
+            var benenificiaire = GetDemandeurAbsence(matricule).Result;
             string FloderPath = Path.Combine(_env.ContentRootPath, "ModelesOffice\\C6-2.03.Autorisation_d_absence .docx");
             string newNameFile = FloderPath.Replace(".docx", $"_{(DateTime.Now - DateTime.MinValue).TotalMilliseconds}.docx");
             string docPath = @$"{newNameFile}";

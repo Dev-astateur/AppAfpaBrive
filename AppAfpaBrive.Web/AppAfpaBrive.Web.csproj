@@ -24,7 +24,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="ReflectionIT.Mvc.Paging" Version="5.1.1" />
-    <PackageReference Include="Rotativa" Version="1.7.3" />
     <PackageReference Include="Rotativa.AspNetCore" Version="1.1.1" />
     <PackageReference Include="sib_api_v3_sdk" Version="3.2.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />

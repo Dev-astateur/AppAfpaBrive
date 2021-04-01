@@ -38,18 +38,18 @@ namespace AppAfpaBrive.Web.Layers
             _dbContext.Pees.Add(pee);
             _dbContext.SaveChanges();
         }
-        public IEnumerable<Pee> GetPeeEntrepriseWithBeneficiaireBy(int IdOffreFormation, string idEtablissement)
+        public async Task<IEnumerable<Pee>> GetPeeEntrepriseWithBeneficiaireBy(int IdOffreFormation, string idEtablissement)
         {
-            return _dbContext.Pees
+            return await _dbContext.Pees
                 .Include(P => P.MatriculeBeneficiaireNavigation)
                 .Include(S => S.IdEntrepriseNavigation)
-                .Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement);
+                .Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement).ToListAsync();
         }
-        public IEnumerable<PeriodePee> GetListPeriodePeeByIdPee(int IdOffreFormation, string idEtablissement)
+        public async Task<IEnumerable<PeriodePee>> GetListPeriodePeeByIdPee(int IdOffreFormation, string idEtablissement)
         {
-            var periodePees = _dbContext.PeriodePees.Include(pr => pr.IdPeeNavigation).ToList();
+            var periodePees = await _dbContext.PeriodePees.Include(pr => pr.IdPeeNavigation).ToListAsync();
             List<PeriodePee> listPeriode = new List<PeriodePee>();
-            foreach (var item in GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement))
+            foreach (var item in GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement).Result)
             {
                 foreach (var element in periodePees)
                 {

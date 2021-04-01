@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.InMemory;
 
 namespace Projet_Test.InMemoryDb
 {
-    public  class DbContextMocker
+    public  static class DbContextMocker
     {
 
 
@@ -18,7 +18,7 @@ namespace Projet_Test.InMemoryDb
         /// </summary>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        public  AFPANADbContext GetAFPANADbContext(string dbName)
+        public  static AFPANADbContext GetAFPANADbContext(string dbName)
         {
             var options = new DbContextOptionsBuilder<AFPANADbContext>()
                             .UseInMemoryDatabase(databaseName: dbName)

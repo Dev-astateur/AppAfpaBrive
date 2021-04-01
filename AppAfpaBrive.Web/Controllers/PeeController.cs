@@ -22,6 +22,7 @@ using System.Text.RegularExpressions;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+    
     public class PeeController : Controller
     {
         #region champ privé
@@ -70,29 +71,31 @@ namespace AppAfpaBrive.Web.Controllers
         /// <param name="IdOffreFormation"></param>
         /// <param name="idEtablissement"></param>
         /// <returns></returns>
-        public IActionResult _AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
+        public async Task<IActionResult> _AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
         {
             if (ModelState.IsValid)
             {
-                var pees = _peeLayer.GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement);
-                var listPeriode = _peeLayer.GetListPeriodePeeByIdPee(IdOffreFormation, idEtablissement);
+                var pees = await _peeLayer.GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement);
+                var listPeriode = await _peeLayer.GetListPeriodePeeByIdPee(IdOffreFormation, idEtablissement);
                 ViewData["PeriodePee"] = listPeriode;
                 IEnumerable<Pee> PeeSansDoublons = pees.Distinct(new PeeComparer());
-                ViewData["ListPeeSansDoublons"] = PeeSansDoublons;
+                ViewData["ListPeeSansDoublons"] =  PeeSansDoublons;
+               
             }
             
             return View ("Index");
         }
         #endregion
-       
+
         #region Document accompagnement Beneficiaire
 
-        public IActionResult GetDocumentForPrint(int id, int[] PeecheckBox)
+        public async Task<IActionResult> GetDocumentForPrint(int id, int[] PeecheckBox)
         {
 
-            ImpressionFicheSuivi PrintWord = new ImpressionFicheSuivi(_dbContext, _config, _env);
+            ImpressionFicheSuivi PrintWord = new ImpressionFicheSuivi(_dbContext, _env);
             byte[] contenu = null;
-            
+            FileStreamResult result;
+
             int value = 0;
             var outPutStream = new MemoryStream();
             string FileNameZip = null;
@@ -100,88 +103,79 @@ namespace AppAfpaBrive.Web.Controllers
             List<string> ListFiles = new List<string>();
             Pee pee = new Pee();
             string PathDoc = Path.Combine(_env.ContentRootPath);
-            if (PeecheckBox.Length != 0)
+
+
+            for (int i = 0; i < PeecheckBox.Length; i++)
             {
 
-                for (int i = 0; i < PeecheckBox.Length; i++)
-                {
-
-                    value = PeecheckBox[i];
-                    pee = PrintWord.GetDataBeneficiairePeeById(value);
-                    ListFiles.AddRange(PrintWord.GetPathFile(value, id));
-                }
+                value = PeecheckBox[i];
+                pee = await PrintWord.GetDataBeneficiairePeeById(value);
+                ListFiles.AddRange(await PrintWord.GetPathFile(value, id));
             }
-                if (ListFiles.Count() > 1)
-                {
-                    using (var ZipDoc = new ZipFile())
-                    {
-                        FileNameZip = $"{pee.MatriculeBeneficiaireNavigation.NomBeneficiaire}_{pee.MatriculeBeneficiaireNavigation.PrenomBeneficiaire}_{value}";
-                        for (int j = 0; j < ListFiles.Count(); j++)
-                        {
-                            string nomFichier = $"{pee.MatriculeBeneficiaireNavigation.MatriculeBeneficiaire}-{pee.MatriculeBeneficiaireNavigation.NomBeneficiaire}-{pee.IdEtablissement}-{pee.IdOffreFormation}_{value}";
-                            ContentDisposition content = new ContentDisposition()
-                            {
-                                FileName = $"{nomFichier}.docx",
 
-                                Inline = false
-                            };
-                            Response.Headers.Add($"Content-Disposition-{j}_{value}", content.ToString());
-                            Response.Headers.Add($"X-Content-Type-Options-{j}_{value}", "nosniff");
-                        string doc = Path.GetFileName(ListFiles[j]);
-                        string regexPath = Path.GetFileNameWithoutExtension(Regex.Replace(doc, @"[0-9,-]", ""));
-                        doc = $"{regexPath}_{nomFichier}.docx";
-                            System.IO.File.Copy(ListFiles[j], doc);
-                            ZipDoc.AddFile(doc);
-                            System.IO.File.Delete(ListFiles[j]);
+                    if (ListFiles.Count() > 1)
+                    {
+                        using (var ZipDoc = new ZipFile())
+                        {
+                            FileNameZip = $"Document_Suivi_Pee_{value}";
+                            for (int j = 0; j < ListFiles.Count(); j++)
+                            {
+
+                                string nomFichier = $"{pee.MatriculeBeneficiaireNavigation.MatriculeBeneficiaire}-{pee.MatriculeBeneficiaireNavigation.NomBeneficiaire}-{pee.IdEtablissement}-{pee.IdOffreFormation}";
+                                ContentDisposition content = new ContentDisposition()
+                                {
+                                    FileName = $"{nomFichier}.docx",
+
+                                    Inline = false
+                                };
+                                Response.Headers.Add($"Content-Disposition-{j}_{value}", content.ToString());
+                                Response.Headers.Add($"X-Content-Type-Options-{j}_{value}", "nosniff");
+                                string doc = Path.GetFileName(ListFiles[j]);
+                                string regexPath = Path.GetFileNameWithoutExtension(Regex.Replace(doc, @"[0-9,-]", ""));
+                                doc = $"{regexPath}_{nomFichier}_{j + 1}.docx";
+                                System.IO.File.Copy(ListFiles[j], doc);
+                                ZipDoc.AddFile(doc);
+                                System.IO.File.Delete(ListFiles[j]);
+
+                            }
+                            ZipDoc.Save(outPutStream);
+                            Directory.GetFiles(PathDoc, "*.docx", SearchOption.TopDirectoryOnly).ToList().ForEach(System.IO.File.Delete);
 
                         }
-                        ZipDoc.Save(outPutStream);
-                        Directory.GetFiles(PathDoc, "*.docx", SearchOption.TopDirectoryOnly).ToList().ForEach(System.IO.File.Delete);
-
+                        outPutStream.Position = 0;
+                        result = File(outPutStream, "application/zip", $"{FileNameZip}.zip");
+                        return result;
                     }
-                    outPutStream.Position = 0;
-                    var fileByte = File(outPutStream, "application/zip", $"{FileNameZip}.zip");
-                    return fileByte;
-                }
+                    else
+                    {
 
-                else 
-                {
-                    for (int i = 0; i < PeecheckBox.Length; i++) { value = PeecheckBox[i]; }
-                    pee = PrintWord.GetDataBeneficiairePeeById(value);                   
-                    string nomFichier = $"{value}_{pee.MatriculeBeneficiaireNavigation.NomBeneficiaire}_{pee.MatriculeBeneficiaireNavigation.PrenomBeneficiaire}";
-                    
-                foreach (var item in ListFiles)
-                {
-                    fichierDoc = item;
-              
-                }
-                ContentDisposition content = new ContentDisposition()
-                {
-                    FileName = nomFichier,
+                        pee = await PrintWord.GetDataBeneficiairePeeById(value);
+                        string nomFichier = $"{value}_{pee.MatriculeBeneficiaireNavigation.NomBeneficiaire}_{pee.MatriculeBeneficiaireNavigation.PrenomBeneficiaire}";
 
-                    Inline = false
-                };
-                contenu = System.IO.File.ReadAllBytes(fichierDoc);
-                Response.Headers.Add("Content-Disposition1", content.ToString());
+                        foreach (var item in ListFiles)
+                        {
+                            fichierDoc = item;
 
-                Response.Headers.Add("X-Content-Type-Options1", "nosniff");
+                        }
+                        ContentDisposition content = new ContentDisposition()
+                        {
+                            FileName = nomFichier,
 
+                            Inline = false
+                        };
+                        contenu = System.IO.File.ReadAllBytes(fichierDoc);
+                        Response.Headers.Add("Content-Disposition1", content.ToString());
+
+                        Response.Headers.Add("X-Content-Type-Options1", "nosniff");
+
+
+                        System.IO.File.Delete(fichierDoc);
+                        return File(contenu, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"{content.FileName}.docx", true);
+                    }
                 
-                System.IO.File.Delete(fichierDoc);
-                return File(contenu, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"{content.FileName}.docx", true);
-            }
-            
-            
 
-
-            
-
+           
         }
-        //public IActionResult PrintPdf()
-        //{
-        //    var pintPdf = new ActionAsPdf("GetDocumentForPrint");
-        //    return pintPdf;
-        //}
         #endregion
         [HttpGet]
         public  IActionResult ListePeeAValider(string id)

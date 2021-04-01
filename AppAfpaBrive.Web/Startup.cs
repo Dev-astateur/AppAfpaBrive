@@ -102,7 +102,7 @@ namespace AppAfpaBrive.Web
 
             app.UseEndpoints(endpoints =>
             {
-                
+
                 endpoints.MapControllerRoute(
 
                     name: "AfficheBeneficiairePee",

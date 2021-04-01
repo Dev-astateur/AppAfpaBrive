@@ -1,13 +1,9 @@
-﻿@model AppAfpaBrive.BOL.Pee
+﻿@model IEnumerable<AppAfpaBrive.BOL.Pee>
 @using AppAfpaBrive.BOL;
 
 @{
-    List<PeriodePee> LitsPeriode = new List<PeriodePee>();
 
-    LitsPeriode = ViewData["PeriodePee"] as List<PeriodePee>;
     IEnumerable<Pee> ListPee = ViewData["ListPeeSansDoublons"] as IEnumerable<Pee>;
-
-
 }
 
 
@@ -24,7 +20,7 @@
         <div>
         <input id="3" asp-action="GetDocumentForPrint" type="submit" value="Accompagnement_Tuteur" asp-route-id="3" class="btn btn-secondary"/>
         </div>
-
+        <div id="MessageError" ></div>
     </div>
 
     <div class="table container-fluid">
