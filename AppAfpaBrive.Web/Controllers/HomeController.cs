@@ -31,11 +31,11 @@ namespace AppAfpaBrive.Web.Controllers
             _mailSender.SendEmailAsync("vincent.bost@afpa.fr", "Test", "test");
             return View();
         }
-        public IActionResult ListeCollaborateurs1()
-        {
-            List<Etablissement> etablissements = _dbContext.Etablissements.ToList();
-            return View(etablissements);
-        }
+        //public IActionResult ListeCollaborateurs1()
+        //{
+        //    List<Etablissement> etablissements = _dbContext.Etablissements.ToList();
+        //    return View(etablissements);
+        //}
         public IActionResult ListeCollaborateurs2(string etablissement)
         {
             var collaborateurs = _dbContext.CollaborateurAfpas.Where(c => c.IdEtablissement == etablissement);

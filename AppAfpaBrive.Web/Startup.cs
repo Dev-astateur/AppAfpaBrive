@@ -56,8 +56,8 @@ namespace AppAfpaBrive.Web
            new PhysicalFileProvider(
                Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             ConfigurerAutorisations(services);
             
@@ -206,10 +206,10 @@ namespace AppAfpaBrive.Web
                 userResult.Wait();
                 if (userResult.Result.Succeeded)
                 {
-                    //Task<IdentityResult> newUserRole = userManager.AddToRoleAsync(user, "Administrateur");
-                    //newUserRole.Wait();
-                    //Task<IdentityResult> newUserRole2 = userManager.AddToRoleAsync(user, "Formateur");
-                    //newUserRole.Wait();
+                    Task<IdentityResult> newUserRole = userManager.AddToRoleAsync(user, "Administrateur");
+                    newUserRole.Wait();
+                    Task<IdentityResult> newUserRole2 = userManager.AddToRoleAsync(user, "Formateur");
+                    newUserRole.Wait();
                 }
             }
            
