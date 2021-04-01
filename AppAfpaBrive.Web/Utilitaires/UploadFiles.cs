@@ -65,7 +65,7 @@ namespace AppAfpaBrive.Web.Utilitaires
                     postedFile.CopyToAsync(stream);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception("Le fichier n'a pas pu être uploadé correctement");
             }

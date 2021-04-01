@@ -12,14 +12,16 @@ using AppAfpaBrive.Web.Controllers.ProduitFormation;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
 using Projet_Test.InMemoryDb;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace Projet_Test
 {
     [TestFixture]
     public class TestProduitDeFormation
     {
-        DbContextMocker db = new DbContextMocker();
-        AFPANADbContext dba;
+        private readonly AFPANADbContext db = DbContextMocker.GetAFPANADbContext("AFPANA");
+        private readonly ILogger<ProduitFormationController> _logger = Mock.Of<ILogger<ProduitFormationController>>();
 
         [Test]
         public void LibelleCourtFormationTropLong()
@@ -117,8 +119,7 @@ namespace Projet_Test
             DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
             builder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;", assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName));
 
-
-            ProduitFormationController controleur = new ProduitFormationController(new AFPANADbContext(builder.Options));
+            ProduitFormationController controleur = new ProduitFormationController(db,_logger);
             var view = await controleur.Index("concepteur",1, "CodeProduitFormation");
 
             Assert.IsInstanceOf<ViewResult>(view);
@@ -131,7 +132,10 @@ namespace Projet_Test
             DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
             builder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;", assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName));
 
-            ProduitFormationController controleur = new ProduitFormationController(new AFPANADbContext(builder.Options));
+
+            //or use this short equivalent 
+
+            ProduitFormationController controleur = new ProduitFormationController(db,_logger);
             var view = controleur.Edit(id);
             Assert.IsInstanceOf<ViewResult>(view);
         }
@@ -140,8 +144,6 @@ namespace Projet_Test
         
         public void TestMethodeDeleteValide()
         {
-            
-            dba = db.GetAFPANADbContext("bloub");
 
             var produitformation = new ProduitFormation
             {
@@ -150,22 +152,21 @@ namespace Projet_Test
                 LibelleCourtFormation = "abc",
                 LibelleProduitFormation = "dkazkdakanfpoakfjha"
             };
-            dba.ProduitFormations.Add(produitformation);
+            db.ProduitFormations.Add(produitformation);
 
-            dba.SaveChanges();
-            dba.Entry<ProduitFormation>(produitformation).State =EntityState.Detached;
+            db.SaveChanges();
+            db.Entry<ProduitFormation>(produitformation).State =EntityState.Detached;
 
-            ProduitFormationController controleur = new ProduitFormationController(dba);
+            ProduitFormationController controleur = new ProduitFormationController(db,_logger);
             var view = controleur.Delete(7);
             
-            var result = dba.ProduitFormations.Where(x=> x.CodeProduitFormation==7);
+            var result = db.ProduitFormations.Where(x=> x.CodeProduitFormation==7);
             Assert.IsTrue(result.Count()==0);
         }
 
         [Test]
         public void TestMethodeCreateValide()
         {
-            dba = db.GetAFPANADbContext("xxx");
             var produitformation = new ProduitFormationModelView
             {
                 CodeProduitFormation = 7,
@@ -175,13 +176,13 @@ namespace Projet_Test
             };
             var item = produitformation.GetProduitFormation();
            
-            dba.Entry<ProduitFormation>(item).State = EntityState.Detached;
+            db.Entry<ProduitFormation>(item).State = EntityState.Detached;
 
-            ProduitFormationController controleur = new ProduitFormationController(dba);
+            ProduitFormationController controleur = new ProduitFormationController(db,_logger);
 
             var view = controleur.Create(produitformation);
 
-            var result = dba.ProduitFormations.Where(x => x.CodeProduitFormation == 7);
+            var result = db.ProduitFormations.Where(x => x.CodeProduitFormation == 7);
             Assert.IsTrue(result.Count() == 1);
         }
         

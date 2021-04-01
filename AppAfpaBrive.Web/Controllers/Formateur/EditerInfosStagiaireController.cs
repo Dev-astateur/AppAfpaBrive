@@ -18,10 +18,10 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 
     public class EditerInfosStagiaireController : Controller
     {
-        private AFPANADbContext _context = null;
+        //private AFPANADbContext _context = null;
         private readonly StagiaireLayer _stagiaireLayer;
         private readonly OffreFormationLayer _offreFormation;
-        private readonly BeneficiaireLayer _beneficiaireLayer;
+        //private readonly BeneficiaireLayer _beneficiaireLayer;
 
 
         public EditerInfosStagiaireController(AFPANADbContext context)

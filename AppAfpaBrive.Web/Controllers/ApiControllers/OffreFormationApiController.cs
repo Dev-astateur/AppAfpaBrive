@@ -19,7 +19,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
 
         [Produces("application/json")]
         [HttpGet("getOffre")]
-        public async Task<IActionResult> GetOffre()
+        public IActionResult GetOffre()
         {
             try
             {

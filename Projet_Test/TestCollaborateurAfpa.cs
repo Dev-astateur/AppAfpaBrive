@@ -14,8 +14,7 @@ namespace Projet_Test
     [TestFixture]
     public class TestCollaborateurAfpa
     {
-        DbContextMocker db = new DbContextMocker();
-        AFPANADbContext dba;
+        private readonly AFPANADbContext db = DbContextMocker.GetAFPANADbContext("blob");
 
         [Test]
         public void MatriculeCollaborateurAbsente()
@@ -329,7 +328,6 @@ namespace Projet_Test
         [Test]
         public void TestCreationCollaborateur()
         {
-            dba = db.GetAFPANADbContext("xxx");
             var bloub = new CollaborateurAfpaModelView
             {
                 MatriculeCollaborateurAfpa = "1324567",
@@ -342,10 +340,10 @@ namespace Projet_Test
                 Uo = "912",
                 UserId = "bloub"
             };
-            CollaborateurAfpaController controleur = new CollaborateurAfpaController(dba);
+            CollaborateurAfpaController controleur = new CollaborateurAfpaController(db);
             var view = controleur.Create(bloub);
 
-            var result = dba.CollaborateurAfpas.Where(x => x.NomCollaborateur == "Besancon");
+            var result = db.CollaborateurAfpas.Where(x => x.NomCollaborateur == "Besancon");
             Assert.IsTrue(result.Count() == 1);
         }
     }

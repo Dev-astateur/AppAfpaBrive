@@ -21,7 +21,7 @@ namespace AppAfpaBrive.Web.Controllers
 
         [Produces("application/json")]
         [HttpGet("search")]
-        public async Task<IActionResult> Search()
+        public IActionResult Search()
         {
             try
             {
@@ -36,7 +36,7 @@ namespace AppAfpaBrive.Web.Controllers
         }
         [Produces("application/json")]
         [HttpGet("searchPays")]
-        public async Task<IActionResult> SearchPays()
+        public IActionResult SearchPays()
         {
             try
             {

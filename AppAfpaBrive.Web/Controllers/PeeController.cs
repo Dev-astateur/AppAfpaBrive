@@ -262,7 +262,7 @@ namespace AppAfpaBrive.Web.Controllers
                 {
                     return BadRequest();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return BadRequest();
                 }

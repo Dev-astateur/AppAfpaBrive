@@ -22,7 +22,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
 
         [Produces("application/json")]
         [HttpGet("search")]
-        public async Task<IActionResult> Search()
+        public IActionResult Search()
         {
             try
             {

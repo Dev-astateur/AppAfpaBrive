@@ -17,8 +17,7 @@ namespace Projet_Test
     [TestFixture]
     public class TestUnitaireEtablissement
     {
-        DbContextMocker db = new DbContextMocker();
-        AFPANADbContext dba;
+        private readonly AFPANADbContext db = DbContextMocker.GetAFPANADbContext("bloub");
 
         [Test]
         public void IdEtablissementRequis()
@@ -352,7 +351,6 @@ namespace Projet_Test
         [Test]
         public void TestCreationEtablissement()
         {
-            dba = db.GetAFPANADbContext("xxx");
             var bloub = new EtablissementModelView
             {
                 IdEtablissement = "37700",
@@ -364,10 +362,10 @@ namespace Projet_Test
                 CodePostal = "37700",
                 Ville = "Tours"
             };
-            EtablissementController controleur = new EtablissementController(dba);
+            EtablissementController controleur = new EtablissementController(db);
             var view = controleur.Create(bloub);
 
-            var result = dba.Etablissements.Where(x => x.NomEtablissement == "MOMA");
+            var result = db.Etablissements.Where(x => x.NomEtablissement == "MOMA");
             Assert.IsTrue(result.Count() == 1);
         }
 
@@ -375,7 +373,6 @@ namespace Projet_Test
         public void TestEditionEtablissement()
         {
 
-            dba = db.GetAFPANADbContext("xxx");
             var bloub = new EtablissementModelView
             {
                 IdEtablissement = "37700",
@@ -389,16 +386,16 @@ namespace Projet_Test
             };
 
 
-            dba.Etablissements.Add(bloub.GetEtablissement());
+            db.Etablissements.Add(bloub.GetEtablissement());
 
-            EtablissementController controleur = new EtablissementController(dba);
+            EtablissementController controleur = new EtablissementController(db);
 
 
             bloub.NomEtablissement = "EtablissementCentral";
 
             var view = controleur.Edit(bloub);
 
-            var result = dba.Etablissements.Where(x => x.NomEtablissement == "EtablissementCentral");
+            var result = db.Etablissements.Where(x => x.NomEtablissement == "EtablissementCentral");
             Assert.IsTrue(result.Count() == 1);
 
         }
