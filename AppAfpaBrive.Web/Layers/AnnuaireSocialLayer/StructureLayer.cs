@@ -72,6 +72,16 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
             _context.SaveChanges();
         }
 
+        public IQueryable<Structure> GetStructuresStartWith(string name)
+        {
+            return _context.Structures.Where(x => x.NomStructure.StartsWith(name));
+        }
+
+        public IQueryable<Structure> GetStructuresByLocation(string town)
+        {
+            return _context.Structures.Where(x => x.CodePostal.ToString().StartsWith(town));
+        }
+
         
     }
 }
