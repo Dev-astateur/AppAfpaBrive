@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class EntrepriseProfessionnel
+    public partial class EntrepriseProfessionnel:EntityBase
     {
         public int IdEntreprise { get; set; }
         public int IdProfessionnel { get; set; }

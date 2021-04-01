@@ -17,6 +17,7 @@ using AppAfpaBrive.Web.Utilitaires;
 using AppAfpaBrive.Web.Layer;
 using System.IO;
 using static AppAfpaBrive.Web.Layers.PeeLayer;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
@@ -424,118 +425,135 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             AFPANADbContext context = new AFPANADbContext();
             if (ModelState.IsValid)
             {
-                decimal peeId = 0;
-                try
+                string str = this.HttpContext.Session.GetString("convention");
+                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+
+                Entreprise entreprise = new Entreprise();
+                Professionnel Tuteur = new Professionnel();
+                EntrepriseProfessionnel tuteur_entr = new EntrepriseProfessionnel();
+                Professionnel Responsable = new Professionnel();
+                EntrepriseProfessionnel Responsable_entr = new EntrepriseProfessionnel();
+
+
+                PeriodePee periodePee = new PeriodePee();
+
+
+
+                entreprise = new Entreprise
                 {
-                    string str = this.HttpContext.Session.GetString("convention");
-                    Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
+                    Ligne1Adresse = convention.Entreprise_Ligne1Adresse,
+                    Ligne2Adresse = convention.Entreprise_Ligne2Adresse,
+                    Ligne3Adresse = convention.Entreprise_Ligne3Adresse,
+                    CodePostal = convention.Entreprise_codePostal,
+                    MailEntreprise = convention.Entreprise_Mail,
+                    Idpays2 = "Fr",
+                    NumeroSiret = convention.Siret,
+                    RaisonSociale = convention.Entreprise_raison_social,
+                    Ville = convention.Entreprise_Ville,
+                    TelEntreprise = convention.Entreprise_Tel
+                };
 
-                    if (convention.Entreprise_Create == true)
-                    {
-                        Entreprise entreprise = new Entreprise
-                        {
-                            CodePostal = convention.Entreprise_codePostal,
-                            Idpays2 = _Pays.Get_pays_ID(convention.Entreprise_IdPays),
-                            Ligne1Adresse = convention.Entreprise_Ligne1Adresse,
-                            Ligne2Adresse = convention.Entreprise_Ligne2Adresse,
-                            Ligne3Adresse = convention.Entreprise_Ligne3Adresse,
-                            RaisonSociale = convention.Entreprise_raison_social,
-                            MailEntreprise = convention.Entreprise_Mail,
-                            Ville = convention.Entreprise_Ville,
-                            TelEntreprise = convention.Entreprise_Tel,
-                            NumeroSiret = convention.Siret
-
-                        };
-                        _Entreprise.Create_entreprise(entreprise);
-                        context.Add(entreprise);
-                        convention.IdEntreprise = entreprise.IdEntreprise;
-                    }
-
-                    Pee pee = new Pee
-                    {
-                        IdEntreprise = convention.IdEntreprise,
-                        MatriculeBeneficiaire = convention.Idmatricule,
-                        IdTuteur = convention.IdTuteur,
-                        IdResponsableJuridique = convention.IdResponsable,
-                        IdOffreFormation = convention.IdFormation,
-                        IdEtablissement = convention.IdEtablissement
-                    };
-
-                    if (convention.Tuteur_create == true)
-                    {
-                        Professionnel professionnel = new Professionnel
-                        {
-                            CodeTitreCiviliteProfessionnel = convention.Tuteur_genre,
-                            NomProfessionnel = convention.TuteurNom,
-                            PrenomProfessionnel = convention.TuteurPrenom
-                        };
-                        _pro.create_get_ID(professionnel);
-                        context.Add(professionnel);
-                        EntrepriseProfessionnel tuteur = new EntrepriseProfessionnel
-                        {
-                            IdEntreprise = convention.IdEntreprise,
-                            IdProfessionnel = professionnel.IdProfessionnel,
-                            AdresseMailPro = convention.Tuteur_AdresseMail,
-                            TelephonePro = convention.Tuteur_Telephone,
-                            Fonction = convention.Tuteur_Fonction
-                        };
-                        _entreprisepro.create(tuteur);
-
-                        convention.IdTuteur = tuteur.IdProfessionnel;
-                        pee.IdTuteur = tuteur.IdProfessionnel;
-                    }
-
-                    if (convention.Responsable_create == true)
-                    {
-                        if (convention.Tuteur_create_Id != convention.Responsable_create_Id)
-                        {
-                            Professionnel professionnel = new Professionnel
-                            {
-                                CodeTitreCiviliteProfessionnel = convention.Responsable_genre,
-                                NomProfessionnel = convention.ResponsableNom,
-                                PrenomProfessionnel = convention.ResponsablePrenom
-                            };
-                            _pro.create(professionnel);
-                            EntrepriseProfessionnel Responsable = new EntrepriseProfessionnel
-                            {
-                                IdEntreprise = convention.IdEntreprise,
-                                IdProfessionnel = professionnel.IdProfessionnel,
-                                AdresseMailPro = convention.Responsable_AdresseMail,
-                                TelephonePro = convention.Responsable_Telephone,
-                                Fonction = convention.Responsable_Fonction
-                            };
-                            _entreprisepro.create(Responsable);
-                        }
-                        else
-                        {
-                            convention.IdResponsable = convention.IdTuteur;
-                            pee.IdResponsableJuridique = convention.IdTuteur;
-                        }
-                    }
-
-
-                    string str_date = this.HttpContext.Session.GetString("date");
-                    List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
-                    _peelayer.Pee_Create(pee);
-
-                    foreach (var item in dates)
-                    {
-                        PeriodePee periodePee = new PeriodePee
-                        {
-                            IdPee = pee.IdPee,
-                            DateDebutPeriodePee = item.Date1,
-                            DateFinPeriodePee = item.Date2,
-                            NumOrdre = item.Iddate,
-
-                        };
-                        _periode.Pee_Create(periodePee);
-                    }
-
-                }
-                catch (Exception)
+                Tuteur = new Professionnel
                 {
-                    RedirectToAction("Erreur");
+                    PrenomProfessionnel = convention.TuteurPrenom,
+                    NomProfessionnel = convention.TuteurNom,
+                    CodeTitreCiviliteProfessionnel = convention.Tuteur_genre,
+                    IdProfessionnel = convention.IdTuteur
+                };
+
+                tuteur_entr = new EntrepriseProfessionnel
+                {
+                    AdresseMailPro = convention.Tuteur_AdresseMail,
+                    Fonction = convention.Tuteur_Fonction,
+                    TelephonePro = convention.Tuteur_Telephone,
+                    IdProfessionnelNavigation = Tuteur,
+                    IdEntrepriseNavigation = entreprise
+                };
+
+                Responsable = new Professionnel
+                {
+                    PrenomProfessionnel = convention.ResponsablePrenom,
+                    NomProfessionnel = convention.ResponsableNom,
+                    CodeTitreCiviliteProfessionnel = convention.Responsable_genre,
+                    IdProfessionnel = convention.IdResponsable
+                };
+
+                tuteur_entr = new EntrepriseProfessionnel
+                {
+                    AdresseMailPro = convention.Responsable_AdresseMail,
+                    Fonction = convention.Responsable_Fonction,
+                    TelephonePro = convention.Responsable_Telephone,
+                    IdProfessionnelNavigation = Tuteur,
+                    IdEntrepriseNavigation = entreprise
+                };
+
+                Pee pee = new Pee
+                {
+                    IdEntrepriseNavigation = entreprise,
+                    MatriculeBeneficiaire = convention.Idmatricule,
+                    IdOffreFormation = convention.IdFormation,
+                    IdEtablissement = convention.IdEtablissement
+                };
+
+                periodePee = new PeriodePee
+                {
+                    DateDebutPeriodePee = new DateTime(2010, 10, 10),
+                    DateFinPeriodePee = new DateTime(2010, 11, 11),
+                    NumOrdre = 1,
+                    IdPeeNavigation = pee,
+                };
+
+                if (convention.Entreprise_Create == true)
+                {
+                    context.Add(entreprise);
+                    context.SaveChanges();
                 }
+                else
+                {
+                    entreprise.IdEntreprise = convention.IdEntreprise;
+                    context.Entry(entreprise).State = EntityState.Unchanged;
+                }
+
+                if (convention.Tuteur_create == true)
+                {
+                    pee.IdTuteurNavigation = Tuteur;
+                    tuteur_entr.IdProfessionnelNavigation = Tuteur;
+                    tuteur_entr.IdEntreprise = entreprise.IdEntreprise;
+
+                    context.Entry(Tuteur).State = EntityState.Added;
+                    context.Entry(tuteur_entr).State = EntityState.Added;
+                }
+                else
+                {
+                    pee.IdTuteur = convention.IdTuteur;
+                }
+
+                if (convention.Responsable_create == true)
+                {
+                    pee.IdResponsableJuridiqueNavigation = Responsable;
+                    Responsable_entr.IdProfessionnelNavigation = Responsable;
+                    Responsable_entr.IdEntreprise = entreprise.IdEntreprise;
+                    if (convention.Tuteur_create_Id == convention.Responsable_create_Id)
+                    {
+                        pee.IdResponsableJuridiqueNavigation = Tuteur;
+                    }
+                    else
+                    {
+                        context.Entry(Responsable).State = EntityState.Added;
+                        context.Entry(Responsable_entr).State = EntityState.Added;
+                    }
+                }
+                else
+                {
+                    pee.IdResponsableJuridique = convention.IdResponsable;
+                }
+
+
+
+
+                context.Entry(pee).State = EntityState.Added;
+                context.Entry(periodePee).State = EntityState.Added;
+                context.SaveChanges();
 
 
 
@@ -546,7 +564,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
                     try
                     {
-                        string Path = "./wwwroot/Documents/" + peeId;
+                        string Path = "./wwwroot/Documents/" + pee.IdPee;
                         if (!Directory.Exists(Path))
                         {
                             Directory.CreateDirectory(Path);
@@ -557,7 +575,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                         {
                             PeeDocument peeDocument = new PeeDocument
                             {
-                                IdPee = peeId,
+                                IdPee = pee.IdPee,
                                 PathDocument = Path
                             };
                             _PeeDocument.create(peeDocument);
