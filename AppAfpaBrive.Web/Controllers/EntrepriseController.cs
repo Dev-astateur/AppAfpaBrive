@@ -10,9 +10,12 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.Web.Layers;
 using ReflectionIT.Mvc.Paging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+
+    [Authorize(Roles = "Formateur,CollaborateurAFPA,Administrateur")]
     public class EntrepriseController : Controller
     {
        // private readonly AFPANADbContext _dbContext;
@@ -21,7 +24,6 @@ namespace AppAfpaBrive.Web.Controllers
         public EntrepriseController(AFPANADbContext Db)
         {
             _layer = new EntrepriseLayer(Db);
-           // _dbContext = new AFPANADbContext();
         }
 
        
@@ -73,18 +75,18 @@ namespace AppAfpaBrive.Web.Controllers
         // GET: EntrepriseController/ListeEntreprise
         //[HttpGet]
 
-
-        public ActionResult ListeEntreprise(string departement, string formation, int page)
+        [AllowAnonymous]
+        public ActionResult ListeEntreprise(string departement, string formation, int pageIndex)
         {
 
           //  List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
 
             ViewData["GetDepartement"] = departement;
-             ViewData["GetProduitForm"] = formation;
+            ViewData["GetProduitForm"] = formation;
 
             //Essai pour pagination
 
-            var query = _layer.GetAllEntrepriseForPaging(page);
+            var query = _layer.GetAllEntrepriseForPaging(pageIndex);
 
             //List<Entreprise> query=null;
 
@@ -95,7 +97,7 @@ namespace AppAfpaBrive.Web.Controllers
 
                 //pagination
 
-                query =  _layer.GetEntrepriseByDepartementEtOffreForPaging(formation,departement,page);
+                query =  _layer.GetEntrepriseByDepartementEtOffreForPaging(formation,departement, pageIndex);
 
             }
 
@@ -104,7 +106,7 @@ namespace AppAfpaBrive.Web.Controllers
                 //query = _layer.GetEntreprisesByDepartement(departement);
 
                 //pagination
-                 query =_layer.GetEntreprisesByDepartementPaging(departement, page);
+                 query =_layer.GetEntreprisesByDepartementPaging(departement, pageIndex);
             }
 
             else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
@@ -113,7 +115,7 @@ namespace AppAfpaBrive.Web.Controllers
                 // query = _layer.GetEntrepriseByProduitFormation(formation);
 
                 //pagination
-                query = _layer.GetEntrepriseByProduitFormationForPaging(formation, page);
+                query = _layer.GetEntrepriseByProduitFormationForPaging(formation, pageIndex);
             }
 
             //if (query != null)

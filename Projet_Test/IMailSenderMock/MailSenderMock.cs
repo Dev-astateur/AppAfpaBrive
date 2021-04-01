@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Projet_Test.IMailSenderMock
 {
-    public class IMailSenderMock : IEmailSender
+    public class MailSenderMock : IEmailSender
     {
-        public IMailSenderMock() { }
+        public MailSenderMock() { }
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             if (string.IsNullOrEmpty(email))
