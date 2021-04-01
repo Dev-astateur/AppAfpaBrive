@@ -18,6 +18,8 @@ using System.Net;
 using Projet_Test.Utilitaire;
 using Moq;
 using AppAfpaBrive.Web.Utilitaires;
+using Microsoft.AspNetCore.Mvc;
+using AppAfpaBrive.Web.ModelView;
 
 namespace Projet_Test
 {
@@ -26,7 +28,7 @@ namespace Projet_Test
         private AFPANADbContext _dbContext = null;
         private IConfiguration _configuration = null;
         private IHostEnvironment _hostEnvironment = null;
-        private IMailSenderMock.IMailSenderMock _mailSenderMock = null;
+        private IMailSenderMock.MailSenderMock _mailSenderMock = null;
 
         public TestControllerPee()
         {

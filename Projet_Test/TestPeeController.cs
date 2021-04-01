@@ -13,6 +13,7 @@ using AppAfpaBrive.Web.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Projet_Test.IMailSenderMock;
 
 namespace Projet_Test
 {
@@ -26,6 +27,8 @@ namespace Projet_Test
         Mock<IConfiguration> IConfigMok;
         List<string> listFilesMok = new List<string>();
         ImpressionFicheSuivi ficheSuivi;
+        MailSenderMock mail = new MailSenderMock();
+
         [SetUp]
         public void LoadContext()
         {
@@ -149,7 +152,7 @@ namespace Projet_Test
         {
             //arrange
 
-            var controller = new PeeController(Context, IConfigMok.Object, mockEnvironment.Object);
+            var controller = new PeeController(Context, IConfigMok.Object, mockEnvironment.Object,mail);
             //Act
             var result = controller.Index();
             //Assert
@@ -161,7 +164,7 @@ namespace Projet_Test
         public async Task TestPeeContriller_ViewAfficheBeneficiaire(int IdOffreFormation, string IdEtablissement)
         {
             //Arrange
-            var controller = new PeeController(Context, IConfigMok.Object, mockEnvironment.Object);
+            var controller = new PeeController(Context, IConfigMok.Object, mockEnvironment.Object,mail);
             //Act
             var result = await controller._AfficheBeneficiairePee(IdOffreFormation, IdEtablissement) as ViewResult;
             //Assert
