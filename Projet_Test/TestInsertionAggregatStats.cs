@@ -7,19 +7,20 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using AppAfpaBrive.Web.Layers;
 
 namespace Projet_Test
 {
     public class TestInsertionAggregatStats
     {
-        public DbContextMocker db = new DbContextMocker();
-        AFPANADbContext dba;
+        private AFPANADbContext dba = DbContextMocker.GetAFPANADbContext("blob");
 
 
         [SetUp]
         public void Setup()
         {
-            dba = db.GetAFPANADbContext("test");
+
+             dba = DbContextMocker.GetAFPANADbContext("blob");
           //  dba.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 

@@ -1,15 +1,12 @@
 ﻿using AppAfpaBrive.BOL;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Reflection;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppAfpaBrive.Web.Layers
+namespace AppAfpaBrive.Web.Layers.StatsLayer
 {
     public class InsertInsertionDataLayer
     {
@@ -19,32 +16,38 @@ namespace AppAfpaBrive.Web.Layers
             _dbContext = dbContext;
         }
 
-        public void CreateNewLine(IInsertion toInsert)
+        public void InsertAnwser(DestinataireEnquete anwser)
         {
-            if (toInsert.IsValid())
+            IInsertion InsertBase = GetLineToUpdate(anwser);
+
+            /*A prendre en compte si on authorise les modification hors enquete
+            //--------------------------------------------------------------------------
+            if (IsAlreadyAnwsered(anwser.MatriculeBeneficiaire, anwser.IdPlanificationCampagneMailNavigation.Type))
             {
-                _dbContext.InsertionTroisMois.Add((InsertionsTroisMois)toInsert);
-                _dbContext.InsertionSixMois.Add((InsertionsSixMois)toInsert);
-                _dbContext.InsertionDouzeMois.Add((InsertionsDouzeMois)toInsert);
-
-                try
-                {
-                    _dbContext.SaveChanges();
-                }
-                catch (Exception dbException)
-                {
-                    throw dbException;
-                }
+                InsertBase = GetUpdatedLineSoustraction(InsertBase, anwser.MatriculeBeneficiaire);
             }
-            else throw new Exception("Les champs IdEtablissement, IdOffreFormation et Annee doivent etre rempli.");       
-        }
+            //--------------------------------------------------------------------------
+            */
 
-        public void AddOneInsertion(IInsertion anwser)
-        {
-            if (anwser is InsertionsTroisMois obj3) AddOne(obj3);
-            else if (anwser is InsertionsSixMois obj6) AddOne(obj6);
-            else if (anwser is InsertionsDouzeMois obj12) AddOne(obj12);
-            else throw new Exception("Erreur inconnu.");
+            InsertBase = GetUpdatedLineAddition(InsertBase, anwser.IdContratNavigation.TypeContrat);
+
+            //switch (anwser.IdPlanificationCampagneMailNavigation.Type)
+            //{
+            //    case "1":
+            //        _dbContext.InsertionTroisMois.Update((InsertionsTroisMois)InsertBase);
+            //        break;
+
+            //    case "2":
+            //        _dbContext.InsertionSixMois.Update((InsertionsSixMois)InsertBase);
+            //        break;
+
+            //    case "3":
+            //        _dbContext.InsertionDouzeMois.Update((InsertionsDouzeMois)InsertBase);
+            //        break;
+
+            //    default:
+            //        throw new Exception("error");
+            //}
             try
             {
                 _dbContext.SaveChanges();
@@ -55,96 +58,140 @@ namespace AppAfpaBrive.Web.Layers
             }
         }
 
-        #region Get updatedLine (Addition ou soustraction)
-        private static IInsertion GetUpdatedLineAddition(IInsertion toUpdate, IInsertion anwser)
+        private IInsertion GetLineToUpdate(DestinataireEnquete anwser)
         {
-            // ------------------------------
-            Type myType = anwser.GetType();
-            IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());//.Skip(3).ToList();
-            foreach (PropertyInfo prop in props)
+
+            int annee = _dbContext.OffreFormations
+                .Where(x => x.IdOffreFormation == anwser.IdOffreFormation && x.IdEtablissement == anwser.IdEtablissement)
+                .Select(x => x.DateFinOffreFormation.Year).First();
+
+            IInsertion toReturn = new NewLineStats();
+
+            switch (anwser.IdPlanificationCampagneMailNavigation.Type)
             {
-                if (prop.Name != "IdOffreFormation" && prop.Name != "IdEtablissement" && prop.Name != "Annee")
-                {
-                    bool ok = Int32.TryParse((string)prop.GetValue(anwser, null), out int result);
-                    if (ok && result == 1)
-                    {
-                        prop.SetValue(toUpdate, Int32.Parse((string)prop.GetValue(toUpdate, null) + 1));
-                        break;
-                    }
-                }
+                case "1":
+                    toReturn = _dbContext.InsertionTroisMois
+                    .Where(x => x.IdEtablissement == anwser.IdEtablissement &&
+                    x.IdOffreFormation == anwser.IdOffreFormation &&
+                    x.Annee == annee &&
+                    x.EnLienAvecFormation == anwser.IdContratNavigation.EnLienMetierFormation).First();
+                    break;
+                case "2":
+                    toReturn = _dbContext.InsertionSixMois
+                    .Where(x => x.IdEtablissement == anwser.IdEtablissement &&
+                    x.IdOffreFormation == anwser.IdOffreFormation &&
+                    x.Annee == annee &&
+                    x.EnLienAvecFormation == anwser.IdContratNavigation.EnLienMetierFormation).First();
+                    break;
+                case "3":
+                    toReturn = _dbContext.InsertionDouzeMois
+                    .Where(x => x.IdEtablissement == anwser.IdEtablissement &&
+                    x.IdOffreFormation == anwser.IdOffreFormation &&
+                    x.Annee == annee &&
+                    x.EnLienAvecFormation == anwser.IdContratNavigation.EnLienMetierFormation).First();
+                    break;
+                default:
+                    throw new Exception("Aucune ligne correspondante.");
+            }
+            int tmp = toReturn.TotalReponse + 1;
+            toReturn.TotalReponse = tmp;
+            return toReturn;
+        }
+
+        private IInsertion GetUpdatedLineAddition(IInsertion toUpdate, int typeContrat)
+        {
+            if (typeContrat == 1)
+            {
+                int tmp = toUpdate.Cdi + 1;
+                toUpdate.Cdi = tmp;
+            }
+            else if (typeContrat == 2)
+            {
+                int tmp = toUpdate.Cdd + 1;
+                toUpdate.Cdd = tmp;
+            }
+            else if (typeContrat == 3)
+            {
+                int tmp = toUpdate.Alternance + 1;
+                toUpdate.Alternance = tmp;
+            }
+            else if (typeContrat == 4)
+            {
+                int tmp = toUpdate.SansEmploie + 1;
+                toUpdate.SansEmploie = tmp;
+            }
+            else if (typeContrat == 5)
+            {
+                int tmp = toUpdate.Autres + 1;
+                toUpdate.Autres = tmp;
             }
             else throw new Exception("Le type de contrat n'existe pas.");
-            // ------------------------------
-            //if (anwser.Cdi == 1)
-            //{
-            //    int tmp = toUpdate.Cdi + 1;
-            //    toUpdate.Cdi = tmp;
-            //}
-            //else if (anwser.Cdd == 1)
-            //{
-            //    int tmp = toUpdate.Cdd + 1;
-            //    toUpdate.Cdd = tmp;
-            //}
-            //else if (anwser.Alternance == 1)
-            //{
-            //    int tmp = toUpdate.Alternance + 1;
-            //    toUpdate.Alternance = tmp;
-            //}
-            //else if (anwser.SansEmploie == 1)
-            //{
-            //    int tmp = toUpdate.SansEmploie + 1;
-            //    toUpdate.SansEmploie = tmp;
-            //}
-            //else if (anwser.Autres == 1)
-            //{
-            //    int tmp = toUpdate.Autres + 1;
-            //    toUpdate.Autres = tmp;
-            //}
-            //else throw new Exception("Veuillez fournir un champs a 1.");
             // ------------------------------
             return toUpdate;
         }
 
-        private static IInsertion GetUpdatedLineSoustraction(IInsertion toUpdate, IInsertion anwser)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
+        // A utiliser en cas de changement hors enquete
+        //private bool IsAlreadyAnwsered(string matriculeBeneficiaire, string type)
+        //{
+        //    bool isAnwsered = _dbContext.DestinataireEnquetes
+        //        .Join(_dbContext.PlanificationCampagneMails,
+        //        x => x.IdPlanificationCampagneMail,
+        //        x => x.IdPlanificationCampagneMail,
+        //        (t1, t2) => new
+        //        {
+        //            Type = t2.Type,
+        //            Beneficiaire = t1.MatriculeBeneficiaire,
+        //            Repondu = t1.Repondu
+        //        }).Where(x => x.Type == type && x.Beneficiaire == matriculeBeneficiaire).Select(x => x.Repondu).First();
+        //    return isAnwsered;
+        //}
 
-        #region Get the line to update 
-        public IInsertion GetLineToUpdate(InsertionsTroisMois anwser)
-        {
-            return _dbContext.InsertionTroisMois.Where(x => x.IdEtablissement == anwser.IdEtablissement && 
-            x.IdOffreFormation == anwser.IdOffreFormation && x.Annee == anwser.Annee).First();
-        }
-        public IInsertion GetLineToUpdate(InsertionsSixMois anwser)
-        {
-            return _dbContext.InsertionSixMois.Where(x => x.IdEtablissement == anwser.IdEtablissement &&
-            x.IdOffreFormation == anwser.IdOffreFormation && x.Annee == anwser.Annee).First();
-        }
-        public IInsertion GetLineToUpdate(InsertionsDouzeMois anwser)
-        {
-            return _dbContext.InsertionDouzeMois.Where(x => x.IdEtablissement == anwser.IdEtablissement &&
-            x.IdOffreFormation == anwser.IdOffreFormation && x.Annee == anwser.Annee).First();
-        }
-        #endregion
+        // A utiliser en cas de changement hors enquete si quelqu'un a deja repondu et s'actuallise : if(IsAlreadyAnwsered() == true)
+        //private IInsertion GetUpdatedLineSoustraction(IInsertion toUpdate, string matriculeBeneficiaire)
+        //{
+        //    int contrat = _dbContext.Contrats
+        //        .Where(x => x.DestinataireEnquetes.Select(x => x.MatriculeBeneficiaire).First() == matriculeBeneficiaire)
+        //        .Select(x => x.TypeContrat).First();
+        //    int tmp;
+        //    switch (contrat)
+        //    {
+        //        case 1:
+        //            tmp = toUpdate.Cdi - 1;
+        //            toUpdate.Cdi = tmp;
+        //            break;
+        //        case 2:
+        //            tmp = toUpdate.Cdd - 1;
+        //            toUpdate.Cdd = tmp;
+        //            break;
+        //        case 3:
+        //            tmp = toUpdate.Alternance - 1;
+        //            toUpdate.Alternance = tmp;
+        //            break;
+        //        case 4:
+        //            tmp = toUpdate.SansEmploie - 1;
+        //            toUpdate.SansEmploie = tmp;
+        //            break;
+        //        case 5:
+        //            tmp = toUpdate.Autres - 1;
+        //            toUpdate.Autres = tmp;
+        //            break;
+        //    }
+        //    return toUpdate;
+        //}
 
-        #region Add one to an existing row
-        private void AddOne(InsertionsTroisMois obj)
-        {
-            var toUpdate = GetLineToUpdate(obj);
-            _dbContext.InsertionTroisMois.Update((InsertionsTroisMois)GetUpdatedLineAddition(toUpdate, obj));    
-        }
-        private void AddOne(InsertionsSixMois obj)
-        {
-            var toUpdate = GetLineToUpdate(obj);
-            _dbContext.InsertionSixMois.Update((InsertionsSixMois)GetUpdatedLineAddition(toUpdate, obj));   
-        }
-        private void AddOne(InsertionsDouzeMois obj)
-        {
-            var toUpdate = GetLineToUpdate(obj);
-            _dbContext.InsertionDouzeMois.Update((InsertionsDouzeMois)GetUpdatedLineAddition(toUpdate, obj));           
-        }
-        #endregion
+        // Comparaison entre la date de fin de formation et la date de real de l'enquete en mois dans le cas d'une maj hors enquete
+        //private int SelectTablePourChangementPersonel(DestinataireEnquete anwser)
+        //{
+        //    DateTime dateReponse = (DateTime)anwser.DateRealisationEnquete;
+        //    DateTime dateFinFormation = _dbContext.OffreFormations
+        //        .Where(x => x.IdOffreFormation == anwser.IdOffreFormation && x.IdEtablissement == anwser.IdEtablissement)
+        //        .Select(x => x.DateFinOffreFormation).First();
+
+        //    long DiffInMonth = Microsoft.VisualBasic.DateAndTime.DateDiff(Microsoft.VisualBasic.DateInterval.Month, dateReponse, dateFinFormation);
+
+        //    if (DiffInMonth < 6) return 1;
+        //    else if (DiffInMonth < 12) return 2;
+        //    else return 3;
+        //}
     }
 }
