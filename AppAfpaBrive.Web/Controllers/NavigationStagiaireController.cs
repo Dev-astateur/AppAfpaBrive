@@ -3,23 +3,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppAfpaBrive.Web.ModelView.Navigation;
+using AppAfpaBrive.Web.Layers;
+using AppAfpaBrive.DAL;
 
 namespace AppAfpaBrive.Web.Controllers
 {
     public class NavigationStagiaireController : Controller
     {
+        private readonly BeneficiaireLayer _layerBeneficaire = null;
+
+        public NavigationStagiaireController(AFPANADbContext dbContext)
+        {
+            _layerBeneficaire = new BeneficiaireLayer(dbContext);
+        }
+
         /// <summary>
-        /// action qui va afficher dans une seule fenetre le menu pour le bénéficiare
+        /// action qui affiche la navigation du stagiaire
         /// </summary>
+        /// <param name="id">matricule du stagiaire</param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Index(string matricule)
+        public async Task<IActionResult> Index()
         {
-            if (string.IsNullOrWhiteSpace(matricule))
+            string id = "18128730";
+            if (string.IsNullOrWhiteSpace(id))
                 return NotFound();
-             
 
-            return View();
+            BeneficiaireNavigationModelView model = await _layerBeneficaire.BeneficiaireByIdAsync(id);
+            return View(model);
         }
     }
 }
