@@ -20,15 +20,15 @@ namespace AppAfpaBrive.Web.Logging
             bool logExists;
             try
             {
+                
                 // searching the source throws a security exception ONLY if not exists!
                 sourceExists = EventLog.SourceExists(eventSource);
                 logExists = EventLog.Exists("LogAgpa");
                 this.AutoLog = false;
-                if (sourceExists)
+                if (!sourceExists)
                 {   // no exception until yet means the user as admin privilege
-                    EventLog.DeleteEventSource("AppAfpaBrive");
+                    //EventLog.DeleteEventSource("AppAfpaBrive");
                     EventLog.CreateEventSource(eventSource, "LogAfpa");  
- 
                 }
             }
             catch (SecurityException)
