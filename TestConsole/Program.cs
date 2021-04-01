@@ -1,5 +1,6 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.Layers.StatsLayer;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -49,11 +50,11 @@ namespace TestConsole
             //}
 
 
-            //foreach (var element in list)
-            //{
-            //    string v = element.DateDebutPeriodePee.ToString("MMddyyy");
-            //    Console.WriteLine(v);
-            //}
+            ////foreach (var element in list)
+            ////{
+            ////    string v = element.DateDebutPeriodePee.ToString("MMddyyy");
+            ////    Console.WriteLine(v);
+            ////}
 
             //var Convention = context.Pees.Include(P => P.MatriculeBeneficiaireNavigation)
             //    .ThenInclude(S => S.CodeTitreCiviliteNavigation)

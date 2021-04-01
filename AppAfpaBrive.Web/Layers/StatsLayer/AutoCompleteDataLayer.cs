@@ -26,7 +26,7 @@ namespace AppAfpaBrive.Web.Layers.StatsLayer
         {
             return _dbContext.OffreFormations.Select(x => new OffreFormationAutoComplete
             {
-                IdOffreFormation = x.CodeProduitFormation,
+                IdOffreFormation = x.IdOffreFormation,
                 NomOffreFormation = x.LibelleOffreFormation
             }).ToList();
         }

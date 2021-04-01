@@ -1,4 +1,4 @@
-using AppAfpaBrive.Web.Data;
+ï»¿using AppAfpaBrive.Web.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -99,12 +99,12 @@ namespace AppAfpaBrive.Web
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 6;
-                // Paramètres de blovage
+                // Paramï¿½tres de blovage
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
 
-                // Configuration de User Name (ici des matricules bénéficiaires ou collaborateurs AFPA)
+                // Configuration de User Name (ici des matricules bï¿½nï¿½ficiaires ou collaborateurs AFPA)
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 options.User.RequireUniqueEmail = false;
@@ -144,7 +144,9 @@ namespace AppAfpaBrive.Web
 
             app.UseEndpoints(endpoints =>
             {
-                
+                endpoints.MapRazorPages();
+                endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
+                endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -163,7 +165,7 @@ namespace AppAfpaBrive.Web
             string[] listeRoles = roles.Liste.Split(',');
             foreach (string roleName in listeRoles)
             {
-                // Création du rôle si inexistant
+                // CrÃ©ation du rÃ´le si inexistant
                 Task<bool> hasRole = roleManager.RoleExistsAsync(roleName);
                 hasRole.Wait();
 
@@ -176,7 +178,7 @@ namespace AppAfpaBrive.Web
             AdministrateurSettings admin = _configuration.GetSection("Administrateur").Get<AdministrateurSettings>();
             
 
-            //Création du compte administrateur si inexistant
+            //CrÃ©ation du compte administrateur si inexistant
 
             Task<AppAfpaBriveUser> adminUser = userManager.FindByNameAsync(admin.UserName);
             adminUser.Wait();
@@ -231,7 +233,7 @@ namespace AppAfpaBrive.Web
                 DefaultRequestCulture = new RequestCulture("fr-FR"),
                 // Mise en forme des nombres, dates, etc.
                 SupportedCultures = supportedCultures,
-                // Chaines d'interface localisées
+                // Chaines d'interface localisÃ©es
                 SupportedUICultures = supportedCultures,
 
                 FallBackToParentCultures = true,

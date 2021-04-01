@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.DAL;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppAfpaBrive.Web.Layers
 {
@@ -72,10 +73,7 @@ namespace AppAfpaBrive.Web.Layers
                     }
                 }
             }
-            // -------------------------------
-            // La serie de if equivaut au foreach du dessus, il est plus clair et plus maintenable.
-            // Garder celui du dessus si on ajoute des champs de contrat ou ajouter des if, 
-            // prendre les if si besoin d'ajouter d'autres types de champs.
+            else throw new Exception("Le type de contrat n'existe pas.");
             // ------------------------------
             //if (anwser.Cdi == 1)
             //{

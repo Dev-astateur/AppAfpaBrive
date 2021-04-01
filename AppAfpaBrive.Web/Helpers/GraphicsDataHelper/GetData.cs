@@ -24,9 +24,9 @@ namespace AppAfpaBrive.Web.Helpers.GraphicsDataHelpers
             List<IInsertion> datas = new List<IInsertion>();
             switch (filter)
             {
-                case "1":
-                    datas = data.GetAllInsertion();
-                    break;
+                //case "1":
+                //    datas = data.GetAllInsertion();
+                //    break;
                 case "3":
                     datas = data.GetInsertionTroisMois();
                     break;
