@@ -82,32 +82,6 @@ namespace AppAfpaBrive.Web.Layers
             return pee.IdPee;
         }
 
-        public IEnumerable<Pee> GetPeeEntrepriseWithBeneficiaireBy(int IdOffreFormation, string idEtablissement)
-        {
-            return _dbContext.Pees
-                .Include(P => P.MatriculeBeneficiaireNavigation)
-                .Include(S => S.IdEntrepriseNavigation)
-                .Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement);
-        }
-
-        public IEnumerable<PeriodePee> GetListPeriodePeeByIdPee(int IdOffreFormation, string idEtablissement)
-        {
-            var periodePees = _dbContext.PeriodePees.Include(pr => pr.IdPeeNavigation).ToList();
-            List<PeriodePee> listPeriode = new List<PeriodePee>();
-            foreach (var item in GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement))
-            {
-                foreach (var element in periodePees)
-                {
-                    if (element.IdPee == item.IdPee)
-                    {
-                        listPeriode.Add(element);
-                    }
-                }
-
-            }
-            return listPeriode;
-        }
-
         public async Task<PagingList<ListePeeAValiderModelView>> GetPeeByMatriculeCollaborateurAfpaAsync(string idMatricule, int page = 1)
         {
             var qry = _dbContext.Pees.Where(e => e.Id.MatriculeCollaborateurAfpa == idMatricule && e.EtatPee == 0)
