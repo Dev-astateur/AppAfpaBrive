@@ -8,7 +8,16 @@
     <p class="font-weight-bold">Êtes-vous toujours dans cette situation ?</p>
     <div class="buttons_yes_no">
         <a asp-action="DisplayRecap" class="btn btn-outline-primary btn-sm" id="same_situation">Oui</a>
-        <a href="#changement_entreprise" class="btn btn-outline-primary btn-sm" data-toggle="collapse" id="not_same_situation" >Non</a>
+        @{
+            if (Model.LibelleFonction is null)
+            {
+                <a asp-action="ChercherEntreprise" class="btn btn-outline-primary btn-sm" id="not_same_situation">Non</a>
+            }
+            else
+            {
+                <a href="#changement_entreprise" class="btn btn-outline-primary btn-sm" data-toggle="collapse" id="not_same_situation">Non</a>
+            }
+        }
     </div>
 </div>
 <br />

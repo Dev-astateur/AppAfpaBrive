@@ -37,42 +37,47 @@ namespace AppAfpaBrive.Web.Controllers
             _Code_Produit_Formation = new Layer_Code_Produit_Formation(context); 
         }
 
-        //récupérer l'idSoumissionnaire du destinataire enquête permet de vérifier si un contrat correspondant existe
-        //puis de renseigner la vue en fonction de sa situation
-        public IActionResult Display(Guid id)
+       //le point de départ est le destinataire de l'enquête et son identifiant unique
+        public IActionResult Display(Guid id)//l'identifiant unique est récupéré via une query string ? 
         {
-            DestinataireEnquete destinataireEnquete = new DestinataireEnquete();
-            destinataireEnquete = _DestinataireEnquete.GetDestinataireEnqueteByIdSoumissionnaire(id);
+            //prévoir un if destinataireEnquete is null ?
+            DestinataireEnquete destinataireEnquete = _DestinataireEnquete.GetDestinataireEnqueteByIdSoumissionnaire(id);
+            Contrat contrat = _Contrat.GetContratByIdContrat(destinataireEnquete.IdContrat); ;
 
-            Contrat contrat = new Contrat();
-
-            if (destinataireEnquete.IdContrat == null)
+            if (contrat is null)
             {
-                contrat = null; 
+                //si aucun contrat n'existe en db pour le destinataireEnquete,
+                //on le créé et on lui passe le MatriculeBeneficiaire
+                contrat = new Contrat
+                {
+                    MatriculeBeneficiaire = destinataireEnquete.MatriculeBeneficiaire,
+                    
+                };
             }
             else
             {
-                contrat = _Contrat.GetContratByIdContrat(destinataireEnquete.IdContrat);
+                //si le contrat existe on complète ses propriétés de navigation
                 contrat.IdEntrepriseNavigation = _Entreprise.GetEntrepriseById(contrat.IdEntreprise);
-                contrat.TypeContratNavigation = _TypeContrat.GetTypeContratById(contrat.TypeContrat); 
+                contrat.TypeContratNavigation = _TypeContrat.GetTypeContratById(contrat.TypeContrat);
             }
 
+            #region Sérialization et passage en cookies de session des objets destinataireEnquete et Contrat
+            //sérialisation du destinataireEnquête
             string strDestinataireEnquete = JsonConvert.SerializeObject(destinataireEnquete, Formatting.Indented, new JsonSerializerSettings()
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore //évite que les objet qui font référence à des listes qui les contiennent eux-mêmes ne déclenchent une erreur de sérialization
             });
             HttpContext.Session.SetString("destinataireEnquete", strDestinataireEnquete);
 
-            
+            //sérialisation de l'objet Contrat
             string str = JsonConvert.SerializeObject(contrat, Formatting.Indented, new JsonSerializerSettings()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             }); 
             HttpContext.Session.SetString("contrat", str);
+            #endregion
 
-            //serialiser séparemment un objet entreprise ?
-
-            return View(contrat);
+            return View(contrat);//on retourne le contrat pour affichage
         }
 
         [HttpGet]
@@ -91,22 +96,33 @@ namespace AppAfpaBrive.Web.Controllers
 
                 if (entreprise is null)
                 {
-                    return RedirectToAction("CreerEntreprise", "Contrat");
+                    //si l'entreprise n'est pas en bdd, on se contente de sérialiser le siret
+                    //saisi par l'utilisateur pour le passer à la page de création
+                    string strSiret = JsonConvert.SerializeObject(siret, Formatting.Indented, new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                    HttpContext.Session.SetString("siret", strSiret);
+
+                    return RedirectToAction("CreerEntreprise");//renvoi vers la page de création d'entreprise
                 }
                 else
                 {
-                    //serialiser séparemment un objet entreprise ?
+                    //si l'entreprise existe, on désérialise l'objet contrat pour lui ajouter l'id de l'entreprise et
+                    //la lui passer en propriété de navigation, puis on resérialise le contrat pour le passer à la page de modif
                     string str = HttpContext.Session.GetString("contrat");
                     Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str);
+
                     contrat.IdEntreprise = entreprise.IdEntreprise;
                     contrat.IdEntrepriseNavigation = entreprise;
+
                     str = JsonConvert.SerializeObject(contrat, Formatting.Indented, new JsonSerializerSettings()
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
                     HttpContext.Session.SetString("contrat", str);
 
-                    return RedirectToAction("ModifierContrat");
+                    return RedirectToAction("ModifierContrat");//renvoi vers la page de modification du contrat
                 }
                 
             }
@@ -116,8 +132,14 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public IActionResult CreerEntreprise()
         {
+            string str = HttpContext.Session.GetString("siret");
+            Entreprise_Siret siret = JsonConvert.DeserializeObject<Entreprise_Siret>(str);
 
-            return View();
+            Entreprise_Creation_ViewModel ecv = new Entreprise_Creation_ViewModel
+            {
+                NumeroSiret = siret.NumeroSiret
+            };
+            return View(ecv);
         }
 
         [HttpPost]
@@ -138,16 +160,28 @@ namespace AppAfpaBrive.Web.Controllers
                     Idpays2 = _Pays.Get_pays_ID(entrepriseViewModel.Idpays2)
                 };
 
+                #region Désérialisation/Sérialisation des objets Contrat et Entreprise
+                //Désérialisation/sérialisation de Contrat pour lui passer l'entreprise créée en propriété de navigation.
+                //Est-ce bien approprié de le faire ici ? L'entreprise n'a pas encore d'id et n'est pas encore en bdd...
                 string str = this.HttpContext.Session.GetString("contrat");
                 Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str);
 
                 contrat.IdEntrepriseNavigation = entreprise; 
-                //serialiser séparemment un objet entreprise ?
+                
                 str = JsonConvert.SerializeObject(contrat, Formatting.Indented, new JsonSerializerSettings()
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
                 HttpContext.Session.SetString("contrat", str);
+
+                //sérialisation de l'objet entreprise 
+                string strNouvelleEntreprise = JsonConvert.SerializeObject(entreprise, Formatting.Indented, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                HttpContext.Session.SetString("nouvelleEntreprise", strNouvelleEntreprise);
+
+                #endregion
 
                 return RedirectToAction("ModifierContrat"); 
             }
@@ -163,13 +197,18 @@ namespace AppAfpaBrive.Web.Controllers
             ContratModelView contratModelView = new ContratModelView
             {
                 LibelleFonction = contrat.LibelleFonction,
-                DateEntreeFonction = contrat.DateEntreeFonction,
+                DateEntreeFonction = DateTime.Now,
                 DateSortieFonction = contrat.DateSortieFonction,
                 TypeContrat = contrat.TypeContrat.ToString(),
                 TypesContrats = _TypeContrat.GetAllToDropDownList()
             };
-            
-            
+
+            str = JsonConvert.SerializeObject(contrat, Formatting.Indented, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            HttpContext.Session.SetString("contrat", str);
+
             return View(contratModelView); 
         }
 
@@ -179,14 +218,15 @@ namespace AppAfpaBrive.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Contrat contrat = new Contrat
-                {
-                    DateEntreeFonction = contratModelView.DateEntreeFonction,
-                    DateSortieFonction = contratModelView.DateSortieFonction,
-                    LibelleFonction = contratModelView.LibelleFonction,
-                    TypeContrat = int.Parse(contratModelView.TypeContrat)
-                    //TypeContratNavigation = _TypeContrat.GetTypeContratByDesignation(contratModelView.TypeContrat)
-                };
+                string str = this.HttpContext.Session.GetString("contrat");
+                Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str);
+
+                contrat.DateEntreeFonction = contratModelView.DateEntreeFonction;
+                contrat.DateSortieFonction = contratModelView.DateSortieFonction;
+                contrat.LibelleFonction = contratModelView.LibelleFonction;
+                contrat.TypeContrat = int.Parse(contratModelView.TypeContrat);
+                contrat.TypeContratNavigation = _TypeContrat.GetTypeContratByDesignation(contratModelView.TypeContrat); //reste null. Pourquoi ? Peut-être qu'il faut instancier un objet TypeContrat ? 
+                
                 var appelationRome = _AppelationRomes.GetAppellationRomeByLibelle(contrat.LibelleFonction);
                 contrat.CodeAppellation = appelationRome.CodeAppelationRome;
 
@@ -200,17 +240,20 @@ namespace AppAfpaBrive.Web.Controllers
                 {
                     contrat.EnLienMetierFormation = true;
                 }
-                
 
+                if (contrat.DateSortieFonction is not null)
+                {
+                    contrat.DureeContratMois = (contrat.DateSortieFonction.Value.Month - contrat.DateEntreeFonction.Month)
+                        + 12 * (contrat.DateSortieFonction.Value.Year - contrat.DateEntreeFonction.Year); 
+                }
 
-                //calculer la durée du contrat
-
-                string str = JsonConvert.SerializeObject(contrat, Formatting.Indented, new JsonSerializerSettings()
+                str = JsonConvert.SerializeObject(contrat, Formatting.Indented, new JsonSerializerSettings()
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
                 HttpContext.Session.SetString("contrat", str);
-                
+
+                return RedirectToAction("DisplayRecap"); 
             }
             contratModelView.TypesContrats = _TypeContrat.GetAllToDropDownList();
 
@@ -222,6 +265,9 @@ namespace AppAfpaBrive.Web.Controllers
         {
             string str = this.HttpContext.Session.GetString("contrat");
             Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str); 
+            string strEntreprise = this.HttpContext.Session.GetString("entreprise");
+            Entreprise entreprise = JsonConvert.DeserializeObject<Entreprise>(strEntreprise);
+            //créer un ModelView regroupant contrat et entreprise ? T_T
 
             return View(contrat); 
         }
