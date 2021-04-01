@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Diagnostics;
+using AppAfpaBrive.Web.Logging;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -25,6 +26,9 @@ namespace AppAfpaBrive.Web.Controllers
         }
         public IActionResult Index()
         {
+            LoggingAppAfpaBrive test = new LoggingAppAfpaBrive();
+            test.CreateEventSource();
+           
             return View();
         }
 

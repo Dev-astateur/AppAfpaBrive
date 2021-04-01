@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using ReflectionIT.Mvc.Paging;
 using System.Threading.Tasks;
 using AppAfpaBrive.Web.ModelView;
@@ -20,6 +21,7 @@ namespace AppAfpaBrive.Web.Layers
         {
             _context = context;
         }
+        
         #endregion
         #region Methode publique
 
@@ -58,9 +60,13 @@ namespace AppAfpaBrive.Web.Layers
 
         public void InsertProduit(ProduitFormation prod)
         {
+            var check=CheckCodeProduitExiste(prod.CodeProduitFormation);
+            if (check == true)
+            {
+                _context.ProduitFormations.Add(prod);
+                _context.SaveChanges();
+            }
             
-            _context.ProduitFormations.Add(prod);
-            _context.SaveChanges();
         }
         public void Remove(ProduitFormation prod)
         {
@@ -73,6 +79,16 @@ namespace AppAfpaBrive.Web.Layers
             _context.SaveChanges();
         }
         
+        public bool CheckCodeProduitExiste(int id)
+        {
+            var codeproduit = _context.ProduitFormations.Find(id);
+
+            if (codeproduit == null)
+            {
+                return true;
+            }
+            return false;
+        }
         #endregion
     }
 }
