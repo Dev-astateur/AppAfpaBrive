@@ -1,5 +1,6 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -13,16 +14,44 @@ namespace AppAfpaBrive.Web.Layers.StatsLayer
             _dbContext = dbContext;
         }
 
-        private void CreateNewLine(IInsertion toInsert)
+        public void CreateNewLine(NewLineStats toInsert)
         {
+            
             if (toInsert.IsValid())
             {
-                _dbContext.InsertionTroisMois.Add((InsertionsTroisMois)toInsert);
-                _dbContext.InsertionSixMois.Add((InsertionsSixMois)toInsert);
-                _dbContext.InsertionDouzeMois.Add((InsertionsDouzeMois)toInsert);
+                NewLineFormation(toInsert, true);
+                NewLineFormation(toInsert, false);
             }
-            else throw new Exception("Les champs IdEtablissement, IdOffreFormation et Annee doivent etre rempli.");
+            else throw new Exception("Les champs IdEtablissement, IdOffreFormation, Annee et EnLienAvecFormation doivent etre rempli.");
+
+            try
+            {
+                _dbContext.SaveChanges();
+            }
+            catch(Exception dbException)
+            {
+                throw new Exception(dbException.Message);
+            }
         }
+
+        private void NewLineFormation(NewLineStats toInsert, bool lien)
+        {
+            toInsert.EnLienAvecFormation = lien;
+            try
+            {
+                _dbContext.InsertionTroisMois.Add(toInsert.ToInsertionTroisMois());
+                _dbContext.InsertionSixMois.Add(toInsert.ToInsertionSixMois());
+                _dbContext.InsertionDouzeMois.Add(toInsert.ToInsertionDouzeMois());
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Doublons");
+            }
+            }
+
+
+
+
         private bool IsLineExisting(IInsertion anwser)
         {
             if (anwser is InsertionsTroisMois)
@@ -42,8 +71,9 @@ namespace AppAfpaBrive.Web.Layers.StatsLayer
             }
             else
             {
-                throw new Exception("Type error");
+                throw new Exception("Type error.");
             }
         }
     }
+    
 }

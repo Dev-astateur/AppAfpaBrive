@@ -11,7 +11,7 @@ namespace AppAfpaBrive.DAL
     {
         public AFPANADbContext()
         {
-           ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+           //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public AFPANADbContext(DbContextOptions<AFPANADbContext> options)
@@ -178,7 +178,7 @@ namespace AppAfpaBrive.DAL
         });
             modelBuilder.Entity<InsertionsTroisMois>(entity =>
             {
-                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.Annee });
+                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.EnLienAvecFormation, e.Annee });
                 entity.ToTable("InsertionsTroisMois");
                 entity.Property(e => e.IdEtablissement)
                 .HasMaxLength(5)
@@ -194,7 +194,7 @@ namespace AppAfpaBrive.DAL
 
             modelBuilder.Entity<InsertionsSixMois>(entity =>
             {
-                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.Annee });
+                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.EnLienAvecFormation, e.Annee });
                 entity.ToTable("InsertionsSixMois");
                 entity.Property(e => e.IdEtablissement)
                 .HasMaxLength(5)
@@ -210,7 +210,7 @@ namespace AppAfpaBrive.DAL
 
             modelBuilder.Entity<InsertionsDouzeMois>(entity =>
             {
-                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.Annee });
+                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.EnLienAvecFormation, e.Annee });
                 entity.ToTable("InsertionsDouzeMois");
                 entity.Property(e => e.IdEtablissement)
                 .HasMaxLength(5)
@@ -989,6 +989,7 @@ namespace AppAfpaBrive.DAL
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
                 entity.HasOne(d => d.TitreCiviliteNavigation)
                    .WithMany(p => p.Professionnels)
                    .HasForeignKey(d => d.CodeTitreCiviliteProfessionnel)

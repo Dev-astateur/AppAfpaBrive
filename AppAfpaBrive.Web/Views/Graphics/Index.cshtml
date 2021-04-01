@@ -7,20 +7,26 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    @*<script src="~/js/Jquery.js"></script>
-    <script src="~/js/jquery-ui.js"></script>*@
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </header>
 <body>
+    @Html.LabelFor(m => m.Year, "Nombre de mois apres la fin de formation :")
+    <br />
     @Html.DropDownListFor(m => m.Month, new List<SelectListItem>{
-        new SelectListItem{Text="Tous", Value="1"},
-        new SelectListItem{Text="3 mois", Value="3"},
+        new SelectListItem{Text="3 mois", Value="3", Selected = true},
         new SelectListItem{Text="6 mois", Value="6"},
         new SelectListItem{Text="12 mois", Value="12"}
     }, new { @id = "filterMonth" })
     <br />
+    @Html.LabelFor(m => m.Year, "Annee de la fin de formation :")
+    <br />
     @Html.TextBoxFor(m => m.Year, new { @id = "filterYear" })
     <br />
+    @Html.LabelFor(m => m.Year, "Nom de l'établissement :")
+    <br />
     @Html.TextBoxFor(m => m.NomEtablissement, new { @id = "filterEtablissement" })
+    <br />
+    @Html.LabelFor(m => m.Year, "Nom de la formation :")
     <br />
     @Html.TextBoxFor(m => m.NomOffreFormation, new { @id = "filterOffreFormation" })
     <br />
@@ -29,67 +35,96 @@
     @Html.HiddenFor(m => m.IdOffreFormation, new { @id = "idOffreFormation" })
     <br />
     <input type="submit" id="sub" onclick="onClickSubmit()" />
+    <br />
+    <br />
+    <label class="alert alert-danger" id="validation" style="display: none;">Veuillez remplir correctement les 4 champs.</label>
+    <label class="alert alert-danger" id="noData" style="display: none;">Aucune données correspondantes</label>
     <div id="chart_div"></div>
+
 </body>
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 
 
 
 <script type="text/javascript">
+
     function onClickSubmit() {
         google.charts.load('current', {
-            packages: ['corechart', 'bar']
+            packages: ['corechart']
         });
 
         google.charts.setOnLoadCallback(LoadData);
     }
     function LoadData() {
-        var FilterMonth = $('#filterMonth').val();
-        var FilterYear = $('#filterYear').val() == null ? "" : $('#filterYear').val();
-        var FilterEtablissement = $('#idEtablissement').val() == null ? "" : $('#idEtablissement').val();
-        var FilterOffreFormation = $('#idOffreFormation').val() == null ? "" : $('idOffreFormation').val();
+        console.log($("idOffreFormation").val());
+        if (!$("#filterMonth").val() || !$("#filterYear").val() || !$("#idEtablissement").val() || !$("#idOffreFormation").val()
+        || !$("#filterEtablissement").val() || !$("#filterOffreFormation").val())
+        {
+            $("#validation").show();
+            $("#noData").hide();
+            $("#chart_div").hide();
+            return false;
+        }
+        else
+        {
+            $("#validation").hide();
+        }
 
         $.ajax({
             url: 'GraphDatas',
-            data: { filterMois: FilterMonth, filterYear: FilterYear, filterEtablissement: FilterEtablissement, filterOffreFormation: FilterOffreFormation },
+            data: { filterMois: $("#filterMonth").val(), filterYear: $("#filterYear").val(), filterEtablissement: $("#idEtablissement").val(), filterOffreFormation: $("#idOffreFormation").val() },
             type: "GET",
             error: function (xhr, status, error) {
                 var err = eval("(" + xhr.responseText + ")");
                 toastr.error(err.message);
             },
             success: function (data) {
-                GraphData(data);
+                    GraphData(data);
                 return false;
             }
         });
         return false;
     }
     function GraphData(data) {
-        console.log(data);
-        var dataArray = [
-            ["Type De Contrat", "Nombre"],
-            ['Cdi', data[0]['cdi']],
-            ['Cdd', data[0]['cdd']],
-            ['Alternance', data[0]['alternance']],
-            ['Autres :', data[0]['autres']],
-            ['Sans emploie', data[0]['sansEmploie']]
-        ];
+        if (data[0] === undefined) {
+            $("#noData").show()
+            var dataArray = [
+                ['', { role: 'annotation' }],
+                ['', '']]
+            $("#chart_div").hide();
+        }
+        else {
+            $("#noData").hide();
+            $("#chart_div").show();
+            var dataArray = [
+                ["Type De Contrat", "Nombre"],
+                ['Cdi', data[0]['cdi']],
+                ['Cdd', data[0]['cdd']],
+                ['Alternance', data[0]['alternance']],
+                ['Autres :', data[0]['autres']],
+                ['Sans emploie', data[0]['sansEmploie']]
+            ];
+
+            var options = {
+                //title: 'Population of Largest Cities of Odisha ',
+                //chartArea: {
+                //    width: '50%'
+                //},
+                //colors: ['#b0120a', '#7b1fa2', '#ffab91', '#d95f02'],
+                hAxis: {
+                    title: 'Type De Contrat',
+                },
+                vAxis: {
+                    title: 'Nombre',
+                },
+                pieHole: 0.4
+
+            };
+        }
         var data = google.visualization.arrayToDataTable(dataArray);
-        var options = {
-            //title: 'Population of Largest Cities of Odisha ',
-            chartArea: {
-                width: '50%'
-            },
-            //colors: ['#b0120a', '#7b1fa2', '#ffab91', '#d95f02'],
-            hAxis: {
-                title: 'Type De Contrat',
-            },
-            vAxis: {
-                title: 'Nombre',
-            }
-        };
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
         chart.draw(data, options);
         return false;
     }

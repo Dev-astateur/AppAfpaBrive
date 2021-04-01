@@ -26,7 +26,6 @@ namespace AppAfpaBrive.Web
         
         public Startup(IConfiguration configuration)
         {
-            
             Configuration = configuration;
         }
 

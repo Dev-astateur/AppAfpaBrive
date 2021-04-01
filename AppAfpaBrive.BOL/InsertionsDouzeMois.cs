@@ -17,8 +17,10 @@ namespace AppAfpaBrive.BOL
         [ForeignKey("IdEtablissement")]
         public string IdEtablissement { get; set; }
         [Required]
-        [ForeignKey("CodeProduitFormation")]
+        [ForeignKey("IdOffreFormation")]
         public int IdOffreFormation { get; set; }
+        [Required]
+        public bool EnLienAvecFormation { get; set; }
         [Required]
         public int Annee { get; set; }
         [Required]
@@ -36,7 +38,7 @@ namespace AppAfpaBrive.BOL
 
 
         public virtual Etablissement IdEtablissementNavigation { get; set; }
-        public virtual ProduitFormation CodeProduitFormation { get; set; }
+        public virtual OffreFormation IdOffreFormationNavigation { get; set; }
 
     }
 }

@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
     <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
+    <ProjectReference Include="..\AppAfpaBrive.Web\AppAfpaBrive.Web.csproj" />
   </ItemGroup>
 
 </Project>
