@@ -22,11 +22,13 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
     {
        
         private readonly AFPANADbContext _db;
+        private readonly ILogger<ProduitFormationController> _logger;
         //private readonly ProduitDeFormationLayer _produitDeFormationLayer;
 
-        public ProduitFormationController(AFPANADbContext db)
+        public ProduitFormationController(AFPANADbContext db,ILogger<ProduitFormationController> logger)
         {
             _db = db;
+            _logger = logger;
         }
 
 
@@ -105,19 +107,11 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         public IActionResult Edit(ProduitFormationModelView obj)
         {
             ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
-            //var x = Request.Form["Formation"].ToString();
+            
+
             if (ModelState.IsValid)
-            {
-                using (EventLog eventLog = new EventLog("LogAfpa"))
-                {
-                    eventLog.Source = "AppAfpaBrive";
-                    eventLog.WriteEntry("Mise a jour du produit de formation", EventLogEntryType.Information, 101, 1);
-                }
-                //if (x == "0")
-                //{
-                //    obj.FormationContinue = true;
-                //}
-                //else obj.FormationDiplomante = true;
+            {  
+                _logger.LogInformation( 2, "Update d'un produit de formation");
                 _produitDeFormationLayer.Update(obj.GetProduitFormation());
                 return RedirectToAction("Index");
             }

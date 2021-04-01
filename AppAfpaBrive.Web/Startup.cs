@@ -18,6 +18,7 @@ using AppAfpaBrive.Web.Utilitaires;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace AppAfpaBrive.Web
 {
@@ -35,6 +36,7 @@ namespace AppAfpaBrive.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DbSecurite")));
@@ -43,7 +45,7 @@ namespace AppAfpaBrive.Web
                     Configuration.GetConnectionString("DbAfpaNA"), 
                     assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName)));
             services.AddDatabaseDeveloperPageExceptionFilter();
-           
+            
 
             services.AddSingleton<IFileProvider>(
            new PhysicalFileProvider(

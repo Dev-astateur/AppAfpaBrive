@@ -31,6 +31,7 @@ namespace AppAfpaBrive.Web
              {
                  eventLogSettings.SourceName = "AppAfpaBrive";
                  eventLogSettings.LogName = "LogAfpa";
+                 
              });
             })
             .ConfigureAppConfiguration((hostContext, builder) =>
