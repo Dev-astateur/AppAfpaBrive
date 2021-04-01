@@ -15,20 +15,24 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Net.Mime;
-using DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using DocumentFormat.OpenXml.Wordprocessing;
 using AppAfpaBrive.Web.ModelView.ValidationPee;
 using AppAfpaBrive.Web.Utilitaires;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Text;
+using Rotativa;
+using Ionic.Zip;
+using System.Text.RegularExpressions;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+    
     public class PeeController : Controller
     {
         #region champ privé
         private readonly PeeLayer _peeLayer = null;
         private readonly AFPANADbContext _dbContext;
+        
         private readonly IConfiguration _config;
         private readonly IHostEnvironment _env;
         private readonly IEmailSender _emailSender;
@@ -73,101 +77,113 @@ namespace AppAfpaBrive.Web.Controllers
         /// <param name="IdOffreFormation"></param>
         /// <param name="idEtablissement"></param>
         /// <returns></returns>
-        public IActionResult _AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
+        public async Task<IActionResult> _AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
         {
             if (ModelState.IsValid)
             {
-                var pees = _peeLayer.GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement);
-                var listPeriode = _peeLayer.GetListPeriodePeeByIdPee(IdOffreFormation, idEtablissement);
+                var pees = await _peeLayer.GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement);
+                var listPeriode = await _peeLayer.GetListPeriodePeeByIdPee(IdOffreFormation, idEtablissement);
                 ViewData["PeriodePee"] = listPeriode;
                 IEnumerable<Pee> PeeSansDoublons = pees.Distinct(new PeeComparer());
-                ViewData["ListPeeSansDoublons"] = PeeSansDoublons;
+                ViewData["ListPeeSansDoublons"] =  PeeSansDoublons;
+               
             }
             
             return View ("Index");
         }
         #endregion
-        #region IAction pour inserer les données de la convention Pee du beneficiaire et de la charger pour impression ou téléchargement
-        /// <summary>
-        /// IAction pour inserer les données de la convention Pee de beneficiaire et de la charger pour impression ou téléchargement
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public IActionResult ChargementDocPee(int id)
+
+        #region Document accompagnement Beneficiaire
+
+        public async Task<IActionResult> GetDocumentForPrint(int id, int[] PeecheckBox)
         {
-            string path = Path.Combine(_env.ContentRootPath, "ModelesOffice");
+            ///PeecheckBox est un tableau des valeur des IdPee
+            /// id est le Id du input 
+            ImpressionFicheSuivi PrintWord = new ImpressionFicheSuivi(_dbContext, _env);
+            byte[] contenu = null;
+            FileStreamResult result;
 
-            var Convention = _dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation)
-                .ThenInclude(S => S.CodeTitreCiviliteNavigation)
-                .Include(pee => pee.IdResponsableJuridiqueNavigation)
-                .ThenInclude(T => T.TitreCiviliteNavigation)
-                .Include(t => t.IdTuteurNavigation)
-                .ThenInclude(T => T.TitreCiviliteNavigation)
-                .Include(P => P.IdEntrepriseNavigation)
-                .Include(E => E.IdResponsableJuridiqueNavigation.TitreCiviliteNavigation)
-                .FirstOrDefault(pee => pee.IdPee == id);
-            var Fonction = _dbContext.EntrepriseProfessionnels.FirstOrDefault(F => F.IdProfessionnel == Convention.IdResponsableJuridique);
-            string Civilite = Convention.MatriculeBeneficiaireNavigation.CodeTitreCiviliteNavigation.TitreCiviliteComplet;
-            var Collaborateur = _dbContext.OffreFormations.Include(O => O.MatriculeCollaborateurAfpaNavigation)
-                .Where(C => C.IdOffreFormation == Convention.IdOffreFormation && C.IdEtablissement == Convention.IdEtablissement).FirstOrDefault();
-            string pathModele = Civilite == "Monsieur" ? Path.Combine(path, "1-ConventionPE-M.docx") : Path.Combine(path, "1-ConventionPE-F.docx");
-            var date = _dbContext.PeriodePees.FirstOrDefault(p => p.IdPee == Convention.IdPee);
+            int value = 0;
+            var outPutStream = new MemoryStream();
+            string FileNameZip = null;
+            string fichierDoc = null;
+            List<string> ListFiles = new List<string>();
+            Pee pee = new Pee();
+            string PathDoc = Path.Combine(_env.ContentRootPath);
 
-            string nomFichier = $"{Convention.MatriculeBeneficiaireNavigation.NomBeneficiaire}-{Convention.IdEtablissement}-{Convention.IdOffreFormation}.docx";
-            string docPath = @$"{path}\Convention_{(DateTime.Now - DateTime.MinValue).TotalMilliseconds}.docx";
-
-            System.IO.File.Copy($"{pathModele}", docPath, true);
-            using (WordprocessingDocument document = WordprocessingDocument.Open(docPath, true))
+            ///itération sur le tableau des Id des Pee via les checkBox
+            for (int i = 0; i < PeecheckBox.Length; i++)
             {
-                var mergeFields = document.GetMergeFields().ToList();
-                mergeFields.WhereNameIs("Entreprise").ReplaceWithText(Convention.IdEntrepriseNavigation.RaisonSociale);
-                mergeFields.WhereNameIs("Adresse1").ReplaceWithText(Convention.IdEntrepriseNavigation.Ligne1Adresse);
-                mergeFields.WhereNameIs("Adresse2").ReplaceWithText(Convention.IdEntrepriseNavigation.Ligne2Adresse);
-                mergeFields.WhereNameIs("Adresse3").ReplaceWithText(Convention.IdEntrepriseNavigation.Ligne3Adresse);
-                mergeFields.WhereNameIs("Code_Postal").ReplaceWithText(Convention.IdEntrepriseNavigation.CodePostal);
-                mergeFields.WhereNameIs("Commune").ReplaceWithText(Convention.IdEntrepriseNavigation.Ville);
-                mergeFields.WhereNameIs("Tél_").ReplaceWithText(Convention.IdEntrepriseNavigation.TelEntreprise);
-                mergeFields.WhereNameIs("TITRE_REP").ReplaceWithText(Convention.IdResponsableJuridiqueNavigation.TitreCiviliteNavigation.TitreCiviliteComplet);
-                mergeFields.WhereNameIs("Représentant").ReplaceWithText(Convention.IdResponsableJuridiqueNavigation.NomProfessionnel + " " + Convention.IdResponsableJuridiqueNavigation.PrenomProfessionnel);
-                mergeFields.WhereNameIs("Fonction_Représentant").ReplaceWithText(Fonction.Fonction);
-                mergeFields.WhereNameIs("Titre_Tuteur_1").ReplaceWithText(Convention.IdTuteurNavigation.TitreCiviliteNavigation.TitreCiviliteComplet);
-                mergeFields.WhereNameIs("Tuteur1").ReplaceWithText(Convention.IdTuteurNavigation.NomProfessionnel + " " + Convention.IdTuteurNavigation.PrenomProfessionnel);
-                mergeFields.WhereNameIs("NOM_Stagiaire").ReplaceWithText(Convention.MatriculeBeneficiaireNavigation.NomBeneficiaire);
-                mergeFields.WhereNameIs("Prénom_Stagiaire").ReplaceWithText(Convention.MatriculeBeneficiaireNavigation.PrenomBeneficiaire);
-                mergeFields.WhereNameIs("Titre_Stagiaire").ReplaceWithText(Civilite);
-                mergeFields.WhereNameIs("Titre_Formateur").ReplaceWithText(Collaborateur.MatriculeCollaborateurAfpaNavigation.CodeTitreCiviliteNavigation.TitreCiviliteComplet);
-                mergeFields.WhereNameIs("Formateur").ReplaceWithText(Collaborateur.MatriculeCollaborateurAfpaNavigation.PrenomCollaborateur + " " + Collaborateur.MatriculeCollaborateurAfpaNavigation.NomCollaborateur);
-                mergeFields.WhereNameIs("TélFormateur").ReplaceWithText(Collaborateur.MatriculeCollaborateurAfpaNavigation.TelCollaborateurAfpa);
-                mergeFields.WhereNameIs("Début_stage").ReplaceWithText($"{date.DateDebutPeriodePee}");
-                mergeFields.WhereNameIs("Fin_stage").ReplaceWithText($"{date.DateFinPeriodePee}");
-                Settings settings = document.MainDocumentPart.DocumentSettingsPart.Settings;
-                foreach (var element in settings.ChildElements)
-                {
-                    if (element is MailMerge)
-                    {
-                        element.Remove();
-                    }
 
-                }
-                document.MainDocumentPart.Document.Save();
-
+                value = PeecheckBox[i];
+                pee = await PrintWord.GetDataBeneficiairePeeById(value);
+                ListFiles.AddRange(await PrintWord.GetPathFile(value, id));
             }
-            ContentDisposition content = new ContentDisposition()
-            {
-                FileName = nomFichier,
+            ///s'il y a plusieurs Fichiers on crée un fichier Zip avec les fichiers Word
+                    if (ListFiles.Count() > 1)
+                    {
+                        using (var ZipDoc = new ZipFile())
+                        {
+                            FileNameZip = $"Document_Suivi_Pee_{value}";
+                            for (int j = 0; j < ListFiles.Count(); j++)
+                            {
 
-                Inline = false  // false = prompt the user for downloading;  true = browser to try to show the file inline
-            };
-            Response.Headers.Add("Content-Disposition", content.ToString());
+                                string nomFichier = $"{pee.MatriculeBeneficiaireNavigation.MatriculeBeneficiaire}-{pee.MatriculeBeneficiaireNavigation.NomBeneficiaire}-{pee.IdEtablissement}-{pee.IdOffreFormation}";
+                                ContentDisposition content = new ContentDisposition()
+                                {
+                                    FileName = $"{nomFichier}.docx",
 
-            Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                                    Inline = false
+                                };
+                                Response.Headers.Add($"Content-Disposition-{j}_{value}", content.ToString());
+                                Response.Headers.Add($"X-Content-Type-Options-{j}_{value}", "nosniff");
+                                string doc = Path.GetFileName(ListFiles[j]);
+                                string regexPath = Path.GetFileNameWithoutExtension(Regex.Replace(doc, @"[0-9,-]", ""));
+                                doc = $"{regexPath}_{nomFichier}_{j + 1}.docx";
+                                System.IO.File.Copy(ListFiles[j], doc);
+                                ZipDoc.AddFile(doc);
+                                System.IO.File.Delete(ListFiles[j]);
 
-            byte[] contenu = System.IO.File.ReadAllBytes(docPath);
+                            }
+                            ZipDoc.Save(outPutStream);
+                            ///Suppression les fichiers copier. 
+                            Directory.GetFiles(PathDoc, "*.docx", SearchOption.TopDirectoryOnly).ToList().ForEach(System.IO.File.Delete);
 
-            System.IO.File.Delete(docPath);
+                        }
+                        outPutStream.Position = 0;
+                        result = File(outPutStream, "application/zip", $"{FileNameZip}.zip");
+                        ///envoie du fichier Zip qui contient les Document à telecharger
+                        return result;
+                    }
+                    else  //sinon on télécharger le fichier Word
+                    {
 
-            return File(contenu, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                        pee = await PrintWord.GetDataBeneficiairePeeById(value);
+                        string nomFichier = $"{value}_{pee.MatriculeBeneficiaireNavigation.NomBeneficiaire}_{pee.MatriculeBeneficiaireNavigation.PrenomBeneficiaire}";
 
+                        foreach (var item in ListFiles)
+                        {
+                            fichierDoc = item;
+
+                        }
+                        ContentDisposition content = new ContentDisposition()
+                        {
+                            FileName = nomFichier,
+
+                            Inline = false
+                        };
+                        contenu = System.IO.File.ReadAllBytes(fichierDoc);
+                        Response.Headers.Add("Content-Disposition1", content.ToString());
+
+                        Response.Headers.Add("X-Content-Type-Options1", "nosniff");
+
+
+                        System.IO.File.Delete(fichierDoc);
+                        return File(contenu, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"{content.FileName}.docx", true);
+                    }
+                
+
+           
         }
         #endregion
 

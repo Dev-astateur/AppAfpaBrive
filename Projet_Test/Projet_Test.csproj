@@ -7,8 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.4" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.4" />
     <PackageReference Include="Moq" Version="4.16.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
@@ -21,5 +23,4 @@
     <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
     <ProjectReference Include="..\AppAfpaBrive.Web\AppAfpaBrive.Web.csproj" />
   </ItemGroup>
-
 </Project>

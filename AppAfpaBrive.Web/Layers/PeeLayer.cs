@@ -42,6 +42,32 @@ namespace AppAfpaBrive.Web.Layers
             _dbContext.SaveChanges();
         }
 
+        #region méthode asynchrone pour le PeeController et l'action __AfficheBeneficiairePee
+        public async Task<IEnumerable<Pee>> GetPeeEntrepriseWithBeneficiaireBy(int IdOffreFormation, string idEtablissement)
+        {
+            return await _dbContext.Pees
+                .Include(P => P.MatriculeBeneficiaireNavigation)
+                .Include(S => S.IdEntrepriseNavigation)
+                .Where(P => P.IdOffreFormation == IdOffreFormation && P.IdEtablissement == idEtablissement).ToListAsync();
+        }
+        public async Task<IEnumerable<PeriodePee>> GetListPeriodePeeByIdPee(int IdOffreFormation, string idEtablissement)
+        {
+            var periodePees = await _dbContext.PeriodePees.Include(pr => pr.IdPeeNavigation).ToListAsync();
+            List<PeriodePee> listPeriode = new List<PeriodePee>();
+            foreach (var item in GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement).Result)
+            {
+                foreach (var element in periodePees)
+                {
+                    if (element.IdPee == item.IdPee)
+                    {
+                        listPeriode.Add(element);
+                    }
+                }
+
+            }
+            return listPeriode;
+        }
+        #endregion
         public decimal GetPeeBy_Idmatricule_idFormation_idetablissemnt(string matricule,int identreprise,string idetablissement)
         {
             return _dbContext.Pees.Where(e => e.MatriculeBeneficiaire == matricule && e.IdEntreprise == identreprise && e.IdEtablissement==idetablissement)

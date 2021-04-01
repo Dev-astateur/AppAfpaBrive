@@ -13,41 +13,41 @@ namespace TestConsole
         {
             AFPANADbContext context = new AFPANADbContext();
             Pee pee = new Pee();
-            IQueryable<Pee> pees = context.Pees
-                .Include(P => P.MatriculeBeneficiaireNavigation)
-                .Include(S => S.IdEntrepriseNavigation)
-                .Where(P => P.IdOffreFormation == 20102 && P.IdEtablissement == "19011");
+            //IQueryable<Pee> pees = context.Pees
+            //    .Include(P => P.MatriculeBeneficiaireNavigation)
+            //    .Include(S => S.IdEntrepriseNavigation)
+            //    .Where(P => P.IdOffreFormation == 20102 && P.IdEtablissement == "19011");
 
+            ////foreach (var item in pees)
+            ////{
+            ////    Console.WriteLine(item.MatriculeBeneficiaireNavigation.NomBeneficiaire);
+            ////}
+            //List<PeriodePee> list = new List<PeriodePee>();
+            //var periodePees = context.PeriodePees.Include(pr => pr.IdPeeNavigation).ToList();
+            ////var listPeeBenificiaire = pees.Include(p => p.MatriculeBeneficiaireNavigation.Pees).ToList();
             //foreach (var item in pees)
             //{
-            //    Console.WriteLine(item.MatriculeBeneficiaireNavigation.NomBeneficiaire);
-            //}
-            List<PeriodePee> list = new List<PeriodePee>();
-            var periodePees = context.PeriodePees.Include(pr => pr.IdPeeNavigation).ToList();
-            //var listPeeBenificiaire = pees.Include(p => p.MatriculeBeneficiaireNavigation.Pees).ToList();
-            foreach (var item in pees)
-            {
-                foreach (var element in periodePees)
-                {
-                    if (element.IdPee == item.IdPee)
-                    {
-                        list.Add(element);
-                    }
-                }
+            //    foreach (var element in periodePees)
+            //    {
+            //        if (element.IdPee == item.IdPee)
+            //        {
+            //            list.Add(element);
+            //        }
+            //    }
 
-            }
-          
-            foreach (var p in pees)
-            {
-               
-               
-                    if (p.MatriculeBeneficiaire == p.MatriculeBeneficiaire)
-                    {
-                        Console.WriteLine(p.IdPee);
-                    }
-               
-            }
-            
+            //}
+
+            //foreach (var p in pees)
+            //{
+
+
+            //        if (p.MatriculeBeneficiaire == p.MatriculeBeneficiaire)
+            //        {
+            //            Console.WriteLine(p.IdPee);
+            //        }
+
+            //}
+
 
             //foreach (var element in list)
             //{
@@ -55,18 +55,28 @@ namespace TestConsole
             //    Console.WriteLine(v);
             //}
 
-            var Convention = context.Pees.Include(P => P.MatriculeBeneficiaireNavigation)
-                .ThenInclude(S => S.CodeTitreCiviliteNavigation)
-                .Include(pee => pee.IdResponsableJuridiqueNavigation)
-                .ThenInclude(T => T.TitreCiviliteNavigation)
-                .Include(t => t.IdTuteurNavigation)
-                .ThenInclude(T => T.TitreCiviliteNavigation)
-                .Include(E => E.IdResponsableJuridiqueNavigation.TitreCiviliteNavigation)
-                .FirstOrDefault(pee => pee.IdPee == 12);
-            Console.WriteLine(Convention.MatriculeBeneficiaireNavigation.NomBeneficiaire);
+            //var Convention = context.Pees.Include(P => P.MatriculeBeneficiaireNavigation)
+            //    .ThenInclude(S => S.CodeTitreCiviliteNavigation)
+            //    .Include(pee => pee.IdResponsableJuridiqueNavigation)
+            //    .ThenInclude(T => T.TitreCiviliteNavigation)
+            //    .Include(t => t.IdTuteurNavigation)
+            //    .ThenInclude(T => T.TitreCiviliteNavigation)
+            //    .Include(E => E.IdResponsableJuridiqueNavigation.TitreCiviliteNavigation)
+            //    .FirstOrDefault(pee => pee.IdPee == 12);
+            //Console.WriteLine(Convention.MatriculeBeneficiaireNavigation.NomBeneficiaire);
 
-            var date = context.PeriodePees.Where(p => p.IdPee == Convention.IdPee).FirstOrDefault();
-            Console.WriteLine(date.DateDebutPeriodePee);
+            //var date = context.PeriodePees.Where(p => p.IdPee == Convention.IdPee).FirstOrDefault();
+            //Console.WriteLine(date.DateDebutPeriodePee);
+
+            var pro = context.OffreFormations.Include(o => o.CodeProduitFormationNavigation).ThenInclude(p => p.ProduitFormationAppellationRomes).Where(y => y.IdOffreFormation == 20101 && y.CodeProduitFormation == 12226).ToList();
+            foreach(var item in pro)
+            {
+               foreach(var p in item.CodeProduitFormationNavigation.ProduitFormationAppellationRomes)
+                {
+                    Console.WriteLine(p.CodeRome);
+                }
+            }
         }
+        
     }
 }

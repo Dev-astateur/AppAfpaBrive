@@ -25,7 +25,6 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.Extensions.Logging;
 
-
 namespace AppAfpaBrive.Web
 {
     public class Startup
@@ -129,7 +128,7 @@ namespace AppAfpaBrive.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
