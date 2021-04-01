@@ -91,7 +91,8 @@ namespace AppAfpaBrive.Web.Controllers
 
         public async Task<IActionResult> GetDocumentForPrint(int id, int[] PeecheckBox)
         {
-
+            ///PeecheckBox est un tableau des valeur des IdPee
+            /// id est le Id du input 
             ImpressionFicheSuivi PrintWord = new ImpressionFicheSuivi(_dbContext, _env);
             byte[] contenu = null;
             FileStreamResult result;
@@ -104,7 +105,7 @@ namespace AppAfpaBrive.Web.Controllers
             Pee pee = new Pee();
             string PathDoc = Path.Combine(_env.ContentRootPath);
 
-
+            ///itération sur le tableau des Id des Pee via les checkBox
             for (int i = 0; i < PeecheckBox.Length; i++)
             {
 
@@ -112,7 +113,7 @@ namespace AppAfpaBrive.Web.Controllers
                 pee = await PrintWord.GetDataBeneficiairePeeById(value);
                 ListFiles.AddRange(await PrintWord.GetPathFile(value, id));
             }
-
+            ///s'il y a plusieurs Fichiers on crée un fichier Zip avec les fichiers Word
                     if (ListFiles.Count() > 1)
                     {
                         using (var ZipDoc = new ZipFile())
@@ -139,14 +140,16 @@ namespace AppAfpaBrive.Web.Controllers
 
                             }
                             ZipDoc.Save(outPutStream);
+                            ///Suppression les fichiers copier. 
                             Directory.GetFiles(PathDoc, "*.docx", SearchOption.TopDirectoryOnly).ToList().ForEach(System.IO.File.Delete);
 
                         }
                         outPutStream.Position = 0;
                         result = File(outPutStream, "application/zip", $"{FileNameZip}.zip");
+                        ///envoie du fichier Zip qui contient les Document à telecharger
                         return result;
                     }
-                    else
+                    else  //sinon on télécharger le fichier Word
                     {
 
                         pee = await PrintWord.GetDataBeneficiairePeeById(value);

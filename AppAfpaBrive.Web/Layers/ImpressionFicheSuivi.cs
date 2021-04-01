@@ -37,7 +37,7 @@ namespace AppAfpaBrive.Web.Layers
             _env = env;
 
         }
-        //public string PathFile { get; private set; }
+        
         public string FolderFile { get => Path.Combine(_env.ContentRootPath, "ModelesOffice"); }
 
         public async Task<Pee> GetDataBeneficiairePeeById(int id)
@@ -71,7 +71,7 @@ namespace AppAfpaBrive.Web.Layers
             return await _dbContext.PeriodePees.FirstOrDefaultAsync(p => p.IdPee == id);
         }
         /// <summary>
-        /// 
+        /// obtenir la liste des chemins des fichiers à générer
         /// </summary>
         /// <param name="value"></param>
         /// <param name="id"></param>
@@ -106,7 +106,7 @@ namespace AppAfpaBrive.Web.Layers
             return  listPath;
         }
         /// <summary>
-        /// Get WordprocessingDocument Document 
+        /// générer le fichier WordprocessingDocument  
         /// </summary>
         /// <param name="pee"></param>
         /// <param name="Collaborateur"></param>
@@ -114,6 +114,7 @@ namespace AppAfpaBrive.Web.Layers
         /// <param name="Periodepee"></param>
         /// <param name="docPath"></param>
         /// <returns></returns>
+        /// 
         private WordprocessingDocument GetModifiedDocument(Pee pee, OffreFormation Collaborateur, EntrepriseProfessionnel poste, PeriodePee Periodepee, string docPath)
         {
             
@@ -148,7 +149,7 @@ namespace AppAfpaBrive.Web.Layers
             return doc;
         }
         /// <summary>
-        /// Get Path new file 
+        /// Obtenir la list des fichiers à générer
         /// </summary>
         /// <param name="id"></param>
         /// <param name="value"></param>
@@ -191,31 +192,5 @@ namespace AppAfpaBrive.Web.Layers
             return ListPathDoc;
         }
 
-
-        ///code Romain
-        ///
-        public async Task<BeneficiaireOffreFormation> GetDemandeurAbsence(string matricule)
-        {
-            return await _dbContext.BeneficiaireOffreFormations
-                .Include(b => b.MatriculeBeneficiaireNavigation)
-                .Include(b => b.Id).FirstOrDefaultAsync();
-        }
-        public string RequestForSuchLeave(string matricule)
-        {
-            var benenificiaire = GetDemandeurAbsence(matricule).Result;
-            string FloderPath = Path.Combine(_env.ContentRootPath, "ModelesOffice\\C6-2.03.Autorisation_d_absence .docx");
-            string newNameFile = FloderPath.Replace(".docx", $"_{(DateTime.Now - DateTime.MinValue).TotalMilliseconds}.docx");
-            string docPath = @$"{newNameFile}";
-            System.IO.File.Copy($"{FloderPath}", docPath, true);
-            using (WordprocessingDocument doc = WordprocessingDocument.Open(docPath, true))
-            {
-                var mergeFields = doc.GetMergeFields().ToList();
-                mergeFields.WhereNameIs("NomBeneficiaire").ReplaceWithText(benenificiaire.MatriculeBeneficiaireNavigation.NomBeneficiaire);
-                mergeFields.WhereNameIs("PrenomBeneficiaire").ReplaceWithText(benenificiaire.MatriculeBeneficiaireNavigation.PrenomBeneficiaire);
-                mergeFields.WhereNameIs("LibelleOffreFormation").ReplaceWithText(benenificiaire.Id.LibelleOffreFormation);
-                doc.Save();
-            }
-            return docPath;
-        }
     }
 }

@@ -38,6 +38,8 @@ namespace AppAfpaBrive.Web.Layers
             _dbContext.Pees.Add(pee);
             _dbContext.SaveChanges();
         }
+
+        #region méthode asynchrone pour le PeeController et l'action __AfficheBeneficiairePee
         public async Task<IEnumerable<Pee>> GetPeeEntrepriseWithBeneficiaireBy(int IdOffreFormation, string idEtablissement)
         {
             return await _dbContext.Pees
@@ -62,6 +64,7 @@ namespace AppAfpaBrive.Web.Layers
             }
             return listPeriode;
         }
+        #endregion
         public decimal GetPeeBy_Idmatricule_idFormation_idetablissemnt(string matricule,int identreprise,string idetablissement)
         {
             return _dbContext.Pees.Where(e => e.MatriculeBeneficiaire == matricule && e.IdEntreprise == identreprise && e.IdEtablissement==idetablissement)
