@@ -35,6 +35,12 @@ namespace AppAfpaBrive.Web.Controllers.Etablissement
             return View(model);
         }
 
+        // GET: Etablissement/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
         // POST: Etablissement/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

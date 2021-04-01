@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="MatriculeCollaborateurAfpa" class="control-label"></label>
-                <input asp-for="MatriculeCollaborateurAfpa" class="form-control" readonly/>
+                <input asp-for="MatriculeCollaborateurAfpa" class="form-control" readonly />
                 <span asp-validation-for="MatriculeCollaborateurAfpa" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -22,24 +22,25 @@
                 <input asp-for="IdEtablissement" class="form-control" />
                 <span asp-validation-for="IdEtablissement" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
-            <label asp-for="CodeTitreCivilite" class="control-label"></label>
-            <input asp-for="CodeTitreCivilite" class="form-control" />
-            <span asp-validation-for="CodeTitreCivilite" class="text-danger"></span>
+          
+            @*<div class="form-group form-check">
+            <label class="form-check-label">
+
+                <label>Monsieur</label>
+                @Html.RadioButton("TitreCivilite", "0")
+            </label>
+        </div>
+        <div class="form-group form-check">
+            <label class="form-check-label">
+
+                <label>Madame</label>
+                @Html.RadioButton("TitreCivilite", "1")
+            </label>
         </div>*@
-            <div class="form-group form-check">
-                <label class="form-check-label">
-
-                    <label>Monsieur</label>
-                    @Html.RadioButton("TitreCivilite", "0")
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-
-                    <label>Madame</label>
-                    @Html.RadioButton("TitreCivilite", "1")
-                </label>
+            <div class="form-group">
+                @Html.RadioButtonFor(m => m.CodeTitreCivilite, "0" ) Monsieur
+                <br/>
+                @Html.RadioButtonFor(m => m.CodeTitreCivilite, "1" ) Madame
             </div>
             <div class="form-group">
                 <label asp-for="NomCollaborateur" class="control-label"></label>

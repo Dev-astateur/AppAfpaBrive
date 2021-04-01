@@ -30,6 +30,7 @@ namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
             {
                 {"filter", filter }
             };
+            
             return View(model);
         }
 
@@ -84,6 +85,8 @@ namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
             {
                 return NotFound();
             }
+            
+
             return View(obj);
         }
 

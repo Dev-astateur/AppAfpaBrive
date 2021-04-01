@@ -29,7 +29,7 @@ namespace AppAfpaBrive.Web.Layers
 
         public async Task<PagingList<CollaborateurAfpa>> GetPage(string filter, int page = 1, string sortExpression = "NomCollaborateur")
         {
-            var qry = _context.CollaborateurAfpas.AsQueryable();
+            var qry = _context.CollaborateurAfpas.Include(x=>x.CodeTitreCiviliteNavigation).AsQueryable();
             if (!string.IsNullOrWhiteSpace(filter))
             {
                 qry = qry.Where(p => p.NomCollaborateur.Contains(filter));
@@ -55,11 +55,11 @@ namespace AppAfpaBrive.Web.Layers
         }
         public CollaborateurAfpaModelView GetByMatriculeCollaborateur(string id)
         {
-            var obj = _context.CollaborateurAfpas.Select(e => new CollaborateurAfpaModelView()
+            var obj = _context.CollaborateurAfpas.Include(x=>x.CodeTitreCiviliteNavigation).Select(e => new CollaborateurAfpaModelView()
             {
                 MatriculeCollaborateurAfpa = e.MatriculeCollaborateurAfpa,
                 IdEtablissement = e.IdEtablissement,
-                CodeTitreCivilite = e.CodeTitreCivilite,
+                CodeTitreCivilite =e.CodeTitreCivilite,
                 NomCollaborateur = e.NomCollaborateur,
                 PrenomCollaborateur = e.PrenomCollaborateur,
                 MailCollaborateurAfpa = e.MailCollaborateurAfpa,
