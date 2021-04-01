@@ -4,7 +4,6 @@ using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,13 +13,15 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
     {
 
         private readonly AFPANADbContext _context;
+        
 
         public LigneAnnuaireLayer(AFPANADbContext context)
         {
             _context = context;
+           
         }
 
-        public async Task<PagingList<LigneAnnuaire>> GetPage(string filter, int page = 1, string sortExpression = "Nom")
+        public async Task<PagingList<LigneAnnuaire>> GetPage(string filter, int page = 1, string sortExpression = "PublicConcerne")
         {
 
             var qry = _context.LigneAnnuaires.AsQueryable();
@@ -51,7 +52,33 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
 
             return obj as LigneAnnuaireModelView;
         }
+
+
+        public LigneAnnuaire GetLigneAnnuaire(int id)
+        {
+            return _context.LigneAnnuaires.Find(id);
+        }
+
+        public void Insert(LigneAnnuaire ligneAnnuaire)
+        {
+            _context.LigneAnnuaires.Add(ligneAnnuaire);
+            _context.SaveChanges();
+        }
+
+        public void Update(LigneAnnuaire ligneAnnuaire)
+        {
+            _context.LigneAnnuaires.Update(ligneAnnuaire);
+            _context.SaveChanges();
+        }
+
+        public void Delete(LigneAnnuaire ligne)
+        {
+            _context.Remove(ligne);
+            _context.SaveChanges();
+        }
+
+
     }
 
-    //public 
+   
 }

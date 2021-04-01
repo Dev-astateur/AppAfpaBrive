@@ -7,23 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.BOL.AnnuaireSocial;
 using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.Layers.AnnuaireSocialLayer;
+using Microsoft.AspNetCore.Routing;
 
 namespace AppAfpaBrive.Web.Controllers.AnnuaireSocial
 {
     public class LigneAnnuairesController : Controller
     {
         private readonly AFPANADbContext _context;
+        private readonly LigneAnnuaireLayer _ligneAnnuaireLayer;
 
         public LigneAnnuairesController(AFPANADbContext context)
         {
             _context = context;
+            _ligneAnnuaireLayer = new LigneAnnuaireLayer(_context);
         }
 
         // GET: LigneAnnuaires
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter, int page, string sortExpression = "PublicConcerne")
         {
-            var aFPANADbContext = _context.LigneAnnuaires.Include(l => l.Structure);
-            return View(await aFPANADbContext.ToListAsync());
+            var model = await _ligneAnnuaireLayer.GetPage(filter, page, sortExpression);
+            model.RouteValue = new RouteValueDictionary
+            {
+                {"filter", filter }
+            };
+            return View(model);
         }
 
         // GET: LigneAnnuaires/Details/5

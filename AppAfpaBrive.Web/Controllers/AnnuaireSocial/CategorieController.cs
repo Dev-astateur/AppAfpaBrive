@@ -27,7 +27,6 @@ namespace AppAfpaBrive.Web.Controllers.AnnuaireSocial
 
         // GET: CategorieController
         public async Task<IActionResult> Index(string filter, int page, string sortExpression = "LibelleCategorie")
-
         {
             var model = await _categorieLayer.GetPage(filter, page, sortExpression);
             model.RouteValue = new RouteValueDictionary

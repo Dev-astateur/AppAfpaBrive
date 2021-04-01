@@ -1,10 +1,10 @@
 ﻿using AppAfpaBrive.BOL.AnnuaireSocial;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
+using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,7 +24,7 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
         {
 
           
-            var qry = _context.Contacts.Include(x => x.TitreCivilite);
+            var qry = _context.Contacts.Include(x => x.TitreCivilite).AsQueryable();
             if (!string.IsNullOrWhiteSpace(filter))
             {
                 qry = qry.Where(p => p.Nom.Contains(filter));
