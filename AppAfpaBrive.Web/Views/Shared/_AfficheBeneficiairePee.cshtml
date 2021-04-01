@@ -7,94 +7,98 @@
 }
 
 
+@{
+    @if (ListPee!= null)
+    {
 
-<form asp-action="ChargementDocPee" >
-    <div class="row">
+    <form asp-action="ChargementDocPee">
+        <div class="row">
 
-        <div class="form-group col-sm-12 col-md-4 col-lg-4">
-           <input  asp-action="GetDocumentForPrint" type="submit" value="Envoi_Convention" asp-route-id="1" class="btn btn-secondary"/>
+            <div class="form-group col-sm-12 col-md-4 col-lg-4">
+                <input asp-action="GetDocumentForPrint" type="submit" value="Envoi_Convention" asp-route-id="1" class="btn btn-secondary" />
+            </div>
+            <div class="form-group col-sm-12 col-md-4 col-lg-4">
+                <input id="2" asp-action="GetDocumentForPrint" type="submit" value="Retour_Signee" asp-route-id="2" class="btn btn-secondary" />
+            </div>
+            <div>
+                <input id="3" asp-action="GetDocumentForPrint" type="submit" value="Accompagnement_Tuteur" asp-route-id="3" class="btn btn-secondary" />
+            </div>
+            <div id="MessageError"></div>
         </div>
-        <div class="form-group col-sm-12 col-md-4 col-lg-4">
-          <input id="2" asp-action="GetDocumentForPrint" type="submit" value="Retour_Signee" asp-route-id="2" class="btn btn-secondary"/>
-        </div>
-        <div>
-        <input id="3" asp-action="GetDocumentForPrint" type="submit" value="Accompagnement_Tuteur" asp-route-id="3" class="btn btn-secondary"/>
-        </div>
-        <div id="MessageError" ></div>
-    </div>
 
-    <div class="table container-fluid">
-        <table id="TabeauPee" class="table table-bordered table-hover table-striped text-lg-center">
-            <thead class="thead-light ">
-                <tr>
+        <div class="table container-fluid">
+            <table id="TabeauPee" class="table table-bordered table-hover table-striped text-lg-center">
+                <thead class="thead-light ">
+                    <tr>
 
-                    <th>Nom Beneficiaire</th>
-                    <th>Prénom Beneficiaire</th>
-                   
-                    <th>
+                        <th>Nom Beneficiaire</th>
+                        <th>Prénom Beneficiaire</th>
 
-                        <table>
-                            <tr>Pee</tr>
-                        </table>
-                </tr>
-            </thead>
-            <tbody>
-                @{ 
+                        <th>
+
+                            <table>
+                                <tr>Pee</tr>
+                            </table>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
 
 
-                    if (ListPee != null)
-                    {
-
-                        foreach (var item in ListPee)
+                        if (ListPee != null)
                         {
 
-                            <tr>
+                            foreach (var item in ListPee)
+                            {
 
-                                <td>@item.MatriculeBeneficiaireNavigation.NomBeneficiaire</td>
-                                <td>@item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire</td>
-                                
-                                <td>
-                                    <table>
-                                        <tr>
-                                            @foreach (var element in item.MatriculeBeneficiaireNavigation.Pees)
-                                            {
+                                <tr>
 
-                                                if (element.MatriculeBeneficiaire == item.MatriculeBeneficiaire)
+                                    <td>@item.MatriculeBeneficiaireNavigation.NomBeneficiaire</td>
+                                    <td>@item.MatriculeBeneficiaireNavigation.PrenomBeneficiaire</td>
+
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                @foreach (var element in item.MatriculeBeneficiaireNavigation.Pees)
                                                 {
 
-                                            <td class="btn-primary">
-                                                
-                                                <strong>Convention_@element.PeriodePees.FirstOrDefault(pr => pr.IdPee == element.IdPee).DateDebutPeriodePee.ToString("MMddyyy")</strong> 
-                                                @{
-                                                    bool etatcheck = Convert.ToBoolean(element.Etat);
+                                                    if (element.MatriculeBeneficiaire == item.MatriculeBeneficiaire)
+                                                    {
 
-                                                    <input asp-for="@etatcheck" name="PeecheckBox" type="checkbox" value="@element.IdPee" />
+                                                        <td class="btn-primary">
 
+                                                            <strong>Convention_@element.PeriodePees.FirstOrDefault(pr => pr.IdPee == element.IdPee).DateDebutPeriodePee.ToString("MMddyyy")</strong>
+                                                            @{
+                                                                bool etatcheck = Convert.ToBoolean(element.Etat);
+
+                                                                <input asp-for="@etatcheck" name="PeecheckBox" type="checkbox" value="@element.IdPee" />
+
+
+                                                            }
+
+
+                                                        </td>
+                                                    }
 
                                                 }
 
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
 
-                                            </td>
-                                                }
-
-                                            }
-
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
                         }
                     }
-                    else
-                    {
 
-                    }
-                }
-
-            </tbody>
-        </table>
+                </tbody>
+            </table>
         </div>
-</form>
-
+    </form>
+     }
+}
 
 
