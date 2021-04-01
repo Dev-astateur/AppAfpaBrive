@@ -365,19 +365,21 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [HttpPost]
         public IActionResult date_create(Date_ModelView date)
         {
-            
-            List<Date_ModelView> listDate = new List<Date_ModelView>();
-            string str = this.HttpContext.Session.GetString("date");
-            if (str != "")
+            if(ModelState.IsValid)
             {
-                listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
+                List<Date_ModelView> listDate = new List<Date_ModelView>();
+                string str = this.HttpContext.Session.GetString("date");
+                if (str != "")
+                {
+                    listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
+                }
+                date.Iddate = listDate.Count();
+                listDate.Add(date);
+                str = JsonConvert.SerializeObject(listDate);
+                HttpContext.Session.SetString("date", str);
+                return RedirectToAction("date");
             }
-            date.Iddate = listDate.Count();
-            listDate.Add(date);
-            str = JsonConvert.SerializeObject(listDate);
-            HttpContext.Session.SetString("date", str);
-            return RedirectToAction("date");
-            //return View(date);
+            return View(date);
         }
 
         // get date
