@@ -10,6 +10,8 @@ using System.Data.Entity;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Proxies;
 using System.Threading.Tasks;
+using AppAfpaBrive.BOL.AnnuaireSocial;
+using System.Diagnostics;
 
 namespace AppAfpaBrive.Web.Controllers.AnnuaireSocial
 {
@@ -52,6 +54,7 @@ namespace AppAfpaBrive.Web.Controllers.AnnuaireSocial
         {
             if (ModelState.IsValid)
             {
+                Debug.WriteLine("Titre civilité : " + contact.IdTitreCivilite);
                 _contactLayer.Insert(contact.GetContact());
                 return RedirectToAction("Index");
 
@@ -83,22 +86,23 @@ namespace AppAfpaBrive.Web.Controllers.AnnuaireSocial
         // GET: ContactController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
-        }
+            if (id == 0)
+            {
+                return NotFound();
+            }
 
-        // POST: ContactController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
+            Contact contact = _contactLayer.GetContact(id);
+
+            if (contact == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
+
+            _contactLayer.Delete(contact);
+            return RedirectToAction(nameof(Index));
         }
+    
+
+        
     }
 }

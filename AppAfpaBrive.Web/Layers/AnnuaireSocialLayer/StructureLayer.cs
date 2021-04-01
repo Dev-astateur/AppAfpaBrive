@@ -29,6 +29,7 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
             return await PagingList.CreateAsync<Structure>(qry, 20, page, sortExpression, "NomStructure");
         }
 
+
         public StructureModelView GetStructureById(int id)
         {
             var obj = _context.Structures.Select(e => new StructureModelView

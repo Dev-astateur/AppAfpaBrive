@@ -23,8 +23,7 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
         public async Task<PagingList<Contact>> GetPage(string filter, int page = 1, string sortExpression = "Nom")
         {
 
-            Contact o = _context.Contacts.Include(c => c.TitreCivilite).First();
-
+          
             var qry = _context.Contacts.Include(x => x.TitreCivilite);
             if (!string.IsNullOrWhiteSpace(filter))
             {
