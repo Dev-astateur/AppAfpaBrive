@@ -389,7 +389,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = HttpContext.Session.GetString("date");
             List<Date_ModelView> listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
-            Date_ModelView date = listDate[id];
+            Date_ModelView date = listDate[id-1];
             return View(date);
         }
 
