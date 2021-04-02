@@ -1,0 +1,114 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+
+}
+@if (@ViewData["ErreurDates"] != null)
+{
+    <p style="color:red">@ViewData["ErreurDates"]</p>
+}
+<form asp-action="CompleterInfoAbsence">
+    <div class="form-group">
+        <h3>Veuillez renseigner la date de debut de l'absence:</h3>
+        <input type="date" id="dateDebut" name="dateDebut" class="form-control" />
+        <br />
+    </div>
+    <div class="form-group">
+        <h3>Veuillez renseigner la date de fin de l'absence:</h3>
+        <input type="date" id="dateFin" name="dateFin" class="form-control" />
+        <br />
+    </div>
+    <h3>Veuillez renseigner votre motif d'absence:</h3>
+
+    <h4>Absence légale:</h4>
+
+    <div class="form-group">
+        <input type="radio" id="JournéeDefense" value="JournéeDefense" name="motifAbsence" class="form-check-input" checked>
+        <label for="JournéeDefense">Journée défense et citoyenneté / Céremonie d'accueil dans la citoyenneté (1 jour ouvré)</label>
+        <br />
+    </div>
+    <div class=" form-group">
+        <input type="radio" id="MariagePacs" value="MariagePacs" class="form-check-input" name="motifAbsence">
+        <label for="MariagePacs">Mariage ou Pacs (4 jours ouvrés)</label>
+        <br />
+    </div>
+    <div class=" form-group">
+        <input type="radio" id="Naissance" value="Naissance" class="form-check-input" name="motifAbsence">
+        <label for="Naissance">Naissance ou adoption (3 jours ouvrés)</label>
+        <br />
+    </div>
+    <div class=" form-group">
+        <input type="radio" id="MariageEnfant" value="MariageEnfant" class="form-check-input" name="motifAbsence">
+
+        <label for="Naissance">Mariage d'un enfant (1 jour ouvré)</label>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="radio" id="DecesEnfant" value="DecesEnfant" class="form-check-input" name="motifAbsence">
+        <label for="DecesEnfant">Décès d'un enfant (5 jours ouvrés)</label>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="radio" id="Deces" value="Deces" class="form-check-input" name="motifAbsence">
+        <label for="Deces">Décès d'un conjoint, père, mère, beau-père, belle-mère, frère ou soeur du stagiaire (3 jours ouvrés)</label>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="radio" id="EnfantMalade" value="EnfantMalade" class="form-check-input" name="motifAbsence">
+        <label for="EnfantMalade">Enfant malade de moins de 16 ans (3 jours ouvrés sur la durée de la formation)</label>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="radio" id="ExamPrenatal" value="ExamPrenatal" class="form-check-input" name="motifAbsence">
+        <label for="ExamPrenatal">Absence pour examen prénatal de grossesse obligatoire à compter du 3ème mois de grossesse<br />(1/2 journée par examen et par mois)</label>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="radio" id="HandicapEnfant" value="HandicapEnfant" class="form-check-input" name="motifAbsence">
+        <label for="HandicapEnfant">Annonce de la survenue d'un handicap chez un enfant (2 jours ouvrés)</label>
+        <br />
+    </div>
+
+    <h4>Absence autorisée non remunerée:</h4>
+    <div class="form-group">
+        <input type="radio" id="FeteReligieuse" value="FeteReligieuse" class="form-check-input" name="motifAbsence">
+        <label for="FeteReligieuse">Absence pour fêtes religieuses hors jours fériés légaux</label>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="radio" id="GreveDesTransports" value="GreveDesTransports" class="form-check-input" name="motifAbsence">
+        <label for="GreveDesTransports">Grève des transports</label>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="radio" id="Intemperies" value="Intemperies" class="form-check-input" name="motifAbsence">
+        <label for="Intemperies">Intempéries</label>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="radio" id="RdvMilitaire" value="RdvMilitaire" class="form-check-input" name="motifAbsence">
+        <label for="RdvMilitaire">Rdv avec le conseiller militaire</label>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="radio" id="RechercheLogement" value="RechercheLogement" class="form-check-input" name="motifAbsence">
+        <label for="RechercheLogement">Recherche de logement, rdv organismes divers</label>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="radio" id="Autre" value="Autre" class="form-check-input" name="motifAbsence">
+        <label for="RechercheLogement">Autre, à preciser: </label>
+        <br />
+    </div>
+    <div class="form-group">
+        <textarea type="text" id="motifSpecial" name="motifSpecial" width="100" height="50" rows="5" cols="100">
+        </textarea>
+        <br />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Valider" class="btn btn-primary" />
+        <br />
+    </div>
+</form>
