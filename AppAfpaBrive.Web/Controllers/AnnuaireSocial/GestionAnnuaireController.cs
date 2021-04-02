@@ -248,6 +248,37 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
 
+        // GET: StructureAnnuaireController/Edit/5
+        public IActionResult EditContact(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            ContactModelView obj = _contactLayer.GetContactModelViewById(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        // POST: StructureAnnuaireController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditContact(ContactModelView obj)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _contactLayer.Update(obj.GetContact());
+                return RedirectToAction("Contacts");
+            }
+            return View(obj);
+
+        }
+
+
         public ActionResult DeleteContact(int id)
         {
             if (id == 0)

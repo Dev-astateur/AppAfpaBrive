@@ -35,7 +35,7 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
 
         public ContactModelView GetContactModelViewById(int id)
         {
-            
+
             var obj = _context.Contacts.Include(y => y.TitreCivilite).Select(x => new ContactModelView
             {
                 IdContact = x.IdContact,
@@ -47,7 +47,7 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
                 TitreCivilite = x.TitreCivilite,
                 ContactLigneAnnuaires = x.ContactLigneAnnuaires,
                 ContactStructures = x.ContactStructures
-            });
+            }).FirstOrDefault(x => x.IdContact == id);
 
             return obj as ContactModelView;
         }
