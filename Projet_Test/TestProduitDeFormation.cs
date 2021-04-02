@@ -20,8 +20,14 @@ namespace Projet_Test
     [TestFixture]
     public class TestProduitDeFormation
     {
-        private readonly AFPANADbContext db = DbContextMocker.GetAFPANADbContext("AFPANA");
+        private  AFPANADbContext db = DbContextMocker.GetAFPANADbContext("AFPANA");
         private readonly ILogger<ProduitFormationController> _logger = Mock.Of<ILogger<ProduitFormationController>>();
+        [SetUp]
+        public void Setup()
+        {
+            db = DbContextMocker.GetAFPANADbContext("AFPANA");
+        }
+
 
         [Test]
         public void LibelleCourtFormationTropLong()
@@ -126,21 +132,6 @@ namespace Projet_Test
         }
 
         [Test]
-        [TestCase(4)]
-        public void TestViewEditionValide(int id)
-        {
-            DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
-            builder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;", assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName));
-
-
-            //or use this short equivalent 
-
-            ProduitFormationController controleur = new ProduitFormationController(db,_logger);
-            var view = controleur.Edit(id);
-            Assert.IsInstanceOf<ViewResult>(view);
-        }
-
-        [Test]
         
         public void TestMethodeDeleteValide()
         {
@@ -172,7 +163,7 @@ namespace Projet_Test
                 CodeProduitFormation = 7,
                 NiveauFormation = "3",
                 LibelleCourtFormation = "abc",
-                LibelleProduitFormation = "dkazkdakanfpoakfjha"
+                LibelleProduitFormation = "dkazkdakanfpa"
             };
             var item = produitformation.GetProduitFormation();
            

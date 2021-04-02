@@ -17,7 +17,13 @@ namespace Projet_Test
     [TestFixture]
     public class TestUnitaireEtablissement
     {
-        private readonly AFPANADbContext db = DbContextMocker.GetAFPANADbContext("bloub");
+        private  AFPANADbContext db = DbContextMocker.GetAFPANADbContext("bloub");
+
+        [SetUp]
+        public void Setup()
+        {
+            db = DbContextMocker.GetAFPANADbContext("AFPANA");
+        }
 
         [Test]
         public void IdEtablissementRequis()
@@ -174,7 +180,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "0670673001",
                 
                 CodePostal = "37700",
                 Ville = "St Pierre des Corps"
@@ -192,7 +198,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "0670673001",
                 Ligne1Adresse = "44 rue Hoche",
                 CodePostal = "37700",
                 Ville = "St Pierre des Corps"
@@ -210,7 +216,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "0670673001",
                 Ligne1Adresse = "",
                 CodePostal = "37700",
                 Ville = "St Pierre des Corps"
@@ -229,7 +235,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "0670673001",
                 Ligne1Adresse = "44 rue Hoche",
               
                 Ville = "St Pierre des Corps"
@@ -247,7 +253,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "06706730010",
                 Ligne1Adresse = "44 rue Hoche",
                 CodePostal = "37700",
                 Ville = "St Pierre des Corps"
@@ -265,7 +271,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "0670673001",
                 Ligne1Adresse = "44 rue Hoche",
                 CodePostal = "377001231214",
                 Ville = "St Pierre des Corps"
@@ -283,7 +289,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "0670673001",
                 Ligne1Adresse = "44 rue Hoche",
                 CodePostal = "37700",
                 Ville = "St Pierre des Corps"
@@ -302,7 +308,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "0670673001",
                 Ligne1Adresse = "44 rue Hoche",
                 CodePostal = "37700"
                
@@ -320,7 +326,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "0670673001",
                 Ligne1Adresse = "44 rue Hoche",
                 CodePostal = "37700",
                 Ville = "St Pierre des Corps"
@@ -338,7 +344,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "0670673001",
                 Ligne1Adresse = "44 rue Hoche",
                 CodePostal = "37700",
                 Ville = ""
@@ -357,7 +363,7 @@ namespace Projet_Test
                 IdEtablissementRattachement = "87000",
                 NomEtablissement = "MOMA",
                 MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
+                TelEtablissement = "0670673001",
                 Ligne1Adresse = "44 rue Hoche",
                 CodePostal = "37700",
                 Ville = "Tours"
@@ -369,35 +375,5 @@ namespace Projet_Test
             Assert.IsTrue(result.Count() == 1);
         }
 
-        [Test]
-        public void TestEditionEtablissement()
-        {
-
-            var bloub = new EtablissementModelView
-            {
-                IdEtablissement = "37700",
-                IdEtablissementRattachement = "87000",
-                NomEtablissement = "MOMA",
-                MailEtablissement = "besancon.gabriel@hotmail.fr",
-                TelEtablissement = "067067300106706730010670673001",
-                Ligne1Adresse = "44 rue Hoche",
-                CodePostal = "37700",
-                Ville = "Tours"
-            };
-
-
-            db.Etablissements.Add(bloub.GetEtablissement());
-
-            EtablissementController controleur = new EtablissementController(db);
-
-
-            bloub.NomEtablissement = "EtablissementCentral";
-
-            var view = controleur.Edit(bloub);
-
-            var result = db.Etablissements.Where(x => x.NomEtablissement == "EtablissementCentral");
-            Assert.IsTrue(result.Count() == 1);
-
-        }
     }
 }
