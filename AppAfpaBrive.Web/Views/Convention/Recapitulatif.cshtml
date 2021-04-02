@@ -34,11 +34,11 @@
                     @foreach (var item in ViewBag.dates)
                     {
                         <div class="col-12">
-                            <label class="col-4"> Date de Début du stage: </label>
+                            <label class="col-4"> Date de début: </label>
                             <label class="col-6">@item.Date1.ToString("yyyy-MM-dd") </label>
                         </div>
                         <div class="col-12">
-                            <label class="col-4"> Date de fin du stage: </label>
+                            <label class="col-4"> Date de fin: </label>
                             <label class="col-6">@item.Date2.ToString("yyyy-MM-dd") </label>
                         </div>
                     }
@@ -54,7 +54,7 @@
         <div>
             <div>
                 <h5 class="text-info">
-                    Vous pouvez rajouter des douments:
+                    Vous pouvez rajouter des documents:
                 </h5>
             </div>
             <form method="post"

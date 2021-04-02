@@ -5,10 +5,10 @@
         {
             @foreach (var item in Model)
             {
-                <label class="text-info h5">Foramtion:</label><br /> @item.Formation<br />
+                <label class="text-info h5">Formation:</label><br /> @item.Formation<br />
                 <label class="text-info h5">Etablissement: </label><br /> @item.Etablissement<br />
-                <label class="text-info h5">Date de début de la formation: </label><br />@item.DateDebut.ToString("dd-MM-yyyy")<br />
-                <label class="text-info h5">Date de la fin de la formation:</label><br /> @item.Datefin
+                <label class="text-info h5">Date de début de formation: </label><br />@item.DateDebut.ToString("dd-MM-yyyy")<br />
+                <label class="text-info h5">Date de la fin de formation:</label><br /> @item.Datefin
                 @if (@item.Datefin == null)
                 {
                     <label> Date inconnue</label>
