@@ -14,17 +14,19 @@ namespace Projet_Test
 {
     class TestAutorisationAbsence
     {
-        public DbContextMocker db = new DbContextMocker();
-        AFPANADbContext dba;
+        private AFPANADbContext dba = DbContextMocker.GetAFPANADbContext("Test");
         //Faire une fausse configuration (iConfiguration)
         
-     
+        [SetUp]
+        public void Setup()
+        {
+            // avant chaque test il va lancer le setup
+            //dba = DbContextMocker.GetAFPANADbContext("Test");
+        }
 
         [Test]
         public void TestAction_CompleterInfoAbsence_DoitRetournerFichier()
         {
-            // Mock de DBContext
-            dba = db.GetAFPANADbContext("test");
 
             //Mock de Configuration
             var inMemorySettings = new Dictionary<string, string> {
@@ -41,7 +43,7 @@ namespace Projet_Test
            // var mockEnvironment = new Mock<IHostingEnvironment>();
 
 
-            AutorisationAbsenceController autorisationAbsenceController = new AutorisationAbsenceController(dba, configuration,);
+            //AutorisationAbsenceController autorisationAbsenceController = new AutorisationAbsenceController(dba, configuration,);
         }
 
     }

@@ -20,17 +20,16 @@ namespace Projet_Test
     
    public class TestEntreprise
     {
-        public DbContextMocker db = new DbContextMocker();
-        AFPANADbContext dba;
-        //[SetUp]
-        //public void setup()
-        //{
-        //}
+        private AFPANADbContext dba = DbContextMocker.GetAFPANADbContext("test");
+
+        [SetUp]
+        public void setup()
+        {
+            dba = DbContextMocker.GetAFPANADbContext("test");
+        }
         [Test]
         public void TestActionListeEntrepriseRenvoiePagingListEntreprise()
         {          
-               dba= db.GetAFPANADbContext("test");
-
             EntrepriseController controller = new EntrepriseController(dba);
 
             var result = controller.ListeEntreprise("","",1);
@@ -43,7 +42,6 @@ namespace Projet_Test
         [Test]
         public void Test_Action_Liste_Entreprise_Pour_Modif_DoitRenvoyer_PagingListEntreprise()
         {
-            dba = db.GetAFPANADbContext("test");
 
             EntrepriseController controller = new EntrepriseController(dba);
 
