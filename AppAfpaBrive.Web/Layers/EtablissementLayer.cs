@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ModelView;
+using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
@@ -82,6 +83,22 @@ namespace AppAfpaBrive.Web.Layers
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// retourne des informations d'un etablissement
+        /// dans un objet de type EtablissementModelView du répertoire Accueil
+        /// </summary>
+        /// <param name="id">id de etablissement</param>
+        /// <returns></returns>
+        public async Task<AccueilModelView> GetEtablissementByIdAsync(string id)
+        {
+            return await _context.Etablissements.Where(e => e.IdEtablissement == id).Select(e => new AccueilModelView()
+            {
+                IdEtablissement = e.IdEtablissement,
+                NomEtablissement = e.NomEtablissement,
+                TelEtablissement = e.TelEtablissement
+            }).FirstOrDefaultAsync();
         }
     }
 }

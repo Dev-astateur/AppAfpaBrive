@@ -17,10 +17,10 @@ using System.IO;
 using System.Net.Mime;
 using DocumentFormat.OpenXml.Drawing.Wordprocessing;
 using DocumentFormat.OpenXml.Wordprocessing;
-using AppAfpaBrive.Web.ModelView.ValidationPee;
 using AppAfpaBrive.Web.Utilitaires;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Text;
+using AppAfpaBrive.Web.ModelView.ValidationPee;
 
 namespace AppAfpaBrive.Web.Controllers
 {

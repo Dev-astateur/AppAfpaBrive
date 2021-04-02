@@ -1,9 +1,10 @@
-﻿@{
+﻿@model AppAfpaBrive.Web.ModelView.AccueilModelView
+@{
     ViewData["Title"] = "Page d'accueil";
 }
 
 <div class="alert alert-primary" role="alert">
-    Page d'accueil de l'application de l'Afpa de brive
+    Page d'accueil de l'application @Model.NomEtablissement 
 </div>
 <div class="container">
     <div class="row">
@@ -11,8 +12,9 @@
             <div class="card text-center" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title text-info">Recherche de stages :</h5>
-                    <p class="card-text">Application de recherche des entreprises qui ont déjà pris un stagiaire de l'Afpa.
-                    Possibilité de rechercher par département et ou de votre offre de formation.
+                    <p class="card-text">
+                        Application de recherche des entreprises qui ont déjà pris un stagiaire de l'Afpa.
+                        Possibilité de rechercher par département et ou de votre offre de formation.
                     </p>
                     <a asp-controller="Entreprise" asp-action="ListeEntreprise" class="btn btn-primary">Recherche</a>
                 </div>
@@ -21,9 +23,10 @@
         <div class="col-sm-6">
             <div class="card text-center" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title text-info">Demande D'absence :</h5>
-                    <p class="card-text">Application pour faire une demande d'absence.
-                    Le document généré puis vous avez la possibilité de le télécharger.
+                    <h5 class="card-title text-info">Calendrier Evenement :</h5>
+                    <p class="card-text">
+                        Application pour faire une demande d'absence.
+                        Le document généré puis vous avez la possibilité de le télécharger.
                     </p>
                     <a asp-controller="" asp-action="">Absence</a>
                 </div>

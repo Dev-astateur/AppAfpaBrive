@@ -2,6 +2,9 @@
 using AppAfpaBrive.BOL;
 using System.Linq;
 using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.ModelView;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Layer
 {
@@ -18,6 +21,5 @@ namespace AppAfpaBrive.Web.Layer
             return _db.Etablissements.Where(x=>x.IdEtablissement == Id).ToList();
         }
 
-        
     }
 }
