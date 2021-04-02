@@ -22,7 +22,7 @@ namespace Projet_Test
     {
         public DbContextMocker db = new DbContextMocker();
         AFPANADbContext dba;
-        [SetUp]
+        //[SetUp]
         //public void setup()
         //{
         //}

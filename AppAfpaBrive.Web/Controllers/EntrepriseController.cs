@@ -109,15 +109,9 @@ namespace AppAfpaBrive.Web.Controllers
             // var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
             // var model = PagingList.Create(qry, 10, page);
             // return View(model);
-
-
-            //If faut assigner une action à la liste pour les pages differentes de la 1 
             query.Action = "ListeEntreprise";
 
-            return View(query);
-           
-
-
+            return View(query);         
 
         }
         #endregion

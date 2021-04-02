@@ -12,6 +12,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXmlHelpers.Word;
 using System.Net.Mime;
+using System.Text;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -38,9 +39,12 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpPost]
         public ActionResult CompleterInfoAbsence(string motifAbsence, string dateDebut, string dateFin)
         {
+            // Test avec les donnees stockées dans appJSON 
+            string motif = _config.GetSection("Motif").GetSection(motifAbsence).Value;
+           
+           
             
-            string motif="";
-           string motifSpecial= Request.Form["motifSpecial"];
+            string motifSpecial= Request.Form["motifSpecial"];
 
             if (!(DateTime.TryParse(dateDebut, out DateTime dateDebutConverti))|| !(DateTime.TryParse(dateFin, out DateTime dateFinConverti))||(dateFinConverti< dateDebutConverti))
             {
@@ -51,65 +55,24 @@ namespace AppAfpaBrive.Web.Controllers
             }
             else
             {
-                //Je dois recuperer le motif d'absence choisi dans les radioButtons
-                switch (motifAbsence)
+                
+                if (motifAbsence== "Autre")
                 {
-                    case "JournéeDefense":
-                        motif = "Journée défense et citoyenneté / Céremonie d'accueil dans la citoyenneté (1 jour ouvré)";
-                        break;
-                    case "MariagePacs":
-                        motif = "Mariage ou Pacs (4 jours ouvrés)";
-                        break;
-                    case "Naissance":
-                        motif = "Naissance ou adoption (3 jours ouvrés)";
-                        break;
-                    case "MariageEnfant":
-                        motif = "Mariage d'un enfant (1 jour ouvré)";
-                        break;
-                    case "DecesEnfant":
-                        motif = "Décès d'un enfant (5 jours ouvrés)";
-                        break;
-                    case "Deces":
-                        motif = "Décès d'un conjoint, père, mère, beau-père, belle-mère, frère ou soeur du stagiaire";
-                        break;
-                    case "EnfantMalade":
-                        motif = "Enfant malade de moins de 16 ans (3 jours ouvrés sur la durée de la formation)";
-                        break;
-                    case "ExamPrenatal":
-                        motif = "Absence pour examen prénatal de grossesse obligatoire à compter du 3ème mois de grossesse";
-                        break;
-                    case "HandicapEnfant":
-                        motif = "Annonce de la survenue d'un handicap chez un enfant (2 jours ouvrés)";
-                        break;
-                    case "FeteReligieuse":
-                        motif = "Absence pour fêtes religieuses hors jours fériés légaux";
-                        break;
-                    case "GreveDesTransports":
-                        motif = "Grève des transports";
-                        break;
-                    case "Intemperies":
-                        motif = "Intempéries";
-                        break;
-                    case "RdvMilitaire":
-                        motif = "Rdv avec le conseiller militaire";
-                        break;
-                    case "RechercheLogement":
-                        motif = "Recherche de logement, rdv organismes divers";
-                        break;
-                    case "Autre":
-                        motif = motifSpecial;
-                        break;
-
-
+                    motif = motifSpecial;
                 }
 
-                string racine = _env.ContentRootPath;
+                
+               string racine = _env.ContentRootPath;
+
                 //recuperer modele
                 string path = Path.Combine(racine, "ModelesOffice\\AutorisationAvecMotif.docx");
+
                 // destination avec nom unique
-                string destinationPath = Path.Combine(racine, @$"AutorisationAbsence\Autorisation{(DateTime.Now - DateTime.MinValue).TotalMinutes}.docx");
+                string destinationPath = Path.Combine(racine, @$"ModelesOffice\Autorisation{(DateTime.Now - DateTime.MinValue).TotalMinutes}.docx");
+
                 //Copie du fichier avec possibilite d'écrire"
                 System.IO.File.Copy(path, destinationPath, true);
+
                 //Remplacer les MergeFields par valeurs
                 using (WordprocessingDocument document = WordprocessingDocument.Open(destinationPath, true))
                 {
@@ -119,15 +82,12 @@ namespace AppAfpaBrive.Web.Controllers
                     mergeFields.WhereNameIs("formation").ReplaceWithText("CDA");
                     mergeFields.WhereNameIs("dateDuJour").ReplaceWithText(DateTime.Today.ToString("dd/MM/yyyy"));
                     mergeFields.WhereNameIs("dateDebut").ReplaceWithText(dateDebutConverti.ToString("dd/MM/yyyy"));
-                    mergeFields.WhereNameIs("DateDeFin").ReplaceWithText(dateFinConverti.ToString("dd/MM/yyyy")); 
+                    mergeFields.WhereNameIs("DateDeFin").ReplaceWithText(dateFinConverti.ToString("dd/MM/yyyy"));                   
                     mergeFields.WhereNameIs("motif").ReplaceWithText(motif);
 
                     document.MainDocumentPart.Document.Save();
 
-                }
-                //Mttre le document en piece jointe puis le supprimer
-                //string NomFichier = $"NomPrenom{DateTime.Today.ToString("dd/MM/yyyy")}{motifAbsence}";
-
+                }             
                 ContentDisposition content = new ContentDisposition()
                 {
                     //FileName = NomFichier,
@@ -138,16 +98,14 @@ namespace AppAfpaBrive.Web.Controllers
                 Response.Headers.Add("Content-Disposition", content.ToString());
                 Response.Headers.Add("X-Content-Type-Options", "nosniff");
 
-                //Attention de s'assurer qu'il n'y ait pas d'autres fichiers dans destinationPath?
+                
                 byte[] contenu = System.IO.File.ReadAllBytes(destinationPath);
+                //J efface  le fichier copié
                 System.IO.File.Delete(destinationPath);
                 return File(contenu, "application/vnd.openxmlformats-officedocument.wordprocessingml.document",$"AutorisationAbsenceNomPrenom.docx");
             }
-          
-           
+                   
         }
-
-
         //public ActionResult ChargerDocAutorisation()
         //{
         //    string racine = _env.ContentRootPath;
@@ -186,78 +144,78 @@ namespace AppAfpaBrive.Web.Controllers
         //    //return View();
         //}
         // GET: AutorisationAbsence
-        public ActionResult Index()
-        {
-            return View();
-        }
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
 
-        // GET: AutorisationAbsence/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        //// GET: AutorisationAbsence/Details/5
+        //public ActionResult Details(int id)
+        //{
+        //    return View();
+        //}
 
-        // GET: AutorisationAbsence/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        //// GET: AutorisationAbsence/Create
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        // POST: AutorisationAbsence/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //// POST: AutorisationAbsence/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create(IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
-        // GET: AutorisationAbsence/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        //// GET: AutorisationAbsence/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    return View();
+        //}
 
-        // POST: AutorisationAbsence/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //// POST: AutorisationAbsence/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
-        // GET: AutorisationAbsence/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        //// GET: AutorisationAbsence/Delete/5
+        //public ActionResult Delete(int id)
+        //{
+        //    return View();
+        //}
 
-        // POST: AutorisationAbsence/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //// POST: AutorisationAbsence/Delete/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
     }
 }
