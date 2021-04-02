@@ -47,13 +47,14 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _periode = new Periode_pee_Layer(context);
             _PeeDocument = new Layer_PeeDocument(context);
         }
-        
+
 
 
         // get index
         public IActionResult Index()
         {
-            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations("20061760");
+            string matricule = "20061760";
+            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations(matricule);
             List<Creation_convention> obj = new List<Creation_convention>();
 
             foreach (var item in beneficiaires)
@@ -72,7 +73,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             }
             Creation_convention Session_Convention = new Creation_convention
             {
-                Idmatricule = "16174318"
+                Idmatricule = matricule
             };
             var str = JsonConvert.SerializeObject(Session_Convention);
             HttpContext.Session.SetString("convention", str);
@@ -84,7 +85,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-            
+
             if (id == 0)
             {
                 id = convention.IdFormation;
@@ -341,7 +342,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             {
                 date = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
             }
-            if(date == null)
+            if (date == null)
             {
                 return RedirectToAction("professionel");
             }
@@ -366,7 +367,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [HttpPost]
         public IActionResult date_create(Date_ModelView date)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 List<Date_ModelView> listDate = new List<Date_ModelView>();
                 string str = this.HttpContext.Session.GetString("date");
@@ -374,7 +375,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 {
                     listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
                 }
-                date.Iddate = listDate.Count();
+                date.Iddate = listDate.Count() + 1;
                 listDate.Add(date);
                 str = JsonConvert.SerializeObject(listDate);
                 HttpContext.Session.SetString("date", str);
@@ -495,18 +496,10 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     IdEtablissement = convention.IdEtablissement
                 };
 
-                periodePee = new PeriodePee
-                {
-                    DateDebutPeriodePee = new DateTime(2010, 10, 10),
-                    DateFinPeriodePee = new DateTime(2010, 11, 11),
-                    NumOrdre = 1,
-                    IdPeeNavigation = pee,
-                };
-
                 if (convention.Entreprise_Create == true)
                 {
-                    context.Add(entreprise);
-                    context.SaveChanges();
+                    context.Entry(entreprise).State = EntityState.Added;
+
                 }
                 else
                 {
@@ -514,11 +507,34 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     context.Entry(entreprise).State = EntityState.Unchanged;
                 }
 
+
+                string str_date = this.HttpContext.Session.GetString("date");
+                List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
+                foreach (var item in dates)
+                {
+                    periodePee = new PeriodePee
+                    {
+                        IdPeeNavigation = pee,
+                        DateDebutPeriodePee = item.Date1,
+                        DateFinPeriodePee = item.Date2,
+                        NumOrdre = item.Iddate
+                    };
+                    context.Entry(periodePee).State = EntityState.Added;
+                }
+
                 if (convention.Tuteur_create == true)
                 {
                     pee.IdTuteurNavigation = Tuteur;
                     tuteur_entr.IdProfessionnelNavigation = Tuteur;
-                    tuteur_entr.IdEntreprise = entreprise.IdEntreprise;
+                    if (convention.Entreprise_Create == true)
+                    {
+                        tuteur_entr.IdEntrepriseNavigation = entreprise;
+                        entreprise.EntrepriseProfessionnels.Add(tuteur_entr);
+                    }
+                    else
+                    {
+                        tuteur_entr.IdEntreprise = entreprise.IdEntreprise;
+                    }
 
                     context.Entry(Tuteur).State = EntityState.Added;
                     context.Entry(tuteur_entr).State = EntityState.Added;
@@ -533,9 +549,21 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     pee.IdResponsableJuridiqueNavigation = Responsable;
                     Responsable_entr.IdProfessionnelNavigation = Responsable;
                     Responsable_entr.IdEntreprise = entreprise.IdEntreprise;
+                    if (convention.Entreprise_Create == true)
+                    {
+                        Responsable_entr.IdEntrepriseNavigation = entreprise;
+                        entreprise.EntrepriseProfessionnels.Add(Responsable_entr);
+                    }
+                    else
+                    {
+                        Responsable_entr.IdEntreprise = entreprise.IdEntreprise;
+                    }
+
                     if (convention.Tuteur_create_Id == convention.Responsable_create_Id)
                     {
                         pee.IdResponsableJuridiqueNavigation = Tuteur;
+                        Responsable_entr = tuteur_entr;
+                        entreprise.EntrepriseProfessionnels.Add(Responsable_entr);
                     }
                     else
                     {
@@ -549,11 +577,17 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 }
 
 
-
-
                 context.Entry(pee).State = EntityState.Added;
                 context.Entry(periodePee).State = EntityState.Added;
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    return RedirectToAction("Erreur");
+                }
+
 
 
 
@@ -611,7 +645,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
         // get Reussite
         public IActionResult Reussite()
-        {   
+        {
             return View();
         }
 

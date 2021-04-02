@@ -34,7 +34,7 @@
 
                         <tr id="ligne">
                             <td width="15%">
-                                @item.NomProfessionnel                               
+                                @item.NomProfessionnel
                             </td>
                             <td width="15%">
                                 @item.PrenomProfessionnel
@@ -43,16 +43,18 @@
                                 <input hidden="hidden" value="@item.Fonction" />
                             </td>
                             <td width="10%">
-                                @Html.RadioButton("tuteur", i,true)
+                                @Html.RadioButton("tuteur", i, true)
                             </td>
                             <td width="10%">
-                                @Html.RadioButton("Responsable", i,true)
+                                @Html.RadioButton("Responsable", i, true)
                             </td>
                         </tr>
                         i++;
                     }
                 </tbody>
             </table>
+            <input class="btn btn-primary" type="submit" value="Valider" />
+
         }
         else
         {
@@ -64,7 +66,6 @@
         <br />
         <div class="m-2">
             <a asp-action="Entreprise_recap" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i> retour</a>
-            <input class="btn btn-primary" type="submit" value="Valider" />
         </div>
         
     </div>
