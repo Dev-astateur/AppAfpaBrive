@@ -27,7 +27,7 @@ namespace AppAfpaBrive.Web.Controllers.AnnuaireSocial
         }
 
         // GET: ContactController
-        public async Task<IActionResult> Index(string filter, int page, string sortExpression = "Nom")
+        public async Task<IActionResult> Contacts(string filter, int page, string sortExpression = "Nom")
         {
            
 
@@ -83,23 +83,7 @@ namespace AppAfpaBrive.Web.Controllers.AnnuaireSocial
         }
 
         // GET: ContactController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            if (id == 0)
-            {
-                return NotFound();
-            }
-
-            Contact contact = _contactLayer.GetContact(id);
-
-            if (contact == null)
-            {
-                return NotFound();
-            }
-
-            _contactLayer.Delete(contact);
-            return RedirectToAction(nameof(Index));
-        }
+        
     
 
         

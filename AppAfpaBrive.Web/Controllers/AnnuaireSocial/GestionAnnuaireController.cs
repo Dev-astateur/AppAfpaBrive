@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AppAfpaBrive.BOL.AnnuaireSocial;
+using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.Layers.AnnuaireSocialLayer;
+using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,79 +14,261 @@ namespace AppAfpaBrive.Web.Controllers
 {
     public class GestionAnnuaireController : Controller
     {
-        // GET: GerstionAnnuaireController
+
+
+        private  CategorieLayer _categorieLayer;
+        private  StructureLayer _structureLayer;
+        private  ContactLayer _contactLayer;
+
+        private readonly AFPANADbContext _context;
+     
+
+        public GestionAnnuaireController(AFPANADbContext context)
+        {
+            _context = context;
+            _categorieLayer = new CategorieLayer(_context);
+            _structureLayer = new StructureLayer(_context);
+            _contactLayer = new ContactLayer(_context);
+        }
+
+
+
+        // GET: GestionAnnuaireController
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: GerstionAnnuaireController/Details/5
-        public ActionResult Details(int id)
+
+        #region Action categorie
+      
+
+        public async Task<IActionResult> Categories(string filter, int page, string sortExpression = "LibelleCategorie")
+        {
+            var model = await _categorieLayer.GetPage(filter, page, sortExpression);
+            model.RouteValue = new RouteValueDictionary
+            {
+                {"filter", filter }
+            };
+            return View(model);
+        }
+
+
+        // GET: GestionAnnuaireController/Create
+        public ActionResult CreateCategorie()
         {
             return View();
         }
 
-        // GET: GerstionAnnuaireController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: GerstionAnnuaireController/Create
+        // POST: GestionAnnuaireController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult CreateCategorie(CategorieModelView cat)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _categorieLayer.Insert(cat.GetCategorie());
+                return RedirectToAction("Categories");
             }
-            catch
-            {
-                return View();
-            }
+            return View(cat);
         }
 
-        // GET: GerstionAnnuaireController/Edit/5
-        public ActionResult Edit(int id)
+
+        // GET: GestionAnnuaireController/Edit/5
+        public ActionResult EditCategorie(int id)
         {
-            return View();
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            CategorieModelView obj = _categorieLayer.GetCategorieById(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
         }
 
-        // POST: GerstionAnnuaireController/Edit/5
+        // POST: GestionAnnuaireController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+      public ActionResult EditCategorie(CategorieModelView cat)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _categorieLayer.Update(cat.GetCategorie());
+                return RedirectToAction(nameof(Categories));
             }
-            catch
-            {
-                return View();
-            }
+            return View(cat);
         }
 
-        // GET: GerstionAnnuaireController/Delete/5
+        // GET: GestionAnnuaireController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: GerstionAnnuaireController/Delete/5
+        // POST: GestionAnnuaireController/Delete/5
+    
+        public ActionResult DeleteCategorie(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            Categorie cat = _categorieLayer.GetCategorie(id);
+
+            if (cat == null)
+            {
+                return NotFound();
+            }
+
+            _categorieLayer.Delete(cat);
+            return RedirectToAction(nameof(Categories));
+        }
+
+        #endregion
+
+        #region Action structure
+
+        public async Task<IActionResult> Structures(string filter, int page, string sortExpression = "NomStructure")
+        {
+            var model = await _structureLayer.GetPage(filter, page, sortExpression);
+            model.RouteValue = new RouteValueDictionary
+            {
+                {"filter", filter }
+            };
+            return View(model);
+        }
+
+
+        // GET: StructureAnnuaireController/Create
+        public ActionResult CreateStructure()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult CreateStructure(StructureModelView structure)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _structureLayer.Insert(structure.GetStructure());
+                return RedirectToAction("Structures");
+
             }
-            catch
-            {
-                return View();
-            }
+            return View(structure);
         }
+
+        // GET: StructureAnnuaireController/Edit/5
+        public IActionResult EditStructure(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            StructureModelView obj = _structureLayer.GetStructureById(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        // POST: StructureAnnuaireController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditStructure(StructureModelView obj)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _structureLayer.Update(obj.GetStructure());
+                return RedirectToAction("Structures");
+            }
+            return View(obj);
+
+        }
+
+        public ActionResult DeleteStructure(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            Structure structure = _structureLayer.GetStructure(id);
+
+            if (structure == null)
+            {
+                return NotFound();
+            }
+
+            _structureLayer.Delete(structure);
+            return RedirectToAction(nameof(Structures));
+        }
+
+        #endregion
+
+        #region Actions contacts
+
+        public async Task<IActionResult> Contacts(string filter, int page, string sortExpression = "Nom")
+        {
+
+
+            var model = await _contactLayer.GetPage(filter, page, sortExpression);
+            model.RouteValue = new RouteValueDictionary
+            {
+                {"filter", filter }
+            };
+            return View(model);
+        }
+
+        // GET: ContactController/Create
+        public ActionResult CreateContact()
+        {
+            return View();
+        }
+
+        // POST: ContactController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateContact(ContactModelView contact)
+        {
+            if (ModelState.IsValid)
+            {
+               
+                _contactLayer.Insert(contact.GetContact());
+                return RedirectToAction("Contacts");
+
+            }
+            return View(contact);
+        }
+
+
+        public ActionResult DeleteContact(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            Contact contact = _contactLayer.GetContact(id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            _contactLayer.Delete(contact);
+            return RedirectToAction(nameof(Contacts));
+        }
+
+        #endregion
+
+
+
     }
 }

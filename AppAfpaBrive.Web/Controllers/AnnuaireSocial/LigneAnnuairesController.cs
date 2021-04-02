@@ -9,6 +9,7 @@ using AppAfpaBrive.BOL.AnnuaireSocial;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers.AnnuaireSocialLayer;
 using Microsoft.AspNetCore.Routing;
+using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
 
 namespace AppAfpaBrive.Web.Controllers.AnnuaireSocial
 {
@@ -49,15 +50,17 @@ namespace AppAfpaBrive.Web.Controllers.AnnuaireSocial
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdLigneAnnuaire,PublicConcerne,ServiceAbrege,Service,Conditions,IdStructure")] LigneAnnuaire ligneAnnuaire)
+        public async Task<IActionResult> Create(LigneAnnuaireEtape1ModelView ligneAnnuaire)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(ligneAnnuaire);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdStructure"] = new SelectList(_context.Structures, "IdStructure", "IdStructure", ligneAnnuaire.IdStructure);
+            
+
             return View(ligneAnnuaire);
         }
 
