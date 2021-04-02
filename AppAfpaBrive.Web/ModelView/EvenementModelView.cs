@@ -1,4 +1,6 @@
 ﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.Web.CustomValidator;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +19,9 @@ namespace AppAfpaBrive.Web.ModelView
         public ICollection<Evenement> CalendarEvents { get; set; }
         public decimal IdEvent { get; set; }
         public string IdCategorieEvent { get; set; }
+        [CustomValidator_Evenement(ErrorMessage="problème")]
         public DateTime DateEvent { get; set; }
+        public DateTime? DateEventFin { get; set; }
         public string IdEtablissement { get; set; }
         public string DétailsEvent { get; set; }
 
@@ -26,8 +30,11 @@ namespace AppAfpaBrive.Web.ModelView
         public virtual ICollection<EvenementDocument> EvenementDocuments { get; set; }
         public string IdCatEvent { get; set; }
         public string LibelleEvent { get; set; }
+        public string Titre { get; set; }
 
         public virtual ICollection<Evenement> Evenements { get; set; }
+
+        public virtual IEnumerable<SelectListItem> SelectListItems { get; set; }
 
     }
 }
