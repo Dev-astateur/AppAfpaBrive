@@ -3,6 +3,7 @@ using AppAfpaBrive.Web.CustomValidator;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,6 +31,7 @@ namespace AppAfpaBrive.Web.ModelView
         public virtual ICollection<EvenementDocument> EvenementDocuments { get; set; }
         public string IdCatEvent { get; set; }
         public string LibelleEvent { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
         public string Titre { get; set; }
 
         public virtual ICollection<Evenement> Evenements { get; set; }

@@ -29,23 +29,24 @@ namespace AppAfpaBrive.Web.Controllers.Calendrier
             return View(modelView);
         }
         [HttpPost]
-        public IActionResult Create(EvenementModelView modelView, string recurrent, string dateEvenementDebut, string dateEvenementFin)
+        public IActionResult Create(EvenementModelView modelView)
         
         {
-           // EvenementModelView modelView = new EvenementModelView();
-            modelView.SelectListItems = _categorieEvenementLayer.GetTypeEvenements();
-            ViewData["Reponse"] = recurrent;
-            modelView.DateEvent = DateTime.Parse(dateEvenementDebut);
-            if (dateEvenementFin != null)
+            if (ModelState.IsValid)
+                modelView.SelectListItems = _categorieEvenementLayer.GetTypeEvenements();
+            //ViewData["Reponse"] = recurrent;
+            //modelView.DateEvent = DateTime.Parse(dateEvenementDebut);
+            //if (dateEvenementFin != null)
 
-                modelView.DateEventFin = DateTime.Parse(dateEvenementFin);
+            //modelView.DateEventFin = DateTime.Parse(dateEvenementFin);
 
             //if (!(DateTime.TryParse(dateEvenementDebut, out DateTime dateDebutConverti)|| 
             // !(DateTime.TryParse(dateEvenementFin, out DateTime dateFinConverti)||dateDebutConverti>dateFinConverti)))
             //{
 
             //}
-            return View(modelView);
+            
+            return View();
         }
     }
 }
