@@ -936,7 +936,7 @@ namespace AppAfpaBrive.DAL
 
                 entity.Property(e => e.IdPeriodePeeSuivi).HasColumnType("decimal(18, 0)");
                 entity.Property(e => e.ObjetSuivi)
-                    .HasMaxLength(20)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.TexteSuivi)

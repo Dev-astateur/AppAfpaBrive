@@ -1022,7 +1022,9 @@ namespace AppAfpaBrive.DAL.Migrations
             modelBuilder.Entity("AppAfpaBrive.BOL.PeeDocument", b =>
                 {
                     b.Property<decimal>("IdPeeDocument")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("IdPee")
                         .HasColumnType("decimal(18,0)");
@@ -1084,9 +1086,9 @@ namespace AppAfpaBrive.DAL.Migrations
                         .HasColumnType("decimal(18,0)");
 
                     b.Property<string>("ObjetSuivi")
-                        .HasMaxLength(20)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("TexteSuivi")
                         .HasMaxLength(4096)

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppAfpaBrive.DAL.Migrations
 {
     [DbContext(typeof(AFPANADbContext))]
-    [Migration("20210405153142_CorrectionBaseTablePeriodePeeSuivi")]
-    partial class CorrectionBaseTablePeriodePeeSuivi
+    [Migration("20210405205234_MiseaJourDataBase")]
+    partial class MiseaJourDataBase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1024,7 +1024,9 @@ namespace AppAfpaBrive.DAL.Migrations
             modelBuilder.Entity("AppAfpaBrive.BOL.PeeDocument", b =>
                 {
                     b.Property<decimal>("IdPeeDocument")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("IdPee")
                         .HasColumnType("decimal(18,0)");
@@ -1073,7 +1075,9 @@ namespace AppAfpaBrive.DAL.Migrations
             modelBuilder.Entity("AppAfpaBrive.BOL.PeriodePeeSuivi", b =>
                 {
                     b.Property<decimal>("IdPeriodePeeSuivi")
-                        .HasColumnType("decimal(18,0)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,0)")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("DateDeSuivi")
                         .ValueGeneratedOnAdd()
@@ -1084,9 +1088,9 @@ namespace AppAfpaBrive.DAL.Migrations
                         .HasColumnType("decimal(18,0)");
 
                     b.Property<string>("ObjetSuivi")
-                        .HasMaxLength(20)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("TexteSuivi")
                         .HasMaxLength(4096)

@@ -216,11 +216,12 @@ namespace AppAfpaBrive.Web.Controllers
                     .Include(d => d.IdPeriodePeeSuiviNavigation).Where(d => d.IdPee == model.IdPee);
 
                 var ID = _dbContext.PeriodePeeSuivis.OrderBy(p => p.IdPeriodePeeSuivi).Select(p => p.IdPeriodePeeSuivi).LastOrDefault();
-                var numOrd = peeDocuments.OrderByDescending(p => p.NumOrdre).Select(p => p.NumOrdre).LastOrDefault();
+                var numOrd = peeDocuments.OrderBy(p => p.NumOrdre).Select(p => p.NumOrdre).LastOrDefault();
                 var IdPeeDocu = peeDocuments.OrderBy(p => p.IdPeeDocument).Select(p => p.IdPeeDocument).LastOrDefault();
-
+                IdPeeDocu += 1;
                 numOrd += 1;
-
+                ID += 1;
+                
                 if (model.Fichier != null)
                 {
                     string uploadFolder = Path.Combine(_env.ContentRootPath, "wwwroot/UploadFiles/" + model.IdPee + "/");
@@ -237,17 +238,17 @@ namespace AppAfpaBrive.Web.Controllers
                     DateDeSuivi = model.DateDeSuivi,
                     ObjetSuivi = model.ObjetSuivi,
                     TexteSuivi = model.TexteSuivi,
-                    IdPeriodePeeSuivi = ID + 1
+                    IdPeriodePeeSuivi = ID
 
                 };
                 _dbContext.Add(periodePeeSuivi);
                 PeeDocument peeDocument = new PeeDocument
                 {
                     IdPee = model.IdPee,
-                    IdPeriodePeeSuivi = model.IdPeriodePeeSuivi,
+                    IdPeriodePeeSuivi = ID,
                     PathDocument = filePath,
-                    NumOrdre = numOrd + 1,
-                    IdPeeDocument = IdPeeDocu + 1
+                    NumOrdre = numOrd ,
+                    IdPeeDocument = IdPeeDocu
                 };
                 _dbContext.Add(peeDocument);
 

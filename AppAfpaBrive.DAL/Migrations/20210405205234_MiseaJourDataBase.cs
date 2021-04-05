@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppAfpaBrive.DAL.Migrations
 {
-    public partial class CorrectionBaseTablePeriodePeeSuivi : Migration
+    public partial class MiseaJourDataBase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,12 +26,13 @@ namespace AppAfpaBrive.DAL.Migrations
                 oldClrType: typeof(decimal),
                 oldType: "numeric(18,0)");
 
-            migrationBuilder.AddColumn<decimal>(
+            migrationBuilder.AlterColumn<decimal>(
                 name: "IdPeeDocument",
                 table: "Pee_Document",
                 type: "decimal(18,2)",
                 nullable: false,
-                defaultValue: 0m);
+                defaultValue: 0m)
+                .Annotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AddColumn<decimal>(
                 name: "IdPeriodePeeSuivi",
@@ -57,9 +58,10 @@ namespace AppAfpaBrive.DAL.Migrations
                 name: "Periode_Pee_Suivi",
                 columns: table => new
                 {
-                    IdPeriodePeeSuivi = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    IdPeriodePeeSuivi = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdPee = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
-                    ObjetSuivi = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: true),
+                    ObjetSuivi = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
                     TexteSuivi = table.Column<string>(type: "varchar(4096)", unicode: false, maxLength: 4096, nullable: true),
                     DateDeSuivi = table.Column<DateTime>(type: "date", nullable: false, defaultValueSql: "getdate()")
                 },

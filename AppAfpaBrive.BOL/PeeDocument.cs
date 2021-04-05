@@ -11,6 +11,7 @@ namespace AppAfpaBrive.BOL
     public partial class PeeDocument
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public decimal IdPeeDocument { get; set; }
         [ForeignKey("Fk_PeeDocument_Periode_Pee_Suivi")]
         public decimal IdPeriodePeeSuivi { get; set; }
