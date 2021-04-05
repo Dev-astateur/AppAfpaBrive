@@ -13,7 +13,9 @@
 
     <form asp-action="ChargementDocPee">
         <div class="row">
-
+            <div class="form-group col-sm-12 col-md-4 offset-8 col-lg-4 offset-8">
+                <input asp-action="ConsignezLeSuiviDuPee"  type="submit" value="Consignez le suivi du stage" class="btn btn-primary" />
+            </div>
             <div class="form-group col-sm-12 col-md-4 col-lg-4">
                 <input asp-action="GetDocumentForPrint" type="submit" value="Envoi_Convention" asp-route-id="1" class="btn btn-secondary" />
             </div>
@@ -64,13 +66,11 @@
 
                                                     if (element.MatriculeBeneficiaire == item.MatriculeBeneficiaire)
                                                     {
-
                                                         <td class="btn-primary">
 
                                                             <strong>Convention_@element.PeriodePees.FirstOrDefault(pr => pr.IdPee == element.IdPee).DateDebutPeriodePee.ToString("MMddyyy")</strong>
                                                             @{
-                                                                bool etatcheck = Convert.ToBoolean(element.Etat);
-
+                                                                bool etatcheck = false;
                                                                 <input asp-for="@etatcheck" name="PeecheckBox" type="checkbox" value="@element.IdPee" />
 
 

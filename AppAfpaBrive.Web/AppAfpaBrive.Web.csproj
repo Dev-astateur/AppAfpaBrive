@@ -51,12 +51,17 @@
     <Folder Include="Views\Stagiaire\" />
     <Folder Include="Models\Layer\" />
     <Folder Include="wwwroot\PeeDocument\" />
+    <Folder Include="wwwroot\UploadFiles\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
     <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
     <Folder Include="Views\Collaborateur\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\site.js" />
   </ItemGroup>
 
 </Project>

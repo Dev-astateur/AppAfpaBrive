@@ -1,0 +1,82 @@
+﻿@model AppAfpaBrive.Web.ModelView.PeriodePeeSuiviCreateViewModel
+@using AppAfpaBrive.BOL
+@using Microsoft.EntityFrameworkCore
+@{
+    List<Pee> ListPee = new List<Pee>();
+ ListPee = ViewBag.IdPee;
+    
+ var listItem = ListPee.Select(P => new SelectListItem() { Text = P.MatriculeBeneficiaireNavigation.NomBeneficiaire, Value = P.IdPee.ToString() }).ToList();
+
+}
+
+<h4>PeriodePeeSuivi</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form enctype="multipart/form-data" asp-action="CreatePeriodePeeSuivi" asp-controller="Pee">
+
+            @*<div class="form-group">
+                    <label asp-for="IdPeriodePeeSuivi" class="control-label"></label>
+                    <input asp-for="IdPeriodePeeSuivi" class="form-control" />
+                    <span asp-validation-for="IdPeriodePeeSuivi" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="IdPee" class="control-label"></label>
+                <select asp-for="IdPee" class="form-control" asp-items=listItem></select>
+
+            </div>
+            <div class="form-group col-md-10">
+                <label asp-for="DateDeSuivi" class="control-label">Date</label>
+                <input asp-for="DateDeSuivi" class="form-control" value="@DateTime.Today" />
+                <span asp-validation-for="DateDeSuivi" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-10">
+                <label asp-for="ObjetSuivi" class="control-label">Objet</label>
+                <input asp-for="ObjetSuivi" class="form-control" value=""/>
+                <span asp-validation-for="ObjetSuivi" class="text-danger"></span>
+            </div>
+            <div class="form-group w-100">
+                <label asp-for="TexteSuivi" class="control-label">renseigner vos appréciations </label>
+                @Html.TextAreaFor(model => model.TexteSuivi, new {@class="ckeditor"})
+                @Html.ValidationMessageFor(model => model.TexteSuivi,"",new {@classs = "text-danger" })
+            </div>
+
+
+            <div class="form-group col-md-10">
+                <label asp-for="Fichier" class="col-sm-2 col-form-label "></label>
+                <div class="custom-file">
+                    <input asp-for="Fichier" class="form-control custom-file-input" />
+                    <label class="custom-file-label text-dark">Choose File.....</label>
+
+                </div>
+
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group ">
+                <input type="submit" value="enregistrer" class="btn btn-primary btn-lg w-50" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        CKEDITOR.replace('TexteSuivi');
+        $(document).ready(function () {
+            $('.custom-file-input').on('change', function () {
+                //get the file name
+                var fileName = $(this).val().split('\\').pop();
+                //replace the "Choose a file" label
+                $(this).next('.custom-file-label').html(fileName);
+            });
+        });
+    </script>
+
+}
+
+
+

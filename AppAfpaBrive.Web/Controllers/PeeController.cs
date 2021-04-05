@@ -187,6 +187,76 @@ namespace AppAfpaBrive.Web.Controllers
         }
         #endregion
 
+        #region
+        [HttpPost]
+
+        public IActionResult ConsignezLeSuiviDuPee(List<int> PeecheckBox)
+        {
+            List<Pee> ListPee = new List<Pee>();
+            foreach (var item in PeecheckBox)
+            {
+                ListPee.Add(_dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation).FirstOrDefault(p => p.IdPee == item));
+            }
+
+            ViewBag.IdPee = ListPee;
+            return View();
+
+        }
+        [Route("upload_file")]
+        [HttpPost]
+        public async Task<IActionResult> CreatePeriodePeeSuivi(PeriodePeeSuiviCreateViewModel model)
+        {
+            string filePath = null;
+            if (ModelState.IsValid)
+            {
+                string onlyOneFileName = null;
+
+                var peeDocuments = _dbContext.PeeDocuments
+                    .Include(d => d.IdPeeNavigation)
+                    .Include(d => d.IdPeriodePeeSuiviNavigation).Where(d => d.IdPee == model.IdPee);
+
+                var numOrd = peeDocuments.OrderByDescending(p => p.NumOrdre).Select(p => p.NumOrdre).LastOrDefault();
+                if (numOrd == 0)
+                {
+                    numOrd += 1;
+                }
+                if (model.Fichier != null)
+                {
+                    string uploadFolder = Path.Combine(_env.ContentRootPath, "wwwroot/UploadFiles/" + model.IdPee + "/");
+                    Directory.CreateDirectory(uploadFolder);
+                    onlyOneFileName = Guid.NewGuid().ToString() + "_" + model.Fichier.FileName;
+                    filePath = Path.Combine(uploadFolder, onlyOneFileName);
+                    await model.Fichier.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                }
+
+
+                PeriodePeeSuivi periodePeeSuivi = new PeriodePeeSuivi
+                {
+                    IdPee = model.IdPee,
+                    DateDeSuivi = model.DateDeSuivi,
+                    ObjetSuivi = model.ObjetSuivi,
+                    TexteSuivi = model.TexteSuivi,
+
+
+                };
+                _dbContext.Add(periodePeeSuivi);
+                PeeDocument peeDocument = new PeeDocument
+                {
+                    IdPee = model.IdPee,
+                    IdPeriodePeeSuivi = model.IdPeriodePeeSuivi,
+                    PathDocument = filePath,
+                    NumOrdre = numOrd + 1,
+                   
+                };
+                _dbContext.Add(peeDocument);
+                
+            }
+            await _dbContext.SaveChangesAsync();
+            return View();
+        }
+
+        #endregion
+
         #region Validation des Pee par le formateur
         /// <summary>
         /// liste des Pee par formateur
