@@ -3,9 +3,9 @@
 @using Microsoft.EntityFrameworkCore
 @{
     List<Pee> ListPee = new List<Pee>();
- ListPee = ViewBag.IdPee;
-    
- var listItem = ListPee.Select(P => new SelectListItem() { Text = P.MatriculeBeneficiaireNavigation.NomBeneficiaire, Value = P.IdPee.ToString() }).ToList();
+    ListPee = ViewBag.IdPee;
+
+    var listItem = ListPee.Select(P => new SelectListItem() { Text = P.MatriculeBeneficiaireNavigation.NomBeneficiaire, Value = P.IdPee.ToString() }).ToList();
 
 }
 
@@ -32,13 +32,13 @@
             </div>
             <div class="form-group col-md-10">
                 <label asp-for="ObjetSuivi" class="control-label">Objet</label>
-                <input asp-for="ObjetSuivi" class="form-control" value=""/>
+                <input asp-for="ObjetSuivi" class="form-control" value="" />
                 <span asp-validation-for="ObjetSuivi" class="text-danger"></span>
             </div>
             <div class="form-group w-100">
                 <label asp-for="TexteSuivi" class="control-label">renseigner vos appréciations </label>
-                @Html.TextAreaFor(model => model.TexteSuivi, new {@class="ckeditor"})
-                @Html.ValidationMessageFor(model => model.TexteSuivi,"",new {@classs = "text-danger" })
+                @Html.TextAreaFor(model => model.TexteSuivi, new { @class = "ckeditor" })
+                @Html.ValidationMessageFor(model => model.TexteSuivi, "", new { @classs = "text-danger" })
             </div>
 
 

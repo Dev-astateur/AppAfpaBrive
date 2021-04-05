@@ -202,7 +202,7 @@ namespace AppAfpaBrive.Web.Controllers
             return View();
 
         }
-        [Route("upload_file")]
+        //[Route("upload_file")]
         [HttpPost]
         public async Task<IActionResult> CreatePeriodePeeSuivi(PeriodePeeSuiviCreateViewModel model)
         {
@@ -215,11 +215,12 @@ namespace AppAfpaBrive.Web.Controllers
                     .Include(d => d.IdPeeNavigation)
                     .Include(d => d.IdPeriodePeeSuiviNavigation).Where(d => d.IdPee == model.IdPee);
 
+                var ID = _dbContext.PeriodePeeSuivis.OrderBy(p => p.IdPeriodePeeSuivi).Select(p => p.IdPeriodePeeSuivi).LastOrDefault();
                 var numOrd = peeDocuments.OrderByDescending(p => p.NumOrdre).Select(p => p.NumOrdre).LastOrDefault();
-                if (numOrd == 0)
-                {
-                    numOrd += 1;
-                }
+                var IdPeeDocu = peeDocuments.OrderBy(p => p.IdPeeDocument).Select(p => p.IdPeeDocument).LastOrDefault();
+
+                numOrd += 1;
+
                 if (model.Fichier != null)
                 {
                     string uploadFolder = Path.Combine(_env.ContentRootPath, "wwwroot/UploadFiles/" + model.IdPee + "/");
@@ -236,7 +237,7 @@ namespace AppAfpaBrive.Web.Controllers
                     DateDeSuivi = model.DateDeSuivi,
                     ObjetSuivi = model.ObjetSuivi,
                     TexteSuivi = model.TexteSuivi,
-
+                    IdPeriodePeeSuivi = ID + 1
 
                 };
                 _dbContext.Add(periodePeeSuivi);
@@ -246,13 +247,13 @@ namespace AppAfpaBrive.Web.Controllers
                     IdPeriodePeeSuivi = model.IdPeriodePeeSuivi,
                     PathDocument = filePath,
                     NumOrdre = numOrd + 1,
-                   
+                    IdPeeDocument = IdPeeDocu + 1
                 };
                 _dbContext.Add(peeDocument);
-                
+
             }
             await _dbContext.SaveChangesAsync();
-            return View();
+            return View(model);
         }
 
         #endregion
