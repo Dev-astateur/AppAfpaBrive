@@ -98,5 +98,6 @@ namespace AppAfpaBrive.Web.Layers
             _context.Beneficiaires.Update(beneficiaire);
             _context.SaveChanges();
         }
+
     }
 }

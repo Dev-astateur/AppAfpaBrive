@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using AppAfpaBrive.Web.Areas.Identity.Data;
+using AppAfpaBrive.Web.Layers;
+using AppAfpaBrive.DAL;
 
 namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
 {
@@ -21,14 +23,17 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
         private readonly UserManager<AppAfpaBriveUser> _userManager;
         private readonly SignInManager<AppAfpaBriveUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly BeneficiaireLayer _layer = null;
 
         public LoginModel(SignInManager<AppAfpaBriveUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<AppAfpaBriveUser> userManager)
+            UserManager<AppAfpaBriveUser> userManager,
+            AFPANADbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _layer = new BeneficiaireLayer(dbContext);
         }
 
         [BindProperty]
@@ -95,6 +100,7 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
                     {
                         return RedirectToPage("./Manage/ChangePassword");
                     }
+                    if ( _layer.BoolStagiaire(user.UserName) )
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

@@ -52,6 +52,16 @@ namespace AppAfpaBrive.Web.Layers
                 PrenomBeneficiaire = e.PrenomBeneficiaire
             }).FirstOrDefaultAsync();
         }
-        #endregion 
+        #endregion
+
+        #region méthode utilisé dans Login
+        public bool BoolStagiaire(string matricule)
+        {
+            if (_context.Beneficiaires.Where(e => e.MatriculeBeneficiaire == matricule).Select(e => e.MatriculeBeneficiaire).FirstOrDefault() is null)
+                return false;
+            return true;
+        }
+
+        #endregion
     }
 }
