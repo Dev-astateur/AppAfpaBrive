@@ -1,13 +1,19 @@
 ﻿@model AppAfpaBrive.Web.ModelView.Date_ModelView
 <form method="post">
 
-    @Model.Iddate
-    <input hidden="hidden" value="@Model.Iddate" asp-for="@Model.Iddate"/>
+    <input hidden="hidden" value="@Model.Iddate" asp-for="@Model.Iddate" />
 
-    @Model.Date1.ToString("yyyy-MM-dd")
+    <h5>
+        Voulez vous supprimer ?
+    </h5>
+    <h5>
+        Date de Début du stage: @Model.Date1.ToString("yyyy-MM-dd")
+    </h5>
+    <h5>
+        Date de fin du stage: @Model.Date2.ToString("yyyy-MM-dd")
+    </h5>
 
-    @Model.Date2.ToString("yyyy-MM-dd")
-
+    <br />
     <a asp-action="date" class="btn btn-primary m-2">Retour</a>
     <input type="submit" class="btn btn-danger m-2" value="Supprimer" />
 

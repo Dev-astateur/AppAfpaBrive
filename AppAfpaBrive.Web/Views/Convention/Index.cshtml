@@ -1,66 +1,30 @@
 ﻿@model List<AppAfpaBrive.Web.Models.Creation_convention>
 <form method="post">
-    <div>
+    <div class="border p-3 border-info rounded text-center">
         @if (Model.Count() > 0)
         {
-            <table class="table table-bordered table-striped" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>
-                            Formation
-                        </th>
-                        <th>
-                            Etablissement
-                        </th>
-                        <th>
-                            Date de début
-                        </th>
-                        <th>
-                            Date de fin
-                        </th>
-
-                        <th>
-
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr id="ligne">
-                            <td width="20%">
-                                @item.Etablissement
-                            </td>
-                            <td width="20%">
-                                @item.Formation
-                            </td>
-                            <td width="20%">
-                                @item.DateDebut.ToString("yyyy-MM-dd")
-                            </td>
-                            <td width="20%">
-                                @item.Datefin   
-                                @if (@item.Datefin is null)
-                                {
-                                    <p> Date inconnue</p>
-                                }
-                            </td>
-
-                            <td>
-                                @*<div class="col">
-                                    <input type="submit" class="btn btn-info w-100" value="Creer un convention de stage" />
-                                </div>*@
-                                <a asp-controller="Convention" asp-action="Entreprise" asp-route-Id="@item.IdFormation" class="btn btn-primary">
-                                        Créer une convention de stage
-                                    </a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            @foreach (var item in Model)
+            {
+                <label class="text-info h5">Formation:</label><br /> @item.Formation<br />
+                <label class="text-info h5">Etablissement: </label><br /> @item.Etablissement<br />
+                <label class="text-info h5">Date de début de formation: </label><br />@item.DateDebut.ToString("dd-MM-yyyy")<br />
+                <label class="text-info h5">Date de la fin de formation:</label><br /> @item.Datefin
+                @if (@item.Datefin == null)
+                {
+                    <label> Date inconnue</label>
+                }
+                <br />
+                <div class="text-right">
+                    <a asp-controller="Convention" asp-action="Entreprise" asp-route-Id="@item.IdFormation" class="btn btn-primary">
+                        Créer une convention de stage
+                    </a>
+                </div>
+            }
         }
         else
         {
-            <p> Vous n'avez pas de formation.</p>
+            <label>Vous n'avez pas de formation.</label>
         }
     </div>
+    
 </form>

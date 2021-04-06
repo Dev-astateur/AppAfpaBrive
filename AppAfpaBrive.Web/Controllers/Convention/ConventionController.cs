@@ -15,6 +15,10 @@ using DocumentFormat.OpenXml;
 using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.Utilitaires;
 using AppAfpaBrive.Web.Layer;
+using System.IO;
+using static AppAfpaBrive.Web.Layers.PeeLayer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
@@ -29,9 +33,10 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_EntrepriseProfessionnel _entreprisepro = null;
         private PeeLayer _peelayer = null;
         private Periode_pee_Layer _periode = null;
-        protected string Path { get; set; }
+        private Layer_PeeDocument _PeeDocument = null;
+        private readonly IConfiguration _config;
 
-        public ConventionController(AFPANADbContext context)
+        public ConventionController(AFPANADbContext context, IConfiguration config)
         {
             _beneficiaireOffre = new Layer_Offres_Formation(context);
             _Etablissement = new Layer_Etablissement(context);
@@ -42,15 +47,17 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _entreprisepro = new Layer_EntrepriseProfessionnel(context);
             _peelayer = new PeeLayer(context);
             _periode = new Periode_pee_Layer(context);
-            Path = "./Data/Documents";
+            _PeeDocument = new Layer_PeeDocument(context);
+            _config = config;
         }
-        
+
 
 
         // get index
         public IActionResult Index()
         {
-            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations("20061760");
+            string matricule = "20061760";
+            IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations(matricule);
             List<Creation_convention> obj = new List<Creation_convention>();
 
             foreach (var item in beneficiaires)
@@ -62,36 +69,26 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     IdEtablissement = item.Idetablissement,
                     DateDebut = item.DateEntreeBeneficiaire,
                     Datefin = item.DateSortieBeneficiaire,
-                    Etablissement = _Etablissement.Get_Etablissement_Nom(item.Idetablissement).FirstOrDefault().NomEtablissement,
+                    Etablissement = _Etablissement.Get_Etablissement_Nom_Etablissement(item.Idetablissement),
                     Formation = _Produit_Formation.Get_Formation_Nom(item.IdOffreFormation).FirstOrDefault()
                 };
                 obj.Add(convention);
             }
             Creation_convention Session_Convention = new Creation_convention
             {
-                Idmatricule = "16174318"
+                Idmatricule = matricule
             };
             var str = JsonConvert.SerializeObject(Session_Convention);
             HttpContext.Session.SetString("convention", str);
             return View(obj);
         }
 
-        // post index
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Index(Creation_convention convention)
-        //{
-        //    var str = JsonConvert.SerializeObject(convention);
-        //    HttpContext.Session.SetString("convention", str);
-        //    return RedirectToAction("Entreprise");
-        //}
-
         // get Entreprise
         public IActionResult Entreprise(int id)
         {
             string str = HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-            
+
             if (id == 0)
             {
                 id = convention.IdFormation;
@@ -99,8 +96,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
             convention.Formation = _Produit_Formation.Get_Formation_Nom(id).FirstOrDefault();
             convention.IdFormation = id;
-            convention.IdEtablissement = _beneficiaireOffre.GetIdetablissemnt(convention.Idmatricule, id).FirstOrDefault().Idetablissement;
-            convention.Etablissement = _Etablissement.Get_Etablissement_Nom(convention.IdEtablissement).FirstOrDefault().NomEtablissement;
+            convention.IdEtablissement = _beneficiaireOffre.GetIdetablissemnt_Id_Etablissement(convention.Idmatricule, id);
+            convention.Etablissement = _Etablissement.Get_Etablissement_Nom(convention.IdEtablissement);
             var obj = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", obj);
             return View();
@@ -139,8 +136,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
                 str = JsonConvert.SerializeObject(convention);
                 HttpContext.Session.SetString("convention", str);
-                //HttpContext.Session.SetString("pro", "");
-                //HttpContext.Session.SetString("date", "");
                 return RedirectToAction("Entreprise_Recap");
             }
             return View(obj);
@@ -152,11 +147,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-            //Entreprise obj = _Entreprise.get_Entreprise(convention.Siret).FirstOrDefault();
-            //convention.Siret = obj.NumeroSiret;
-            //convention.IdEntreprise = obj.IdEntreprise;
-            //convention.Entreprise_raison_social = obj.RaisonSociale;
-
             Entreprise entreprise = new Entreprise
             {
                 CodePostal = convention.Entreprise_codePostal,
@@ -181,10 +171,12 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         public IActionResult Entreprise_creation()
         {
             string siret = this.HttpContext.Session.GetString("siret");
-            ViewBag.siret = siret;
+            Entreprise_Creation_ViewModel entreprise = new Entreprise_Creation_ViewModel
+            {
+                NumeroSiret = siret
+            };
             IQueryable<string> pays = _Pays.Get_pays();
-            ViewBag.pays = pays;
-            return View();
+            return View(entreprise);
         }
 
 
@@ -198,7 +190,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 string str = this.HttpContext.Session.GetString("convention");
                 Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
                 convention.Entreprise_codePostal = entreprise.CodePostal;
-                convention.Entreprise_IdPays = entreprise.Idpays2;
+                convention.Entreprise_IdPays = _Pays.Get_pays_ID(entreprise.Idpays2);
                 convention.Entreprise_Ligne1Adresse = entreprise.Ligne1Adresse;
                 convention.Entreprise_Ligne2Adresse = entreprise.Ligne2Adresse;
                 convention.Entreprise_Ligne3Adresse = entreprise.Ligne3Adresse;
@@ -207,6 +199,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 convention.Entreprise_Tel = entreprise.TelEntreprise;
                 convention.Entreprise_Ville = entreprise.Ville;
                 convention.Siret = entreprise.NumeroSiret;
+                convention.IdEntreprise = 0;
                 str = JsonConvert.SerializeObject(convention);
                 HttpContext.Session.SetString("convention", str);
                 return RedirectToAction("Entreprise_Recap");
@@ -220,27 +213,25 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             string str = this.HttpContext.Session.GetString("convention");
             Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
             str = HttpContext.Session.GetString("pro");
-            List<Professionnel> pro = new List<Professionnel>();
-            if (str == "")
-            {
-               pro = _pro.Get_Pro(convention.IdEntreprise);
-            }
 
             List<Pro_Session_ModelView> pro_Sessions = new List<Pro_Session_ModelView>();
-
-            foreach (var item in pro)
+            // 1er fois
+            if (str == "")
             {
-                Pro_Session_ModelView pro_Session_ = new Pro_Session_ModelView
+                List<Professionnel> pro = _pro.Get_Pro(convention.IdEntreprise);
+                foreach (var item in pro)
                 {
-                    CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel,
-                    NomProfessionnel = item.NomProfessionnel,
-                    PrenomProfessionnel = item.PrenomProfessionnel,
-                    ID = item.IdProfessionnel
-                };
-                pro_Sessions.Add(pro_Session_);
+                    Pro_Session_ModelView pro_Session_ = new Pro_Session_ModelView
+                    {
+                        CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel,
+                        NomProfessionnel = item.NomProfessionnel,
+                        PrenomProfessionnel = item.PrenomProfessionnel,
+                        ID = item.IdProfessionnel
+                    };
+                    pro_Sessions.Add(pro_Session_);
+                }
             }
-
-            if (str != "")
+            else
             {
                 List<Pro_Session_ModelView> professionnels = JsonConvert.DeserializeObject<List<Pro_Session_ModelView>>(str);
                 foreach (var item in professionnels)
@@ -250,7 +241,11 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                         NomProfessionnel = item.NomProfessionnel,
                         PrenomProfessionnel = item.PrenomProfessionnel,
                         CodeTitreCiviliteProfessionnel = item.CodeTitreCiviliteProfessionnel,
-                        Create = item.Create
+                        ID = item.ID,
+                        Create = item.Create,
+                        AdresseMail = item.AdresseMail,
+                        Fonction = item.Fonction,
+                        NumerosTel = item.NumerosTel
                     };
                     pro_Sessions.Add(professionnel);
                 }
@@ -280,6 +275,10 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 convention.IdTuteur = professionnel.ID;
                 convention.Tuteur_create_Id = tuteurID;
                 convention.Tuteur_create = professionnel.Create;
+                convention.Tuteur_AdresseMail = professionnel.AdresseMail;
+                convention.Tuteur_Fonction = professionnel.Fonction;
+                convention.Tuteur_Telephone = professionnel.NumerosTel;
+                convention.Tuteur_genre = professionnel.CodeTitreCiviliteProfessionnel;
             }
             if (Request.Form["Responsable"] != "")
             {
@@ -291,13 +290,15 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 convention.IdResponsable = professionnel.ID;
                 convention.Responsable_create_Id = ResponsableID;
                 convention.Responsable_create = professionnel.Create;
+                convention.Responsable_AdresseMail = professionnel.AdresseMail;
+                convention.Responsable_Fonction = professionnel.Fonction;
+                convention.Responsable_Telephone = professionnel.NumerosTel;
+                convention.Responsable_genre = professionnel.CodeTitreCiviliteProfessionnel;
             }
             var x = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", x);
             return RedirectToAction("date_create");
         }
-
-        
 
         // get Professionel_creation
         public IActionResult Professionel_Creation()
@@ -346,6 +347,10 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             {
                 date = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
             }
+            if (date == null)
+            {
+                return RedirectToAction("professionel");
+            }
             return View(date);
         }
 
@@ -367,19 +372,21 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [HttpPost]
         public IActionResult date_create(Date_ModelView date)
         {
-            
-            List<Date_ModelView> listDate = new List<Date_ModelView>();
-            string str = this.HttpContext.Session.GetString("date");
-            if (str != "")
+            if (ModelState.IsValid)
             {
-                listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
+                List<Date_ModelView> listDate = new List<Date_ModelView>();
+                string str = this.HttpContext.Session.GetString("date");
+                if (str != "")
+                {
+                    listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
+                }
+                date.Iddate = listDate.Count() + 1;
+                listDate.Add(date);
+                str = JsonConvert.SerializeObject(listDate);
+                HttpContext.Session.SetString("date", str);
+                return RedirectToAction("date");
             }
-            date.Iddate = listDate.Count();
-            listDate.Add(date);
-            str = JsonConvert.SerializeObject(listDate);
-            HttpContext.Session.SetString("date", str);
-            return RedirectToAction("date");
-            //return View(date);
+            return View(date);
         }
 
         // get date
@@ -387,7 +394,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = HttpContext.Session.GetString("date");
             List<Date_ModelView> listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
-            Date_ModelView date = listDate[id];
+            Date_ModelView date = listDate[id - 1];
             return View(date);
         }
 
@@ -397,7 +404,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = HttpContext.Session.GetString("date");
             List<Date_ModelView> listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
-            listDate.RemoveAt(date.Iddate);
+            listDate.RemoveAt(date.Iddate - 1);
             str = JsonConvert.SerializeObject(listDate);
             HttpContext.Session.SetString("date", str);
             return RedirectToAction("date");
@@ -419,107 +426,248 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
         //post Recapitulatif
         [HttpPost]
-        public IActionResult Recapitulatif(FilesModel uploadFile)
+        public IActionResult Recapitulatif(FilesModelConvention uploadFile)
         {
-
-            string str = this.HttpContext.Session.GetString("convention");
-            Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
-            int entrepriseID = 0;
-
-            Pee pee = new Pee
+            AFPANADbContext context = new AFPANADbContext();
+            if (ModelState.IsValid)
             {
-                IdEntreprise = convention.IdEntreprise,
-                MatriculeBeneficiaire = convention.Idmatricule,
-                IdTuteur = convention.IdTuteur,
-                IdResponsableJuridique = convention.IdResponsable,
-                IdOffreFormation = convention.IdFormation,
-                IdEtablissement = convention.IdEtablissement
-            };
+                string str = this.HttpContext.Session.GetString("convention");
+                Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
 
-            if (convention.Entreprise_Create == true)
-            {
-                Entreprise entreprise = new Entreprise
+                Entreprise entreprise = new Entreprise();
+                Professionnel Tuteur = new Professionnel();
+                EntrepriseProfessionnel tuteur_entr = new EntrepriseProfessionnel();
+                Professionnel Responsable = new Professionnel();
+                EntrepriseProfessionnel Responsable_entr = new EntrepriseProfessionnel();
+
+
+                PeriodePee periodePee = new PeriodePee();
+
+
+
+                entreprise = new Entreprise
                 {
-                    CodePostal = convention.Entreprise_codePostal,
-                    Idpays2 = "Fr",
                     Ligne1Adresse = convention.Entreprise_Ligne1Adresse,
                     Ligne2Adresse = convention.Entreprise_Ligne2Adresse,
                     Ligne3Adresse = convention.Entreprise_Ligne3Adresse,
-                    RaisonSociale = convention.Entreprise_raison_social,
+                    CodePostal = convention.Entreprise_codePostal,
                     MailEntreprise = convention.Entreprise_Mail,
+                    Idpays2 = convention.Entreprise_IdPays,
+                    NumeroSiret = convention.Siret,
+                    RaisonSociale = convention.Entreprise_raison_social,
                     Ville = convention.Entreprise_Ville,
-                    TelEntreprise = convention.Entreprise_Tel,
-                    NumeroSiret = convention.Siret
+                    TelEntreprise = convention.Entreprise_Tel
                 };
-                entrepriseID = _Entreprise.Create_entreprise_ID_Back(entreprise);
-                pee.IdEntreprise = entrepriseID;
-            }
 
-            if(convention.Tuteur_create == true)
-            {
-                Professionnel professionnel = new Professionnel
+                Tuteur = new Professionnel
                 {
-                    CodeTitreCiviliteProfessionnel = 1,
+                    PrenomProfessionnel = convention.TuteurPrenom,
                     NomProfessionnel = convention.TuteurNom,
-                    PrenomProfessionnel = convention.TuteurPrenom
+                    CodeTitreCiviliteProfessionnel = convention.Tuteur_genre,
+                    IdProfessionnel = convention.IdTuteur
                 };
-                _pro.create(professionnel);
-            }
 
-            if (convention.Responsable_create == true)
-            {
-                Professionnel professionnel = new Professionnel
+                tuteur_entr = new EntrepriseProfessionnel
                 {
-                    CodeTitreCiviliteProfessionnel = 0,
+                    AdresseMailPro = convention.Tuteur_AdresseMail,
+                    Fonction = convention.Tuteur_Fonction,
+                    TelephonePro = convention.Tuteur_Telephone,
+                    IdProfessionnelNavigation = Tuteur,
+                    IdEntrepriseNavigation = entreprise
+                };
+
+                Responsable = new Professionnel
+                {
+                    PrenomProfessionnel = convention.ResponsablePrenom,
                     NomProfessionnel = convention.ResponsableNom,
-                    PrenomProfessionnel = convention.ResponsablePrenom
+                    CodeTitreCiviliteProfessionnel = convention.Responsable_genre,
+                    IdProfessionnel = convention.IdResponsable
                 };
-                _pro.create(professionnel);
-            }
 
-            string str_date = this.HttpContext.Session.GetString("date");
-            List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
-            decimal peeId = _peelayer.Pee_Create_ID_Back(pee);
-            foreach (var item in dates)
-            {
-                PeriodePee periodePee = new PeriodePee
+                Responsable_entr = new EntrepriseProfessionnel
                 {
-                    IdPee = peeId,
-                    DateDebutPeriodePee = item.Date1,
-                    DateFinPeriodePee = item.Date2,
-                    NumOrdre = item.Iddate
+                    AdresseMailPro = convention.Responsable_AdresseMail,
+                    Fonction = convention.Responsable_Fonction,
+                    TelephonePro = convention.Responsable_Telephone,
+                    IdProfessionnelNavigation = Tuteur,
+                    IdEntrepriseNavigation = entreprise
                 };
-                _periode.Pee_Create(periodePee);
-            }
 
-            if (ModelState.IsValid)
-            {
-                var postedFile = uploadFile.file;
-                try
+                Pee pee = new Pee
                 {
-                    var Response = UploadFiles.UploadFile(postedFile, Path);
+                    IdEntrepriseNavigation = entreprise,
+                    MatriculeBeneficiaire = convention.Idmatricule,
+                    IdOffreFormation = convention.IdFormation,
+                    IdEtablissement = convention.IdEtablissement
+                };
 
-                    if (Response.Done)
+                if (convention.Entreprise_Create == true)
+                {
+                    context.Entry(entreprise).State = EntityState.Added;
+                }
+                else
+                {
+                    entreprise.IdEntreprise = convention.IdEntreprise;
+                    context.Entry(entreprise).State = EntityState.Unchanged;
+                }
+
+
+                string str_date = this.HttpContext.Session.GetString("date");
+                List<Date_ModelView> dates = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date);
+                foreach (var item in dates)
+                {
+                    periodePee = new PeriodePee
                     {
-                        return RedirectToAction("index");
+                        IdPeeNavigation = pee,
+                        DateDebutPeriodePee = item.Date1,
+                        DateFinPeriodePee = item.Date2,
+                        NumOrdre = item.Iddate
+                    };
+                    context.Entry(periodePee).State = EntityState.Added;
+                }
+
+                if (convention.Tuteur_create == true)
+                {
+                    pee.IdTuteurNavigation = Tuteur;
+                    tuteur_entr.IdProfessionnelNavigation = Tuteur;
+                    if (convention.Entreprise_Create == true)
+                    {
+                        tuteur_entr.IdEntrepriseNavigation = entreprise;
+                        entreprise.EntrepriseProfessionnels.Add(tuteur_entr);
                     }
                     else
                     {
-                        return BadRequest();
+                        tuteur_entr.IdEntreprise = entreprise.IdEntreprise;
                     }
 
+                    context.Entry(Tuteur).State = EntityState.Added;
+                    context.Entry(tuteur_entr).State = EntityState.Added;
                 }
-                catch (Exception e)
+                else
                 {
-                    Response.WriteAsync("<script>alert('" + e + "')</script>");
-                    return View();
+                    pee.IdTuteur = convention.IdTuteur;
                 }
+
+                if (convention.Responsable_create == true)
+                {
+                    pee.IdResponsableJuridiqueNavigation = Responsable;
+                    Responsable_entr.IdProfessionnelNavigation = Responsable;
+                    Responsable_entr.IdEntreprise = entreprise.IdEntreprise;
+                    if (convention.Entreprise_Create == true)
+                    {
+                        Responsable_entr.IdEntrepriseNavigation = entreprise;
+                        if (convention.Tuteur_create_Id != convention.Responsable_create_Id)
+                        {
+                            entreprise.EntrepriseProfessionnels.Add(Responsable_entr);
+                        }
+                    }
+                    else
+                    {
+                        Responsable_entr.IdEntreprise = entreprise.IdEntreprise;
+                    }
+
+                    if (convention.Tuteur_create_Id == convention.Responsable_create_Id)
+                    {
+                        pee.IdResponsableJuridiqueNavigation = Tuteur;
+                        Responsable_entr = tuteur_entr;
+                        entreprise.EntrepriseProfessionnels.Add(Responsable_entr);
+                    }
+                    else
+                    {
+                        context.Entry(Responsable).State = EntityState.Added;
+                        context.Entry(Responsable_entr).State = EntityState.Added;
+                    }
+                }
+                else
+                {
+                    pee.IdResponsableJuridique = convention.IdResponsable;
+                }
+
+
+                context.Entry(pee).State = EntityState.Added;
+                context.Entry(periodePee).State = EntityState.Added;
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    return RedirectToAction("Erreur");
+                }
+
+                int i = 0;
+                try
+                {
+                    if (uploadFile.file != null)
+                    {
+
+
+                        foreach (var item in uploadFile.file)
+                        {
+                            var postedFile = item;
+                            i++;
+                            if (postedFile != null)
+                            {
+                                string get_path = _config.GetSection("PeeDocument").Value;
+                                string Path = get_path + pee.IdPee;
+                                if (!Directory.Exists(Path))
+                                {
+                                    Directory.CreateDirectory(Path);
+                                }
+                                var Response = UploadFiles.UploadFile(postedFile, Path);
+
+                                if (Response.Done)
+                                {
+                                    PeeDocument peeDocument = new PeeDocument
+                                    {
+                                        IdPee = pee.IdPee,
+                                        PathDocument = Path + "/" + item.FileName,
+                                        NumOrdre = i
+                                    };
+                                    _PeeDocument.create(peeDocument);
+                                }
+                                else
+                                {
+                                    return BadRequest();
+                                }
+
+                            }
+                            else
+                            {
+                                return RedirectToAction("Reussite");
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    return RedirectToAction("Erreur");
+                }
+                return RedirectToAction("Reussite");
             }
 
-            return RedirectToAction("index");
+            string str2 = this.HttpContext.Session.GetString("convention");
+            Creation_convention convention2 = JsonConvert.DeserializeObject<Creation_convention>(str2);
+
+            string str_date2 = this.HttpContext.Session.GetString("date");
+            List<Date_ModelView> dates2 = JsonConvert.DeserializeObject<List<Date_ModelView>>(str_date2);
+            ViewBag.dates = dates2;
+            ViewBag.convention = convention2;
+
+            return View();
         }
-        
-        
+
+        // get Reussite
+        public IActionResult Reussite()
+        {
+            return View();
+        }
+
+        // get Erreur
+        public IActionResult Erreur()
+        {
+            return View();
+        }
 
     }
 }

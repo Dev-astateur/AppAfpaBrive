@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class PeriodePee
+    public partial class PeriodePee:EntityBase
     {
         public decimal IdPee { get; set; }
         public int NumOrdre { get; set; }

@@ -20,18 +20,22 @@ namespace AppAfpaBrive.Web.Models.FileUploadModels
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var file = value as IFormFile;
-
-            if(file != null)
+            var files = value as List<IFormFile>;
+            if(files != null)
             {
-                var extension = Path.GetExtension(file.FileName);
-                if (!_extension.Contains(extension.ToLower()))
+                foreach (var item in files)
                 {
-                    return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                    if (item != null)
+                    {
+                        var extension = Path.GetExtension(item.FileName);
+                        if (!_extension.Contains(extension.ToLower()))
+                        {
+                            return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
+                        }
+                    }
                 }
             }
             return ValidationResult.Success;
         }
-
     }
 }

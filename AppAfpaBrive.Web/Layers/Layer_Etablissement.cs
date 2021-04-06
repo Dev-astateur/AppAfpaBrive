@@ -13,9 +13,14 @@ namespace AppAfpaBrive.Web.Layer
             _db = context;
         }
 
-        public IEnumerable<Etablissement> Get_Etablissement_Nom(string Id)
+        public string Get_Etablissement_Nom(string Id)
         {
-            return _db.Etablissements.Where(x=>x.IdEtablissement == Id).ToList();
+            return _db.Etablissements.Where(x=>x.IdEtablissement == Id).FirstOrDefault().NomEtablissement;
+        }
+
+        public string Get_Etablissement_Nom_Etablissement(string ID)
+        {
+            return _db.Etablissements.Where(x => x.IdEtablissement == ID).FirstOrDefault().NomEtablissement;
         }
 
         

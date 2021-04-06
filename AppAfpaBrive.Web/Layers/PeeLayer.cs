@@ -11,7 +11,7 @@ using ReflectionIT.Mvc.Paging;
 
 namespace AppAfpaBrive.Web.Layers
 {
-     public class PeeLayer
+    public partial class PeeLayer
     {
         private readonly AFPANADbContext _dbContext = null;
 
@@ -199,6 +199,5 @@ namespace AppAfpaBrive.Web.Layers
                 } ).FirstAsync();
         }
 
-        
     }
 }

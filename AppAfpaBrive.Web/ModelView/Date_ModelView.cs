@@ -13,13 +13,15 @@ namespace AppAfpaBrive.Web.ModelView
         [Key]
         public int Iddate { get => _Iddate; set => _Iddate = value; }
 
-        [Required]
-        [DateStart(ErrorMessage = "La date doit être superieur à aujourd'hui")]
+        [Required(ErrorMessage ="Sélectionner une date")]
+        [DataType(DataType.Date)]
+        [DateDebutDePeeValidator()]
         public DateTime Date1 { get => _date1; set => _date1 = value; }
-        
 
-        [Required]
-        [DateStart(ErrorMessage ="La date doit être superieur à aujourd'hui")]
+
+        [Required(ErrorMessage = "Sélectionner une date")]
+        [DataType(DataType.Date)]
+        [DateDeFinDePeeValidator()]
         public DateTime Date2 { get => _date2; set => _date2 = value; }
     }
 

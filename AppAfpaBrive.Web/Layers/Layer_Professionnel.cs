@@ -34,6 +34,7 @@ namespace AppAfpaBrive.Web.Layers
 
         public void create(Professionnel pro)
         {
+            //_db.Entry<Professionnel>(pro).State = Microsoft.EntityFrameworkCore.EntityState.Added;
             _db.Add(pro);
             _db.SaveChanges();
         }

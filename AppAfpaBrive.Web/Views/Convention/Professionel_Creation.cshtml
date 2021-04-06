@@ -3,7 +3,7 @@
 <form method="post">
     <div class="border p-3">
         <div class="form-group row">
-            <h2 class="text-info pl-3">Veuillez remplir les informations suivantes afin d'ajouter les references:</h2>
+            <h2 class="text-info pl-3">Veuillez remplir les informations concernant le professionnel:</h2>
         </div>
         <div class="row">
             <div class="col-12">
@@ -47,7 +47,7 @@
                         <span asp-validation-for="NumerosTel" class="text-danger"></span>
                     </div>
                     <div class="col-md-4 p-2">
-                        <h5> Fonction: </h5>
+                        <h5> Fonction au sein de l'entreprise: </h5>
                     </div>
                     <div class="col-md-8 p-2">
                         <input asp-for="Fonction" class="form-control" />
@@ -63,10 +63,10 @@
                 <div class="form-group row">
                     <div class="col-8 offset-4 row">
                         <div class="col">
-                            <a asp-action="Professionel" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Retour</a>
+                            <a asp-action="Professionel" class="btn btn-info w-100"><i class="fas fa-sign-out-alt"></i> Retour</a>
                         </div>
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Ajouter" />
+                            <input type="submit" class="btn btn-success w-100" value="Ajouter" />
                         </div>
 
                     </div>
