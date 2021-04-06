@@ -32,7 +32,6 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
         public int IdStructure { get; set; }
         public virtual Structure Structure { get; set; }
 
-
         public virtual ICollection<CategorieLigneAnnuaire> CategorieLigneAnnuaires { get; set; }
         public virtual ICollection<ContactLigneAnnuaire> ContactLigneAnnuaires { get; set; }
 
@@ -51,6 +50,8 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
                 ContactLigneAnnuaires = this.ContactLigneAnnuaires
             };
         }
+        
+
 
     }
 }

@@ -1,0 +1,168 @@
+﻿@model AppAfpaBrive.Web.ModelView.AnnuaireModelView.LigneAnnuaireEtape1ModelView;
+@{
+    ViewData["Title"] = "CreateLigneAnnuaire";
+}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<h1>Create</h1>
+
+<h4>LigneAnnuaire</h4>
+<hr />
+<div class="row">
+
+    <div class="col-md-4">
+
+        <form asp-action="CreateLigneAnnuaire">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="PublicConcerne" class="control-label"></label>
+                <input asp-for="PublicConcerne" class="form-control" />
+                <span asp-validation-for="PublicConcerne" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ServiceAbrege" class="control-label"></label>
+                <input asp-for="ServiceAbrege" class="form-control" />
+                <span asp-validation-for="ServiceAbrege" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Service" class="control-label"></label>
+                <input asp-for="Service" class="form-control" />
+                <span asp-validation-for="Service" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Conditions" class="control-label"></label>
+                <input asp-for="Conditions" class="form-control" />
+                <span asp-validation-for="Conditions" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="idCategorie" class="control-label">Categorie</label>
+                @if (Model.listCategories.Count() > 0)
+                {
+                    @foreach (var cat in Model.listCategories)
+                    {
+                        <div class="form-check">
+                            <input asp-for="@cat.IsChecked" type="checkbox" class="form-check-label" /> @cat.categorie.LibelleCategorie  <br />
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div>
+                        <p>Aucune catégorie trouvée</p>
+                    </div>
+                }
+
+                <span asp-validation-for="idCategorie" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="structure" class="control-label"></label>
+                <input id="searchStructure" class="form-control" />
+                <input asp-for="structure" class="form-control" type="hidden" />
+                <span asp-validation-for="structure" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="LigneAnnuaires">Retour</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $('#searchStructure').autocomplete({
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: "/api/structures/getByName",
+                        type: "GET",
+                        data: request,
+                        dataType: "json",
+                        success: function (data) {
+
+                            response($.map(data, function (item) {
+                                console.log(item.nom)
+                                return {
+                                    label: item.nomStructure,
+                                    value: item.idStructure
+                                }
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $('#structure').val(ui.item.value);
+                    $('#searchStructure').val(ui.item.label);
+
+                    return false;
+                }
+
+
+            });
+
+            $('#CodeProduitFormation').autocomplete({
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: "/api/offreFormation/GetOffre",
+                        type: "GET",
+                        data: request,
+                        dataType: "json",
+                        success: function (data) {
+
+                            response($.map(data, function (item) {
+                                console.log(item.id)
+                                return {
+                                    label: `${item.id}`,
+                                    value: item.id,
+                                    id: item.libelle
+                                }
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 0,
+                select: function (event, ui) {
+
+                    $('#CodeProduitFormation').val(ui.item.label);
+                    $('#libelleOffre').val(ui.item.label + "   |   " + ui.item.id);
+                    return false;
+                }
+
+
+            });
+
+
+        })
+
+
+
+    </script>
+}
+
+
+}
+
+

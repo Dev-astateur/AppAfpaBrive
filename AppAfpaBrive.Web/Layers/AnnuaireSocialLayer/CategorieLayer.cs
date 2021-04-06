@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL.AnnuaireSocial;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,6 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
             return await PagingList.CreateAsync<Categorie>(qry, 20, page, sortExpression, "LibelleCategorie");
         }
 
-
         public CategorieModelView GetCategorieById(int id)
         {
             var cat = _context.Categories.Select(x => new CategorieModelView
@@ -38,6 +38,14 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
                 LibelleCategorie = x.LibelleCategorie
             }).FirstOrDefault(x => x.IdCategorie == id);
             return cat as CategorieModelView;
+        }
+
+        public IEnumerable<CategorieCheckBox> categories()
+        {
+            var cat = _context.Categories.ToList();
+
+            return cat.Select(x => new CategorieCheckBox { categorie = x, IsChecked = false });
+
         }
 
         public Categorie GetCategorie(int id)

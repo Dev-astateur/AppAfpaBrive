@@ -4,9 +4,11 @@ using AppAfpaBrive.Web.Layers.AnnuaireSocialLayer;
 using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +21,7 @@ namespace AppAfpaBrive.Web.Controllers
         private  CategorieLayer _categorieLayer;
         private  StructureLayer _structureLayer;
         private  ContactLayer _contactLayer;
+        private LigneAnnuaireLayer _ligneAnnuaireLayer;
 
         private readonly AFPANADbContext _context;
      
@@ -29,19 +32,25 @@ namespace AppAfpaBrive.Web.Controllers
             _categorieLayer = new CategorieLayer(_context);
             _structureLayer = new StructureLayer(_context);
             _contactLayer = new ContactLayer(_context);
+            _ligneAnnuaireLayer = new LigneAnnuaireLayer(_context);
         }
 
 
 
         // GET: GestionAnnuaireController
-        public ActionResult Index()
+        public async Task<IActionResult> Index(string filter, int page, string sortExpression = "PublicConcerne")
         {
-            return View();
+            var model = await _ligneAnnuaireLayer.GetPage(filter, page, sortExpression);
+            model.RouteValue = new RouteValueDictionary
+            {
+                {"filter", filter }
+            };
+            return View(model);
         }
 
 
         #region Action categorie
-      
+
 
         public async Task<IActionResult> Categories(string filter, int page, string sortExpression = "LibelleCategorie")
         {
@@ -296,6 +305,58 @@ namespace AppAfpaBrive.Web.Controllers
             _contactLayer.Delete(contact);
             return RedirectToAction(nameof(Contacts));
         }
+
+        #endregion
+
+        #region Actions LigneAnnuaire
+
+        public async Task<IActionResult> LigneAnnuaires(string filter, int page, string sortExpression = "PublicConcerne")
+        {
+            var model = await _ligneAnnuaireLayer.GetPage(filter, page, sortExpression);
+            model.RouteValue = new RouteValueDictionary
+            {
+                {"filter", filter }
+            };
+            return View(model);
+        }
+
+
+        public IActionResult CreateLigneAnnuaires()
+        {
+
+            LigneAnnuaireEtape1ModelView ligne = new LigneAnnuaireEtape1ModelView
+            {
+                listCategories = _categorieLayer.categories()
+            };
+       
+            return View(ligne);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateLigneAnnuaires(LigneAnnuaireEtape1ModelView ligneAnnuaire)
+        {
+
+            if (ModelState.IsValid)
+            {
+                foreach (CategorieCheckBox cb in ligneAnnuaire.listCategories)
+                {
+                    if (cb.IsChecked)
+                    {
+                        ligneAnnuaire.categories.Add(cb.categorie);    
+                    }
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+
+            ligneAnnuaire.listCategories = _categorieLayer.categories();
+            return View(ligneAnnuaire);
+        }
+
+
 
         #endregion
 

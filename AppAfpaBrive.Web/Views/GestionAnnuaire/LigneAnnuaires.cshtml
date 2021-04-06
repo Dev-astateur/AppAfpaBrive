@@ -13,9 +13,23 @@
         <h2 class="text-primary">Liste des entrées d'annuaire</h2>
     </div>
     <div class="col-6 text-right">
-        <a asp-controller="LigneAnnuaires" asp-action="Create" class="btn btn-primary">
+
+        <h2 class="text-primary">Liste des entrées d'annuaire</h2>
+
+
+        <a asp-controller="GestionAnnuaire" asp-action="CreateLigneAnnuaires" class="btn btn-primary">
             <i class="fas fa-plus-square"></i> &nbsp; Ajouter une nouvelle entrée dans l'annuaire
         </a>
+        <a asp-controller="GestionAnnuaire" asp-action="Categories" class="btn btn-primary">
+            <i class="fas fa-plus-square"></i> &nbsp; Gérer les catégories
+        </a>
+        <a asp-controller="GestionAnnuaire" asp-action="Contacts" class="btn btn-primary">
+            <i class="fas fa-plus-square"></i> &nbsp; Gérer les contacts
+        </a>
+        <a asp-controller="GestionAnnuaire" asp-action="Structures" class="btn btn-primary">
+            <i class="fas fa-plus-square"></i> &nbsp; Gérer les structures
+        </a>
+
     </div>
     <form method="get" class="form-inline">
         <input name="filter" class="form-control" placeholder="filtre" value="@Model.RouteValue["filter"]" />
@@ -47,7 +61,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Structure)
                 </th>
-                <th></th>
+               
             </tr>
         </thead>
         <tbody>

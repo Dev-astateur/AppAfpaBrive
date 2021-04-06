@@ -24,5 +24,6 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
             };
         }
 
+      
     }
 }

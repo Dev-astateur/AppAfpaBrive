@@ -1,0 +1,60 @@
+﻿@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.BOL.AnnuaireSocial.Categorie>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
+
+<nav aria-label="structure navigation">
+    @await this.Component.InvokeAsync("Pager", new { paginglist = this.Model })
+</nav>
+
+
+<div class="col-6 text-right">
+    <a asp-controller="GestionAnnuaire" asp-action="CreateCategorie" class="btn btn-primary">
+        <i class="fas fa-plus-square"></i> &nbsp; Ajouter une nouvelle categorie
+    </a>
+</div>
+
+<form method="get" class="form-inline">
+    <input name="filter" class="form-control" placeholder="filtre" value="@Model.RouteValue["filter"]" />
+</form>
+
+@if (Model.Count() > 0)
+{
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    @Html.SortableHeaderFor(Model => Model.IdCategorie)
+                </th>
+                <th>
+                    @Html.SortableHeaderFor(model => model.LibelleCategorie)
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr id="ligne">
+                    <td>@obj.IdCategorie</td>
+                    <td>@obj.LibelleCategorie</td>
+
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="GestionAnnuaire" asp-route-Id="@obj.IdCategorie" asp-action="EditCategorie" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                        </div>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <p> Il n'y a pas de categories</p>
+}
