@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppAfpaBrive.DAL.Migrations
 {
-    public partial class MiseaJourDataBase : Migration
+    public partial class MiseAJoursDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,26 +13,54 @@ namespace AppAfpaBrive.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Periode_Pee_Evenement");
+            
+            migrationBuilder.DropTable(
+                name: "Pee_Document");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Pee_Document",
-                table: "Pee_Document");
+            
+            migrationBuilder.CreateTable(
+               name: "Periode_Pee_Suivi",
+               columns: table => new
+               {
+                   IdPeriodePeeSuivi = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
+                       .Annotation("SqlServer:Identity", "1, 1"),
+                   IdPee = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                   ObjetSuivi = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                   TexteSuivi = table.Column<string>(type: "varchar(4096)", unicode: false, maxLength: 4096, nullable: true),
+                   DateDeSuivi = table.Column<DateTime>(type: "date", nullable: false, defaultValueSql: "getdate()")
+               },
+               constraints: table =>
+               {
+                   table.PrimaryKey("PK_Periode_Pee_Suivi", x => x.IdPeriodePeeSuivi);
+                   table.ForeignKey(
+                       name: "Fk_Periode_Pee_Suivi_Pee",
+                       column: x => x.IdPee,
+                       principalTable: "Pee",
+                       principalColumn: "IdPee",
+                       onDelete: ReferentialAction.Restrict);
+               });
 
-            migrationBuilder.AlterColumn<decimal>(
-                name: "IdPee",
-                table: "Pee_Document",
-                type: "decimal(18,0)",
-                nullable: false,
-                oldClrType: typeof(decimal),
-                oldType: "numeric(18,0)");
-
-            migrationBuilder.AlterColumn<decimal>(
-                name: "IdPeeDocument",
-                table: "Pee_Document",
-                type: "decimal(18,2)",
-                nullable: false,
-                defaultValue: 0m)
-                .Annotation("SqlServer:Identity", "1, 1");
+            migrationBuilder.CreateTable(
+                name: "Pee_Document",
+                columns: table => new
+                {
+                    IdPeeDocument = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdPee = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    NumOrdre = table.Column<int>(type: "int", nullable: false),
+                    PathDocument = table.Column<string>(type: "varchar(2048)", unicode: false, maxLength: 2048, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pee_Document", x => new {x.IdPeeDocument, x.NumOrdre });
+                    table.ForeignKey(
+                        name: "FK_Pee_Document_Pee",
+                        column: x => x.IdPee,
+                        principalTable: "Pee",
+                        principalColumn: "IdPee",
+                        onDelete: ReferentialAction.Restrict);
+                    
+                });
 
             migrationBuilder.AddColumn<decimal>(
                 name: "IdPeriodePeeSuivi",
@@ -48,33 +76,6 @@ namespace AppAfpaBrive.DAL.Migrations
                 nullable: true,
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Pee_Document",
-                table: "Pee_Document",
-                column: "IdPeeDocument");
-
-            migrationBuilder.CreateTable(
-                name: "Periode_Pee_Suivi",
-                columns: table => new
-                {
-                    IdPeriodePeeSuivi = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdPee = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
-                    ObjetSuivi = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    TexteSuivi = table.Column<string>(type: "varchar(4096)", unicode: false, maxLength: 4096, nullable: true),
-                    DateDeSuivi = table.Column<DateTime>(type: "date", nullable: false, defaultValueSql: "getdate()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Periode_Pee_Suivi", x => x.IdPeriodePeeSuivi);
-                    table.ForeignKey(
-                        name: "Fk_Periode_Pee_Suivi_Pee",
-                        column: x => x.IdPee,
-                        principalTable: "Pee",
-                        principalColumn: "IdPee",
-                        onDelete: ReferentialAction.Restrict);
-                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pee_Document_IdPee",

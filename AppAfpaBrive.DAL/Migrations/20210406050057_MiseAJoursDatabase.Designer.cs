@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppAfpaBrive.DAL.Migrations
 {
     [DbContext(typeof(AFPANADbContext))]
-    [Migration("20210405205234_MiseaJourDataBase")]
-    partial class MiseaJourDataBase
+    [Migration("20210406050057_MiseAJoursDatabase")]
+    partial class MiseAJoursDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
