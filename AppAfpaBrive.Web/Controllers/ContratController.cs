@@ -24,7 +24,8 @@ namespace AppAfpaBrive.Web.Controllers
         private Layer_TypeContrat _TypeContrat = null;
         private Layer_Pays _Pays = null;
         private Layer_AppelationRomes _AppelationRomes = null ;
-        private Layer_Code_Produit_Formation _Code_Produit_Formation = null; 
+        private Layer_Code_Produit_Formation _Code_Produit_Formation = null;
+        private AFPANADbContext _Db = new AFPANADbContext(); 
 
         public ContratController(AFPANADbContext context)
         {
@@ -40,25 +41,31 @@ namespace AppAfpaBrive.Web.Controllers
        //le point de départ est le destinataire de l'enquête et son identifiant unique
         public IActionResult Display(Guid id)//l'identifiant unique est récupéré via une query string ? 
         {
-            //prévoir un if destinataireEnquete is null ?
+            
             DestinataireEnquete destinataireEnquete = _DestinataireEnquete.GetDestinataireEnqueteByIdSoumissionnaire(id);
-            Contrat contrat = _Contrat.GetContratByIdContrat(destinataireEnquete.IdContrat); ;
-
+            Contrat contrat = _Contrat.GetContratByIdContrat(destinataireEnquete.IdContrat);
+            Entreprise entreprise = new Entreprise();
+            bool ContratIsNew; //pour enregistrement final en bdd, il faut parvenir à déterminer si le contrat doit être créé ou modifié
             if (contrat is null)
             {
                 //si aucun contrat n'existe en db pour le destinataireEnquete,
                 //on le créé et on lui passe le MatriculeBeneficiaire
+                //on créé aussi une entreprise qui pour l'instant est null
                 contrat = new Contrat
                 {
                     MatriculeBeneficiaire = destinataireEnquete.MatriculeBeneficiaire,
                     
                 };
+                entreprise = null;
+                ContratIsNew = true;
             }
             else
             {
                 //si le contrat existe on complète ses propriétés de navigation
                 contrat.IdEntrepriseNavigation = _Entreprise.GetEntrepriseById(contrat.IdEntreprise);
                 contrat.TypeContratNavigation = _TypeContrat.GetTypeContratById(contrat.TypeContrat);
+                entreprise = _Entreprise.GetEntrepriseById(contrat.IdEntreprise);
+                ContratIsNew = false; 
             }
 
             #region Sérialization et passage en cookies de session des objets destinataireEnquete et Contrat
@@ -75,6 +82,18 @@ namespace AppAfpaBrive.Web.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             }); 
             HttpContext.Session.SetString("contrat", str);
+
+            //sérialisation du booléen contratIsNew
+            string contratIsNew = JsonConvert.SerializeObject(ContratIsNew); 
+            HttpContext.Session.SetString("contratIsNew", contratIsNew);
+
+            //serialisation de l'objet entreprise, même s'il peut être null. Il vaut mieux créer dès le départ un cookie d'entreprise
+            //pour tous le monde car à terme, il est utilisé pour tous les utilsateurs à un moment où un autre
+            string strEntreprise = JsonConvert.SerializeObject(entreprise, Formatting.Indented, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            HttpContext.Session.SetString("entreprise", strEntreprise);
             #endregion
 
             return View(contrat);//on retourne le contrat pour affichage
@@ -92,24 +111,34 @@ namespace AppAfpaBrive.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Entreprise entreprise = _Entreprise.get_Entreprise(siret.NumeroSiret).FirstOrDefault();
+                string strEntreprise = HttpContext.Session.GetString("entreprise");
+                Entreprise entreprise = JsonConvert.DeserializeObject<Entreprise>(strEntreprise);
+                entreprise = _Entreprise.get_Entreprise(siret.NumeroSiret).FirstOrDefault();
 
                 if (entreprise is null)
                 {
                     //si l'entreprise n'est pas en bdd, on se contente de sérialiser le siret
                     //saisi par l'utilisateur pour le passer à la page de création
+                    //on resérialise entreprise même si elle est toujours null
                     string strSiret = JsonConvert.SerializeObject(siret, Formatting.Indented, new JsonSerializerSettings()
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     });
                     HttpContext.Session.SetString("siret", strSiret);
 
+                    strEntreprise = JsonConvert.SerializeObject(entreprise, Formatting.Indented, new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                    HttpContext.Session.SetString("entreprise", strEntreprise);
+
                     return RedirectToAction("CreerEntreprise");//renvoi vers la page de création d'entreprise
                 }
                 else
                 {
                     //si l'entreprise existe, on désérialise l'objet contrat pour lui ajouter l'id de l'entreprise et
-                    //la lui passer en propriété de navigation, puis on resérialise le contrat pour le passer à la page de modif
+                    //la lui passer en propriété de navigation, puis on resérialise le contrat et l'entreprise
+                    //pour les passer à la page de modif
                     string str = HttpContext.Session.GetString("contrat");
                     Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str);
 
@@ -122,9 +151,16 @@ namespace AppAfpaBrive.Web.Controllers
                     });
                     HttpContext.Session.SetString("contrat", str);
 
+                    strEntreprise = JsonConvert.SerializeObject(entreprise, Formatting.Indented, new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+                    HttpContext.Session.SetString("entreprise", strEntreprise);
+
                     return RedirectToAction("ModifierContrat");//renvoi vers la page de modification du contrat
                 }
                 
+               
             }
             return View(); 
         }
@@ -148,17 +184,21 @@ namespace AppAfpaBrive.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Entreprise entreprise = new Entreprise
+                string strEntreprise = HttpContext.Session.GetString("entreprise");
+                Entreprise entreprise = JsonConvert.DeserializeObject<Entreprise>(strEntreprise);
+                if (entreprise is null)
                 {
-                    NumeroSiret = entrepriseViewModel.NumeroSiret,
-                    CodePostal = entrepriseViewModel.CodePostal,
-                    Ligne1Adresse = entrepriseViewModel.Ligne1Adresse,
-                    Ligne2Adresse = entrepriseViewModel.Ligne2Adresse,
-                    Ligne3Adresse = entrepriseViewModel.Ligne3Adresse,
-                    RaisonSociale = entrepriseViewModel.RaisonSociale,
-                    Ville = entrepriseViewModel.Ville,
-                    Idpays2 = _Pays.Get_pays_ID(entrepriseViewModel.Idpays2)
-                };
+                    entreprise = new Entreprise(); 
+                }
+
+                entreprise.NumeroSiret = entrepriseViewModel.NumeroSiret;
+                entreprise.CodePostal = entrepriseViewModel.CodePostal;
+                entreprise.Ligne1Adresse = entrepriseViewModel.Ligne1Adresse;
+                entreprise.Ligne2Adresse = entrepriseViewModel.Ligne2Adresse;
+                entreprise.Ligne3Adresse = entrepriseViewModel.Ligne3Adresse;
+                entreprise.RaisonSociale = entrepriseViewModel.RaisonSociale;
+                entreprise.Ville = entrepriseViewModel.Ville;
+                entreprise.Idpays2 = _Pays.Get_pays_ID(entrepriseViewModel.Idpays2); 
 
                 #region Désérialisation/Sérialisation des objets Contrat et Entreprise
                 //Désérialisation/sérialisation de Contrat pour lui passer l'entreprise créée en propriété de navigation.
@@ -175,11 +215,11 @@ namespace AppAfpaBrive.Web.Controllers
                 HttpContext.Session.SetString("contrat", str);
 
                 //sérialisation de l'objet entreprise 
-                string strNouvelleEntreprise = JsonConvert.SerializeObject(entreprise, Formatting.Indented, new JsonSerializerSettings()
+                strEntreprise = JsonConvert.SerializeObject(entreprise, Formatting.Indented, new JsonSerializerSettings()
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 });
-                HttpContext.Session.SetString("nouvelleEntreprise", strNouvelleEntreprise);
+                HttpContext.Session.SetString("entreprise", strEntreprise);
 
                 #endregion
 
@@ -193,6 +233,9 @@ namespace AppAfpaBrive.Web.Controllers
         {
             string str = this.HttpContext.Session.GetString("contrat");
             Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str);
+            //normalement, arrivé à ce point, aucun cookie entreprise n'est null
+            string strEntreprise = HttpContext.Session.GetString("entreprise");
+            Entreprise entreprise = JsonConvert.DeserializeObject<Entreprise>(strEntreprise);
 
             ContratModelView contratModelView = new ContratModelView
             {
@@ -200,7 +243,8 @@ namespace AppAfpaBrive.Web.Controllers
                 DateEntreeFonction = DateTime.Now,
                 DateSortieFonction = contrat.DateSortieFonction,
                 TypeContrat = contrat.TypeContrat.ToString(),
-                TypesContrats = _TypeContrat.GetAllToDropDownList()
+                TypesContrats = _TypeContrat.GetAllToDropDownList(),
+                Entreprise = entreprise
             };
 
             str = JsonConvert.SerializeObject(contrat, Formatting.Indented, new JsonSerializerSettings()
@@ -208,6 +252,12 @@ namespace AppAfpaBrive.Web.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
             HttpContext.Session.SetString("contrat", str);
+
+            strEntreprise = JsonConvert.SerializeObject(entreprise, Formatting.Indented, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            HttpContext.Session.SetString("entreprise", strEntreprise);
 
             return View(contratModelView); 
         }
@@ -225,7 +275,7 @@ namespace AppAfpaBrive.Web.Controllers
                 contrat.DateSortieFonction = contratModelView.DateSortieFonction;
                 contrat.LibelleFonction = contratModelView.LibelleFonction;
                 contrat.TypeContrat = int.Parse(contratModelView.TypeContrat);
-                contrat.TypeContratNavigation = _TypeContrat.GetTypeContratByDesignation(contratModelView.TypeContrat); //reste null. Pourquoi ? Peut-être qu'il faut instancier un objet TypeContrat ? 
+                contrat.TypeContratNavigation = _TypeContrat.GetTypeContratById(int.Parse(contratModelView.TypeContrat)); 
                 
                 var appelationRome = _AppelationRomes.GetAppellationRomeByLibelle(contrat.LibelleFonction);
                 contrat.CodeAppellation = appelationRome.CodeAppelationRome;
@@ -267,13 +317,97 @@ namespace AppAfpaBrive.Web.Controllers
             Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str); 
             string strEntreprise = this.HttpContext.Session.GetString("entreprise");
             Entreprise entreprise = JsonConvert.DeserializeObject<Entreprise>(strEntreprise);
-            //créer un ModelView regroupant contrat et entreprise ? T_T
+            
 
-            return View(contrat); 
+            RecapModelView recap = new RecapModelView
+            {
+                Entreprise = entreprise,
+                Contrat = contrat
+            };
+
+            str = JsonConvert.SerializeObject(contrat, Formatting.Indented, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            HttpContext.Session.SetString("contrat", str);
+
+            strEntreprise = JsonConvert.SerializeObject(entreprise, Formatting.Indented, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            HttpContext.Session.SetString("nouvelleEntreprise", strEntreprise);
+
+            //créer un ModelView regroupant contrat et entreprise ? T_T
+            //peut-être vaut-il mieux faire deux vues séparées pour le récap de début et de fin finalement ? 
+
+            return View(recap); 
         }
-        //to do : serialisation/deserialization d'entreprise aux bons endroits
+
+        [HttpPost]
+        public IActionResult DisplayRecap(RecapModelView recap)
+        {
+            //deserialisation de l'objet entreprise 
+            string strEntreprise = this.HttpContext.Session.GetString("entreprise");
+            Entreprise entreprise = JsonConvert.DeserializeObject<Entreprise>(strEntreprise);
+            //si l'entreprise contenue en cookie n'existe pas en db, elle est créée 
+            if (!_Entreprise.GetAllSirets().Contains(entreprise.NumeroSiret))
+            {
+                _Db.Entry(entreprise).State = EntityState.Added;
+            }
+
+            string str = this.HttpContext.Session.GetString("contrat");
+            Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str);
+            contrat.IdEntrepriseNavigation = entreprise;
+            string contratIsNew = this.HttpContext.Session.GetString("contratIsNew");
+            bool ContratIsNew = JsonConvert.DeserializeObject<bool>(contratIsNew);
+            if (ContratIsNew)
+            {
+                //création du contrat en db s'il est nouveau
+                _Db.Entry(contrat).State = EntityState.Added; 
+            }
+            else
+            {
+                //update du contrat en db s'il existe déjà
+                _Db.Entry(contrat).State = EntityState.Modified; 
+            }
+
+            string strDestinataire = this.HttpContext.Session.GetString("destinataireEnquete");
+            DestinataireEnquete destinataireEnquete = JsonConvert.DeserializeObject<DestinataireEnquete>(strDestinataire);
+            destinataireEnquete.IdContratNavigation = contrat;
+            if (contrat.DateSortieFonction is null || contrat.DateSortieFonction > DateTime.Now)
+            {
+                destinataireEnquete.EnEmploi = true;
+
+            }
+
+            _Db.Entry(destinataireEnquete).State = EntityState.Modified;
+
+            //on incrémente le nombre de réponses données pendant la campagne de mailing de 1
+            PlanificationCampagneMail pcm = _Db.PlanificationCampagneMails
+                .Where(pcm => pcm.IdCampagneMail == destinataireEnquete.IdPlanificationCampagneMail)
+                .FirstOrDefault();
+            pcm.NombreReponses++;
+            _Db.Entry(pcm).State = EntityState.Modified; 
+
+            _Db.SaveChanges();
+            ////validation des infos, toutes les propriétés de navigation doivent être renseignées,
+            ////création ou modification des objets selon contexte
+
+            return RedirectToAction("AuRevoir");
+        }
+
+        [HttpGet]
+        public IActionResult AuRevoir()
+        {
+
+            return View();
+        }
+
+
         //compléter la méthode récap GET (ajout désérializations supplémentaires si nécessaires)
         //écrire la méthode récap POST = enregistrement en bdd du contrat (create ou update) et éventuellement de l'entreprise (create)
         //vérifier qu'il n'y ait de problème de null à aucun endroit (bad request ?)
+        //faire GET et POST pour la vue AuRevoir : où signaler que le destiantaireEnquete accepte d'être contacté par les élèves ?
+        //où se trouve le mécanisme de désinscription ? 
     }
 }

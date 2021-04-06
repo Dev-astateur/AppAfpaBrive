@@ -28,5 +28,10 @@ namespace AppAfpaBrive.DAL.Layer
             Entreprise entreprise = _db.Entreprises.Where(e => e.IdEntreprise == id).FirstOrDefault();
             return entreprise; 
         }
+
+        public List<string> GetAllSirets()
+        {
+            return _db.Entreprises.Select(entr=>entr.NumeroSiret).ToList(); 
+        }
     }
 }

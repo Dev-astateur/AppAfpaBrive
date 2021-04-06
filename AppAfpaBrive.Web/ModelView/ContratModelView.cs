@@ -25,5 +25,6 @@ namespace AppAfpaBrive.Web.ModelView
         [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez sélectionner un type de contrat dans la liste déroulante")]
         public string TypeContrat { get; set; }
         public IEnumerable<SelectListItem>  TypesContrats { get; set; } 
+        public Entreprise Entreprise { get; set; }
     }
 }

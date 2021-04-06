@@ -31,5 +31,7 @@ namespace AppAfpaBrive.BOL
         public virtual ICollection<EntrepriseProfessionnel> EntrepriseProfessionnels { get; set; }
         public virtual ICollection<Contrat> Contrats { get; set; }
         public virtual ICollection<Pee> Pees { get; set; }
+
+
     }
 }
