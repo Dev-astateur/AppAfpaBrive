@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.ModelView;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
 {
+    [Authorize(Roles = "Administrateur")]
     public class CollaborateurAfpaController : Controller
     {
         private readonly AFPANADbContext _db;

@@ -16,10 +16,25 @@
         </a>
     </div>
     <div class="container">
-        <nav class="navbar navbar-light bg-light">
-            <a asp-controller="Convention" asp-action="Index" asp-route-id="@Model.MatriculeBeneficiaire." class="navbar-brand">
-                <img src="/docs/4.5/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
-                Convention
-            </a>
-        </nav>
+        <div class="card-deck">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title text-info">Administration des produits de formations :</h5>
+                    <p class="card-text">
+                        Application de recherche des entreprises qui ont déjà pris un stagiaire de l'Afpa.
+                        Possibilité de rechercher par département et ou de votre offre de formation.
+                    </p>
+                    <a asp-controller="Entreprise" asp-action="ListeEntreprise" class="btn btn-primary">Entreprise</a>
+                </div>
+            </div>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title text-info">Calendrier des évenements :</h5>
+                    <p class="card-text">
+                        Calendrier des différentes activités programmées.
+                    </p>
+                    <a asp-controller="" asp-action="" class="btn btn-primary">Calendrier</a>
+                </div>
+            </div>
+        </div>
     </div>
