@@ -18,6 +18,7 @@ using AppAfpaBrive.Web.Layer;
 using System.IO;
 using static AppAfpaBrive.Web.Layers.PeeLayer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
@@ -33,8 +34,9 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private PeeLayer _peelayer = null;
         private Periode_pee_Layer _periode = null;
         private Layer_PeeDocument _PeeDocument = null;
+        private readonly IConfiguration _config;
 
-        public ConventionController(AFPANADbContext context)
+        public ConventionController(AFPANADbContext context, IConfiguration config)
         {
             _beneficiaireOffre = new Layer_Offres_Formation(context);
             _Etablissement = new Layer_Etablissement(context);
@@ -46,6 +48,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _peelayer = new PeeLayer(context);
             _periode = new Periode_pee_Layer(context);
             _PeeDocument = new Layer_PeeDocument(context);
+            _config = config;
         }
 
 
@@ -168,10 +171,12 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         public IActionResult Entreprise_creation()
         {
             string siret = this.HttpContext.Session.GetString("siret");
-            ViewBag.siret = siret;
+            Entreprise_Creation_ViewModel entreprise = new Entreprise_Creation_ViewModel
+            {
+                NumeroSiret = siret
+            };
             IQueryable<string> pays = _Pays.Get_pays();
-            ViewBag.pays = pays;
-            return View();
+            return View(entreprise);
         }
 
 
@@ -185,7 +190,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 string str = this.HttpContext.Session.GetString("convention");
                 Creation_convention convention = JsonConvert.DeserializeObject<Creation_convention>(str);
                 convention.Entreprise_codePostal = entreprise.CodePostal;
-                convention.Entreprise_IdPays = entreprise.Idpays2;
+                convention.Entreprise_IdPays = _Pays.Get_pays_ID(entreprise.Idpays2);
                 convention.Entreprise_Ligne1Adresse = entreprise.Ligne1Adresse;
                 convention.Entreprise_Ligne2Adresse = entreprise.Ligne2Adresse;
                 convention.Entreprise_Ligne3Adresse = entreprise.Ligne3Adresse;
@@ -389,7 +394,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = HttpContext.Session.GetString("date");
             List<Date_ModelView> listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
-            Date_ModelView date = listDate[id-1];
+            Date_ModelView date = listDate[id - 1];
             return View(date);
         }
 
@@ -399,7 +404,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         {
             string str = HttpContext.Session.GetString("date");
             List<Date_ModelView> listDate = JsonConvert.DeserializeObject<List<Date_ModelView>>(str);
-            listDate.RemoveAt(date.Iddate);
+            listDate.RemoveAt(date.Iddate - 1);
             str = JsonConvert.SerializeObject(listDate);
             HttpContext.Session.SetString("date", str);
             return RedirectToAction("date");
@@ -447,7 +452,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     Ligne3Adresse = convention.Entreprise_Ligne3Adresse,
                     CodePostal = convention.Entreprise_codePostal,
                     MailEntreprise = convention.Entreprise_Mail,
-                    Idpays2 = "Fr",
+                    Idpays2 = convention.Entreprise_IdPays,
                     NumeroSiret = convention.Siret,
                     RaisonSociale = convention.Entreprise_raison_social,
                     Ville = convention.Entreprise_Ville,
@@ -479,7 +484,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     IdProfessionnel = convention.IdResponsable
                 };
 
-                tuteur_entr = new EntrepriseProfessionnel
+                Responsable_entr = new EntrepriseProfessionnel
                 {
                     AdresseMailPro = convention.Responsable_AdresseMail,
                     Fonction = convention.Responsable_Fonction,
@@ -499,7 +504,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 if (convention.Entreprise_Create == true)
                 {
                     context.Entry(entreprise).State = EntityState.Added;
-
                 }
                 else
                 {
@@ -552,7 +556,10 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     if (convention.Entreprise_Create == true)
                     {
                         Responsable_entr.IdEntrepriseNavigation = entreprise;
-                        entreprise.EntrepriseProfessionnels.Add(Responsable_entr);
+                        if (convention.Tuteur_create_Id != convention.Responsable_create_Id)
+                        {
+                            entreprise.EntrepriseProfessionnels.Add(Responsable_entr);
+                        }
                     }
                     else
                     {
@@ -588,48 +595,55 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     return RedirectToAction("Erreur");
                 }
 
-
-
-
-                var postedFile = uploadFile.file;
-                if (postedFile != null)
+                int i = 0;
+                try
                 {
-
-
-                    try
+                    if (uploadFile.file != null)
                     {
-                        string Path = "./wwwroot/Documents/" + pee.IdPee;
-                        if (!Directory.Exists(Path))
-                        {
-                            Directory.CreateDirectory(Path);
-                        }
-                        var Response = UploadFiles.UploadFile(postedFile, Path);
 
-                        if (Response.Done)
+
+                        foreach (var item in uploadFile.file)
                         {
-                            PeeDocument peeDocument = new PeeDocument
+                            var postedFile = item;
+                            i++;
+                            if (postedFile != null)
                             {
-                                IdPee = pee.IdPee,
-                                PathDocument = Path
-                            };
-                            _PeeDocument.create(peeDocument);
-                            return RedirectToAction("Reussite");
-                        }
-                        else
-                        {
-                            return BadRequest();
-                        }
+                                string get_path = _config.GetSection("PeeDocument").Value;
+                                string Path = get_path + pee.IdPee;
+                                if (!Directory.Exists(Path))
+                                {
+                                    Directory.CreateDirectory(Path);
+                                }
+                                var Response = UploadFiles.UploadFile(postedFile, Path);
 
-                    }
-                    catch (Exception)
-                    {
-                        return RedirectToAction("Erreur");
+                                if (Response.Done)
+                                {
+                                    PeeDocument peeDocument = new PeeDocument
+                                    {
+                                        IdPee = pee.IdPee,
+                                        PathDocument = Path + "/" + item.FileName,
+                                        NumOrdre = i
+                                    };
+                                    _PeeDocument.create(peeDocument);
+                                }
+                                else
+                                {
+                                    return BadRequest();
+                                }
+
+                            }
+                            else
+                            {
+                                return RedirectToAction("Reussite");
+                            }
+                        }
                     }
                 }
-                else
+                catch (Exception)
                 {
-                    return RedirectToAction("Reussite");
+                    return RedirectToAction("Erreur");
                 }
+                return RedirectToAction("Reussite");
             }
 
             string str2 = this.HttpContext.Session.GetString("convention");

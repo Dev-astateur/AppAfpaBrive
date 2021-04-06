@@ -1,9 +1,11 @@
-﻿using System;
+﻿using AppAfpaBrive.DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+
 
 namespace AppAfpaBrive.Web.CustomValidator
 {
@@ -68,5 +70,20 @@ namespace AppAfpaBrive.Web.CustomValidator
         }
     }
 
+    public class CustomValidator_Pays : ValidationAttribute
+    {
+
+        protected override ValidationResult IsValid(object value, ValidationContext context)
+        {
+            AFPANADbContext _db = new AFPANADbContext();
+            string libelle = value.ToString();
+            var pays = _db.Pays.Where(x => x.LibellePays == libelle).Select(x=>x.Idpays2).FirstOrDefault();
+            if(pays == null)
+            {
+                return new ValidationResult(ErrorMessage);
+            }
+            return ValidationResult.Success;
+        }
+    }
 
 }

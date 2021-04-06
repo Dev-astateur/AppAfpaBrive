@@ -17,7 +17,7 @@ namespace AppAfpaBrive.Web.CustomValidator
         }
 
         public string GetErrorMessage() =>
-            $"La date de début de contrat doit être antérieure à celle de fin de contrat.";
+            $"La date de début de contrat doit être Supérieur à aujourd'hui.";
 
         protected override ValidationResult IsValid(object value,
             ValidationContext validationContext)
@@ -25,7 +25,7 @@ namespace AppAfpaBrive.Web.CustomValidator
             var contratModelView = (Date_ModelView)validationContext.ObjectInstance;
             var dateDebutDeContrat = ((DateTime)value);
 
-            if (contratModelView.Date2 <= dateDebutDeContrat)
+            if (DateTime.Now > dateDebutDeContrat)
             {
                 return new ValidationResult(GetErrorMessage());
             }

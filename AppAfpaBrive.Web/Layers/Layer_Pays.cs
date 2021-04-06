@@ -18,7 +18,7 @@ namespace AppAfpaBrive.Web.Layer
 
         public string Get_pays_ID(string Libelle)
         {
-            return _db.Pays.Where(x=>x.LibellePays == Libelle).FirstOrDefault().Idpays2;
+            return _db.Pays.Where(x=>x.LibellePays == Libelle).FirstOrDefault().Idpays2; 
         }
     }
 }
