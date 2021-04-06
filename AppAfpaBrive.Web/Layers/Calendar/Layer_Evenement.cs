@@ -26,6 +26,11 @@ namespace AppAfpaBrive.Web.Layers.Calendar
                 .ToList();
             #endregion
         }
-       
+        public void AddEvenement(Evenement evenement)
+        {
+            _context.Evenements.Add(evenement);
+            _context.SaveChanges();
+        }
+
     }
 }

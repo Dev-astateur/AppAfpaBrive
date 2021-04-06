@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.ModelView
 {
-    public class EvenementModelView
+    public class EvenementModelView : ModelViewBase
     {
         public EvenementModelView()
         {
@@ -19,11 +19,14 @@ namespace AppAfpaBrive.Web.ModelView
         public int Year { get; set; }
         public ICollection<Evenement> CalendarEvents { get; set; }
         public decimal IdEvent { get; set; }
+        [MaxLength(3, ErrorMessage ="Veuillez sélectionnez une valeur")]
+        
         public string IdCategorieEvent { get; set; }
-        [CustomValidator_Evenement(ErrorMessage="problème")]
+        [CustomValidator_Evenement]
         public DateTime DateEvent { get; set; }
         public DateTime? DateEventFin { get; set; }
         public string IdEtablissement { get; set; }
+        [Required(ErrorMessage="Veuillez décrire brièvement l'évenement")]
         public string DétailsEvent { get; set; }
 
         public virtual CategorieEvenement IdCategorieEventNavigation { get; set; }
@@ -35,7 +38,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string Titre { get; set; }
 
         public virtual ICollection<Evenement> Evenements { get; set; }
-
+        
         public virtual IEnumerable<SelectListItem> SelectListItems { get; set; }
 
     }

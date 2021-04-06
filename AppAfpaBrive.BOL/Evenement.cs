@@ -8,7 +8,7 @@ namespace AppAfpaBrive.BOL
 {
     public partial class Evenement
     {
-        public Evenement()
+         public Evenement()
         {
             EvenementDocuments = new HashSet<EvenementDocument>();
         }
@@ -25,6 +25,9 @@ namespace AppAfpaBrive.BOL
         public string Titre { get; set; }
         
         public Guid? IdGroupe { get; set; }
+
+        public string Heure { get; set; }
+
 
         
     }

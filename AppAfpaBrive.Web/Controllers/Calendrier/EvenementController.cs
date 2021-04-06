@@ -50,7 +50,6 @@ namespace AppAfpaBrive.Web.Controllers.Calendrier
             year = DateTime.Now.Year;
 
             model.Month = (int)month;
-            model.Year = DateTime.Now.Year;
             model.Year = year;
             var events = _layer.GetEvenements(month, year);
             model.CalendarEvents = events;
