@@ -100,8 +100,11 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
                     {
                         return RedirectToPage("./Manage/ChangePassword");
                     }
-                    if ( _layer.BoolStagiaire(user.UserName) )
-                    return LocalRedirect(returnUrl);
+
+                    if (_layer.BoolStagiaire(user.UserName))
+                        return Redirect("/NavigationStagiaire");
+                    return Redirect("/NavigationCollaborateur");
+                    //return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {

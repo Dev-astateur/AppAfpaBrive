@@ -1,5 +1,25 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AppAfpaBrive.Web.ModelView.CollaborateurNavigationModelView
+
 @{
+    ViewData["Title"] = "Menu Collaborateur";
 }
+<div class="container border-success">
+    <a asp-controller="" asp-action="" asp-route-id="@Model.MatriculeCollaborateurAfpa">
+        <div class="row">
+            <div class="col-6">
+                <p class="text-left text-primary">@Model.ToString()</p>
+            </div>
+            <div class="col-6">
+                <p class="text-right">@Html.DisplayNameFor(e => e.MatriculeCollaborateurAfpa) : @Model.MatriculeCollaborateurAfpa</p>
+            </div>
+        </div>
+    </a>
+</div>
+<div class="container">
+    <nav class="navbar navbar-light bg-light">
+        <a asp-controller="Convention" asp-action="Index" asp-route-id="@Model.MatriculeCollaborateurAfpa." class="navbar-brand">
+            <img src="/docs/4.5/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+            Convention
+        </a>
+    </nav>
+</div>

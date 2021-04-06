@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ModelView;
-using AppAfpaBrive.Web.ModelView.Navigation;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -27,7 +26,7 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            string id = "18128730";
+            string id = HttpContext.User.Identity.Name;
             if (string.IsNullOrWhiteSpace(id))
                 return NotFound();
 

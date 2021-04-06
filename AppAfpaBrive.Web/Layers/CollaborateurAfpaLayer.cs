@@ -84,5 +84,15 @@ namespace AppAfpaBrive.Web.Layers
             }
             return false;
         }
+
+        public CollaborateurNavigationModelView GetCollaborateurById(string matricule)
+        {
+            return _context.CollaborateurAfpas.Where(e => e.MatriculeCollaborateurAfpa == matricule)
+                .Select(e => new CollaborateurNavigationModelView() {
+                    MatriculeCollaborateurAfpa = e.MatriculeCollaborateurAfpa,
+                    NomCollaborateur = e.NomCollaborateur,
+                    PrenomCollaborateur = e.PrenomCollaborateur,
+                }).FirstOrDefault();
+        }
     }
 }
