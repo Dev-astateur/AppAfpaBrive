@@ -31,8 +31,5 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
         public IEnumerable<SelectListItem> listStructures { get; set; }
         public Structure structure;
 
-       
-
-
     }
 }

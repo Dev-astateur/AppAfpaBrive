@@ -137,6 +137,7 @@ namespace AppAfpaBrive.Web.Controllers
                 mergeFields.WhereNameIs("Début_stage").ReplaceWithText($"{date.DateDebutPeriodePee}");
                 mergeFields.WhereNameIs("Fin_stage").ReplaceWithText($"{date.DateFinPeriodePee}");
                 Settings settings = document.MainDocumentPart.DocumentSettingsPart.Settings;
+
                 foreach (var element in settings.ChildElements)
                 {
                     if (element is MailMerge)

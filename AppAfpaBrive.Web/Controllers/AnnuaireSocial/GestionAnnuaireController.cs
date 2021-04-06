@@ -49,7 +49,7 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
 
-        #region Action categorie
+        #region Actions categorie
 
 
         public async Task<IActionResult> Categories(string filter, int page, string sortExpression = "LibelleCategorie")
@@ -139,7 +139,7 @@ namespace AppAfpaBrive.Web.Controllers
 
         #endregion
 
-        #region Action structure
+        #region Actions structure
 
         public async Task<IActionResult> Structures(string filter, int page, string sortExpression = "NomStructure")
         {
