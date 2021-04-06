@@ -39,7 +39,7 @@
                         newUrl = encodeURI('/Pee/EnregistrementPeeInfo/'+idPee);
                         break;
                     case '3':
-                        newUrl = encodeURI('/Pee/ListePeeAValider/'+@Model.MatriculeCollaborateurAfpa);
+                        newUrl = encodeURI('/Pee/ListePeeAValider/'+'@Model.MatriculeCollaborateurAfpa');
                         break;
                 }
 
@@ -64,7 +64,7 @@
                 let win = document.getElementById('window').value;
                 switch (win) {
                     case '1':
-                        newUrl = encodeURI('/Pee/ListePeeAValider/'+@Model.MatriculeCollaborateurAfpa);
+                        newUrl = encodeURI('/Pee/ListePeeAValider/'+'@Model.MatriculeCollaborateurAfpa');
                         break;
                     case '2':
                         newUrl = encodeURI('/Pee/PeeEntrepriseValidation/' + idPee);

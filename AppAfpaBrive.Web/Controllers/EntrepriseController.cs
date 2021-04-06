@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace AppAfpaBrive.Web.Controllers
 {
 
-    [Authorize(Roles = "Formateur,CollaborateurAFPA,Administrateur")]
+    [Authorize(Roles = "CollaborateurAFPA,Administrateur")]
     public class EntrepriseController : Controller
     {
        // private readonly AFPANADbContext _dbContext;

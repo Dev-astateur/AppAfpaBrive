@@ -21,83 +21,65 @@
         <div class="container">
             <h3 class="display-4">Administration</h3>
             <p class="lead">
-                <div class="card-deck">
-                    @if (User.IsInRole("Administrateur"))
-                    {
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title text-info">Produit de formation</h5>
-                                <p class="card-text">
-                                    Liste des produits de formations, possibilités de modifier, créer.
-                                </p>
-                                <a asp-controller="ProduitFormation" asp-action="Index" class="btn btn-primary">Produit de formation</a>
-                            </div>
+                @if (User.IsInRole("Administrateur"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0">Produit de formation</h5>
+                            Liste des produits de formations, possibilités de modifier, créer.
                         </div>
-                    }
-                    @if (User.IsInRole("Administrateur"))
-                    {
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title text-info">Etablissements</h5>
-                                <p class="card-text">
-                                    Listes des établissements, possibilités de modifier, créer.
-                                </p>
-                                <a asp-controller="Etablissement" asp-action="Index" class="btn btn-primary">Etablissement</a>
-                            </div>
+                        <a asp-controller="ProduitFormation" asp-action="Index" class="btn btn-primary">Produit de formation</a>
+                    </div>
+                }
+                @if (User.IsInRole("Administrateur"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0">Etablissements</h5>
+                            Listes des établissements, possibilités de modifier, créer.
                         </div>
-                    }
-                    @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
-                    {
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title text-info">Collaborateur Afpa</h5>
-                                <p class="card-text">
-                                    Liste des collaborateurs, possibilités de modifier.
-                                </p>
-                                <a asp-controller="CollaborateurAfpa" asp-action="Index" class="btn btn-primary">Collaborateur</a>
-                            </div>
+                        <a asp-controller="Etablissement" asp-action="Index" class="btn btn-primary">Etablissement</a>
+                    </div>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0">Collaborateur Afpa</h5>
+                            Liste des collaborateurs, possibilités de modifier.
                         </div>
-                    }
-
-                </div>        
+                        <a asp-controller="CollaborateurAfpa" asp-action="Index" class="btn btn-primary">Collaborateur</a>
+                    </div>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0">Entreprise</h5>
+                            Liste des entreprises, possibilités de modifier, créer.
+                        </div>
+                        <a asp-controller="Entreprise" asp-action="ListeEntreprisePourModification" class="btn btn-primary">Entreprise</a>
+                    </div>
+                }
             </p>
         </div>
+        @if (User.IsInRole("Formateur"))
+        {
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">Période en entreprise</h1>
+                    <p class="lead">
+                        <div class="media">
+                            <div class="media-body">
+                                <h5 class="mt-0">Validation de la Pee</h5>
+                                Validation de la période en entreprise, saisie par le bénéficiaire.
+                                Un courriel est automatiquement envoyé au futur stagiaire même si la réponse est négative.
+                            </div>
+                            <a asp-controller="Pee" asp-action="ListePeeAValider" class="btn btn-primary">Validation</a>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        }
     </div>
-
-    @*@if (User.IsInRole("Administrateur"))
-    {
-        <div class="card-deck">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Produit de formation :</h5>
-                    <p class="card-text">
-                        Liste des produits de formations, possibilités de modifier, créer.
-                    </p>
-                    <a asp-controller="ProduitFormation" asp-action="Index" class="btn btn-primary">Produit de formation</a>
-                </div>
-                <div class="card-footer bg-transparent border-success">Administration</div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Etablissements :</h5>
-                    <p class="card-text">
-                        Listes des établissements, possibilités de modifier, créer.
-                    </p>
-                    <a asp-controller="Etablissement" asp-action="Index" class="btn btn-primary">Etablissement</a>
-                </div>
-                <div class="card-footer bg-transparent border-success">Administration</div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Collaborateur Afpa :</h5>
-                    <p class="card-text">
-                        Liste des collaborateurs, possibilités de modifiers.
-                    </p>
-                    <a asp-controller="CollaborateurAfpa" asp-action="Index" class="btn btn-primary">Collaborateur</a>
-                </div>
-                <div class="card-footer bg-transparent border-success">Administration</div>
-            </div>
-        </div>
-    }*@
-
 </div>
