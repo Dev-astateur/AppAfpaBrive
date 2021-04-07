@@ -40,9 +40,14 @@ namespace AppAfpaBrive.Web.Controllers
 
        //le point de départ est le destinataire de l'enquête et son identifiant unique
         public IActionResult Display(Guid id)//l'identifiant unique est récupéré via une query string ? 
-        {
-            
+        {   
             DestinataireEnquete destinataireEnquete = _DestinataireEnquete.GetDestinataireEnqueteByIdSoumissionnaire(id);
+            if (destinataireEnquete is null)
+            {
+                return BadRequest("Vous n'êtes pas authentifié en tant que destinataire de notre enquête. " +
+                    "Veuillez y accéder via le lien qui vous a été adressé."); 
+            }
+
             Contrat contrat = _Contrat.GetContratByIdContrat(destinataireEnquete.IdContrat);
             Entreprise entreprise = new Entreprise();
             bool ContratIsNew; //pour enregistrement final en bdd, il faut parvenir à déterminer si le contrat doit être créé ou modifié
@@ -102,6 +107,14 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public IActionResult ChercherEntreprise()
         {
+            string strDestinataire = this.HttpContext.Session.GetString("destinataireEnquete");
+
+            if (string.IsNullOrEmpty(strDestinataire))
+            {
+                return BadRequest("Vous n'êtes pas authentifié en tant que destinataire de notre enquête. " +
+                    "Veuillez y accéder via le lien qui vous a été adressé.");
+            }
+
             return View(); 
         }
 
@@ -168,6 +181,14 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public IActionResult CreerEntreprise()
         {
+            string strDestinataire = this.HttpContext.Session.GetString("destinataireEnquete");
+
+            if (string.IsNullOrEmpty(strDestinataire))
+            {
+                return BadRequest("Vous n'êtes pas authentifié en tant que destinataire de notre enquête. " +
+                    "Veuillez y accéder via le lien qui vous a été adressé.");
+            }
+
             string str = HttpContext.Session.GetString("siret");
             Entreprise_Siret siret = JsonConvert.DeserializeObject<Entreprise_Siret>(str);
 
@@ -231,6 +252,14 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public IActionResult ModifierContrat()
         {
+            string strDestinataire = this.HttpContext.Session.GetString("destinataireEnquete");
+
+            if (string.IsNullOrEmpty(strDestinataire))
+            {
+                return BadRequest("Vous n'êtes pas authentifié en tant que destinataire de notre enquête. " +
+                    "Veuillez y accéder via le lien qui vous a été adressé.");
+            }
+
             string str = this.HttpContext.Session.GetString("contrat");
             Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str);
             //normalement, arrivé à ce point, aucun cookie entreprise n'est null
@@ -313,6 +342,14 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public IActionResult DisplayRecap()
         {
+            string strDestinataire = this.HttpContext.Session.GetString("destinataireEnquete");
+
+            if (string.IsNullOrEmpty(strDestinataire))
+            {
+                return BadRequest("Vous n'êtes pas authentifié en tant que destinataire de notre enquête. " +
+                    "Veuillez y accéder via le lien qui vous a été adressé.");
+            }
+
             string str = this.HttpContext.Session.GetString("contrat");
             Contrat contrat = JsonConvert.DeserializeObject<Contrat>(str); 
             string strEntreprise = this.HttpContext.Session.GetString("entreprise");
@@ -335,10 +372,7 @@ namespace AppAfpaBrive.Web.Controllers
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
-            HttpContext.Session.SetString("nouvelleEntreprise", strEntreprise);
-
-            //créer un ModelView regroupant contrat et entreprise ? T_T
-            //peut-être vaut-il mieux faire deux vues séparées pour le récap de début et de fin finalement ? 
+            HttpContext.Session.SetString("entreprise", strEntreprise);
 
             return View(recap); 
         }
@@ -346,6 +380,12 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpPost]
         public IActionResult DisplayRecap(RecapModelView recap)
         {
+            string strDestinataire = this.HttpContext.Session.GetString("destinataireEnquete");
+            if (string.IsNullOrEmpty(strDestinataire))
+            {
+                return BadRequest("Vous n'êtes pas authentifié en tant que destinataire de notre enquête. " +
+                    "Veuillez y accéder via le lien qui vous a été adressé.");
+            }
             //deserialisation de l'objet entreprise 
             string strEntreprise = this.HttpContext.Session.GetString("entreprise");
             Entreprise entreprise = JsonConvert.DeserializeObject<Entreprise>(strEntreprise);
@@ -371,7 +411,7 @@ namespace AppAfpaBrive.Web.Controllers
                 _Db.Entry(contrat).State = EntityState.Modified; 
             }
 
-            string strDestinataire = this.HttpContext.Session.GetString("destinataireEnquete");
+            
             DestinataireEnquete destinataireEnquete = JsonConvert.DeserializeObject<DestinataireEnquete>(strDestinataire);
             destinataireEnquete.IdContratNavigation = contrat;
             if (contrat.DateSortieFonction is null || contrat.DateSortieFonction > DateTime.Now)
@@ -382,14 +422,13 @@ namespace AppAfpaBrive.Web.Controllers
 
             _Db.Entry(destinataireEnquete).State = EntityState.Modified;
 
-            //on incrémente le nombre de réponses données pendant la campagne de mailing de 1
-            PlanificationCampagneMail pcm = _Db.PlanificationCampagneMails
-                .Where(pcm => pcm.IdCampagneMail == destinataireEnquete.IdPlanificationCampagneMail)
-                .FirstOrDefault();
-            pcm.NombreReponses++;
-            _Db.Entry(pcm).State = EntityState.Modified; 
-
             _Db.SaveChanges();
+
+            string strDestinataireEnquete = JsonConvert.SerializeObject(destinataireEnquete, Formatting.Indented, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            HttpContext.Session.SetString("destinataireEnquete", strDestinataireEnquete);
             ////validation des infos, toutes les propriétés de navigation doivent être renseignées,
             ////création ou modification des objets selon contexte
 
@@ -399,14 +438,26 @@ namespace AppAfpaBrive.Web.Controllers
         [HttpGet]
         public IActionResult AuRevoir()
         {
+            string strDestinataire = this.HttpContext.Session.GetString("destinataireEnquete");
+            if (string.IsNullOrEmpty(strDestinataire))
+            {
+                return BadRequest("Vous n'êtes pas authentifié en tant que destinataire de notre enquête. " +
+                    "Veuillez y accéder via le lien qui vous a été adressé.");
+            }
+            DestinataireEnquete destinataireEnquete = JsonConvert.DeserializeObject<DestinataireEnquete>(strDestinataire);
+            //on incrémente le nombre de réponses données pendant la campagne de mailing de 1
+            PlanificationCampagneMail pcm = _Db.PlanificationCampagneMails
+                .Where(pcm => pcm.IdCampagneMail == destinataireEnquete.IdPlanificationCampagneMail)
+                .FirstOrDefault();
+            pcm.NombreReponses++;
+            _Db.Entry(pcm).State = EntityState.Modified;
+            _Db.SaveChanges();
 
             return View();
         }
 
 
-        //compléter la méthode récap GET (ajout désérializations supplémentaires si nécessaires)
-        //écrire la méthode récap POST = enregistrement en bdd du contrat (create ou update) et éventuellement de l'entreprise (create)
-        //vérifier qu'il n'y ait de problème de null à aucun endroit (bad request ?)
+        
         //faire GET et POST pour la vue AuRevoir : où signaler que le destiantaireEnquete accepte d'être contacté par les élèves ?
         //où se trouve le mécanisme de désinscription ? 
     }
