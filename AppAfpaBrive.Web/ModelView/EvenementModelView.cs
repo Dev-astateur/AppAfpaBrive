@@ -14,6 +14,8 @@ namespace AppAfpaBrive.Web.ModelView
         public EvenementModelView()
         {
             List<Evenement> liste = new List<Evenement>();
+          
+            
         }
         public int Month { get; set; }
         public int Year { get; set; }
@@ -23,6 +25,7 @@ namespace AppAfpaBrive.Web.ModelView
         
         public string IdCategorieEvent { get; set; }
         [CustomValidator_Evenement]
+        [DataType(DataType.Date)]
         public DateTime DateEvent { get; set; }
         public DateTime? DateEventFin { get; set; }
         public string IdEtablissement { get; set; }
@@ -36,6 +39,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string LibelleEvent { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
         public string Titre { get; set; }
+        public string Heure { get; set; }
 
         public virtual ICollection<Evenement> Evenements { get; set; }
         

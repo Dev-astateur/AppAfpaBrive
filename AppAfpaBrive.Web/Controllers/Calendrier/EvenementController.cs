@@ -1,4 +1,5 @@
-﻿using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers.Calendar;
 using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Mvc;
@@ -89,6 +90,18 @@ namespace AppAfpaBrive.Web.Controllers.Calendrier
             model.Month = time.Month;
             model.Year = time.Year;
             model.CalendarEvents = events;
+            return View(model);
+        }
+        public IActionResult DetailsEvenements (int id)
+        {
+            EvenementModelView model = new ();
+            Evenement evenement = _layer.GetEventById(id);
+            model.Titre = evenement.Titre;
+            model.Heure = evenement.Heure;
+            model.DateEvent = evenement.DateEvent;
+            model.DétailsEvent = evenement.DétailsEvent;
+            
+
             return View(model);
         }
 

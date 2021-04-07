@@ -1,0 +1,19 @@
+﻿@model AppAfpaBrive.Web.ModelView.EvenementModelView
+
+    <div>
+      
+                <div class="toast-body">
+                    <h5 class="modal-title">@Model.Titre</h5>   
+                   
+                </div>
+                <div>
+                    <p>@Model.DétailsEvent</p>
+                    <p>@Model.DateEvent.ToString("D")</p>
+                    <p class="text-right">@Model.Heure</p>
+                </div>
+                <div>
+                    
+                    <a class="btn btn-secondary"asp-controller="Evenement" asp-action="Index">Retour</a>
+                </div>
+            </div>
+     

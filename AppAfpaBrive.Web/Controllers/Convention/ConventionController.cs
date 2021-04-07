@@ -56,7 +56,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         // get index
         public IActionResult Index()
         {
-            string matricule = "20061760";
+            string matricule = User.Identity.Name;
             IEnumerable<BeneficiaireOffreFormation> beneficiaires = _beneficiaireOffre.GetFormations(matricule);
             List<Creation_convention> obj = new List<Creation_convention>();
 
