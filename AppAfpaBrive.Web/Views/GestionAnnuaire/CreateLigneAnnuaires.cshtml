@@ -65,10 +65,10 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="structure" class="control-label"></label>
+                <label asp-for="IdStructure" class="control-label"></label>
                 <input id="searchStructure" class="form-control" />
-                <input asp-for="structure" class="form-control" type="hidden" />
-                <span asp-validation-for="structure" class="text-danger"></span>
+                <input asp-for="IdStructure" class="form-control" type="hidden" />
+                <span asp-validation-for="IdStructure" class="text-danger"></span>
             </div>
 
 
@@ -116,7 +116,7 @@
                 },
                 minLength: 1,
                 select: function (event, ui) {
-                    $('#structure').val(ui.item.value);
+                    $('#IdStructure').val(ui.item.value);
                     $('#searchStructure').val(ui.item.label);
 
                     return false;
@@ -125,43 +125,8 @@
 
             });
 
-            $('#CodeProduitFormation').autocomplete({
-                source: function (request, response) {
-
-                    $.ajax({
-                        url: "/api/offreFormation/GetOffre",
-                        type: "GET",
-                        data: request,
-                        dataType: "json",
-                        success: function (data) {
-
-                            response($.map(data, function (item) {
-                                console.log(item.id)
-                                return {
-                                    label: `${item.id}`,
-                                    value: item.id,
-                                    id: item.libelle
-                                }
-                            }))
-                        }
-
-                    })
-                },
-                minLength: 0,
-                select: function (event, ui) {
-
-                    $('#CodeProduitFormation').val(ui.item.label);
-                    $('#libelleOffre').val(ui.item.label + "   |   " + ui.item.id);
-                    return false;
-                }
-
-
-            });
-
 
         })
-
-
 
     </script>
 }

@@ -20,13 +20,13 @@ namespace AppAfpaBrive.Web.Controllers
     {
 
 
-        private  CategorieLayer _categorieLayer;
-        private  StructureLayer _structureLayer;
-        private  ContactLayer _contactLayer;
+        private CategorieLayer _categorieLayer;
+        private StructureLayer _structureLayer;
+        private ContactLayer _contactLayer;
         private LigneAnnuaireLayer _ligneAnnuaireLayer;
 
         private readonly AFPANADbContext _context;
-     
+
 
         public GestionAnnuaireController(AFPANADbContext context)
         {
@@ -103,7 +103,7 @@ namespace AppAfpaBrive.Web.Controllers
         // POST: GestionAnnuaireController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-      public ActionResult EditCategorie(CategorieModelView cat)
+        public ActionResult EditCategorie(CategorieModelView cat)
         {
             if (ModelState.IsValid)
             {
@@ -120,7 +120,7 @@ namespace AppAfpaBrive.Web.Controllers
         }
 
         // POST: GestionAnnuaireController/Delete/5
-    
+
         public ActionResult DeleteCategorie(int id)
         {
             if (id == 0)
@@ -250,7 +250,7 @@ namespace AppAfpaBrive.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+
                 _contactLayer.Insert(contact.GetContact());
                 return RedirectToAction("Contacts");
 
@@ -330,7 +330,7 @@ namespace AppAfpaBrive.Web.Controllers
             {
                 listCategories = _categorieLayer.categories()
             };
-       
+
             return View(ligne);
         }
 
@@ -348,7 +348,8 @@ namespace AppAfpaBrive.Web.Controllers
                 {
                     if (cb.IsChecked)
                     {
-                        ligneAnnuaire.categories.Add(cb.GetCategorie());    
+
+                        ligneAnnuaire.categories.Add(cb.GetCategorie());
                     }
                 }
 
@@ -367,44 +368,40 @@ namespace AppAfpaBrive.Web.Controllers
 
 
 
-        public async Task<IActionResult> CreateLigneAnnuaireAddContact(string filter, int page, string sortExpression = "Nom")
+        public async Task<IActionResult> CreateLigneAnnuaireAddContact()
         {
 
-            var model = await _contactLayer.GetPageModel(filter, page, sortExpression);
-            model.RouteValue = new RouteValueDictionary
-            {
-                {"filter", filter }
-            };
+            var model = _contactLayer.Contacts();
+
             return View(model);
-       
+
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateLigneAnnuaireAddContact(PagingList<ContactModelView> modelViews)
+        public async Task<IActionResult> CreateLigneAnnuaireAddContact(List<ContactModelView> modelViews)
         {
-         
+
             string str = this.HttpContext.Session.GetString("ligneAnnuaire");
             LigneAnnuaireEtape1ModelView ligne = JsonConvert.DeserializeObject<LigneAnnuaireEtape1ModelView>(str);
 
-       
-                foreach(var el in modelViews)
+            ligne.structure = _structureLayer.GetStructureById(ligne.IdStructure).GetStructure();
+
+            foreach (var el in modelViews)
+            {
+                if (el.IsChecked)
                 {
-                    if (el.IsChecked)
-                    {
-                        ligne.contacts.Add(el.GetContact());
-                    }
+                    ligne.contacts.Add(el.GetContact());
                 }
+            }
 
-            string toJson = JsonConvert.SerializeObject(ligne);
-            HttpContext.Session.SetString("toJson", str);
-
+            LigneAnnuaire final = ligne.ToLigneAnnuaire();
+            _context.LigneAnnuaires.Add(final);
             return RedirectToAction("LigneAnnuaires");
 
         }
         #endregion
-
 
 
     }
