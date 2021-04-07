@@ -30,14 +30,20 @@
     }
     @if (User.IsInRole("Formateur"))
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Pee" asp-action="ListePeeAValider">Pee à valider</a>
-        </li>
-    }
-    @if (User.IsInRole("Formateur"))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Pee" asp-action="Index">Pee impression</a>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Période en entreprise
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                @if (User.IsInRole("Formateur"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Pee" asp-action="ListePeeAValider">Liste à Valider</a>
+                }
+                @if (User.IsInRole("Formateur"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Pee" asp-action="Index">Impression & suivie</a>
+                }
+            </div>
         </li>
     }
 </ul>
