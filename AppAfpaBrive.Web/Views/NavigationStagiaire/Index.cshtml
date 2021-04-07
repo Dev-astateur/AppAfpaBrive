@@ -3,38 +3,44 @@
 @{
     ViewData["Title"] = "Menu Beneficiaire";
 }
-    <div class="alert alert-primary" role="alert">
-        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Votre profil">
-            <div class="row">
-                <div class="col-6">
-                    <p class="text-left">@Model.ToString()</p>
-                </div>
-                <div class="col-6">
-                    <p class="text-right">@Html.DisplayNameFor(e => e.MatriculeBeneficiaire) : @Model.MatriculeBeneficiaire</p>
-                </div>
+<div class="alert alert-primary" role="alert">
+    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Votre profil">
+        <div class="row">
+            <div class="col-6">
+                <p class="text-left">@Model.ToString()</p>
             </div>
-        </a>
-    </div>
-    <div class="container">
-        <div class="card-deck">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Administration des produits de formations :</h5>
-                    <p class="card-text">
-                        Application de recherche des entreprises qui ont déjà pris un stagiaire de l'Afpa.
-                        Possibilité de rechercher par département et ou de votre offre de formation.
-                    </p>
-                    <a asp-controller="Entreprise" asp-action="ListeEntreprise" class="btn btn-primary">Entreprise</a>
-                </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Calendrier des évenements :</h5>
-                    <p class="card-text">
-                        Calendrier des différentes activités programmées.
-                    </p>
-                    <a asp-controller="" asp-action="" class="btn btn-primary">Calendrier</a>
-                </div>
+            <div class="col-6">
+                <p class="text-right">@Html.DisplayNameFor(e => e.MatriculeBeneficiaire) : @Model.MatriculeBeneficiaire</p>
             </div>
         </div>
+    </a>
+</div>
+<div class="container">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h3 class="display-4">Fonctionnalités</h3>
+            <p class="lead">
+                <div class="media">
+                    <div class="media-body">
+                        <h5 class="mt-0">Saisie de l'autorisation d'absence</h5>
+                        Vous pouvez saisir et éditer une autorisation d'absence.
+                    </div>
+                    <div class="w-20 btn-group" role="group">
+                        <a asp-controller="AutorisationAbsence" asp-action="CompleterInfoAbsence" class="btn btn-primary">Entreprise</a>
+                    </div>
+                </div>
+            </p>
+            <p class="lead">
+                <div class="media">
+                    <div class="media-body">
+                        <h5 class="mt-0">Saisie des informations pour la période en entreprise</h5>
+                        Vous pouvez saisir les différentes informations pour la période en entreprise. Ces informations seront vues par le formateur.
+                    </div>
+                    <div class="w-20 btn-group" role="group">
+                        <a asp-controller="Convention" asp-action="Index" class="btn btn-primary">Convention</a>
+                    </div>
+                </div>
+            </p>
+        </div>
     </div>
+</div>
