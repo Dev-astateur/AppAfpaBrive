@@ -13,21 +13,23 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXmlHelpers.Word;
 using System.Net.Mime;
 using System.Text;
+using AppAfpaBrive.Web.Data;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers
 {
     public class AutorisationAbsenceController : Controller
     {
         
-        //private readonly AFPANADbContext _dbContext;
+       private readonly AutorisationAbsenceLayer _autorisationAbsenceLayer;
         private readonly IConfiguration _config;
         private readonly IHostEnvironment _env;
         public AutorisationAbsenceController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
         {
-           // _dbContext = context;
+           
             _config = config;
             _env = env;
-           
+            _autorisationAbsenceLayer =  new AutorisationAbsenceLayer(context);
         }
         [HttpGet]
         public ActionResult CompleterInfoAbsence()
@@ -73,13 +75,21 @@ namespace AppAfpaBrive.Web.Controllers
                 //Copie du fichier avec possibilite d'écrire"
                 System.IO.File.Copy(path, destinationPath, true);
 
+
+               // a decommenter dans la version finale, quand les bénéfiaciaaires pourront se connecter
+              //  string matricule = User.Identity.Name;
+                string matricule = "16174318";
+                string nom = _autorisationAbsenceLayer.GetNomStagiaireByMatricule(matricule);
+                string prenom = _autorisationAbsenceLayer.GetPrenomStagiaireByMatricule(matricule);
+                string formation = _autorisationAbsenceLayer.GetFormationStagiaireByMatricule(matricule);
+
                 //Remplacer les MergeFields par valeurs
                 using (WordprocessingDocument document = WordprocessingDocument.Open(destinationPath, true))
                 {
                     var mergeFields = document.GetMergeFields().ToList();
-                    mergeFields.WhereNameIs("nom").ReplaceWithText("SIRE");
-                    mergeFields.WhereNameIs("prenom").ReplaceWithText("Romain");
-                    mergeFields.WhereNameIs("formation").ReplaceWithText("CDA");
+                    mergeFields.WhereNameIs("nom").ReplaceWithText(nom);
+                    mergeFields.WhereNameIs("prenom").ReplaceWithText(prenom);
+                    mergeFields.WhereNameIs("formation").ReplaceWithText(formation);
                     mergeFields.WhereNameIs("dateDuJour").ReplaceWithText(DateTime.Today.ToString("dd/MM/yyyy"));
                     mergeFields.WhereNameIs("dateDebut").ReplaceWithText(dateDebutConverti.ToString("dd/MM/yyyy"));
                     mergeFields.WhereNameIs("DateDeFin").ReplaceWithText(dateFinConverti.ToString("dd/MM/yyyy"));                   
