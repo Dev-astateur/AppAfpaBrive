@@ -73,7 +73,7 @@ namespace AppAfpaBrive.Web.Controllers
         //[HttpGet]
 
 
-        public ActionResult ListeEntreprise(string departement, string formation, int page)
+        public ActionResult ListeEntreprise(string departement, string formation, int pageIndex)
         {
 
           
@@ -83,25 +83,25 @@ namespace AppAfpaBrive.Web.Controllers
 
             
 
-            var query = _layer.GetAllEntrepriseForPaging(page);
+            var query = _layer.GetAllEntrepriseForPaging(pageIndex);
 
             if (!String.IsNullOrEmpty(departement) && (!String.IsNullOrEmpty(formation)))
             {
                
-                query =  _layer.GetEntrepriseByDepartementEtOffreForPaging(formation,departement,page);
+                query =  _layer.GetEntrepriseByDepartementEtOffreForPaging(formation,departement, pageIndex);
 
             }
 
             else if (!String.IsNullOrEmpty(departement) && String.IsNullOrEmpty(formation))
             {
                 
-                 query =_layer.GetEntreprisesByDepartementPaging(departement, page);
+                 query =_layer.GetEntreprisesByDepartementPaging(departement, pageIndex);
             }
 
             else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
             {
 
-                query = _layer.GetEntrepriseByProduitFormationForPaging(formation, page);
+                query = _layer.GetEntrepriseByProduitFormationForPaging(formation, pageIndex);
             }
 
             //Test pour paging
@@ -118,27 +118,27 @@ namespace AppAfpaBrive.Web.Controllers
 
 
         #region ListeEntrepriseModification
-        public IActionResult ListeEntreprisePourModification(string departement, string formation, int page)
+        public IActionResult ListeEntreprisePourModification(string departement, string formation, int pageIndex)
         {
           
 
             ViewData["GetDepartement"] = departement;
             ViewData["GetProduitForm"] = formation;
-            var query = _layer.GetAllEntrepriseForPaging(page);
+            var query = _layer.GetAllEntrepriseForPaging(pageIndex);
 
            
 
             if (!String.IsNullOrEmpty(departement) && (!String.IsNullOrEmpty(formation)))
             {
-                query = _layer.GetEntrepriseByDepartementEtOffreForPaging(formation, departement, page);
+                query = _layer.GetEntrepriseByDepartementEtOffreForPaging(formation, departement, pageIndex);
             }
             else if (!String.IsNullOrEmpty(departement) && String.IsNullOrEmpty(formation))
             {
-                query = _layer.GetEntreprisesByDepartementPaging(departement, page);
+                query = _layer.GetEntreprisesByDepartementPaging(departement, pageIndex);
             }
             else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
             {
-                query = _layer.GetEntrepriseByProduitFormationForPaging(formation, page);
+                query = _layer.GetEntrepriseByProduitFormationForPaging(formation, pageIndex);
             }
             //Test pour pagination
             //var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);

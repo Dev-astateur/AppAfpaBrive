@@ -5,6 +5,7 @@ using AppAfpaBrive.DAL;
 
 namespace AppAfpaBrive.Web.Layer
 {
+    
     public class Layer_Entreprise
     {
         private readonly AFPANADbContext _db;
