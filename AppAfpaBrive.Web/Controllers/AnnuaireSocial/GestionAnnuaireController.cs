@@ -340,13 +340,15 @@ namespace AppAfpaBrive.Web.Controllers
         public async Task<IActionResult> CreateLigneAnnuaires(LigneAnnuaireEtape1ModelView ligneAnnuaire)
         {
 
+            ligneAnnuaire.categories = new List<Categorie>();
+
             if (ModelState.IsValid)
             {
-                foreach (CategorieCheckBox cb in ligneAnnuaire.listCategories)
+                foreach (CategorieModelView cb in ligneAnnuaire.listCategories)
                 {
                     if (cb.IsChecked)
                     {
-                        ligneAnnuaire.categories.Add(cb.categorie);    
+                        ligneAnnuaire.categories.Add(cb.GetCategorie());    
                     }
                 }
 
@@ -398,7 +400,7 @@ namespace AppAfpaBrive.Web.Controllers
             string toJson = JsonConvert.SerializeObject(ligne);
             HttpContext.Session.SetString("toJson", str);
 
-            return RedirectToAction();
+            return RedirectToAction("LigneAnnuaires");
 
         }
         #endregion

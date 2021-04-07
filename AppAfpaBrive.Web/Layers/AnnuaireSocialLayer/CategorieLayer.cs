@@ -40,11 +40,11 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
             return cat as CategorieModelView;
         }
 
-        public IEnumerable<CategorieCheckBox> categories()
+        public List<CategorieModelView> categories()
         {
             var cat = _context.Categories.ToList();
 
-            return cat.Select(x => new CategorieCheckBox { categorie = x, IsChecked = false });
+            return cat.Select(x => new CategorieModelView{ IdCategorie= x.IdCategorie, LibelleCategorie= x.LibelleCategorie, IsChecked = false }).ToList();
 
         }
 

@@ -40,32 +40,28 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="idCategorie" class="control-label">Categorie</label>
                 @if (Model.listCategories.Count() > 0)
                 {
                     @for (var i = 0; i < Model.listCategories.Count(); i++)
                     {
-                        @Html.CheckBoxFor(model => model.listCategories.ElementAt(i).IsChecked);
-                        <input type="hidden" asp-for="@Model.listCategories.ElementAt(i)." />
-                        <input type="hidden" asp-for="@Model.listCategories.ElementAt(i)." />
-                    }
-
-
-                    @*@foreach (var cat in Model.listCategories)
-            {
                 <div class="form-check">
-                    <input asp-for="@cat.IsChecked" type="checkbox" class="form-check-label" value="true" /> @cat.categorie.LibelleCategorie  <br />
+
+
+                    @Html.CheckBoxFor(model => model.listCategories[i].IsChecked, new { @class = "form-check-input" })
+                    <label class="control-label">@Model.listCategories[i].LibelleCategorie</label>
+                    <input type="hidden" asp-for="@Model.listCategories[i].IdCategorie" />
+                    <input type="hidden" asp-for="@Model.listCategories[i].LibelleCategorie" />
+
                 </div>
-            }*@
+                    }
                 }
                 else
                 {
-                    <div>
-                        <p>Aucune catégorie trouvée</p>
-                    </div>
-                }
 
-                <span asp-validation-for="idCategorie" class="text-danger"></span>
+                    <p>Aucune catégorie trouvée</p>
+
+                }
+           
             </div>
 
             <div class="form-group">

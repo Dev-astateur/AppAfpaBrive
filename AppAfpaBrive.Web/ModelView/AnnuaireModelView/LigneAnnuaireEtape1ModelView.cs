@@ -26,7 +26,7 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
 
 
         public ICollection<Categorie> categories {get; set;} 
-        public IEnumerable<CategorieCheckBox> listCategories { get; set; }
+        public List<CategorieModelView> listCategories { get; set; }
 
         public IEnumerable<SelectListItem> listStructures { get; set; }
         public Structure structure;

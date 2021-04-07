@@ -1,10 +1,7 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.Web.ModelView.AnnuaireModelView.ContactModelView>
+﻿@model List<AppAfpaBrive.Web.ModelView.AnnuaireModelView.ContactModelView>
 @using ReflectionIT.Mvc.Paging
 @addTagHelper *, ReflectionIT.Mvc.Paging
 
-<nav aria-label="structure navigation">
-    @await this.Component.InvokeAsync("Pager", new { paginglist = this.Model })
-</nav>
 
 
 
@@ -15,95 +12,68 @@
         </div>
 
         <form method="get" class="form-inline">
-            <input name="filter" class="form-control" placeholder="filtre" value="@Model.RouteValue["filter"]" />
 
+            @if (Model.Count() > 0)
+            {
+                <table class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                Titre civilité
+                            </th>
+                            <th>
+                                Nom
+                            </th>
+                            <th>
+                                Prénom
+                            </th>
+                            <th>
+                                Mail
+                            </th>
+                            <th>
+                                Téléphone
+                            </th>
+                            <th>
+                                Selectionner
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var obj in Model)
+                        {
+                            <tr id="ligne" class="model">
+                                <td>@obj.TitreCivilite.TitreCiviliteAbrege</td>
+                                <td>@obj.Nom</td>
+                                <td>@obj.Prenom</td>
+                                <td>@obj.Mail</td>
+                                <td>@obj.Telephone</td>
+                                <td>
+                                    <input asp-for="@obj.IsChecked" type="checkbox" class="form-check-label" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <p> Il n'y a pas de contacts</p>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Suivant" class="btn btn-primary" />
+            </div>
         </form>
     </div>
 
     <br /><br />
 
-    @if (Model.Count() > 0)
-    {
-        <table class="table table-bordered table-striped" style="width:100%">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.SortableHeaderFor(model => model.TitreCivilite)
-                    </th>
-                    <th>
-                        @Html.SortableHeaderFor(Model => Model.Nom)
-                    </th>
-                    <th>
-                        @Html.SortableHeaderFor(model => model.Prenom)
-                    </th>
-                    <th>
-                        @Html.SortableHeaderFor(model => model.Mail)
-                    </th>
-                    <th>
-                        @Html.SortableHeaderFor(model => model.Telephone)
-                    </th>
-                    <th>
-                        Selectionner
-                    </th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var obj in Model)
-                {
-                    <tr id="ligne" class="model">
-                        <td>@obj.TitreCivilite.TitreCiviliteAbrege</td>
-                        <td>@obj.Nom</td>
-                        <td>@obj.Prenom</td>
-                        <td>@obj.Mail</td>
-                        <td>@obj.Telephone</td>
-                        <td>
-                            <input asp-for="@obj.IsChecked" type="checkbox" class="form-check-label" />
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-    }
-    else
-    {
-        <p> Il n'y a pas de contacts</p>
-    }
-
-    <div class="form-group">
-        <input id="submitAddContact" type="submit" value="Create" class="btn btn-primary" />
-    </div>
-
-    <nav aria-label="structures navigation example">
-        <vc:pager paging-list="@Model" />
-    </nav>
-
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-
-    <script>
-
-        $(document).ready(() {
-
-
-            $('#submitAddContact').click(function () {
-                var json = '';
-
-                $.each("#model"), function (i, item) {
-                    if ($(this).find(('input[type=checkbox]:checked')).length > 0) {
-
-                        alert()
-                    }
-                }
-            });
-
-
-
-    </script>
 }
 
 
