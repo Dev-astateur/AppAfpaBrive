@@ -26,7 +26,7 @@ namespace AppAfpaBrive.BOL
         
         public Guid? IdGroupe { get; set; }
 
-        public string Heure { get; set; }
+      
 
 
         
