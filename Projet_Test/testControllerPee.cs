@@ -57,7 +57,7 @@ namespace Projet_Test
                 }
             };
 
-            var result = controller.ListePeeAValider("1603870", null).Result;
+            var result = controller.ListePeeAValider(null).Result;
             Assert.IsInstanceOf<ViewResult>(result);
             
         }
@@ -73,7 +73,7 @@ namespace Projet_Test
                     HttpContext = contextMock.Http.Object,
                 }
             };
-            var result = controller.ListePeeAValider("1603870", null).Result as ViewResult;
+            var result = controller.ListePeeAValider(null).Result as ViewResult;
 
             Assert.IsInstanceOf<PagingList<ListePeeAValiderModelView>>(result.Model);
         }
@@ -91,7 +91,7 @@ namespace Projet_Test
             };
 
             //contextMock.Request.Setup(r => r.Query["id"]).Returns(string.Empty);
-            var result = controller.ListePeeAValider(string.Empty, null).Result as NotFoundResult;
+            var result = controller.ListePeeAValider(null).Result as NotFoundResult;
 
             Assert.That((HttpStatusCode)result.StatusCode == HttpStatusCode.NotFound);
         }
