@@ -80,7 +80,7 @@
                         url: newUrl,
                         success: function (result) {
                             const partial = document.getElementById('viewPartial');
-                            if ('DOCTYPE' === result.substring(2, 9)) {
+                            if ('<!DOCT' === result.substring(2, 8)) {
                                 window.location.href = newUrl;
                             } else {
                                 partial.innerHTML = result;

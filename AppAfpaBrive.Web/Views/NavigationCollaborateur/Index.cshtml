@@ -3,11 +3,11 @@
 @{
     ViewData["Title"] = "Menu Collaborateur";
 }
-<div class="container border-success">
-    <a asp-controller="" asp-action="" asp-route-id="@Model.MatriculeCollaborateurAfpa">
+<div class="alert alert-primary" role="alert">
+    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Votre profil">
         <div class="row">
             <div class="col-6">
-                <p class="text-left text-primary">@Model.ToString()</p>
+                <p class="text-left">@Model.ToString()</p>
             </div>
             <div class="col-6">
                 <p class="text-right">@Html.DisplayNameFor(e => e.MatriculeCollaborateurAfpa) : @Model.MatriculeCollaborateurAfpa</p>
@@ -69,15 +69,28 @@
                 <div class="container">
                     <h1 class="display-4">Période en entreprise</h1>
                     <p class="lead">
-                        <div class="media">
-                            <div class="media-body">
-                                <h5 class="mt-0">Validation de la Pee</h5>
-                                Validation de la période en entreprise, saisie par le bénéficiaire.
-                                Un courriel est automatiquement envoyé au futur stagiaire même si la réponse est négative.
+                        @if (User.IsInRole("Formateur"))
+                        {
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mt-0">Validation de la Pee</h5>
+                                    Validation de la période en entreprise, saisie par le bénéficiaire.
+                                    Un courriel est automatiquement envoyé au futur stagiaire même si la réponse est négative.
+                                </div>
+                                <a asp-controller="Pee" asp-action="ListePeeAValider" class="btn btn-primary">Validation</a>
                             </div>
-                            <a asp-controller="Pee" asp-action="ListePeeAValider" class="btn btn-primary">Validation</a>
-                        </div>
-                    </p>
+                        }
+                        @if (User.IsInRole("Formateur"))
+                        {
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mt-0">Impression et suivie de la période en entreprise</h5>
+                                    Impression et suivie de la période en entreprise. Vous avez toutes les impressions de la convention de stage.
+                                </div>
+                                <a asp-controller="Pee" asp-action="Index" class="btn btn-primary">Impression & Suivie</a>
+                            </div>
+                        }
+                        </p>
                 </div>
             </div>
         }

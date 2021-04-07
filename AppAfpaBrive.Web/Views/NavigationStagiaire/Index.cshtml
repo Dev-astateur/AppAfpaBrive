@@ -3,11 +3,11 @@
 @{
     ViewData["Title"] = "Menu Beneficiaire";
 }
-    <div class="container border-success">
-        <a asp-controller="" asp-action="" asp-route-id="@Model.MatriculeBeneficiaire">
+    <div class="alert alert-primary" role="alert">
+        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Votre profil">
             <div class="row">
                 <div class="col-6">
-                    <p class="text-left text-primary">@Model.ToString()</p>
+                    <p class="text-left">@Model.ToString()</p>
                 </div>
                 <div class="col-6">
                     <p class="text-right">@Html.DisplayNameFor(e => e.MatriculeBeneficiaire) : @Model.MatriculeBeneficiaire</p>

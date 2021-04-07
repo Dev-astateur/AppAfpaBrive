@@ -9,11 +9,35 @@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="ProduitFormation" asp-action="Index">Produit de formations</a>
         </li>
+    }
+    @if (User.IsInRole("Administrateur"))
+    {
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Etablissement" asp-action="Index">Etablissement</a>
         </li>
+    }
+    @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+    {
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="CollaborateurAfpa" asp-action="Index">Collaborateur</a>
+        </li>
+    }
+    @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Entreprise" asp-action="ListeEntreprisePourModification">Entreprise</a>
+        </li>
+    }
+    @if (User.IsInRole("Formateur"))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Pee" asp-action="ListePeeAValider">Pee à valider</a>
+        </li>
+    }
+    @if (User.IsInRole("Formateur"))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Pee" asp-action="Index">Pee impression</a>
         </li>
     }
 </ul>
