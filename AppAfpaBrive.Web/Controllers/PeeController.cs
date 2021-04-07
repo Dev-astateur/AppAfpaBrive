@@ -23,10 +23,11 @@ using System.Text;
 using Rotativa;
 using Ionic.Zip;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http;
 
 namespace AppAfpaBrive.Web.Controllers
 {
-    
+   
     public class PeeController : Controller
     {
         #region champ privé
@@ -37,10 +38,14 @@ namespace AppAfpaBrive.Web.Controllers
         private readonly IHostEnvironment _env;
         private readonly IEmailSender _emailSender;
 
+        string SessionIdOffreFormation = "IdOffreFormation";
+        string SessionIdEtablissemnt = "idEtablissement";
+        List<int> checkBox = new List<int>();
 
         #endregion
 
         #region Constructeur
+
         //public PeeController()
         //{
         //    //_dbContext = context;
@@ -55,6 +60,7 @@ namespace AppAfpaBrive.Web.Controllers
             _env = env;
             _peeLayer = new PeeLayer(context);
             _emailSender = emailSender;
+            
         }
         #endregion
         #region Méthode IAction Index et AfficheBeneficiairePee
@@ -63,10 +69,10 @@ namespace AppAfpaBrive.Web.Controllers
         /// leurs Pee avec IdOffreFormation et IdEtablissement
         /// </summary>
         /// <returns></returns>
+        
         [HttpGet]
         public IActionResult Index()
         {
-
             return View();
         }
         /// <summary>
@@ -79,17 +85,24 @@ namespace AppAfpaBrive.Web.Controllers
         /// <returns></returns>
         public async Task<IActionResult> _AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
         {
+             
             if (ModelState.IsValid)
             {
                 var pees = await _peeLayer.GetPeeEntrepriseWithBeneficiaireBy(IdOffreFormation, idEtablissement);
                 var listPeriode = await _peeLayer.GetListPeriodePeeByIdPee(IdOffreFormation, idEtablissement);
+                
+                
                 ViewData["PeriodePee"] = listPeriode;
                 IEnumerable<Pee> PeeSansDoublons = pees.Distinct(new PeeComparer());
+                
                 ViewData["ListPeeSansDoublons"] =  PeeSansDoublons;
-               
+
+                HttpContext.Session.SetInt32(SessionIdOffreFormation, IdOffreFormation);
+                HttpContext.Session.SetString(SessionIdEtablissemnt, idEtablissement);
             }
             
-            return View ("Index");
+            return View("Index");
+            
         }
         #endregion
 
@@ -97,6 +110,13 @@ namespace AppAfpaBrive.Web.Controllers
 
         public async Task<IActionResult> GetDocumentForPrint(int id, int[] PeecheckBox)
         {
+            //if(PeecheckBox.Length == 0)
+            //{
+            //    var idOffre = HttpContext.Session.GetInt32(SessionIdOffreFormation);
+            //    var IdEtablissemnt = HttpContext.Session.GetString(SessionIdEtablissemnt);
+            //    ModelState.AddModelError("PeecheckBox", "Vous devez cochez au moins une case");
+            //    return RedirectToAction("_AfficheBeneficiairePee", new { idOffreFormation = idOffre, IdEtablissement = IdEtablissemnt });
+            //}
             ///PeecheckBox est un tableau des valeur des IdPee
             /// id est le Id du input 
             ImpressionFicheSuivi PrintWord = new ImpressionFicheSuivi(_dbContext, _env);
@@ -187,8 +207,9 @@ namespace AppAfpaBrive.Web.Controllers
         }
         #endregion
 
-        #region
-        [HttpPost]
+        #region action pour avoir des traces des suivis de la période en entreprise
+       
+        
 
         public IActionResult ConsignezLeSuiviDuPee(List<int> PeecheckBox)
         {
@@ -197,30 +218,37 @@ namespace AppAfpaBrive.Web.Controllers
             {
                 ListPee.Add(_dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation).FirstOrDefault(p => p.IdPee == item));
             }
-
-            ViewBag.IdPee = ListPee;
+            HttpContext.Session.SetObjectAsJson("checkBox", PeecheckBox);
+            ViewBag.IdPee =  ListPee;
             return View();
 
         }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UploadCKEditor( IFormFile uploadFile)
+        {
+            
+            var fileName =  DateTime.Now.ToString("yyyyMMddHHmmss") + uploadFile.FileName;
+            var path = Path.Combine(Directory.GetCurrentDirectory(), _env.ContentRootPath, "wwwroot/UploadFiles/Images/", fileName);
+            var stream = new FileStream(path, FileMode.Create);
+            uploadFile.CopyToAsync(stream);
+            return new JsonResult(new { path = "/UpLoadFiles/Images/" + fileName });
+            
+        }
         //[Route("upload_file")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePeriodePeeSuivi(PeriodePeeSuiviCreateViewModel model)
         {
+
             string filePath = null;
             if (ModelState.IsValid)
             {
                 string onlyOneFileName = null;
 
-                var peeDocuments = _dbContext.PeeDocuments
-                    .Include(d => d.IdPeeNavigation)
-                    .Include(d => d.IdPeriodePeeSuiviNavigation).Where(d => d.IdPee == model.IdPee);
-
-                var ID = _dbContext.PeriodePeeSuivis.OrderBy(p => p.IdPeriodePeeSuivi).Select(p => p.IdPeriodePeeSuivi).LastOrDefault();
-                var numOrd = peeDocuments.OrderBy(p => p.NumOrdre).Select(p => p.NumOrdre).LastOrDefault();
-                var IdPeeDocu = peeDocuments.OrderBy(p => p.IdPeeDocument).Select(p => p.IdPeeDocument).LastOrDefault();
-                IdPeeDocu += 1;
-                numOrd += 1;
-                ID += 1;
+                var numOrd = _dbContext.PeeDocuments.OrderBy(d => d.NumOrdre).Select(d => d.NumOrdre).LastOrDefault();
+               
                 
                 if (model.Fichier != null)
                 {
@@ -238,25 +266,87 @@ namespace AppAfpaBrive.Web.Controllers
                     DateDeSuivi = model.DateDeSuivi,
                     ObjetSuivi = model.ObjetSuivi,
                     TexteSuivi = model.TexteSuivi,
-                    IdPeriodePeeSuivi = ID
+                    
 
                 };
                 _dbContext.Add(periodePeeSuivi);
+                await _dbContext.SaveChangesAsync();
                 PeeDocument peeDocument = new PeeDocument
                 {
                     IdPee = model.IdPee,
-                    IdPeriodePeeSuivi = ID,
+                    IdPeriodePeeSuivi = _dbContext.PeriodePeeSuivis.OrderBy(p => p.IdPeriodePeeSuivi).Select(p => p.IdPeriodePeeSuivi).LastOrDefault(),
                     PathDocument = filePath,
-                    NumOrdre = numOrd ,
-                    IdPeeDocument = IdPeeDocu
+                    NumOrdre = numOrd + 1
+                    
                 };
                 _dbContext.Add(peeDocument);
-
+                await _dbContext.SaveChangesAsync();
+                var idOffre = HttpContext.Session.GetInt32(SessionIdOffreFormation);
+                    var IdEtablissemnt = HttpContext.Session.GetString(SessionIdEtablissemnt);
+                
+                return RedirectToAction("_AfficheBeneficiairePee", new {idOffreFormation = idOffre, IdEtablissement = IdEtablissemnt });
             }
-            await _dbContext.SaveChangesAsync();
-            return View(model);
+            var listcheckBox = HttpContext.Session.GetObjectFromJson<List<int>>("checkBox");
+
+            return RedirectToAction("ConsignezLeSuiviDuPee", listcheckBox);
         }
 
+        #endregion
+        #region consultation les document de suivi des la période en entreprise
+        
+        public IActionResult ConsultationSuivi()
+        {
+            var listPeriodeSuivi = _dbContext.PeeDocuments
+               .Include(d => d.IdPeriodePeeSuiviNavigation)
+               .Include(p => p.IdPeeNavigation).ThenInclude(p => p.MatriculeBeneficiaireNavigation).ToList();
+               
+             
+            ViewData["PeeDocument"] = listPeriodeSuivi;
+            return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> DownLoadDocument(int IdPeeDoc)
+        {
+            var pathDoc = _dbContext.PeeDocuments.FirstOrDefault(p => p.IdPeeDocument == IdPeeDoc);
+            if(pathDoc.PathDocument == null)
+            {
+                return Content("Fichier non présent");
+            }
+            var memory = new MemoryStream();
+            using(var stream = new FileStream(pathDoc.PathDocument, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, GetContentType(pathDoc.PathDocument), Path.GetFileName(pathDoc.PathDocument));
+
+            
+        }
+
+        private string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types[ext];
+        }
+
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                {".txt", "text/plain"},
+                {".pdf", "application/pdf"},
+                {".doc", "application/vnd.ms-word"},
+                {".docx", "application/vnd.ms-word"},
+                {".xls", "application/vnd.ms-excel"},
+                {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}, 
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".jpeg", "image/jpeg"},
+                {".gif", "image/gif"},
+                {".csv", "text/csv"}
+            };
+        }
         #endregion
 
         #region Validation des Pee par le formateur

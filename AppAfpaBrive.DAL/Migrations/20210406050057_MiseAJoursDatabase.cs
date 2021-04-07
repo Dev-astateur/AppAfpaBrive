@@ -24,7 +24,7 @@ namespace AppAfpaBrive.DAL.Migrations
                {
                    IdPeriodePeeSuivi = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
                        .Annotation("SqlServer:Identity", "1, 1"),
-                   IdPee = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                   IdPee = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                    ObjetSuivi = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
                    TexteSuivi = table.Column<string>(type: "varchar(4096)", unicode: false, maxLength: 4096, nullable: true),
                    DateDeSuivi = table.Column<DateTime>(type: "date", nullable: false, defaultValueSql: "getdate()")
@@ -46,7 +46,7 @@ namespace AppAfpaBrive.DAL.Migrations
                 {
                     IdPeeDocument = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdPee = table.Column<decimal>(type: "decimal(18,0)", nullable: false),
+                    IdPee = table.Column<decimal>(type: "numeric(18,0)", nullable: false),
                     NumOrdre = table.Column<int>(type: "int", nullable: false),
                     PathDocument = table.Column<string>(type: "varchar(2048)", unicode: false, maxLength: 2048, nullable: false)
                 },

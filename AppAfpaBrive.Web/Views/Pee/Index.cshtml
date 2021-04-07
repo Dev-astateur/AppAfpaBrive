@@ -7,25 +7,25 @@
     <div class="col-md-4">
 
 
-        <form asp-action="Index" id="frmPee">
+        <form asp-action="_AfficheBeneficiairePee" id="frmPee">
             <div asp-validation-summary="ModelOnly" data-valmsg-summary="true" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdOffreFormation" class="control-label"></label>
+                <label asp-for="IdOffreFormation" class="control-label">Saisissez le code de l'offre formation</label>
                 <input asp-for="IdOffreFormation" class="form-control" autocorrect="none"
                        autocapitalize="none" autofocus="autofocus"
-                       aria-required="true" data-val-required="Veuillez saisir ce champ">
+                       aria-required="true" data-val-required="Veuillez saisir ce champ" type="text">
                 <span asp-validation-for="IdOffreFormation" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="IdEtablissement" class="control-label"></label>
+                <label asp-for="IdEtablissement" class="control-label">Saisissez le code de l'établissement</label>
                 <input asp-for="IdEtablissement" class="form-control"
                        aria-required="true" required>
                 <span asp-validation-for="IdEtablissement" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Recherche" class="btn btn-primary btn-lg btn-block " asp-action="_AfficheBeneficiairePee" />
+                <input type="submit" value="Recherche" class="btn btn-primary btn-lg btn-block "  />
             </div>
         </form>
 

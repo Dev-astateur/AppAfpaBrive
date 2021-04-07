@@ -51,7 +51,7 @@
     <Folder Include="Views\Stagiaire\" />
     <Folder Include="Models\Layer\" />
     <Folder Include="wwwroot\PeeDocument\" />
-    <Folder Include="wwwroot\UploadFiles\" />
+    <Folder Include="wwwroot\UploadFiles\Images\" />
   </ItemGroup>
 
   <ItemGroup>

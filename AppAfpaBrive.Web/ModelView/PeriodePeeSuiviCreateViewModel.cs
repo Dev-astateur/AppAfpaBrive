@@ -16,6 +16,7 @@ namespace AppAfpaBrive.Web.ModelView
             PeeDocuments = new HashSet<PeeDocument>();
         }
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public decimal IdPeriodePeeSuivi { get; set; }
         [ForeignKey("Fk_Pee_Periode_Pee_Suivi")]
         public decimal IdPee { get; set; }

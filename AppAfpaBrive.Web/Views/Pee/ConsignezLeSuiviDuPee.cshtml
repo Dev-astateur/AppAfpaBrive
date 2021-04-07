@@ -15,11 +15,7 @@
     <div class="col-md-8">
         <form enctype="multipart/form-data" asp-action="CreatePeriodePeeSuivi" asp-controller="Pee">
 
-            @*<div class="form-group">
-                    <label asp-for="IdPeriodePeeSuivi" class="control-label"></label>
-                    <input asp-for="IdPeriodePeeSuivi" class="form-control" />
-                    <span asp-validation-for="IdPeriodePeeSuivi" class="text-danger"></span>
-                </div>*@
+           
             <div class="form-group">
                 <label asp-for="IdPee" class="control-label"></label>
                 <select asp-for="IdPee" class="form-control" asp-items=listItem></select>
