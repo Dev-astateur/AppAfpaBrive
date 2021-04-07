@@ -115,8 +115,9 @@ namespace AppAfpaBrive.Web.Helpers.CalendarTagHelper
                 return events?.SingleOrDefault(e => e.Key == d)?.Select(e =>
                     new XElement("a",
                         new XAttribute("class", $"event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-{e.IdCategorieEvent} text-black"),
-                        new XAttribute("title", e.DétailsEvent),
-                        e.DétailsEvent
+                        new XAttribute("href", e.Titre),
+                        new XAttribute("title", e.Titre),
+                        e.Titre
                     )
                 ) ?? new[] {
                 new XElement("p",

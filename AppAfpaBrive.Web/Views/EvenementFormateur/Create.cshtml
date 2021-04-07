@@ -1,0 +1,112 @@
+﻿@model AppAfpaBrive.Web.ModelView.EvenementModelView
+
+
+
+
+<form asp-action="Create">
+    <div class="form-group">
+        <h3>Type d'évenements</h3>
+        <select asp-for="IdCategorieEvent"
+                asp-items="@Model.SelectListItems">
+
+            <option> Sélectionnez un type d'évènement</option>
+            @*@Html.DropDownListFor(m => m.IdOffreFormation, new SelectList(Model.OffreFormations, "IdOffreFormation", "LibelleOffreFormation"),"Veuillez sélectionner votre offre")*@
+
+
+        </select>
+        <span asp-validation-for="@Model.IdCategorieEvent"style="color:red"></span>
+
+    </div>
+    <div class="form-group">
+        <h3>Veuillez renseigner le nom de l'évènement:</h3>
+        <input asp-for="@Model.Titre" type="text" />
+        <span asp-validation-for="@Model.Titre" style="color:red"></span>
+        <br />
+        <br />
+    </div>
+
+    <div class="form-group">
+        <h3>Veuillez décrire l'évènement:</h3>
+        <textarea asp-for="@Model.DétailsEvent" placeholder="Insérer du texte" cols="100" rows="3"></textarea>
+        <span asp-validation-for="@Model.DétailsEvent" style="color:red"></span>
+        <br />
+        <br />
+    </div>
+
+    <div class="form-group">
+        <h3>Veuillez renseigner la date de l'évènement:</h3>
+        <input type="date" asp-for="@Model.DateEvent" />
+        <span asp-validation-for="@Model.DateEvent" style="color:red"></span>
+        <br />
+        <br />
+    </div>
+
+
+    <h3>Evenements récurrents :</h3>
+    <div id="rbRecurrent">
+        <div class="form-group">
+            <input type="radio" id="True" value="True" name="recurrent" class="form-check-input">
+            <label for="RecurrentTrue">
+                Oui
+            </label>
+            <br />
+        </div>
+        <div class=" form-group">
+            <input type="radio" id="False" value="False" class="form-check-input" name="recurrent">
+            <label for="RecurrentFalse">Non</label>
+            <br />
+        </div>
+    </div>
+    @*@if ((string)@ViewData["Reponse"] == "True")
+        {*@
+    <div id="dateRecurrent" class="invisible">
+        <h3>Veuillez renseigner la date de fin de l'évènement:</h3>
+        <input type="date" asp-for="@Model.DateEventFin" />
+        <br />
+        <br />
+    </div>
+
+
+
+
+
+
+    <div class="form-group">
+        <input type="submit" value="Valider" class="btn btn-primary" />
+        <br />
+    </div>
+</form>
+@if (ViewData["paragrapheAjout"] != null) 
+{ 
+    <p style="color:green">Le(s) évènement(s) ont été ajouté</p>
+}
+@section Scripts
+{
+    <script defer type="text/javascript">
+
+        $(document).ready(function () {
+            $('#True').on('click', function (e) {
+                //alert("coucou");
+                var classe = $("#dateRecurrent").removeClass('invisible').addClass('visible');
+                //console.log(classe);
+
+
+
+
+
+            });
+            $('#False').on('click', function (e) {
+                //alert("coucou");
+                var classe = $("#dateRecurrent").removeClass('visible').addClass('invisible');
+                //console.log(classe);
+
+
+            });
+        });
+
+
+    </script>
+}
+
+
+

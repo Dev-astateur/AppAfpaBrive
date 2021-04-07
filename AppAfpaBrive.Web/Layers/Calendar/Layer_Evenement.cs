@@ -1,5 +1,6 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +26,11 @@ namespace AppAfpaBrive.Web.Layers.Calendar
                 .ToList();
             #endregion
         }
+        public void AddEvenement(Evenement evenement)
+        {
+            _context.Evenements.Add(evenement);
+            _context.SaveChanges();
+        }
+
     }
 }

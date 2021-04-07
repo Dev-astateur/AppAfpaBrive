@@ -50,12 +50,11 @@ namespace AppAfpaBrive.Web.Controllers.Calendrier
             year = DateTime.Now.Year;
 
             model.Month = (int)month;
-            model.Year = DateTime.Now.Year;
             model.Year = year;
-            /*Dans Layer */
             var events = _layer.GetEvenements(month, year);
             model.CalendarEvents = events;
             return View(model);
+
         }
 
         
@@ -64,13 +63,9 @@ namespace AppAfpaBrive.Web.Controllers.Calendrier
          {
             EvenementModelView model = new();
             int mois = DateTime.ParseExact(precedent, "MMMM", CultureInfo.CurrentCulture).Month;
-            // precedent = month - 1;
             DateTime timeT = new DateTime(year, mois, 1);
             DateTime time = timeT.AddMonths(-1);
-            //precedent = time.Month;
-            //model.Month = precedent;
-            //year = DateTime.Now.Year;
-            //model.Year = year;
+           
             var events = _layer.GetEvenements(time.Month, time.Year);
             model.Month = time.Month;
             model.Year = time.Year;
