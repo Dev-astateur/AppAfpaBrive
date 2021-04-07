@@ -149,8 +149,9 @@ namespace AppAfpaBrive.Web
                 endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login",true)));
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-               
+                    pattern: "{controller=Accueil}/{action=Index}/{id?}");
+                //pattern: "{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapRazorPages();
                 endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
                 endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true)));
@@ -198,7 +199,7 @@ namespace AppAfpaBrive.Web
                     Theme = "cyborg"
                    
                 };
-            user.ListeOffresFavorites.Add(new OffreFavorite() { IdOffreFormation = 20102, IdEtablissement = "19011", DateDebutOffreFormation = new DateTime(2020, 09, 01), DateFinOffreFormation = new DateTime(2021, 06, 30), LibelleReduit = "CDA 01/09/2020" });
+                user.ListeOffresFavorites.Add(new OffreFavorite() { IdOffreFormation = 20102, IdEtablissement = "19011", DateDebutOffreFormation = new DateTime(2020, 09, 01), DateFinOffreFormation = new DateTime(2021, 06, 30), LibelleReduit = "CDA 01/09/2020" });
                 user.OffresFavorites = JsonConvert.SerializeObject(user.ListeOffresFavorites);
     //v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
  
@@ -213,14 +214,13 @@ namespace AppAfpaBrive.Web
                     newUserRole.Wait();
                 }
             }
-           
 
         }
         private void ConfigurerCultures(IApplicationBuilder app,IServiceProvider services)
         {
             
             var supportedCultures = new[]
-    {
+            {
 
                 new CultureInfo("fr-FR"),
                 new CultureInfo("fr"),

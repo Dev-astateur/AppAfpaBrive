@@ -17,17 +17,18 @@ using Microsoft.Extensions.Hosting;
 using System.IO;
 using System.Net.Mime;
 using DocumentFormat.OpenXml.Wordprocessing;
-using AppAfpaBrive.Web.ModelView.ValidationPee;
 using AppAfpaBrive.Web.Utilitaires;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Text;
 using Rotativa;
 using Ionic.Zip;
 using System.Text.RegularExpressions;
+using AppAfpaBrive.Web.ModelView.ValidationPee;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers
 {
-    
+    [Authorize(Roles= "Formateur")]
     public class PeeController : Controller
     {
         #region champ privé
@@ -192,20 +193,21 @@ namespace AppAfpaBrive.Web.Controllers
         /// <summary>
         /// liste des Pee par formateur
         /// </summary>
-        /// <param name="id">id du matricule du formateur</param>
         /// <param name="pageIndex">page à afficher non obligatoire</param>
         /// <returns>View</returns>
         [HttpGet]
-        public async Task<IActionResult> ListePeeAValider(string id,int? pageIndex)
+        public async Task<IActionResult> ListePeeAValider(int? pageIndex)
         {
-            if (string.IsNullOrWhiteSpace(id) || id == "")
+            string matriculeCollaborateur = User.Identity.Name;
+            if (string.IsNullOrWhiteSpace(matriculeCollaborateur) || matriculeCollaborateur == "")
                 return NotFound();
+
             if (pageIndex is null)
                 pageIndex = 1;
             this.ViewBag.Titre = "Periode en entreprise à valider";
             //IEnumerable<ListePeeAValiderModelView> pees = ;  
 
-            return View(await _peeLayer.GetPeeByMatriculeCollaborateurAfpaAsync(id,(int) pageIndex));
+            return View(await _peeLayer.GetPeeByMatriculeCollaborateurAfpaAsync(matriculeCollaborateur, (int) pageIndex));
         }
 
         /// <summary>

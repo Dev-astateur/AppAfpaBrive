@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
-using AppAfpaBrive.Web.ModelView.ValidationPee;
 using AppAfpaBrive.Web.ModelView;
 using ReflectionIT.Mvc.Paging;
+using AppAfpaBrive.Web.ModelView.ValidationPee;
 
 namespace AppAfpaBrive.Web.Layers
 {

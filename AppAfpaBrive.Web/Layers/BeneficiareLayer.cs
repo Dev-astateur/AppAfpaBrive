@@ -43,16 +43,25 @@ namespace AppAfpaBrive.Web.Layers
             return await PagingList.CreateAsync<ModelView.BeneficiaireSpecifiqueModelView>((IOrderedQueryable<BeneficiaireSpecifiqueModelView>)qry, 5, page);
         }
 
-        public async Task<AppAfpaBrive.Web.ModelView.Navigation.BeneficiaireNavigationModelView> BeneficiaireByIdAsync(string matricule)
+        public async Task<BeneficiaireNavigationModelView> BeneficiaireByIdAsync(string matricule)
         {
-            return await _context.Beneficiaires.Where(e=>e.MatriculeBeneficiaire==matricule).Select(e => new AppAfpaBrive.Web.ModelView.Navigation.BeneficiaireNavigationModelView()
+            return await _context.Beneficiaires.Where(e=>e.MatriculeBeneficiaire==matricule).Select(e => new BeneficiaireNavigationModelView()
             {
                 MatriculeBeneficiaire = e.MatriculeBeneficiaire,
                 NomBeneficiaire = e.NomBeneficiaire,
                 PrenomBeneficiaire = e.PrenomBeneficiaire
             }).FirstOrDefaultAsync();
         }
-        #endregion 
-       
+        #endregion
+
+        #region méthode utilisé dans Login
+        public bool BoolStagiaire(string matricule)
+        {
+            if (_context.Beneficiaires.Where(e => e.MatriculeBeneficiaire == matricule).Select(e => e.MatriculeBeneficiaire).FirstOrDefault() is null)
+                return false;
+            return true;
+        }
+
+        #endregion
     }
 }

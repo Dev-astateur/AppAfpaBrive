@@ -13,9 +13,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
     [ApiController]
     public class OffreFormationApiController : Controller
     {
-
         private readonly AFPANADbContext db = new AFPANADbContext();
-
 
         [Produces("application/json")]
         [HttpGet("getOffre")]

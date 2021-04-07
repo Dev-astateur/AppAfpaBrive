@@ -15,9 +15,11 @@ using AppAfpaBrive.Web.Layers;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using AppAfpaBrive.Web.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers.ProduitFormation
 {
+    [Authorize(Roles = "Administrateur")]
     public class ProduitFormationController : Controller
     {
        

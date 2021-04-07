@@ -10,9 +10,12 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.Web.Layers;
 using ReflectionIT.Mvc.Paging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+
+    [Authorize(Roles = "CollaborateurAFPA,Administrateur")]
     public class EntrepriseController : Controller
     {
       
@@ -72,14 +75,14 @@ namespace AppAfpaBrive.Web.Controllers
         // GET: EntrepriseController/ListeEntreprise
         //[HttpGet]
 
-
+        [AllowAnonymous]
         public ActionResult ListeEntreprise(string departement, string formation, int pageIndex)
         {
 
           
 
             ViewData["GetDepartement"] = departement;
-             ViewData["GetProduitForm"] = formation;
+            ViewData["GetProduitForm"] = formation;
 
             
 

@@ -1,0 +1,98 @@
+﻿@model AppAfpaBrive.Web.ModelView.CollaborateurNavigationModelView
+
+@{
+    ViewData["Title"] = "Menu Collaborateur";
+}
+<div class="alert alert-primary" role="alert">
+    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Votre profil">
+        <div class="row">
+            <div class="col-6">
+                <p class="text-left">@Model.ToString()</p>
+            </div>
+            <div class="col-6">
+                <p class="text-right">@Html.DisplayNameFor(e => e.MatriculeCollaborateurAfpa) : @Model.MatriculeCollaborateurAfpa</p>
+            </div>
+        </div>
+    </a>
+</div>
+<div class="container">
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h3 class="display-4">Administration</h3>
+            <p class="lead">
+                @if (User.IsInRole("Administrateur"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0">Produit de formation</h5>
+                            Liste des produits de formations, possibilités de modifier, créer.
+                        </div>
+                        <a asp-controller="ProduitFormation" asp-action="Index" class="btn btn-primary">Produit de formation</a>
+                    </div>
+                }
+                @if (User.IsInRole("Administrateur"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0">Etablissements</h5>
+                            Listes des établissements, possibilités de modifier, créer.
+                        </div>
+                        <a asp-controller="Etablissement" asp-action="Index" class="btn btn-primary">Etablissement</a>
+                    </div>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0">Collaborateur Afpa</h5>
+                            Liste des collaborateurs, possibilités de modifier.
+                        </div>
+                        <a asp-controller="CollaborateurAfpa" asp-action="Index" class="btn btn-primary">Collaborateur</a>
+                    </div>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0">Entreprise</h5>
+                            Liste des entreprises, possibilités de modifier, créer.
+                        </div>
+                        <a asp-controller="Entreprise" asp-action="ListeEntreprisePourModification" class="btn btn-primary">Entreprise</a>
+                    </div>
+                }
+            </p>
+        </div>
+        @if (User.IsInRole("Formateur"))
+        {
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">Période en entreprise</h1>
+                    <p class="lead">
+                        @if (User.IsInRole("Formateur"))
+                        {
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mt-0">Validation de la Pee</h5>
+                                    Validation de la période en entreprise, saisie par le bénéficiaire.
+                                    Un courriel est automatiquement envoyé au futur stagiaire même si la réponse est négative.
+                                </div>
+                                <a asp-controller="Pee" asp-action="ListePeeAValider" class="btn btn-primary">Validation</a>
+                            </div>
+                        }
+                        @if (User.IsInRole("Formateur"))
+                        {
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mt-0">Impression et suivie de la période en entreprise</h5>
+                                    Impression et suivie de la période en entreprise. Vous avez toutes les impressions de la convention de stage.
+                                </div>
+                                <a asp-controller="Pee" asp-action="Index" class="btn btn-primary">Impression & Suivie</a>
+                            </div>
+                        }
+                        </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

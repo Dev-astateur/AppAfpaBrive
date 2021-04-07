@@ -1,4 +1,5 @@
 ﻿using AppAfpaBrive.DAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AutoCompleteOffreFormationApiController : ControllerBase
     {
-        private AFPANADbContext _db;
+        private readonly AFPANADbContext _db;
 
         public AutoCompleteOffreFormationApiController(AFPANADbContext db)
         {

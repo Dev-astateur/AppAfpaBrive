@@ -28,7 +28,7 @@ namespace Projet_Test
         private AFPANADbContext _dbContext = null;
         private IConfiguration _configuration = null;
         private IHostEnvironment _hostEnvironment = null;
-        private IMailSenderMock.MailSenderMock _mailSenderMock = null;
+        private IMailSenderMock.MailSenderMock _mailSenderMock = new IMailSenderMock.MailSenderMock();
 
         public TestControllerPee()
         {
