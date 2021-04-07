@@ -33,6 +33,22 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
             return await PagingList.CreateAsync<Contact>(qry, 20, page, sortExpression, "Nom");
         }
 
+
+        public async Task<PagingList<ContactModelView>> GetPageModel(string filter, int page = 1, string sortExpression = "Nom")
+        {
+
+
+            var qry = _context.Contacts.Include(x => x.TitreCivilite).Select(x => new ContactModelView { IdContact = x.IdContact, IdTitreCivilite = x.IdTitreCivilite, TitreCivilite = x.TitreCivilite, Mail = x.Mail, Nom = x.Nom, Prenom = x.Prenom, Telephone = x.Telephone }).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(filter))
+            {
+                qry = qry.Where(p => p.Nom.Contains(filter));
+            }
+
+            return await PagingList.CreateAsync<ContactModelView>(qry, 20, page, sortExpression, "Nom");
+        }
+
+
+
         public ContactModelView GetContactModelViewById(int id)
         {
 

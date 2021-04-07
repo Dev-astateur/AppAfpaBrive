@@ -24,12 +24,15 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
         [Required(ErrorMessage = "Categorie requise")]
         public int idCategorie { get; set; }
 
-        public ICollection<Categorie> categories {get; set;}
-            
+
+        public ICollection<Categorie> categories {get; set;} 
         public IEnumerable<CategorieCheckBox> listCategories { get; set; }
 
         public IEnumerable<SelectListItem> listStructures { get; set; }
         public Structure structure;
+        
+        public IEnumerable<ContactsCheckBox> listContacts { get; set; }
+        public ICollection<Contact> contacts { get; set; }
 
     }
 }

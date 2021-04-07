@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
+using Newtonsoft.Json;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -348,7 +350,12 @@ namespace AppAfpaBrive.Web.Controllers
                     }
                 }
 
-                return RedirectToAction(nameof(Index));
+
+                string str = JsonConvert.SerializeObject(ligneAnnuaire);
+                HttpContext.Session.SetString("ligneAnnuaire", str);
+
+
+                return RedirectToAction("CreateLigneAnnuaireAddContact");
             }
 
 
@@ -358,6 +365,42 @@ namespace AppAfpaBrive.Web.Controllers
 
 
 
+        public async Task<IActionResult> CreateLigneAnnuaireAddContact(string filter, int page, string sortExpression = "Nom")
+        {
+
+            var model = await _contactLayer.GetPageModel(filter, page, sortExpression);
+            model.RouteValue = new RouteValueDictionary
+            {
+                {"filter", filter }
+            };
+            return View(model);
+       
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateLigneAnnuaireAddContact(PagingList<ContactModelView> modelViews)
+        {
+         
+            string str = this.HttpContext.Session.GetString("ligneAnnuaire");
+            LigneAnnuaireEtape1ModelView ligne = JsonConvert.DeserializeObject<LigneAnnuaireEtape1ModelView>(str);
+
+       
+                foreach(var el in modelViews)
+                {
+                    if (el.IsChecked)
+                    {
+                        ligne.contacts.Add(el.GetContact());
+                    }
+                }
+
+            string toJson = JsonConvert.SerializeObject(ligne);
+            HttpContext.Session.SetString("toJson", str);
+
+            return RedirectToAction();
+
+        }
         #endregion
 
 
