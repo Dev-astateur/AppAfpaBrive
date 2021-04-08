@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using AppAfpaBrive.BOL;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using AppAfpaBrive.DAL;
 
-
-namespace AppAfpaBrive.DAL.Layer
+namespace AppAfpaBrive.Web.Layer
 {
     public class Layer_Code_Produit_Formation
     {

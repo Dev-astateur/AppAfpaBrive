@@ -1,0 +1,95 @@
+﻿@*@model IEnumerable<AppAfpaBrive.BOL.Etablissement>*@
+@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.BOL.Etablissement>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<nav aria-label="ProduitFormation navigation">
+    @await this.Component.InvokeAsync("Pager", new { paginglist = this.Model })
+</nav>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Liste des Etablissements </h2>
+        </div>
+        <div class="col-6 text-right">
+            <a asp-controller="Etablissement" asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus-square"></i> &nbsp; Créer un établissement
+            </a>
+        </div>
+        <form method="get" class="form-inline">
+            <input name="filter" class="form-control" placeholder="filtre(NomEtablissement)" value="@Model.RouteValue["filter"]" />
+            @*<button type="submit" class="btn btn-info">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+                </button>*@
+        </form>
+    </div>
+
+    <br /><br />
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.SortableHeaderFor(Model => Model.IdEtablissement)
+                    </th>
+                    <th>
+                        @Html.SortableHeaderFor(model => model.IdEtablissementRattachement)
+                    </th>
+                    <th>
+                        @Html.SortableHeaderFor(model => model.NomEtablissement)
+                    </th>
+                    <th>
+                        @Html.SortableHeaderFor(model => model.TelEtablissement)
+                    </th>
+                    <th>
+                        @Html.SortableHeaderFor(model => model.Ligne1Adresse)
+                    </th>
+                    <th>
+                        @Html.SortableHeaderFor(model => model.CodePostal)
+                    </th>
+                    <th>
+                        @Html.SortableHeaderFor(model => model.Ville)
+                    </th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr id="ligne">
+                        <td width="10%">@obj.IdEtablissement</td>
+                        <td width="10%">@obj.IdEtablissementRattachement</td>
+                        <td width="20%">@obj.NomEtablissement</td>
+                        <td width="10%">@obj.TelEtablissement</td>
+                        <td width="20%">@obj.Ligne1Adresse</td>
+                        <td width="10%">@obj.CodePostal</td>
+                        <td width="20%">@obj.Ville</td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Etablissement" asp-route-Id="@obj.IdEtablissement" asp-action="Edit" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> Modifier
+                                </a>
+                                <a asp-controller="Etablissement" asp-route-Id="@obj.IdEtablissement" asp-action="Delete" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> Supprimer
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+    else
+    {
+        <p> Il n'y a pas de produits de formation</p>
+    }
+
+</div>

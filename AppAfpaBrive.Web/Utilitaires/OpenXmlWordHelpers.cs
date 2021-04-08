@@ -160,6 +160,11 @@ namespace OpenXmlHelpers.Word
 
         private static string GetMergeFieldStartString(string mergeFieldName)
         {
+            // Je decompose la methode car j'ai des problèmes pour la faire fonctionner et je 
+            // veux voir la valeur de retour
+            //string valeurRetour = " MERGEFIELD " + mergeFieldName;
+            //return valeurRetour;
+
             return " MERGEFIELD " + (!string.IsNullOrWhiteSpace(mergeFieldName) ? mergeFieldName : "<NoNameMergeField>");
         }
 

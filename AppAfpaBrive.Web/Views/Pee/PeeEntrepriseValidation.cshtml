@@ -1,0 +1,100 @@
+﻿@model AppAfpaBrive.Web.ModelView.ValidationPee.PeeEntrepriseModelView
+@{
+    ViewData["Title"] = "Entreprise";
+}
+<div class="container" id="viewPartial">
+    @await Html.PartialAsync("~/Views/Shared/Entreprise/_EntreprisePartial.cshtml", Model)
+</div>
+
+<div class="container">
+    <div class="row">
+        @*<div class="col-sm-6"><p><button id="return">Retour</button></p></div>
+        <div class="col-sm-6"><p><button id="next">Suivant</button></p></div>*@
+        <div class="col-6">
+            <a href="javascript:void(0)" class="btn btn-success" id="return"><i class="fas fa-sign-out-alt"></i> Retour</a>
+        </div>
+        <div class="col-6">
+            <a href="javascript:void(0)" class="btn btn-success" id="next"><i class="fas fa-sign-out-alt"></i> Suivant</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const next = document.getElementById('next');
+            const retour = document.getElementById('return');
+
+            const idPee = @Model.IdPee;
+            let newUrl = '';
+
+            next.addEventListener('click', event => {
+                let win = document.getElementById('window').value;
+                switch (win) {
+                    case '1':
+                        newUrl = encodeURI('/Pee/ListeDocumentPee/' + idPee);
+                        break;
+                    case '2':
+                        newUrl = encodeURI('/Pee/EnregistrementPeeInfo/'+idPee);
+                        break;
+                    case '3':
+                        newUrl = encodeURI('/Pee/ListePeeAValider/'+'@Model.MatriculeCollaborateurAfpa');
+                        break;
+                }
+
+                if ('' != newUrl && 'ListePeeAValider' != newUrl.substring(5, 21)) {
+                    $.ajax({
+                        type: 'GET',
+                        url: newUrl,
+                        success: function (result) {
+                            const partial = document.getElementById('viewPartial');
+                            partial.innerHTML = result;
+                        }
+                    });
+                }
+                else {
+                    if (newUrl.length > 0) {
+                        window.location.href = newUrl;
+                    }
+                }
+            });
+
+            retour.addEventListener('click', event => {
+                let win = document.getElementById('window').value;
+                switch (win) {
+                    case '1':
+                        newUrl = encodeURI('/Pee/ListePeeAValider/'+'@Model.MatriculeCollaborateurAfpa');
+                        break;
+                    case '2':
+                        newUrl = encodeURI('/Pee/PeeEntrepriseValidation/' + idPee);
+                        break;
+                    case '3':
+                        newUrl = encodeURI('/Pee/ListeDocumentPee/'+idPee+"/"+win);
+                        break;
+                }
+
+                if ('/Pee/ListeDocumentPee/' === newUrl.substring(0,22)) {
+                    $.ajax({
+                        type: 'GET',
+                        url: newUrl,
+                        success: function (result) {
+                            const partial = document.getElementById('viewPartial');
+                            if ('<!DOCT' === result.substring(2, 8)) {
+                                window.location.href = newUrl;
+                            } else {
+                                partial.innerHTML = result;
+                            }
+                        }
+                    });
+                }
+                else {
+                    if (newUrl.length > 0) {
+                        window.location.href = newUrl;
+                    }
+                }
+            });
+
+        });
+    </script>
+}

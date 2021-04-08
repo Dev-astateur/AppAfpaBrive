@@ -1,0 +1,107 @@
+﻿@*@model List<AppAfpaBrive.Web.ModelView.EntrepriseListViewModel>*@
+@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.BOL.Entreprise>
+
+@{
+    ViewData["Title"] = "ListeEntreprisePourModification";
+}
+<head>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+
+<h2 class="text-primary">Liste entreprises pour modification</h2>
+
+
+<form asp-controller="Entreprise" asp-action="ListeEntreprisePourModification">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-4">
+                <p>Recherche par numéro de département: </p>
+                <p>
+                    <input type="search" placeholder=" département" value="@ViewData["GetDepartement"]" name="departement" />
+                </p>
+            </div>
+            <div class="col-sm-4">
+                <p>Recherche par l'intitulé de l'offre de formation: </p>
+                <p>
+                    <input type="search" placeholder=" formation" value="@ViewData["GetProduitForm"]" name="formation" id="ProduitFormation" />
+                </p>
+            </div>
+            <div class="col-sm-4">
+                <input type="submit" value="Rechercher" class="btn btn-primary" />
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Raison sociale
+            </th>
+            <th>
+                Numéro de SIRET
+            </th>
+            <th>
+                Adresse
+            </th>
+            <th>
+                Ville
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RaisonSociale)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumeroSiret)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ligne1Adresse)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ville)
+                    </td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-action="ModifierEntreprise" asp-route-id="@item.IdEntreprise" class="btn btn-primary">Modifier</a>
+                            <a asp-action="Details" asp-route-id="@item.IdEntreprise" class="btn btn-success">Details</a>
+                            <a asp-action="SuppressionEntreprise" asp-route-id="@item.IdEntreprise" class="btn btn-danger">Supprimer</a>
+                        </div>
+                            @*@Html.ActionLink("Supprimer", "SupprimerEntreprise", new { id = item.RaisonSociale })*@
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<nav aria-label="Pagination">
+    @await this.Component.InvokeAsync("Pager", new { pagingList=this.Model}) 
+</nav>
+<nav aria-label="pagination">
+    <vc:pager paging list="@Model" />
+</nav>
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#ProduitFormation').autocomplete({
+                source: '/api/AutoCompleteOffreFormationApi/search'
+            });
+        });
+    </script>
+}
+

@@ -18,4 +18,5 @@ namespace AppAfpaBrive.Web.Models
         public IFormFile file { get; set; }
   
     }
+
 }

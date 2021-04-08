@@ -15,7 +15,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
     public class FormateurApiController : ControllerBase
     {
 
-        private AFPANADbContext db;
+        private readonly AFPANADbContext db;
 
         public FormateurApiController(AFPANADbContext DB)
         {
@@ -29,7 +29,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
         /// <returns></returns>
         [Produces("application/json")]
         [HttpGet("getFormateur")]
-        public async Task<IActionResult> GetFormateurStartWith()
+        public IActionResult GetFormateurStartWith()
         {
             try
             {

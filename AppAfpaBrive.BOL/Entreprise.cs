@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppAfpaBrive.BOL
 {
-    public partial class Entreprise
+    public partial class Entreprise:EntityBase
     {
         public Entreprise()
         {

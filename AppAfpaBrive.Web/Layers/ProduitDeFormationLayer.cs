@@ -5,6 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using AppAfpaBrive.BOL;
+using AppAfpaBrive.BOL;
+using AppAfpaBrive.BOL;
+using AppAfpaBrive.BOL;
+using AppAfpaBrive.BOL;
 using ReflectionIT.Mvc.Paging;
 using System.Threading.Tasks;
 using AppAfpaBrive.Web.ModelView;
@@ -19,10 +25,20 @@ namespace AppAfpaBrive.Web.Layers
         public ProduitDeFormationLayer(AFPANADbContext context)
         {
             _context = context;
+        public List<ProduitFormation> GetProduitFormationStartWith(string codeProduit)
+        {
+            return _context.ProduitFormations.Where(x => x.CodeProduitFormation.ToString().StartsWith(codeProduit)).ToList();
         }
-        #endregion
-        #region Methode publique
 
+        public ProduitFormation GetByCodeProduitFormationdelete(int idCodeProduitFormation)
+        {
+            return _context.ProduitFormations.Find(idCodeProduitFormation);
+        }
+
+        public List<ProduitFormation> GetProduitFormationStartWith(string codeProduit)
+        {
+            return _context.ProduitFormations.Find(idCodeProduitFormation);
+        }
         public ProduitFormationModelView GetByCodeProduitFormation(int idCodeProduitFormation)
         {
             var obj =_context.ProduitFormations.Select(e => new ProduitFormationModelView()
@@ -49,32 +65,35 @@ namespace AppAfpaBrive.Web.Layers
 
         public void InsertProduit(ProduitFormation prod)
         {
+            var check=CheckCodeProduitExiste(prod.CodeProduitFormation);
+            if (check == true)
+            {
+                _context.ProduitFormations.Add(prod);
+                _context.SaveChanges();
+            }
             
-            _context.ProduitFormations.Add(prod);
-            _context.SaveChanges();
         }
         public void Remove(ProduitFormation prod)
         {
             _context.ProduitFormations.Remove(prod);
             _context.SaveChanges();
         }
-        public void Update(ProduitFormation prod)
+        
+        public bool CheckCodeProduitExiste(int id)
+        {
+            var codeproduit = _context.ProduitFormations.Find(id);
+
+            if (codeproduit == null)
+            {
+                return true;
+            }
+            return false;
+        }
         {
             _context.ProduitFormations.Update(prod);
             _context.SaveChanges();
         }
-
-        public ProduitFormation GetByCodeProduitFormationdelete(int idCodeProduitFormation)
-        {
-            return _context.ProduitFormations.Find(idCodeProduitFormation);
-        }
-
-        public List<ProduitFormation> GetProduitFormationStartWith(string codeProduit)
-        {
-            return _context.ProduitFormations.Where(x => x.CodeProduitFormation.ToString().StartsWith(codeProduit)).ToList();
-
-        }
-
+        
         #endregion
     }
 }

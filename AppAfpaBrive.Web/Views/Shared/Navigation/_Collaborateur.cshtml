@@ -1,0 +1,59 @@
+﻿@model System.Security.Claims.ClaimsPrincipal
+
+<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="NavigationCollaborateur" asp-action="Index">Fonctionnalités</a>
+    </li>
+    @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Administration
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                @if (User.IsInRole("Administrateur"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="ProduitFormation" asp-action="Index">Produit de formations</a>
+                }
+                @if (User.IsInRole("Administrateur"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Etablissement" asp-action="Index">Etablissement</a>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="CollaborateurAfpa" asp-action="Index">Collaborateur</a>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Entreprise" asp-action="ListeEntreprisePourModification">Entreprise</a>
+                }
+            </div>
+        </li>
+    }
+
+    @if (User.IsInRole("Formateur"))
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Période en entreprise
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                @if (User.IsInRole("Formateur"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Pee" asp-action="ListePeeAValider">Liste à Valider</a>
+                }
+                @if (User.IsInRole("Formateur"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Pee" asp-action="Index">Impression & suivie</a>
+                }
+            </div>
+        </li>
+        @if (User.IsInRole("Formateur"))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="OffreDeFormationBeneficiaire" asp-action="OffredeFormationBeneficiaire">Liste des bénéficiaires</a>
+            </li>
+        }
+    }
+    </ul>
+    

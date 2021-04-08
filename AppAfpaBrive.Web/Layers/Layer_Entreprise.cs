@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using AppAfpaBrive.BOL;
 using System.Linq;
+using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.DAL.Layer
+namespace AppAfpaBrive.Web.Layer
 {
+    
     public class Layer_Entreprise
     {
         private readonly AFPANADbContext _db;
@@ -21,6 +23,13 @@ namespace AppAfpaBrive.DAL.Layer
         {
             _db.Entreprises.Add(entreprise);
             _db.SaveChanges();
+        }
+
+        public int Create_entreprise_ID_Back(Entreprise entreprise)
+        {
+            _db.Entreprises.Add(entreprise);
+            _db.SaveChanges();
+            return entreprise.IdEntreprise;
         }
 
         public Entreprise GetEntrepriseById(int id)

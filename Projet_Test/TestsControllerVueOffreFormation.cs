@@ -9,15 +9,22 @@ using Microsoft.EntityFrameworkCore;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
+using Projet_Test.InMemoryDb;
+using System;
+using AppAfpaBrive.Web.Layers;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Projet_Test
 {
     public class TestsControllerVueOffreFormation
     {
+        private readonly AFPANADbContext db = DbContextMocker.GetAFPANADbContext("test");
+
         [SetUp]
         public void Setup()
         {
+
         }
 
         //[Test]
@@ -52,34 +59,39 @@ namespace Projet_Test
             
         //}
         [Test]
-        public void TestOffreDeFormationBeneficiaireControllerRenvoieView()
+        [TestCase (1,1)]
+        public async Task TestOffreDeFormationBeneficiaireControllerRenvoieView(int id, int? page)
         {
-            DbContextOptionsBuilder<AFPANADbContext> optionsBuilder = new DbContextOptionsBuilder<AFPANADbContext>();
-            string path = Directory.GetCurrentDirectory();
+            //DbContextOptionsBuilder<AFPANADbContext> optionsBuilder = new DbContextOptionsBuilder<AFPANADbContext>();
+            //string path = Directory.GetCurrentDirectory();
 
-            optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
-            AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
-            OffreDeFormationBeneficiaireController controller = new OffreDeFormationBeneficiaireController(contexte);
+            //optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
+            //AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
 
-            var result = controller.OffreDeFormationBeneficiaire();
+            OffreDeFormationBeneficiaireController controller = new OffreDeFormationBeneficiaireController(db);
 
-            Assert.IsInstanceOf<ViewResult>(result);
+            var view = await controller.OffredeFormationBeneficiaire(id, page);
+
+            Assert.IsInstanceOf<ViewResult>(view);
 
         }
         [Test]
-        public void TestOffreDeFormationBeneficiaireControllerRenvoieOffreFormation()
+        [TestCase (1,1)]
+        public async Task TestOffreDeFormationBeneficiaireControllerRenvoieOffreFormation(int id, int page)
         {
-            DbContextOptionsBuilder<AFPANADbContext> optionsBuilder = new DbContextOptionsBuilder<AFPANADbContext>();
-            string path = Directory.GetCurrentDirectory();
+            //DbContextOptionsBuilder<AFPANADbContext> optionsBuilder = new DbContextOptionsBuilder<AFPANADbContext>();
+            //string path = Directory.GetCurrentDirectory();
 
-            optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
-            AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
-            OffreDeFormationBeneficiaireController controller = new OffreDeFormationBeneficiaireController(contexte);
+            //optionsBuilder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;");
+            //AFPANADbContext contexte = new AFPANADbContext(optionsBuilder.Options);
+            OffreDeFormationBeneficiaireController controller = new OffreDeFormationBeneficiaireController(db);
 
-            var result = controller.OffreDeFormationBeneficiaire();
-            ViewResult view = result as ViewResult;
+            var view = await controller.OffredeFormationBeneficiaire(id, page);
+            ViewResult result= view as ViewResult;
 
-            Assert.IsInstanceOf<OffreFormationModelView>(view.Model);
+            Assert.IsInstanceOf<BeneficiaireSpecifiqueModelView>(result.Model);
         }
+        
+       
     }
 }

@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using AppAfpaBrive.DAL;
+using System.Linq;
 
-namespace AppAfpaBrive.DAL.Layer
+namespace AppAfpaBrive.Web.Layer
 {
     public class Layer_Pays
     {
@@ -17,7 +18,7 @@ namespace AppAfpaBrive.DAL.Layer
 
         public string Get_pays_ID(string Libelle)
         {
-            return _db.Pays.Where(x=>x.LibellePays == Libelle).FirstOrDefault().Idpays2;
+            return _db.Pays.Where(x=>x.LibellePays == Libelle).FirstOrDefault().Idpays2; 
         }
     }
 }

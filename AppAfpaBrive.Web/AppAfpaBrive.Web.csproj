@@ -6,13 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repository\**" />
+    <Content Remove="Repository\**" />
+    <EmbeddedResource Remove="Repository\**" />
+    <None Remove="Repository\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.12.3" />
+    <PackageReference Include="DotNetZip" Version="1.15.0" />
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.4">
@@ -25,23 +32,31 @@
     <PackageReference Include="Rotativa.AspNetCore" Version="1.1.1" />
     <PackageReference Include="sib_api_v3_sdk" Version="3.2.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\Stagiaire\" />
-    <Folder Include="Controllers\ExtraireInformationStagiaireController\" />
-    <Folder Include="Data\Documents\" />
-    <Folder Include="ModelesOffice\" />
-    <Folder Include="Views\Formateur\" />
-    <Folder Include="Views\Stagiaire\" />
-    <Folder Include="Models\Layer\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
     <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Formateur\EditerInfosStagiaire-Romgb\" />
+    <Folder Include="Controllers\Stagiaire\" />
+    <Folder Include="Controllers\ExtraireInformationStagiaireController\" />
+    <Folder Include="Data\Documents\" />
+    <Folder Include="Views\Formateur\" />
+    <Folder Include="Views\OffreDeFormationBeneficiaire\" />
+    <Folder Include="Views\Stagiaire\" />
+    <Folder Include="Models\Layer\" />
+    <Folder Include="wwwroot\PeeDocument\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
+    <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
+    <Folder Include="Views\Collaborateur\" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,5 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
-
-using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.ModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,12 +7,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using AppAfpaBrive.Web.Layers;
+using ReflectionIT.Mvc.Paging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+
+    [Authorize(Roles = "CollaborateurAFPA,Administrateur")]
     public class EntrepriseController : Controller
     {
-        private readonly AFPANADbContext _dbContext;
+      
         private readonly EntrepriseLayer _layer;
 
         public EntrepriseController(AFPANADbContext Db)
@@ -22,153 +26,222 @@ namespace AppAfpaBrive.Web.Controllers
             _layer = new EntrepriseLayer(Db);
         }
 
+       
+
+
+        #region ModifierEntreprise
         // GET: EntrepriseController
-        public ActionResult Index()
+
+
+        [HttpGet]
+        public ActionResult ModifierEntreprise(int id)
         {
-            return View();
+
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            var entreprise = _layer.GetEntrepriseById(id);
+            if (entreprise == null)
+            {
+                return NotFound();
+            }
+            EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
+
+            
+            return View(entrepriseModel);
         }
 
-        // GET: EntrepriseController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+       
 
-        // GET: EntrepriseController/Create
-        public ActionResult Create()
+        [HttpPost]
+        public ActionResult ModifierEntreprise(Entreprise entreprise, string Pays)
         {
+            if (ModelState.IsValid)
+            {
+                _layer.ModifierEntreprise(entreprise);
+                return RedirectToAction("ListeEntreprisePourModification");
+            }
+
             return View();
+            
+
+
         }
+        #endregion
+
+
+        #region ListeEntreprise
         // GET: EntrepriseController/ListeEntreprise
         //[HttpGet]
-        //public ActionResult ListeEntreprise()       
-        //{
-        //    //  List<Entreprise> ListEntreprise = _dbContext.Entreprises.ToList();
-        //    IEnumerable<Entreprise> ListEntreprise = _layer.GetAllEntreprise();
-        //    return View(ListEntreprise.ToList());
-        //}
-        // GET: EntrepriseController/ListeEntreprise
-        //[HttpGet]
-        public async Task<IActionResult> ListeEntreprise(string departement, string formation)
+
+        [AllowAnonymous]
+        public ActionResult ListeEntreprise(string departement, string formation, int pageIndex)
         {
-           List<EntrepriseListViewModel> ListentrepriseListViewModel = new List<EntrepriseListViewModel>();
-           
+
+          
+
             ViewData["GetDepartement"] = departement;
             ViewData["GetProduitForm"] = formation;
-            var query = _layer.GetAllEntreprise();
-            //if (!String.IsNullOrEmpty(departement))
-            //{
-            //    query = _layer.GetEntreprisesByDepartement(departement);
-            //}
 
-            if (!String.IsNullOrEmpty(departement)&& (!String.IsNullOrEmpty(formation)))
+            
+
+            var query = _layer.GetAllEntrepriseForPaging(pageIndex);
+
+            if (!String.IsNullOrEmpty(departement) && (!String.IsNullOrEmpty(formation)))
             {
-                query =_layer.GetEntrepriseByDepartementEtOffre(formation, departement);
+               
+                query =  _layer.GetEntrepriseByDepartementEtOffreForPaging(formation,departement, pageIndex);
+
             }
 
-
-            else if (!String.IsNullOrEmpty(departement)&& String.IsNullOrEmpty(formation))
+            else if (!String.IsNullOrEmpty(departement) && String.IsNullOrEmpty(formation))
             {
-                query = _layer.GetEntreprisesByDepartement(departement);
+                
+                 query =_layer.GetEntreprisesByDepartementPaging(departement, pageIndex);
             }
 
+            else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
+            {
 
-            else if (!String.IsNullOrEmpty(formation)&& (String.IsNullOrEmpty(departement)))
-            {
-                query = _layer.GetEntrepriseByProduitFormation(formation);
+                query = _layer.GetEntrepriseByProduitFormationForPaging(formation, pageIndex);
             }
-            foreach (var entreprise in query)
-            {
-                EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel();
-                entrepriseModel.RaisonSociale = entreprise.RaisonSociale;
-                entrepriseModel.Ville = entreprise.Ville;
-                entrepriseModel.TelEntreprise = entreprise.TelEntreprise;
-                entrepriseModel.MailEntreprise = entreprise.MailEntreprise;
-                ListentrepriseListViewModel.Add(entrepriseModel);
-            }
-           
-           
-            return View(ListentrepriseListViewModel);
+
+            //Test pour paging
+
+            // var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
+            // var model = PagingList.Create(qry, 10, page);
+            // return View(model);
+            query.Action = "ListeEntreprise";
+
+            return View(query);         
+
         }
+        #endregion
 
 
+        #region ListeEntrepriseModification
+        public IActionResult ListeEntreprisePourModification(string departement, string formation, int pageIndex)
+        {
+          
+
+            ViewData["GetDepartement"] = departement;
+            ViewData["GetProduitForm"] = formation;
+            var query = _layer.GetAllEntrepriseForPaging(pageIndex);
+
+           
+
+            if (!String.IsNullOrEmpty(departement) && (!String.IsNullOrEmpty(formation)))
+            {
+                query = _layer.GetEntrepriseByDepartementEtOffreForPaging(formation, departement, pageIndex);
+            }
+            else if (!String.IsNullOrEmpty(departement) && String.IsNullOrEmpty(formation))
+            {
+                query = _layer.GetEntreprisesByDepartementPaging(departement, pageIndex);
+            }
+            else if (!String.IsNullOrEmpty(formation) && (String.IsNullOrEmpty(departement)))
+            {
+                query = _layer.GetEntrepriseByProduitFormationForPaging(formation, pageIndex);
+            }
+            //Test pour pagination
+            //var qry = _dbContext.Entreprises.OrderBy(e => e.RaisonSociale);
+            // var model = PagingList.Create(qry, 10, page);
+            // model.Action = "ListeEntreprisePourModification";
+            // return View(model);
+
+
+            //If faut assigner une action à la liste pour les pages differentes de la 1 
+
+            query.Action = "ListeEntreprisePourModification";
+            return View(query);
+
+            
+        }
+        #endregion
+
+
+        #region CreerEntreprise
         // GET: EntrepriseController/creerEntreprise
         [HttpGet]
         public ActionResult CreerEntreprise()
-        {
-            //List<Pay> Liste = _dbContext.Pays.ToList();
-            // ViewBag.MaList = Liste;
+        {       
             return View();
         }
-      
-            
 
+        
         // POST: EntrepriseController/creerEntreprise
         [HttpPost]
-        public ActionResult CreerEntreprise(Entreprise entreprise)
+        public ActionResult CreerEntreprise(EntrepriseListViewModel entrepriseVM, string InputPays)
         {
+            
 
-            _dbContext.Entreprises.Add(entreprise);
-            _dbContext.SaveChanges();
-            return View();
-        }
+            string libellePays = InputPays;
 
+            Entreprise entreprise = new Entreprise();
+            entreprise.CodePostal = entrepriseVM.CodePostal;
+            entreprise.Ligne1Adresse = entrepriseVM.Ligne1Adresse;
+            entreprise.Ligne2Adresse = entrepriseVM.Ligne2Adresse;
+            entreprise.Ligne3Adresse = entrepriseVM.Ligne3Adresse;
+            entreprise.MailEntreprise = entrepriseVM.MailEntreprise;
+            entreprise.NumeroSiret = entrepriseVM.NumeroSiret;
+            entreprise.RaisonSociale = entrepriseVM.RaisonSociale;
+            entreprise.TelEntreprise = entrepriseVM.TelEntreprise;
+            entreprise.Ville = entrepriseVM.Ville;
+            entreprise.Idpays2 = _layer.GetIdPaysByMatriculePays(libellePays);
 
-        // POST: EntrepriseController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _layer.AddEntreprise(entreprise);
+                return RedirectToAction("ListeEntreprisePourModification", "Entreprise");
             }
             catch
             {
                 return View();
             }
         }
+        #endregion
+
+
+        #region SuppressionEntreprise
+        [HttpGet]
+        public ActionResult SuppressionEntreprise(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            var entreprise = _layer.GetEntrepriseById(id);
+            if (entreprise == null)
+            {
+                return NotFound();
+            }
+            EntrepriseListViewModel entrepriseModel = new EntrepriseListViewModel(entreprise);
+            return View(entrepriseModel);
+        }
+
+
+        public ActionResult SupprimerEntreprise(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            _layer.RemoveEntrepriseById(id);
+
+            return RedirectToAction("ListeEntreprisePourModification");
+
+        }
+        #endregion
 
         // GET: EntrepriseController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Details(int id)
         {
-            return View();
+            Entreprise entreprise = _layer.GetEntrepriseById(id);
+            EntrepriseListViewModel entrepriseListViewModel = new EntrepriseListViewModel(entreprise);
+            
+            return View(entrepriseListViewModel);
         }
-
         // POST: EntrepriseController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: EntrepriseController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: EntrepriseController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+      
     }
 }

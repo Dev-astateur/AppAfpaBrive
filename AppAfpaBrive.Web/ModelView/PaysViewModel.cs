@@ -14,15 +14,15 @@ namespace AppAfpaBrive.Web.ModelView
             Entreprises = new HashSet<EntrepriseModelView>();
         }
 
-        public PaysViewModel( Pays pay )
+        public PaysViewModel( Pays pays )
         {
             Entreprises = new HashSet<EntrepriseModelView>();
-            if ( pay is not null )
+            if ( pays is not null )
             {
-                Idpays2 = pay.Idpays2;
-                Idpays3 = pay.Idpays3;
-                IdpaysNum = pay.IdpaysNum;
-                LibellePays = pay.LibellePays;
+                Idpays2 = pays.Idpays2;
+                Idpays3 = pays.Idpays3;
+                IdpaysNum = pays.IdpaysNum;
+                LibellePays = pays.LibellePays;
             }
         }
 

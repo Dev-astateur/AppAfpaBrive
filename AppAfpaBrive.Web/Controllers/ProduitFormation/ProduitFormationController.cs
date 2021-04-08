@@ -12,25 +12,35 @@ using AppAfpaBrive.Web.ModelView;
 using ReflectionIT.Mvc.Paging;
 using Microsoft.AspNetCore.Routing;
 using AppAfpaBrive.Web.Layers;
+using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using AppAfpaBrive.Web.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers.ProduitFormation
 {
+    [Authorize(Roles = "Administrateur")]
     public class ProduitFormationController : Controller
     {
+       
         private readonly AFPANADbContext _db;
-        private readonly ProduitDeFormationLayer _produitDeFormationLayer;
+        private readonly ILogger<ProduitFormationController> _logger;
+        //private readonly ProduitDeFormationLayer _produitDeFormationLayer;
 
-        
-        public ProduitFormationController(AFPANADbContext db)
+        public ProduitFormationController(AFPANADbContext db,ILogger<ProduitFormationController> logger)
         {
             _db = db;
-            _produitDeFormationLayer = new ProduitDeFormationLayer(db);
+            _logger = logger;
         }
 
+
+
         // GET: ProduitFormation
-        public async Task<IActionResult> Index(string filter,int page, string sortExpression="CodeProduitFormation")
+        public async Task<IActionResult> Index(string filter,int pageIndex, string sortExpression="CodeProduitFormation")
         {
-            var model = await _produitDeFormationLayer.GetPage(filter,page, sortExpression);
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
+            var model = await _produitDeFormationLayer.GetPage(filter, pageIndex, sortExpression);
+            model.Action = "Index";
             model.RouteValue = new RouteValueDictionary
             {
                 {"filter", filter }
@@ -55,17 +65,23 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         [ValidateAntiForgeryToken]
         public IActionResult Create(ProduitFormationModelView obj)
         {
-            var x = Request.Form["Formation"].ToString();
-            
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
+            //var x = Request.Form["Formation"].ToString();
+            var check = _produitDeFormationLayer.CheckCodeProduitExiste(obj.CodeProduitFormation);
+            if (check == false)
+            {
+                ModelState.AddModelError("CodeProduitFormation", "Le code produit formation existe deja");
+                return View();
+            }
             if (ModelState.IsValid)
             {
                 //if (x == "0")
                 //{
                 //    obj.FormationContinue = true;
                 //}
-                //else obj.FormationDiplomante = true; 
-                _produitDeFormationLayer.InsertProduit(obj.GetProduitFormation());
-                return RedirectToAction("Index");
+                //else obj.FormationDiplomante = true;
+                  _produitDeFormationLayer.InsertProduit(obj.GetProduitFormation());
+                  return RedirectToAction("Index");  
             }
             return this.View(obj);
             
@@ -74,7 +90,8 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // GET: ProduitFormation/Edit/5
         public IActionResult Edit(int id)
         {
-            if(id == 0)
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -91,14 +108,12 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         [ValidateAntiForgeryToken]
         public IActionResult Edit(ProduitFormationModelView obj)
         {
-            var x = Request.Form["Formation"].ToString();
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
+            
+
             if (ModelState.IsValid)
-            {
-                //if (x == "0")
-                //{
-                //    obj.FormationContinue = true;
-                //}
-                //else obj.FormationDiplomante = true;
+            {  
+                _logger.LogInformation( 2, "Update d'un produit de formation");
                 _produitDeFormationLayer.Update(obj.GetProduitFormation());
                 return RedirectToAction("Index");
             }
@@ -108,6 +123,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         // GET: ProduitFormation/Delete/5
         public IActionResult Delete(int? id)
         {
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
             if (id == null || id == 0)
             {
                 return NotFound();
@@ -125,6 +141,7 @@ namespace AppAfpaBrive.Web.Controllers.ProduitFormation
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
+            ProduitDeFormationLayer _produitDeFormationLayer = new ProduitDeFormationLayer(_db);
             ProduitFormationModelView obj = _produitDeFormationLayer.GetByCodeProduitFormation(id);
             if (obj == null)
             {

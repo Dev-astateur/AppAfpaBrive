@@ -18,7 +18,7 @@
             </a>
         </div>
         <form method="get" class="form-inline">
-            <input name="filter" class="form-control" placeholder="filtre" value="@Model.RouteValue["filter"]"/>
+            <input name="filter" class="form-control" placeholder="Filtre (libélle produit de formation)" value="@Model.RouteValue["filter"]"/>
             @*<button type="submit" class="btn btn-info">
                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
             </button>*@
@@ -65,10 +65,10 @@
                         <td>
                             <div class="w-75 btn-group" role="group">
                                 <a asp-controller="ProduitFormation" asp-route-Id="@obj.CodeProduitFormation" asp-action="Edit" class="btn btn-primary">
-                                    <i class="fas fa-edit"></i> Modifier
+                                     Modifier
                                 </a>
                                 <a asp-controller="ProduitFormation" asp-route-Id="@obj.CodeProduitFormation" asp-action="Delete" class="btn btn-danger">
-                                    <i class="fas fa-trash"></i> Supprimer
+                                    Supprimer
                                 </a>
                             </div>
                         </td>

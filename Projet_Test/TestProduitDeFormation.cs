@@ -11,12 +11,18 @@ using Microsoft.EntityFrameworkCore;
 using AppAfpaBrive.Web.Controllers.ProduitFormation;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
+using Projet_Test.InMemoryDb;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace Projet_Test
 {
     [TestFixture]
     public class TestProduitDeFormation
     {
+        private readonly AFPANADbContext db = DbContextMocker.GetAFPANADbContext("AFPANA");
+        private readonly ILogger<ProduitFormationController> _logger = Mock.Of<ILogger<ProduitFormationController>>();
+
         [Test]
         public void LibelleCourtFormationTropLong()
         {
@@ -113,8 +119,7 @@ namespace Projet_Test
             DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
             builder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;", assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName));
 
-
-            ProduitFormationController controleur = new ProduitFormationController(new AFPANADbContext(builder.Options));
+            ProduitFormationController controleur = new ProduitFormationController(db,_logger);
             var view = await controleur.Index("concepteur",1, "CodeProduitFormation");
 
             Assert.IsInstanceOf<ViewResult>(view);
@@ -127,23 +132,87 @@ namespace Projet_Test
             DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
             builder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;", assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName));
 
-            ProduitFormationController controleur = new ProduitFormationController(new AFPANADbContext(builder.Options));
+
+            //or use this short equivalent 
+
+            ProduitFormationController controleur = new ProduitFormationController(db,_logger);
             var view = controleur.Edit(id);
             Assert.IsInstanceOf<ViewResult>(view);
         }
 
-        //[Test]
-        //[TestCase(6)]
-        //public void TestViewDeleteValide(int id)
-        //{
-        //    DbContextOptionsBuilder<AFPANADbContext> builder = new DbContextOptionsBuilder<AFPANADbContext>();
-        //    builder.UseSqlServer("data source=localhost;initial catalog=AFPANA;integrated security=True;", assembly => assembly.MigrationsAssembly(typeof(AFPANADbContext).Assembly.FullName));
+        [Test]
+        
+        public void TestMethodeDeleteValide()
+        {
 
-        //    ProduitFormationController controleur = new ProduitFormationController(new AFPANADbContext(builder.Options));
-        //    var view = controleur.Delete(id);
-        //    Assert.IsInstanceOf<ViewResult>(view);
-        //}
+            var produitformation = new ProduitFormation
+            {
+                CodeProduitFormation = 7,
+                NiveauFormation = "3",
+                LibelleCourtFormation = "abc",
+                LibelleProduitFormation = "dkazkdakanfpoakfjha"
+            };
+            db.ProduitFormations.Add(produitformation);
 
+            db.SaveChanges();
+            db.Entry<ProduitFormation>(produitformation).State =EntityState.Detached;
 
+            ProduitFormationController controleur = new ProduitFormationController(db,_logger);
+            var view = controleur.Delete(7);
+            
+            var result = db.ProduitFormations.Where(x=> x.CodeProduitFormation==7);
+            Assert.IsTrue(result.Count()==0);
+        }
+
+        [Test]
+        public void TestMethodeCreateValide()
+        {
+            var produitformation = new ProduitFormationModelView
+            {
+                CodeProduitFormation = 7,
+                NiveauFormation = "3",
+                LibelleCourtFormation = "abc",
+                LibelleProduitFormation = "dkazkdakanfpoakfjha"
+            };
+            var item = produitformation.GetProduitFormation();
+           
+            db.Entry<ProduitFormation>(item).State = EntityState.Detached;
+
+            ProduitFormationController controleur = new ProduitFormationController(db,_logger);
+
+            var view = controleur.Create(produitformation);
+
+            var result = db.ProduitFormations.Where(x => x.CodeProduitFormation == 7);
+            Assert.IsTrue(result.Count() == 1);
+        }
+        
+        [Test]
+        public void NiveauFormationTropLong()
+        {
+            var produitformation = new ProduitFormationModelView
+            {
+                CodeProduitFormation = 7,
+                NiveauFormation = "345687",
+                LibelleCourtFormation = "abc",
+                LibelleProduitFormation = "dkazkdakanfpoakfjha"
+            };
+           Assert.IsTrue(ValidationService.ValidateModel(produitformation).Any(va =>
+           va.MemberNames.Contains("NiveauFormation")
+           && va.ErrorMessage.Contains("Le Niveau de Formation ne peut pas etre plus long que 5 caracteres")));
+        }
+        [Test]
+        public void NiveauFormationValide()
+        {
+            var produitformation = new ProduitFormationModelView
+            {
+                CodeProduitFormation = 7,
+                NiveauFormation = "3",
+                LibelleCourtFormation = "abc",
+                LibelleProduitFormation = "dkazkdakanfpoakfjha"
+            };
+            Assert.IsFalse(ValidationService.ValidateModel(produitformation).Any(va =>
+            va.MemberNames.Contains("NiveauFormation")
+            && va.ErrorMessage.Contains("Le Niveau de Formation ne peut pas etre plus long que 5 caracteres")));
+        }
     }
 }

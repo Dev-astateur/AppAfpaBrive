@@ -1,0 +1,80 @@
+﻿@model AppAfpaBrive.BOL.Etablissement
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Supprimer</h1>
+
+<h3>Etes vous sur de vouloir supprimer cet établissement ?</h3>
+<div>
+    <h4>Etablissement</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdEtablissement)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdEtablissement)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdEtablissementRattachement)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdEtablissementRattachement)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NomEtablissement)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NomEtablissement)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MailEtablissement)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MailEtablissement)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TelEtablissement)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TelEtablissement)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ligne1Adresse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ligne1Adresse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ligne2Adresse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ligne2Adresse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ligne3Adresse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ligne3Adresse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CodePostal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CodePostal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ville)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ville)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Retour</a>
+    </form>
+</div>

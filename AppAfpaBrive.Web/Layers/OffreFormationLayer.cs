@@ -1,9 +1,11 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Layers
 {
@@ -21,9 +23,9 @@ namespace AppAfpaBrive.Web.Layers
             return _context.OffreFormations.ToList();
         }
 
-        public List<OffreFormation> GetOffreFormationByContains(string query)
+        public async Task<List<OffreFormation>> GetOffreFormationByContainsAsync(string query)
         {
-            return _context.OffreFormations.Where(x => x.LibelleOffreFormation.Contains(query)).ToList();
+            return await _context.OffreFormations.Where(x => x.LibelleOffreFormation.Contains(query)).ToListAsync();
         }
 
         public List<OffreFormation>  GetOffreFormationStartsWith(string query)

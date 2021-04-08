@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppAfpaBrive.BOL\AppAfpaBrive.BOL.csproj" />
+    <ProjectReference Include="..\AppAfpaBrive.DAL\AppAfpaBrive.DAL.csproj" />
+    <ProjectReference Include="..\AppAfpaBrive.Web\AppAfpaBrive.Web.csproj" />
+  </ItemGroup>
+
+</Project>

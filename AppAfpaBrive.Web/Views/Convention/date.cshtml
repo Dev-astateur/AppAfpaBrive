@@ -4,13 +4,8 @@
 
 <form method="post">
     <div class="row pt-4">
-        <div class="col-6">
-            <h2 class="text-primary">Category List</h2>
-        </div>
-        <div class="col-6 text-right">
-            <a asp-controller="Convention" asp-action="date_create" class="btn btn-primary">
-                Ajouter de nouvelles dates
-            </a>
+        <div>
+            <h2 class="text-primary">Liste de vos dates de stage:</h2>
         </div>
     </div>
 
@@ -33,23 +28,23 @@
                 @foreach (var obj in Model)
                 {
                     <tr id="ligne">
-                        <td width="50%">@obj.Date1</td>
-                        <td width="30%">@obj.Date2</td>
+                        <td width="50%">@obj.Date1.ToString("yyyy-MM-dd")</td>
+                        <td width="30%">@obj.Date2.ToString("yyyy-MM-dd")</td>
                         <td>
                             <div class="w-75 btn-group" role="group">
-                                @*<a asp-controller="Convention" asp-route-Id="@obj.Iddate" asp-action="date_delete" class="btn btn-danger">
-                                        Supprimer
-                                    </a>*@
-                                <input type="submit" asp-for="@obj.Iddate" value="Supprimer" />
+                                <a asp-controller="Convention" asp-route-Id="@obj.Iddate" asp-action="date_delete" class="btn btn-danger">
+                                    Supprimer
+                                </a>
+                                @* <input type="submit" asp-for="@obj.Iddate" value="Supprimer" />*@
                             </div>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        <div class="text-right">
-            <a asp-controller="Convention" asp-action="Recapitulatif" class="btn btn-primary">
-                Suivant
+        <div class="text-center m-2">
+            <a asp-controller="Convention" asp-action="Recapitulatif" class="btn btn-success">
+                Continuer
             </a>
         </div>
     }
@@ -57,11 +52,16 @@
     {
         <p> Vous n'avez pas de dates de stages.</p>
     }
-    <div class="col-6 text-right">
-        <a asp-controller="Convention" asp-action="entreprise" class="btn btn-primary">
-            Retour à la selection d'entreprise
-        </a>
 
+    <div class="text-center m-2">
+        <a asp-controller="Convention" asp-action="date_create" class="btn btn-secondary">
+            Ajouter de nouvelles dates
+        </a>
+    </div>
+    <div class="text-center m-2">
+        <a asp-controller="Convention" asp-action="Entreprise_Recap" class="btn btn-primary">
+            Retour
+        </a>
     </div>
 </form>
 

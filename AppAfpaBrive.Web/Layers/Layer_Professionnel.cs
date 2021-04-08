@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.DAL.Layer
+namespace AppAfpaBrive.Web.Layers
 {
     public class Layer_Professionnel
     {
@@ -33,8 +34,16 @@ namespace AppAfpaBrive.DAL.Layer
 
         public void create(Professionnel pro)
         {
+            //_db.Entry<Professionnel>(pro).State = Microsoft.EntityFrameworkCore.EntityState.Added;
             _db.Add(pro);
             _db.SaveChanges();
+        }
+
+        public int create_get_ID(Professionnel pro)
+        {
+            _db.Add(pro);
+            _db.SaveChanges();
+            return pro.IdProfessionnel;
         }
 
         public int Get_Id_pro(string nom , string prenom)
@@ -46,6 +55,16 @@ namespace AppAfpaBrive.DAL.Layer
         {
             return _db.Professionnels.Where(x => x.IdProfessionnel == ID).FirstOrDefault();
         }
+
+        public string Get_Nom_Pro(int ID)
+        {
+            return _db.Professionnels.Where(x => x.IdProfessionnel == ID).Select(x => x.NomProfessionnel).FirstOrDefault();
+        }
+        public string Get_Prenom_Pro(int ID)
+        {
+            return _db.Professionnels.Where(x => x.IdProfessionnel == ID).Select(x => x.PrenomProfessionnel).FirstOrDefault();
+        }
+
     }
 
 }

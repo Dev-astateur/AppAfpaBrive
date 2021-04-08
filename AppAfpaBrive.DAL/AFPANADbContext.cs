@@ -11,7 +11,7 @@ namespace AppAfpaBrive.DAL
     {
         public AFPANADbContext()
         {
-           ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+           //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public AFPANADbContext(DbContextOptions<AFPANADbContext> options)
@@ -39,6 +39,7 @@ namespace AppAfpaBrive.DAL
         public virtual DbSet<OffreFormation> OffreFormations { get; set; }
         public virtual DbSet<Pays> Pays { get; set; }
         public virtual DbSet<Pee> Pees { get; set; }
+        public virtual DbSet<PeeDocument> PeeDocuments { get; set; }
         public virtual DbSet<PeriodePee> PeriodePees { get; set; }
         public virtual DbSet<PeriodePeeEvenement> PeriodePeeEvenements { get; set; }
         public virtual DbSet<PlanificationCampagneMail> PlanificationCampagneMails { get; set; }
@@ -178,7 +179,7 @@ namespace AppAfpaBrive.DAL
         });
             modelBuilder.Entity<InsertionsTroisMois>(entity =>
             {
-                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.Annee });
+                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.EnLienAvecFormation, e.Annee });
                 entity.ToTable("InsertionsTroisMois");
                 entity.Property(e => e.IdEtablissement)
                 .HasMaxLength(5)
@@ -194,7 +195,7 @@ namespace AppAfpaBrive.DAL
 
             modelBuilder.Entity<InsertionsSixMois>(entity =>
             {
-                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.Annee });
+                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.EnLienAvecFormation, e.Annee });
                 entity.ToTable("InsertionsSixMois");
                 entity.Property(e => e.IdEtablissement)
                 .HasMaxLength(5)
@@ -210,7 +211,7 @@ namespace AppAfpaBrive.DAL
 
             modelBuilder.Entity<InsertionsDouzeMois>(entity =>
             {
-                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.Annee });
+                entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.EnLienAvecFormation, e.Annee });
                 entity.ToTable("InsertionsDouzeMois");
                 entity.Property(e => e.IdEtablissement)
                 .HasMaxLength(5)
@@ -468,6 +469,8 @@ namespace AppAfpaBrive.DAL
                 entity.Property(e => e.DateRelance1).HasColumnType("date");
 
                 entity.Property(e => e.DateRelance2).HasColumnType("date");
+
+                entity.Property(e => e.Repondu).HasDefaultValue(false);
 
                 entity.Property(e => e.IdEtablissement)
                     .HasMaxLength(10)
@@ -871,6 +874,27 @@ namespace AppAfpaBrive.DAL
                     .HasConstraintName("FK_Pee_OffreFormation");
             });
 
+            modelBuilder.Entity<PeeDocument>(entity =>
+            {
+                entity.HasKey(e => new { e.IdPee, e.NumOrdre });
+
+                entity.ToTable("Pee_Document");
+
+                entity.Property(e => e.IdPee)
+                    .HasColumnType("numeric(18, 0)");
+
+                entity.Property(e => e.PathDocument)
+                    .IsRequired()
+                    .HasMaxLength(2048)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.idPeeNavigation)
+                    .WithMany(p => p.PeeDocument)
+                    .HasForeignKey(d => d.IdPee)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Pee_Document_Pee");
+            });
+
             modelBuilder.Entity<PeriodePee>(entity =>
             {
                 entity.HasKey(e => new { e.IdPee, e.NumOrdre })
@@ -987,6 +1011,12 @@ namespace AppAfpaBrive.DAL
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.TitreCiviliteNavigation)
+                   .WithMany(p => p.Professionnels)
+                   .HasForeignKey(d => d.CodeTitreCiviliteProfessionnel)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("CodeTitreCiviliteProfessionnel");
             });
 
             modelBuilder.Entity<Rome>(entity =>

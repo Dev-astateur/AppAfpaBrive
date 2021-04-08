@@ -19,13 +19,13 @@ namespace AppAfpaBrive.Web.Controllers
             _config = config;
         }
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         { 
             return View(new ViewModels.IntegrationExcelOffre.IntegrationExcelOffreCreate());
         }
         [HttpPost]
    
-        public async Task<IActionResult> Create([Bind("CodeProduitFormation,MatriculeCollaborateurAfpa,PathFileIntegration")] IntegrationExcelOffreCreate integrationExcelOffreCreate)
+        public IActionResult Create([Bind("CodeProduitFormation,MatriculeCollaborateurAfpa,PathFileIntegration")] IntegrationExcelOffreCreate integrationExcelOffreCreate)
         {
             Utilitaires.IntegrationExcelOffre integration = new Utilitaires.IntegrationExcelOffre(_config,_context);
     

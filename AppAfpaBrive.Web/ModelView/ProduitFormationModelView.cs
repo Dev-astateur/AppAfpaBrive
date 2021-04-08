@@ -20,7 +20,7 @@ namespace AppAfpaBrive.Web.ModelView
         [Key]
         [Required(AllowEmptyStrings = false, ErrorMessage ="Le code produit formation est requis")]
         public int CodeProduitFormation { get; set; }
-
+        [StringLength(5, ErrorMessage = "Le Niveau de Formation ne peut pas etre plus long que 5 caracteres")]
         public string NiveauFormation { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage ="Le libelle du produit de formation est requis")]

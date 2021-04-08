@@ -1,8 +1,9 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Votre profil";
     ViewData["ActivePage"] = ManageNavPages.Index;
+    Layout = "~/Views/Shared/_Afpa_Layout.cshtml";
 }
 
 <h4>@ViewData["Title"]</h4>
@@ -20,7 +21,29 @@
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+            <div class="form-group">
+                <label asp-for="Input.Prenom"></label>
+                <input asp-for="Input.Prenom" class="form-control" />
+                <span asp-validation-for="Input.Prenom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Nom"></label>
+                <input asp-for="Input.Nom" class="form-control" />
+                <span asp-validation-for="Input.Nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.DateNaissance"></label>
+                <input asp-for="Input.DateNaissance" class="form-control" />
+                <span asp-validation-for="Input.DateNaissance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Theme"></label>
+
+                @Html.DropDownListFor(t => t.Input.Theme,
+           Model.Input.ListeThemes,
+            "Sélectionnez votre thème", new { @class = "form-control" })
+            </div>
+            <button id="update-profile-button" type="submit" class="btn btn-primary">Enregistrer</button>
         </form>
     </div>
 </div>

@@ -1,0 +1,74 @@
+﻿@model AppAfpaBrive.BOL.CollaborateurAfpa
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Supprimer</h1>
+
+<h3>Etes vous sur de vouloir supprimer ce collaborateur ?</h3>
+<div>
+    <h4>CollaborateurAfpa</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MatriculeCollaborateurAfpa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MatriculeCollaborateurAfpa)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdEtablissement)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdEtablissement)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CodeTitreCivilite)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CodeTitreCivilite)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NomCollaborateur)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NomCollaborateur)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PrenomCollaborateur)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PrenomCollaborateur)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MailCollaborateurAfpa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MailCollaborateurAfpa)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TelCollaborateurAfpa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TelCollaborateurAfpa)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Uo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Uo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteCollaborateur">
+        <input type="submit" value="Delete" class="btn btn-danger"/> |
+        <a asp-action="Index">Retour</a>
+    </form>
+</div>

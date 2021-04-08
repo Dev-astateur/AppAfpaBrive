@@ -1,8 +1,11 @@
-﻿using System;
+﻿using AppAfpaBrive.DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
+
 
 namespace AppAfpaBrive.Web.CustomValidator
 {
@@ -12,10 +15,15 @@ namespace AppAfpaBrive.Web.CustomValidator
 
         protected override ValidationResult IsValid(object value, ValidationContext context)
         {
+            if(value == null)
+            {
+                return new ValidationResult(ErrorMessage);
+            }
             string siret = value.ToString();
             siret = String.Concat(siret.Where(c => !Char.IsWhiteSpace(c)));
             int total = 0;
-            if (siret.StartsWith("356000000"))
+            // Poste cas particulier
+            if(siret.StartsWith("356000000"))
             {
                 for (int i = 0; i < siret.Length; i++)
                 {
@@ -23,7 +31,7 @@ namespace AppAfpaBrive.Web.CustomValidator
                     int x = (int)char.GetNumericValue(y);
                     total += x;
                 }
-                if (total % 5 == 0)
+                if (total%5 == 0)
                 {
                     return ValidationResult.Success;
                 }
@@ -58,8 +66,24 @@ namespace AppAfpaBrive.Web.CustomValidator
                 }
                 return new ValidationResult(ErrorMessage);
             }
-
+            
         }
-
     }
+
+    public class CustomValidator_Pays : ValidationAttribute
+    {
+
+        protected override ValidationResult IsValid(object value, ValidationContext context)
+        {
+            AFPANADbContext _db = new AFPANADbContext();
+            string libelle = value.ToString();
+            var pays = _db.Pays.Where(x => x.LibellePays == libelle).Select(x=>x.Idpays2).FirstOrDefault();
+            if(pays == null)
+            {
+                return new ValidationResult(ErrorMessage);
+            }
+            return ValidationResult.Success;
+        }
+    }
+
 }

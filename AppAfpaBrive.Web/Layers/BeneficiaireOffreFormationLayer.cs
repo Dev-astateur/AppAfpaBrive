@@ -1,6 +1,12 @@
-﻿using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
+using DocumentFormat.OpenXml.Packaging;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using OpenXmlHelpers.Word;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -9,10 +15,12 @@ namespace AppAfpaBrive.Web.Layers
     public class BeneficiaireOffreFormationLayer
     {
         private readonly AFPANADbContext _context;
+        
         #region Constructeur
         public BeneficiaireOffreFormationLayer(AFPANADbContext context)
         {
             this._context = context;
+            
         }
         #endregion
         #region Methode publique
@@ -25,6 +33,7 @@ namespace AppAfpaBrive.Web.Layers
             return _context.BeneficiaireOffreFormations.ToList();
         }
         #endregion
+       
     }
 
 }

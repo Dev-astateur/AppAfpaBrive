@@ -1,16 +1,20 @@
 ﻿using AppAfpaBrive.DAL;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AutoCompleteOffreFormationApiController : ControllerBase
     {
-        private AFPANADbContext _db;
+        private readonly AFPANADbContext _db;
 
         public AutoCompleteOffreFormationApiController(AFPANADbContext db)
         {
@@ -19,7 +23,7 @@ namespace AppAfpaBrive.Web.Controllers
 
         [Produces("application/json")]
         [HttpGet("search")]
-        public async Task<IActionResult> Search()
+        public IActionResult Search()
         {
             try
             {
@@ -34,7 +38,7 @@ namespace AppAfpaBrive.Web.Controllers
         }
         [Produces("application/json")]
         [HttpGet("searchPays")]
-        public async Task<IActionResult> SearchPays()
+        public IActionResult SearchPays()
         {
             try
             {

@@ -1,5 +1,4 @@
-﻿
-using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers.Formateur
 {
@@ -22,10 +20,10 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
             
         } 
         // GET: StagiaireParOffredeFormationController
-        public ActionResult ListeStagiaireParOffreFormation()
+        public ActionResult ListeStagiaireParOffreFormation(int id)
         {
             this.ViewBag.MonTitre = "Liste Stagiaire Par OffreDeFormation";
-          var query =_beneficiaireLayer.GetAllByOffredeFormation();
+          var query =_beneficiaireLayer.GetAllByOffredeFormation(id);
             
             return View(query);
         }

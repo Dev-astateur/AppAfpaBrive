@@ -30,6 +30,7 @@ namespace AppAfpaBrive.Web.ModelView
         [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
         public string Ville { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
+        [CustomValidator_Pays(ErrorMessage ="Veuillez selectionnez un pays valide.")]
         public string Idpays2 { get; set; }
 
         public virtual Pays Idpays2Navigation { get; set; }

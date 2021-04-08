@@ -13,13 +13,11 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
     [ApiController]
     public class OffreFormationApiController : Controller
     {
-
-        private AFPANADbContext db = new AFPANADbContext();
-
+        private readonly AFPANADbContext db = new AFPANADbContext();
 
         [Produces("application/json")]
         [HttpGet("getOffre")]
-        public async Task<IActionResult> GetOffre()
+        public IActionResult GetOffre()
         {
             try
             {

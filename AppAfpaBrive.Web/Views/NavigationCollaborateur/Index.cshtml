@@ -1,0 +1,125 @@
+﻿@model AppAfpaBrive.Web.ModelView.CollaborateurNavigationModelView
+
+@{
+    ViewData["Title"] = "Menu Collaborateur";
+}
+<div class="alert alert-primary" role="alert">
+    <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Votre profil">
+        <div class="row">
+            <div class="col-6">
+                <p class="text-left">@Model.ToString()</p>
+            </div>
+            <div class="col-6">
+                <p class="text-right">@Html.DisplayNameFor(e => e.MatriculeCollaborateurAfpa) : @Model.MatriculeCollaborateurAfpa</p>
+            </div>
+        </div>
+    </a>
+</div>
+<div class="container">
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h3 class="display-4">Administration</h3>
+            <p class="lead">
+                @if (User.IsInRole("Administrateur"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0 text-primary">Produit de formation</h5>
+                            <div class="row">
+                                <div class="col-sm-10">Liste des produits de formations, possibilités de modifier, créer.</div>
+                                <div class="col-sm-2"><a asp-controller="ProduitFormation" asp-action="Index" class="w-100 btn btn-primary">Produit de formation</a></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (User.IsInRole("Administrateur"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0 text-primary">Etablissements</h5>
+                            <div class="row">
+                                <div class="col-sm-10">Listes des établissements, possibilités de modifier, créer.</div>
+                                <div class="col-sm-2"><a asp-controller="Etablissement" asp-action="Index" class="w-100 btn btn-primary">Etablissement</a></div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0 text-primary">Collaborateur Afpa</h5>
+                            <div class="row">
+                                <div class="col-sm-10">Liste des collaborateurs, possibilités de modifier.</div>
+                                <div class="col-sm-2"><a asp-controller="CollaborateurAfpa" asp-action="Index" class="w-100 btn btn-primary">Collaborateur</a></div>
+                            </div>
+                        </div>        
+                    </div>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0 text-primary">Entreprise</h5>
+                            <div class="row">
+                                <div class="col-sm-10">Liste des entreprises, possibilités de modifier, créer.</div>
+                                <div class="col-sm-2"><a asp-controller="Entreprise" asp-action="ListeEntreprisePourModification" class="w-100 btn btn-primary">Entreprise</a></div>
+                            </div>
+                        </div> 
+                    </div>
+                }
+</p>
+        </div>
+        @if (User.IsInRole("Formateur"))
+        {
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">Période en entreprise</h1>
+                    <p class="lead">
+                        @if (User.IsInRole("Formateur"))
+                        {
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mt-0 text-primary">Validation de la Pee</h5>
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            Validation de la période en entreprise, saisie par le bénéficiaire.
+                                            Un courriel est automatiquement envoyé au futur stagiaire même si la réponse est négative.
+                                        </div>
+                                        <div class="col-sm-2"><a asp-controller="Pee" asp-action="ListePeeAValider" class="w-100 btn btn-primary">Validation</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (User.IsInRole("Formateur"))
+                        {
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mt-0 text-primary">Impression et suivie de la période en entreprise</h5>
+                                    <div class="row">
+                                        <div class="col-sm-10">Impression et suivie de la période en entreprise. Vous avez toutes les impressions de la convention de stage.</div>
+                                        <div class="col-sm-2"><a asp-controller="Pee" asp-action="Index" class="w-100 btn btn-primary">Impression & Suivie</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @if (User.IsInRole("Formateur"))
+                        {
+                            <div class="media">
+                                <div class="media-body">
+                                    <h5 class="mt-0 text-primary">Liste des bénéficiaires</h5>
+                                    <div class="row">
+                                        <div class="col-sm-10">Affiche les stagiaires par offre de formation.</div>
+                                        <div class="col-sm-2"><a asp-controller="OffreDeFormationBeneficiaire" asp-action="OffredeFormationBeneficiaire" class="w-100 btn btn-primary">Bénéficiaire</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

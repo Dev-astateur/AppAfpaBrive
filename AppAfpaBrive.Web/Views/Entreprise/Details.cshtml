@@ -1,0 +1,78 @@
+﻿@model AppAfpaBrive.Web.ModelView.EntrepriseListViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2 class="text-primary">Details</h2>
+
+<div>
+    <h4>Entreprise</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RaisonSociale)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RaisonSociale)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumeroSiret)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumeroSiret)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MailEntreprise)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MailEntreprise)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TelEntreprise)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TelEntreprise)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ligne1Adresse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ligne1Adresse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ligne2Adresse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ligne2Adresse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ligne3Adresse)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ligne3Adresse)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CodePostal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CodePostal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ville)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ville)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Idpays2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Idpays2)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="ModifierEntreprise" asp-route-id="@Model.IdEntreprise" class="btn-primary">Modifier</a> |
+    <a asp-action="ListeEntreprisePourModification">Retour à la liste de modification</a>
+</div>

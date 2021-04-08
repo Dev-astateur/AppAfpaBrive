@@ -1,11 +1,12 @@
-﻿@model AppAfpaBrive.BOL.Entreprise
+﻿  @model AppAfpaBrive.Web.ModelView.EntrepriseListViewModel
 
 @{
-    ViewData["Title"] = "CreerEntreprise";
-    List<AppAfpaBrive.BOL.Pays> ListeDePays = ViewBag.MaList;
-    var listeItemPays = ListeDePays.Select(p => new SelectListItem() { Text = p.LibellePays, Value = p.Idpays2});
-}
+    ViewData["Title"] = "Creer une entreprise";
+    //List<AppAfpaBrive.BOL.Pays> ListeDePays = ViewBag.MaList;
+    //var listeItemPays = ListeDePays.Select(p => new SelectListItem() { Text = p.LibellePays, Value = p.Idpays2 });
 
+}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <h1>CreerEntreprise</h1>
 
 <h4>Entreprise</h4>
@@ -60,22 +61,36 @@
                 <span asp-validation-for="Ville" class="text-danger"></span>
             </div>
             <div class="form-group">
-
-                <label asp-for="Idpays2" class="control-label"></label>
-                <select asp-for="Idpays2" class ="form-control" asp-items="listeItemPays.ToList()">
-                </select>
+                <label class="control-label">Pays</label>
+                <input  class="form-control" name="InputPays" id="InputPays" />
+                <span asp-validation-for="Idpays2" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Creer" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="ListeEntreprisePourModification">Retour à la liste de modification</a>
 </div>
 
 @section Scripts {
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#InputPays').autocomplete({
+                source: '/api/AutoCompleteOffreFormationApi/searchPays'
+            });
+        });
+    </script>
+
+
+
 }

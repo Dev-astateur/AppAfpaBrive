@@ -1,36 +1,45 @@
-﻿@model AppAfpaBrive.BOL.Pee
+﻿@model ReflectionIT.Mvc.Paging.PagingList<AppAfpaBrive.Web.ModelView.ValidationPee.ListePeeAValiderModelView>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *,ReflectionIT.Mvc.Paging
 
-<h4>Pee</h4>
+<h2 class="text-primary">Liste des périodes en entreprise à valider</h2>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="AfficheBeneficiairePee" >
-            
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="IdPee" />
+<div class="container">
+    @if (Model.Count > 0)
+     {
+        <nav aria-label="">
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+        </nav>
 
-                <div class="form-group">
-                    <label asp-for="IdOffreFormation" class="control-label"></label>
-                    <input asp-for="IdOffreFormation" class="form-control" id="IdOffreFormation" >
-                    <span asp-validation-for="IdOffreFormation" class="text-danger"></span>
+        <div class="row">
+            <div class="col-md-4">
+                @Html.DisplayNameFor(model => model.NomBeneficiaire)
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayNameFor(model => model.PrenomBeneficiaire)
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayNameFor(model => model.RaisonSociale)
+            </div>
+        </div>
+        @foreach (var item in Model)
+        {
+            <a asp-action="PeeEntrepriseValidation" asp-route-id="@item.IdPee">
+                <div class="row">
+                    <div class="col-md-4">
+                        @Html.DisplayFor(model => item.NomBeneficiaire)
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DisplayFor(model => item.PrenomBeneficiaire)
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DisplayFor(model => item.RaisonSociale)
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="IdEtablissement" class="control-label"></label>
-                    <input asp-for="IdEtablissement" class="form-control" id="IdEtablissement" >
-                    <span asp-validation-for="IdEtablissement" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                   
-
-                    <input type="submit" value="Recherche" class="btn btn-primary" />
-
-                </div>
-          
-        </form>
-    </div>
+            </a>
+        }
+        <nav aria-label="">
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model })
+        </nav>
+    }
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
