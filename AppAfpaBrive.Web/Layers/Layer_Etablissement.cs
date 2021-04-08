@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using AppAfpaBrive.BOL;
 using System.Linq;
+using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.DAL.Layer
+namespace AppAfpaBrive.Web.Layers
 {
     public class Layer_Etablissement
     {
@@ -17,6 +18,9 @@ namespace AppAfpaBrive.DAL.Layer
             return _db.Etablissements.Where(x=>x.IdEtablissement == Id).ToList();
         }
 
-        
+        public string Get_Etablissement_Nom_Etablissement(string ID)
+        {
+            return _db.Etablissements.Where(x => x.IdEtablissement == ID).FirstOrDefault().NomEtablissement;
+        }
     }
 }

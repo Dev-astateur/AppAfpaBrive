@@ -14,7 +14,6 @@ using AppAfpaBrive.Web.ModelView;
 using DocumentFormat.OpenXml;
 using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.Utilitaires;
-using AppAfpaBrive.Web.Layer;
 using System.IO;
 using static AppAfpaBrive.Web.Layers.PeeLayer;
 using Microsoft.EntityFrameworkCore;
@@ -97,7 +96,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             convention.Formation = _Produit_Formation.Get_Formation_Nom(id).FirstOrDefault();
             convention.IdFormation = id;
             convention.IdEtablissement = _beneficiaireOffre.GetIdetablissemnt_Id_Etablissement(convention.Idmatricule, id);
-            convention.Etablissement = _Etablissement.Get_Etablissement_Nom(convention.IdEtablissement);
+            convention.Etablissement = _Etablissement.Get_Etablissement_Nom_Etablissement(convention.IdEtablissement);
             var obj = JsonConvert.SerializeObject(convention);
             HttpContext.Session.SetString("convention", obj);
             return View();

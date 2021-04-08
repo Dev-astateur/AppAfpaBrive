@@ -1,7 +1,7 @@
 ﻿using AppAfpaBrive.DAL;
 using System.Linq;
 
-namespace AppAfpaBrive.Web.Layer
+namespace AppAfpaBrive.Web.Layers
 {
     public class Layer_Pays
     {

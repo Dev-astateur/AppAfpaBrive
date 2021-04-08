@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using AppAfpaBrive.BOL;
 using System.Linq;
+using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.DAL.Layers
+namespace AppAfpaBrive.Web.Layers
 {
     public class Layer_DestinataireEnquete
     {

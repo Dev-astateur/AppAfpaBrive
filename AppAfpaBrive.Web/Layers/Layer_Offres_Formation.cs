@@ -3,7 +3,7 @@ using AppAfpaBrive.BOL;
 using System.Linq;
 using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.Web.Layer
+namespace AppAfpaBrive.Web.Layers
 {
     public class Layer_Offres_Formation
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AppAfpaBrive.BOL;
 using AppAfpaBrive.Web.Layers.StatsLayer;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Helpers.GraphicsDataHelpers
 {

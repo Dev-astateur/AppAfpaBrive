@@ -6,11 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using AppAfpaBrive.BOL;
-using AppAfpaBrive.BOL;
-using AppAfpaBrive.BOL;
-using AppAfpaBrive.BOL;
-using AppAfpaBrive.BOL;
 using ReflectionIT.Mvc.Paging;
 using System.Threading.Tasks;
 using AppAfpaBrive.Web.ModelView;
@@ -25,6 +20,11 @@ namespace AppAfpaBrive.Web.Layers
         public ProduitDeFormationLayer(AFPANADbContext context)
         {
             _context = context;
+        }
+
+        #endregion
+        #region Methode publique
+
         public List<ProduitFormation> GetProduitFormationStartWith(string codeProduit)
         {
             return _context.ProduitFormations.Where(x => x.CodeProduitFormation.ToString().StartsWith(codeProduit)).ToList();
@@ -34,14 +34,9 @@ namespace AppAfpaBrive.Web.Layers
         {
             return _context.ProduitFormations.Find(idCodeProduitFormation);
         }
-
-        public List<ProduitFormation> GetProduitFormationStartWith(string codeProduit)
-        {
-            return _context.ProduitFormations.Find(idCodeProduitFormation);
-        }
         public ProduitFormationModelView GetByCodeProduitFormation(int idCodeProduitFormation)
         {
-            var obj =_context.ProduitFormations.Select(e => new ProduitFormationModelView()
+            var obj = _context.ProduitFormations.Select(e => new ProduitFormationModelView()
             {
                 CodeProduitFormation = e.CodeProduitFormation,
                 NiveauFormation = e.NiveauFormation,
@@ -52,33 +47,38 @@ namespace AppAfpaBrive.Web.Layers
             }).First(p => p.CodeProduitFormation == idCodeProduitFormation);
             return obj as ProduitFormationModelView;
         }
-        public async Task<PagingList<ProduitFormation>> GetPage(string filter,int page = 1,string sortExpression ="CodeProduitFormation")
+        public async Task<PagingList<ProduitFormation>> GetPage(string filter, int page = 1, string sortExpression = "CodeProduitFormation")
         {
             var qry = _context.ProduitFormations.AsQueryable();
             if (!string.IsNullOrWhiteSpace(filter))
             {
                 qry = qry.Where(p => p.LibelleProduitFormation.Contains(filter));
             }
-            
-            return await PagingList.CreateAsync<ProduitFormation>(qry,20, page, sortExpression,"CodeProduitFormation");
+
+            return await PagingList.CreateAsync<ProduitFormation>(qry, 20, page, sortExpression, "CodeProduitFormation");
         }
 
         public void InsertProduit(ProduitFormation prod)
         {
-            var check=CheckCodeProduitExiste(prod.CodeProduitFormation);
+            var check = CheckCodeProduitExiste(prod.CodeProduitFormation);
             if (check == true)
             {
                 _context.ProduitFormations.Add(prod);
                 _context.SaveChanges();
             }
-            
+
         }
         public void Remove(ProduitFormation prod)
         {
             _context.ProduitFormations.Remove(prod);
             _context.SaveChanges();
         }
-        
+        public void Update(ProduitFormation prod)
+        {
+            _context.ProduitFormations.Update(prod);
+            _context.SaveChanges();
+        }
+
         public bool CheckCodeProduitExiste(int id)
         {
             var codeproduit = _context.ProduitFormations.Find(id);
@@ -89,11 +89,8 @@ namespace AppAfpaBrive.Web.Layers
             }
             return false;
         }
-        {
-            _context.ProduitFormations.Update(prod);
-            _context.SaveChanges();
-        }
-        
+
+
         #endregion
     }
 }
