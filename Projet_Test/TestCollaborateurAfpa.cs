@@ -325,26 +325,26 @@ namespace Projet_Test
             va.MemberNames.Contains("Uo")
             && va.ErrorMessage.Contains("L'unité organisationnelle du collaborateur ne peut pas etre plus longue que 3 caracteres")));
         }
-        [Test]
-        public void TestCreationCollaborateur()
-        {
-            var bloub = new CollaborateurAfpaModelView
-            {
-                MatriculeCollaborateurAfpa = "1324567",
-                IdEtablissement = "19100",
-                CodeTitreCivilite = 0,
-                NomCollaborateur = "Besancon",
-                PrenomCollaborateur = "Gabriel",
-                MailCollaborateurAfpa = "besancon.gabriel@hotmail.fr",
-                TelCollaborateurAfpa = "0670673001",
-                Uo = "912",
-                UserId = "bloub"
-            };
-            CollaborateurAfpaController controleur = new CollaborateurAfpaController(db);
-            var view = controleur.Create(bloub);
+        //[Test]
+        //public void TestCreationCollaborateur()
+        //{
+        //    var bloub = new CollaborateurAfpaModelView
+        //    {
+        //        MatriculeCollaborateurAfpa = "1324567",
+        //        IdEtablissement = "19100",
+        //        CodeTitreCivilite = 0,
+        //        NomCollaborateur = "Besancon",
+        //        PrenomCollaborateur = "Gabriel",
+        //        MailCollaborateurAfpa = "besancon.gabriel@hotmail.fr",
+        //        TelCollaborateurAfpa = "0670673001",
+        //        Uo = "912",
+        //        UserId = "bloub"
+        //    };
+        //    CollaborateurAfpaController controleur = new CollaborateurAfpaController(db);
+        //    var view = controleur.Create(bloub);
 
-            var result = db.CollaborateurAfpas.Where(x => x.NomCollaborateur == "Besancon");
-            Assert.IsTrue(result.Count() == 1);
-        }
+        //    var result = db.CollaborateurAfpas.Where(x => x.NomCollaborateur == "Besancon");
+        //    Assert.IsTrue(result.Count() == 1);
+        //}
     }
 }

@@ -12,6 +12,9 @@ using AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre;
 using AppAfpaBrive.DAL;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using AppAfpaBrive.Web.Areas.Identity.Data;
+using Microsoft.Extensions.FileProviders;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -20,16 +23,18 @@ namespace AppAfpaBrive.Web.Controllers
 
         private readonly AFPANADbContext _context;
         private readonly IConfiguration _config;
+        private readonly UserManager<AppAfpaBriveUser> _userManager;
+        private readonly IFileProvider _fileProvider;
         protected string Path { get; set; }
 
-        public FileUploadController(AFPANADbContext context, IConfiguration config)
+        public FileUploadController(AFPANADbContext context, IConfiguration config, UserManager<AppAfpaBriveUser> userManager, IFileProvider fileProvider)
         {
-            ///A enlever
-            Path = "./Data/Documents";
-
+       
             _context = context;
             _config = config;
-
+            _userManager = userManager;
+            _fileProvider = fileProvider;
+            Path = fileProvider.GetFileInfo(_config.GetSection("RepertoireImportData").Value).PhysicalPath;
         }
 
         public IActionResult Index()
@@ -51,7 +56,7 @@ namespace AppAfpaBrive.Web.Controllers
 
                     if (response.Done)
                     {
-                        Utilitaires.IntegrationExcelOffre integration = new Utilitaires.IntegrationExcelOffre(_config, _context);
+                        Utilitaires.IntegrationExcelOffre integration = new Utilitaires.IntegrationExcelOffre(_config, _context,_userManager);
                         string pathFile = response.Paths.First();
 
                         integration.IntegrerDonnees(uploadFile.MatriculeCollaborateurAfpa, uploadFile.CodeProduitFormation, pathFile);
