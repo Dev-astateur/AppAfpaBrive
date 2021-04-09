@@ -1,6 +1,8 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.Areas.Identity.Data;
 using ExcelDataReader;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -16,10 +18,12 @@ namespace AppAfpaBrive.Web.Utilitaires
     {
         private readonly IConfiguration _config;
         private readonly AFPANADbContext _context;
-        public IntegrationExcelOffre(IConfiguration config, AFPANADbContext context)
+        private readonly UserManager<AppAfpaBriveUser> _userManager;
+        public IntegrationExcelOffre(IConfiguration config, AFPANADbContext context, UserManager<AppAfpaBriveUser> userManager)
         {
             _config = config;
             _context = context;
+            _userManager = userManager;
         }
 
 
@@ -68,12 +72,22 @@ namespace AppAfpaBrive.Web.Utilitaires
             }
         }
 
-
+        /// <summary>
+        /// création des bénéficiaires
+        /// création des comptes utilisateurs
+        /// ajout rôle bénéficiaire au bénéficiaire
+        /// ajout de l'offre
+        /// ajout relation bénéficiaire offre
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="positions"></param>
+        /// <param name="matriculeCollaborateurAfpa"></param>
+        /// <param name="codeProduitFormation"></param>
         private void TraiterDonnees(IExcelDataReader reader, int?[] positions, string matriculeCollaborateurAfpa, int codeProduitFormation)
         {
             bool offreTraitee = false;
-            DateTime dateDebOffre ;
-            DateTime dateFinOffre ;
+            DateTime dateDebOffre;
+            DateTime dateFinOffre;
             string idEtab = string.Empty;
             int idOffre = 0;
             string libOffre;
@@ -139,7 +153,7 @@ namespace AppAfpaBrive.Web.Utilitaires
                     telephone1 = reader.GetString(positions[7].Value);
                     mail = reader.GetString(positions[8].Value);
                     dateEntree = DateTime.Parse(reader.GetString(positions[11].Value));
-                    if(reader.GetString(positions[12].Value) != "-")
+                    if (reader.GetString(positions[12].Value) != "-")
                     {
                         dateSortie = DateTime.Parse(reader.GetString(positions[12].Value));
                     }
@@ -171,9 +185,11 @@ namespace AppAfpaBrive.Web.Utilitaires
                     beneficiaire.DateNaissanceBeneficiaire = dateNaissance.Value;
                     beneficiaire.TelBeneficiaire = telephone1;
                     beneficiaire.MailBeneficiaire = mail;
-                     
+
 
                     _context.Entry<Beneficiaire>(beneficiaire).State = (EntityState)beneficiaire.Etat;
+                   
+                    AjouterCompteUtilisateur(beneficiaire);
                     beneficiaireOffre = _context.BeneficiaireOffreFormations.Find(new object[] { numeroClient, idOffre, idEtab });
                     if (beneficiaireOffre == null)
                     {
@@ -194,6 +210,7 @@ namespace AppAfpaBrive.Web.Utilitaires
                     beneficiaireOffre.DateEntreeBeneficiaire = dateEntree;
                     beneficiaireOffre.DateSortieBeneficiaire = dateSortie;
                     _context.Entry<BeneficiaireOffreFormation>(beneficiaireOffre).State = (EntityState)beneficiaire.Etat;
+
                 }
             }
             if (offreFormation != null)
@@ -204,7 +221,35 @@ namespace AppAfpaBrive.Web.Utilitaires
 
         }
 
+        private async void AjouterCompteUtilisateur(Beneficiaire beneficiaire)
+        {
+            var user = await _userManager.FindByNameAsync(beneficiaire.MatriculeBeneficiaire);
+            if (user == null)
+            {
 
+
+                user = new AppAfpaBriveUser
+                {
+                    UserName = beneficiaire.MatriculeBeneficiaire,
+                    Email = beneficiaire.MailBeneficiaire,
+                    EmailConfirmed = true,
+                    MotPasseAChanger = true,
+                    Nom = beneficiaire.NomBeneficiaire,
+                    Prenom = beneficiaire.PrenomBeneficiaire,
+                    DateNaissance = beneficiaire.DateNaissanceBeneficiaire,
+                    Theme = "cyborg"
+                };
+
+                Task<IdentityResult> userResult = _userManager.CreateAsync(user, $"Afpa{beneficiaire.MatriculeBeneficiaire}!");
+                userResult.Wait();
+                if (userResult.Result.Succeeded)
+                {
+                    Task<IdentityResult> newUserRole = _userManager.AddToRoleAsync(user, "Bénéficiaire");
+                    newUserRole.Wait();
+                }
+            }
+
+        }
     }
 
 }

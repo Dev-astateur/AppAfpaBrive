@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using AppAfpaBrive.Web.Areas.Identity.Data;
 
 namespace AppAfpaBrive.Web.Layers
 {
@@ -15,10 +17,11 @@ namespace AppAfpaBrive.Web.Layers
     {
 
         private readonly AFPANADbContext _context;
-
+       
         public CollaborateurAfpaLayer(AFPANADbContext context)
         {
             _context = context;
+            
         }
 
         // Récupère les formateurs selon le début du nom
@@ -42,6 +45,7 @@ namespace AppAfpaBrive.Web.Layers
         {
             _context.CollaborateurAfpas.Add(prod);
             _context.SaveChanges();
+
         }
         public void Remove(CollaborateurAfpa prod)
         {
@@ -76,7 +80,7 @@ namespace AppAfpaBrive.Web.Layers
 
         public bool CheckMatriculeCollaborateurExiste(string id)
         {
-            var matriculeCollaborateur = _context.CollaborateurAfpas.Find(id);
+            return _context.CollaborateurAfpas.Find(id) != null;
 
             if (matriculeCollaborateur == null)
             {

@@ -6,17 +6,21 @@ using System.Threading.Tasks;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using AppAfpaBrive.Web.Areas.Identity.Data;
+
 namespace AppAfpaBrive.Web.Controllers
 {
     public class IntegrationExcelOffresController : Controller
     {
         private readonly AFPANADbContext _context;
         private readonly IConfiguration _config;
-       
-        public IntegrationExcelOffresController(AFPANADbContext context,IConfiguration config)
+        private readonly UserManager<AppAfpaBriveUser> _userManager;
+        public IntegrationExcelOffresController(AFPANADbContext context,IConfiguration config, UserManager<AppAfpaBriveUser> userManager)
         {
             _context = context;
             _config = config;
+            _userManager = userManager;
         }
         [HttpGet]
         public IActionResult Create()
@@ -27,7 +31,7 @@ namespace AppAfpaBrive.Web.Controllers
    
         public IActionResult Create([Bind("CodeProduitFormation,MatriculeCollaborateurAfpa,PathFileIntegration")] IntegrationExcelOffreCreate integrationExcelOffreCreate)
         {
-            Utilitaires.IntegrationExcelOffre integration = new Utilitaires.IntegrationExcelOffre(_config,_context);
+            Utilitaires.IntegrationExcelOffre integration = new Utilitaires.IntegrationExcelOffre(_config,_context,_userManager);
     
             integration.IntegrerDonnees(integrationExcelOffreCreate.MatriculeCollaborateurAfpa, integrationExcelOffreCreate.CodeProduitFormation,
                 @integrationExcelOffreCreate.PathFileIntegration);

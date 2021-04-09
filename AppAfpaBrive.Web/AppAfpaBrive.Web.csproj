@@ -59,4 +59,11 @@
     <Folder Include="Views\Collaborateur\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\ImportsData\20210304140823_Liste_reservations.xlsx" />
+    <None Include="wwwroot\ImportsData\20210315105207_Liste_reservations.xlsx" />
+    <None Include="wwwroot\ImportsData\20210315161715_Liste_reservations.xlsx" />
+    <None Include="wwwroot\ImportsData\ListeSalaries.xlsx" />
+  </ItemGroup>
+
 </Project>
