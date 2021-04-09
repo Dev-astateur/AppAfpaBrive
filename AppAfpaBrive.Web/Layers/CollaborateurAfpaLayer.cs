@@ -81,12 +81,6 @@ namespace AppAfpaBrive.Web.Layers
         public bool CheckMatriculeCollaborateurExiste(string id)
         {
             return _context.CollaborateurAfpas.Find(id) != null;
-
-            if (matriculeCollaborateur == null)
-            {
-                return true;
-            }
-            return false;
         }
 
         public CollaborateurNavigationModelView GetCollaborateurById(string matricule)
