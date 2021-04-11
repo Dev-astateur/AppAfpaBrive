@@ -313,8 +313,10 @@ namespace AppAfpaBrive.Web.Controllers
                .Include(b => b.MatriculeBeneficiaireNavigation));
             }
 
-
-
+            var idOffre = HttpContext.Session.GetInt32(SessionIdOffreFormation);
+            var IdEtablissemnt = HttpContext.Session.GetString(SessionIdEtablissemnt);
+            ViewBag.ideOffre = idOffre;
+            ViewBag.IdEtab = IdEtablissemnt;
             ViewBag.Pee = selectListPee;
             return View();
         }
@@ -369,12 +371,13 @@ namespace AppAfpaBrive.Web.Controllers
              
             return listsuivi;
         }
-        public IEnumerable<PeeDocument> GetPeeDocuments(int IdPeriodePeeSuivi)
+        public PeriodePeeSuivi  GetPeriodePeeSuiviTextCkEditor(int IdPeriodePeeSuivi)
         {
-            return _dbContext.PeeDocuments
-                .Where(Pd => Pd.IdPeriodePeeSuivi == IdPeriodePeeSuivi)
-                .Include(Pd => Pd.IdPeeNavigation)
-                .Include(Pd => Pd.IdPeriodePeeSuiviNavigation).ToList();
+            var suiviPeriodePee = _dbContext.PeriodePeeSuivis
+                .Where(Pd => Pd.IdPeriodePeeSuivi == IdPeriodePeeSuivi).FirstOrDefault();
+            
+           
+            return suiviPeriodePee; 
         }
         #endregion
 

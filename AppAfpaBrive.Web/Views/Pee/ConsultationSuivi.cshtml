@@ -1,12 +1,12 @@
 ﻿@model AppAfpaBrive.BOL.PeeDocument
 @using AppAfpaBrive.BOL;
+@using Microsoft.AspNetCore.Http;
 @{ 
     List<Pee> pees = new List<Pee>();
     pees = ViewBag.Pee;
     var ListPeeItem = pees.Select(p => new SelectListItem() { Text = p.MatriculeBeneficiaireNavigation.NomBeneficiaire + "  " + p.MatriculeBeneficiaireNavigation.PrenomBeneficiaire, Value = p.IdPee.ToString() }).ToList();
-    var listSuivi = pees.Select(p => p.PeriodePeeSuivis).ToList();
-    var lists = listSuivi.Select(s => new SelectListItem() { Text = s.Select(s => s.ObjetSuivi).FirstOrDefault(), Value = s.Select(s => s.IdPeriodePeeSuivi).FirstOrDefault().ToString() }).ToList();
-
+   var idOffre = ViewBag.ideOffre;
+   var IdEtablissemnt = ViewBag.IdEtab;
 }
 
 <!DOCTYPE html>
@@ -23,8 +23,7 @@
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
             <form asp-action="ConsultationSuivi">
-                @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="IdPeeDocument" />*@
+               
                 <div class="form-group col-sm-12 col-md-8 col-lg-8">
                     @if (ListPeeItem != null)
                     {
@@ -37,9 +36,7 @@
                         @Html.DropDownListFor(m => m.IdPeriodePeeSuivi, new SelectList(""), ".....Seléctionnez l'objet du suivi........", new { @class = "form-control" })
                     }
                 </div>
-                <div class="textArea form-group col-sm-12 col-md-8 col-lg-8">
-
-                </div>
+                <div id="textArea" class="jumbotron col-sm-12 col-md-8 col-lg-8"></div>
             </form>
             <div class="form-group col-sm-12 col-md-8 col-lg-8">
                 <a id="DownLoadDoc" class="btn btn-primary btn-block " href="">Télécharger le document</a>
@@ -49,7 +46,14 @@
 
 
     <div>
-        <a asp-action="Index">Back to List</a>
+       
+        @Html.ActionLink("Vers La Liste Pee", "AfficheBeneficiairePee", "Pee",
+    new
+    {
+        IdOffreFormation = idOffre,
+        idEtablissement = IdEtablissemnt
+    },
+    new { @class = "btn btn-primary " })
     </div>
 
 </body>
@@ -82,6 +86,18 @@
                 BtnDownLoad.attr("href", "/Pee/DownLoadDocument?IdPeeDoc=" + IdPeriodePeeSuivi);
 
             });
+            $("#IdPeriodePeeSuivi").change(function () {
+                var IdPeriodePeeSuivi = $("#IdPeriodePeeSuivi").val();
+                var TextAreaCk = $("#textArea");
+                TextAreaCk.empty();
+                
+                $.getJSON("/Pee/GetPeriodePeeSuiviTextCkEditor?IdPeriodePeeSuivi=" + IdPeriodePeeSuivi, function ( obj) {
+                    TextAreaCk.append("<p>" + obj.texteSuivi + "</p>")
+                });
+
+
+            });
+           
      
             });
     </script>
