@@ -6,7 +6,8 @@
     ListPee = ViewBag.IdPee;
 
     var listItem = ListPee.Select(P => new SelectListItem() { Text = P.MatriculeBeneficiaireNavigation.NomBeneficiaire + "  "+ P.MatriculeBeneficiaireNavigation.PrenomBeneficiaire, Value = P.IdPee.ToString() }).ToList();
-
+   var idOff = ViewBag.idOf ;
+   var IdEtab = ViewBag.IdEtab;
 }
 
 <h4>PeriodePeeSuivi</h4>
@@ -52,12 +53,21 @@
 </div>
 
 <div>
-    <a asp-action="_AfficheBeneficiairePee">Back to List</a>
+    @Html.ActionLink("Vers la liste Pee", "AfficheBeneficiairePee", "Pee",
+
+    new {
+        IdOffreFormation = idOff,
+        idEtablissement = IdEtab
+    },
+    new {@class = "btn btn-primary"}
+
+    )
 </div>
 
 @section Scripts{
     <script type="text/javascript">
-        CKEDITOR.replace('textareaCk')
+        CKEDITOR.replace('textareaCk');
+        
            
         $(document).ready(function () {
             $('.custom-file-input').on('change', function () {

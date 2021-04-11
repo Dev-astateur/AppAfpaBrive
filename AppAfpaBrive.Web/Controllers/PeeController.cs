@@ -223,7 +223,11 @@ namespace AppAfpaBrive.Web.Controllers
                     ListPee.Add(_dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation).FirstOrDefault(p => p.IdPee == item));
                 }
                 HttpContext.Session.SetObjectAsJson("checkBox", PeecheckBox);
-                ViewBag.IdPee = ListPee;
+            var idOffreFormation = HttpContext.Session.GetInt32(SessionIdOffreFormation);
+            var IdEtablissement = HttpContext.Session.GetString(SessionIdEtablissemnt);
+            ViewBag.idOf = idOffreFormation;
+            ViewBag.IdEtab = IdEtablissement;
+            ViewBag.IdPee = ListPee;
                 return View();
 
            
@@ -231,19 +235,6 @@ namespace AppAfpaBrive.Web.Controllers
 
         }
         
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult UploadCKEditor( IFormFile uploadFile)
-        {
-            
-            var fileName =  DateTime.Now.ToString("yyyyMMddHHmmss") + uploadFile.FileName;
-            var path = Path.Combine(Directory.GetCurrentDirectory(), _env.ContentRootPath, "wwwroot/UploadFiles/Images/", fileName);
-            var stream = new FileStream(path, FileMode.Create);
-            uploadFile.CopyToAsync(stream);
-            return new JsonResult(new { path = "/UpLoadFiles/Images/" + fileName });
-            
-        }
-        //[Route("upload_file")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePeriodePeeSuivi(PeriodePeeSuiviCreateViewModel model)
