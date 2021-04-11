@@ -166,7 +166,7 @@ namespace Projet_Test
             //Arrange
             var controller = new PeeController(Context, IConfigMok.Object, mockEnvironment.Object,mail);
             //Act
-            var result = await controller._AfficheBeneficiairePee(IdOffreFormation, IdEtablissement) as ViewResult;
+            var result = await controller.AfficheBeneficiairePee(IdOffreFormation, IdEtablissement) as ViewResult;
             //Assert
             Assert.IsTrue(result.ViewData["ListPeeSansDoublons"] != null);
 

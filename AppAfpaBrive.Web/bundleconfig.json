@@ -13,6 +13,7 @@
       "wwwroot/lib/jquery/dist/jquery.js",
       "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
       "wwwroot/js/ckeditor/ckeditor.js",
+      "wwwroot/js/jquery-validation-1.19.3/dist/jquery.validate.js",
       "wwwroot/js/ckeditor/samples/sample.js",
       "wwwroot/js/site.js"
     ],

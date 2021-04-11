@@ -16,14 +16,18 @@ namespace AppAfpaBrive.Web.ModelView
             PeeDocuments = new HashSet<PeeDocument>();
         }
         [Key]
+        
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public decimal IdPeriodePeeSuivi { get; set; }
         [ForeignKey("Fk_Pee_Periode_Pee_Suivi")]
         public decimal IdPee { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        
+        [Required(ErrorMessage = "Le champ est requis")]
         public DateTime DateDeSuivi { get; set; }
+        [Required(ErrorMessage = "Le champ est requis")]
         public string ObjetSuivi { get; set; }
+        
         public string TexteSuivi { get; set; }
         public IFormFile Fichier { get; set; }
         public virtual Pee IdPeeNavigation { get; set; }

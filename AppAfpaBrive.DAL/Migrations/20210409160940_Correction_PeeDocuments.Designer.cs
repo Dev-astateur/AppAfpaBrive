@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppAfpaBrive.DAL.Migrations
 {
     [DbContext(typeof(AFPANADbContext))]
-    [Migration("20210406050057_MiseAJoursDatabase")]
-    partial class MiseAJoursDatabase
+    [Migration("20210409160940_Correction_PeeDocuments")]
+    partial class Correction_PeeDocuments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1038,7 +1038,7 @@ namespace AppAfpaBrive.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PathDocument")
-                        //.IsRequired()
+                        .IsRequired()
                         .HasMaxLength(2048)
                         .IsUnicode(false)
                         .HasColumnType("varchar(2048)");

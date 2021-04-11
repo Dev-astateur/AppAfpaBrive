@@ -15,26 +15,26 @@
     <div class="col-md-8">
         <form enctype="multipart/form-data" asp-action="CreatePeriodePeeSuivi" asp-controller="Pee">
 
-           
+
             <div class="form-group">
                 <label asp-for="IdPee" class="control-label"></label>
-                <select asp-for="IdPee" class="form-control" asp-items=listItem></select>
+                <select asp-for="IdPee" class="form-control" required asp-items=listItem></select>
 
             </div>
-            <div class="form-group col-md-10">
+            @*<div class="form-group col-md-10">
                 <label asp-for="DateDeSuivi" class="control-label">Date</label>
-                <input asp-for="DateDeSuivi" class="form-control" value="@DateTime.Today" />
+                <input asp-for="DateDeSuivi" class="form-control" required value="@DateTime.Today" />
                 <span asp-validation-for="DateDeSuivi" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group col-md-10">
                 <label asp-for="ObjetSuivi" class="control-label">Objet</label>
-                <input asp-for="ObjetSuivi" class="form-control" value="" />
+                <input asp-for="ObjetSuivi" class="form-control" required value="" />
                 <span asp-validation-for="ObjetSuivi" class="text-danger"></span>
             </div>
-            <div class="form-group w-100">
+            <div class="ckeditorPee form-group w-100">
                 <label asp-for="TexteSuivi" class="control-label">renseigner vos appréciations </label>
-                @Html.TextAreaFor(model => model.TexteSuivi, new { @class = "ckeditor" })
-                @Html.ValidationMessageFor(model => model.TexteSuivi, "", new { @classs = "text-danger" })
+                @Html.TextAreaFor(model => model.TexteSuivi, new {id = "textareaCk", @class = "ckeditor" })
+                @Html.ValidationMessageFor(model => model.TexteSuivi, "textareaCk", new { @classs = "text-danger" })
             </div>
 
 
@@ -56,12 +56,13 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="_AfficheBeneficiairePee">Back to List</a>
 </div>
 
 @section Scripts{
     <script type="text/javascript">
-        CKEDITOR.replace('TexteSuivi');
+        CKEDITOR.replace('textareaCk')
+           
         $(document).ready(function () {
             $('.custom-file-input').on('change', function () {
                 //get the file name
@@ -71,6 +72,7 @@
             });
         });
     </script>
+    
 
 }
 

@@ -6,16 +6,19 @@
     IEnumerable<Pee> ListPee = ViewData["ListPeeSansDoublons"] as IEnumerable<Pee>;
 }
 
-
 @{
     @if (ListPee != null)
     {
 
         <form  asp-action="ChargementDocPee">
             <div class="row">
-                <div class="form-group col-sm-12 col-md-4 offset-8 col-lg-4 offset-8">
+                <div class="form-group col-sm-12 col-md-4 offset-4 col-lg-4 ">
+                    <input asp-action="ConsultationSuivi" type="submit" value="Consultez les documents du suivi" name="Document" class="btn btn-primary " />
+                </div>
+                <div class="form-group col-sm-12 col-md-4  col-lg-4 ">
                     <input asp-action="ConsignezLeSuiviDuPee" type="submit" value="Consignez le suivi du stage" name="Document" class="btn btn-primary " />
                 </div>
+
                 <div class="form-group col-sm-12 col-md-4 col-lg-4">
                     <input asp-action="GetDocumentForPrint" type="submit" value="Envoi_Convention" name="Document" asp-route-id="1" class="btn btn-secondary t" />
                 </div>
@@ -26,7 +29,7 @@
                     <input id="3" asp-action="GetDocumentForPrint" type="submit" value="Accompagnement_Tuteur" name="Document" asp-route-id="3" class="btn btn-secondary" />
 
                 </div>
-                <div id="error">Vous devez cochez au moins une case</div>
+                <div id="error" class="form-group" style="display:none">Vous devez cochez au moins une case</div>
             </div>
 
             <div id="tabelBeneficiaire" class="table container-fluid">
@@ -107,11 +110,11 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        
+       
         $("input[name='Document']").click(function () {
             var checked_checkboxes = $("#tabelBeneficiaire input[type='checkbox']:checked");
             if (checked_checkboxes.length == 0) {
-                $("#error").show();
+                $("#error").css('color','red').show();
                 return false
             }
             $("#error").hide();

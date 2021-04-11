@@ -1,0 +1,18 @@
+﻿@model AppAfpaBrive.BOL.PeriodePeeSuivi
+   
+@{
+    var list = ViewBag.objectSuivi as List<SelectListItem>;
+}
+<div>
+    @{
+        @foreach (var item in list)
+        {
+    <div>
+        @Html.DisplayFor(modelItem => item.Value)
+    </div>
+           
+        }
+    }
+
+
+</div>

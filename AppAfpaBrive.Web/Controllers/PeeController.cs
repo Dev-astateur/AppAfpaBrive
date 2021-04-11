@@ -24,6 +24,7 @@ using Rotativa;
 using Ionic.Zip;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AppAfpaBrive.Web.Controllers
 {
@@ -75,6 +76,7 @@ namespace AppAfpaBrive.Web.Controllers
         {
             return View();
         }
+        
         /// <summary>
         /// IAction pour afficher le nom et le prénom 
         /// des beneficiaire et les entreprise qui les 
@@ -83,7 +85,7 @@ namespace AppAfpaBrive.Web.Controllers
         /// <param name="IdOffreFormation"></param>
         /// <param name="idEtablissement"></param>
         /// <returns></returns>
-        public async Task<IActionResult> _AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
+        public async Task<IActionResult> AfficheBeneficiairePee(int IdOffreFormation, string idEtablissement)
         {
              
             if (ModelState.IsValid)
@@ -107,16 +109,16 @@ namespace AppAfpaBrive.Web.Controllers
         #endregion
 
         #region Document accompagnement Beneficiaire
-
+        
         public async Task<IActionResult> GetDocumentForPrint(int id, int[] PeecheckBox)
         {
-            //if(PeecheckBox.Length == 0)
-            //{
-            //    var idOffre = HttpContext.Session.GetInt32(SessionIdOffreFormation);
-            //    var IdEtablissemnt = HttpContext.Session.GetString(SessionIdEtablissemnt);
-            //    ModelState.AddModelError("PeecheckBox", "Vous devez cochez au moins une case");
-            //    return RedirectToAction("_AfficheBeneficiairePee", new { idOffreFormation = idOffre, IdEtablissement = IdEtablissemnt });
-            //}
+            if(PeecheckBox.Length == 0)
+            {
+                var idOffre = HttpContext.Session.GetInt32(SessionIdOffreFormation);
+                var IdEtablissemnt = HttpContext.Session.GetString(SessionIdEtablissemnt);
+                ModelState.AddModelError("error", "Vous devez cochez au moins une case");
+                return RedirectToAction("AfficheBeneficiairePee", new { idOffreFormation = idOffre, IdEtablissement = IdEtablissemnt });
+            }
             ///PeecheckBox est un tableau des valeur des IdPee
             /// id est le Id du input 
             ImpressionFicheSuivi PrintWord = new ImpressionFicheSuivi(_dbContext, _env);
@@ -213,14 +215,19 @@ namespace AppAfpaBrive.Web.Controllers
 
         public IActionResult ConsignezLeSuiviDuPee(List<int> PeecheckBox)
         {
-            List<Pee> ListPee = new List<Pee>();
-            foreach (var item in PeecheckBox)
-            {
-                ListPee.Add(_dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation).FirstOrDefault(p => p.IdPee == item));
-            }
-            HttpContext.Session.SetObjectAsJson("checkBox", PeecheckBox);
-            ViewBag.IdPee =  ListPee;
-            return View();
+            
+            
+                List<Pee> ListPee = new List<Pee>();
+                foreach (var item in PeecheckBox)
+                {
+                    ListPee.Add(_dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation).FirstOrDefault(p => p.IdPee == item));
+                }
+                HttpContext.Session.SetObjectAsJson("checkBox", PeecheckBox);
+                ViewBag.IdPee = ListPee;
+                return View();
+
+           
+            
 
         }
         
@@ -284,7 +291,7 @@ namespace AppAfpaBrive.Web.Controllers
                 var idOffre = HttpContext.Session.GetInt32(SessionIdOffreFormation);
                     var IdEtablissemnt = HttpContext.Session.GetString(SessionIdEtablissemnt);
                 
-                return RedirectToAction("_AfficheBeneficiairePee", new {idOffreFormation = idOffre, IdEtablissement = IdEtablissemnt });
+                return RedirectToAction("AfficheBeneficiairePee", new {idOffreFormation = idOffre, IdEtablissement = IdEtablissemnt });
             }
             var listcheckBox = HttpContext.Session.GetObjectFromJson<List<int>>("checkBox");
 
@@ -294,20 +301,27 @@ namespace AppAfpaBrive.Web.Controllers
         #endregion
         #region consultation les document de suivi des la période en entreprise
         
-        public IActionResult ConsultationSuivi()
+        public IActionResult ConsultationSuivi(List<int> PeecheckBox)
         {
-            var listPeriodeSuivi = _dbContext.PeeDocuments
-               .Include(d => d.IdPeriodePeeSuiviNavigation)
-               .Include(p => p.IdPeeNavigation).ThenInclude(p => p.MatriculeBeneficiaireNavigation).ToList();
-               
-             
-            ViewData["PeeDocument"] = listPeriodeSuivi;
+            List<Pee> selectListPee = new List<Pee>();
+            foreach(var item in PeecheckBox)
+            {
+                selectListPee.AddRange(_dbContext.Pees
+               .Where(d => d.IdPee == item)
+               .Include(d => d.PeeDocument)
+               .Include(p => p.PeriodePeeSuivis)
+               .Include(b => b.MatriculeBeneficiaireNavigation));
+            }
+
+
+
+            ViewBag.Pee = selectListPee;
             return View();
         }
         [HttpGet]
         public async Task<IActionResult> DownLoadDocument(int IdPeeDoc)
         {
-            var pathDoc = _dbContext.PeeDocuments.FirstOrDefault(p => p.IdPeeDocument == IdPeeDoc);
+            var pathDoc = _dbContext.PeeDocuments.FirstOrDefault(p => p.IdPeriodePeeSuivi == IdPeeDoc);
             if(pathDoc.PathDocument == null)
             {
                 return Content("Fichier non présent");
@@ -346,6 +360,21 @@ namespace AppAfpaBrive.Web.Controllers
                 {".gif", "image/gif"},
                 {".csv", "text/csv"}
             };
+        }
+
+        public List<SelectListItem> GetListObject(int IdPee)
+        {
+            var listObject = _dbContext.PeriodePeeSuivis.Include(o => o.PeeDocuments).Where(o => o.IdPee == IdPee).ToList();
+            var listsuivi = listObject.Select(s => new SelectListItem() { Text = s.ObjetSuivi, Value = s.IdPeriodePeeSuivi.ToString() }).ToList();
+             
+            return listsuivi;
+        }
+        public IEnumerable<PeeDocument> GetPeeDocuments(int IdPeriodePeeSuivi)
+        {
+            return _dbContext.PeeDocuments
+                .Where(Pd => Pd.IdPeriodePeeSuivi == IdPeriodePeeSuivi)
+                .Include(Pd => Pd.IdPeeNavigation)
+                .Include(Pd => Pd.IdPeriodePeeSuiviNavigation).ToList();
         }
         #endregion
 
