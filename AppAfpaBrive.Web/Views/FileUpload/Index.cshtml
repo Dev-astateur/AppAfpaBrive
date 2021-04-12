@@ -30,7 +30,6 @@
             <label asp-for="MatriculeCollaborateurAfpa" class="control-label"></label>
             <input asp-for="MatriculeCollaborateurAfpa" class="form-control" readonly />
             <span asp-validation-for="MatriculeCollaborateurAfpa" class="text-danger"></span>
-
         </div>
 
 
@@ -88,7 +87,7 @@
                 select: function (event, ui) {
                     $('#MatriculeCollaborateurAfpa').val(ui.item.value);
                     $('#libelleFormateur').val(ui.item.label);
-                
+
                     return false;
                 }
 
@@ -135,7 +134,6 @@
 
     </script>
 }
-
 
 
 

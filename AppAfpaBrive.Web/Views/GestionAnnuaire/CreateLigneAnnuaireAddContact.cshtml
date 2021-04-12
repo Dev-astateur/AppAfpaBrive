@@ -1,0 +1,94 @@
+﻿@model List<AppAfpaBrive.Web.ModelView.AnnuaireModelView.ContactModelView>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
+
+
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Selectionner des contacts à associer</h2>
+        </div>
+
+        <form method="post" class="form-inline">
+
+            @if (Model.Count() > 0)
+            {
+                <table class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>
+                                Titre civilité
+                            </th>
+                            <th>
+                                Nom
+                            </th>
+                            <th>
+                                Prénom
+                            </th>
+                            <th>
+                                Mail
+                            </th>
+                            <th>
+                                Téléphone
+                            </th>
+                            <th>
+                                Selectionner
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.Count(); i++)
+                        {
+                        <tr id="ligne" class="model">
+                            <td>@Model[i].TitreCivilite.TitreCiviliteAbrege</td>
+                            <td>@Model[i].Nom</td>
+                            <td>@Model[i].Prenom</td>
+                            <td>@Model[i].Mail</td>
+                            <td>@Model[i].Telephone</td>
+
+                          
+                            <td>
+                                <input type="hidden" asp-for="@Model[i].Nom">
+                                <input type="hidden" asp-for="@Model[i].IdTitreCivilite">
+                                <input type="hidden" asp-for="@Model[i].TitreCivilite">
+                                <input type="hidden" asp-for="@Model[i].Prenom">
+                                <input type="hidden" asp-for="@Model[i].Mail">
+                                <input type="hidden" asp-for="@Model[i].Telephone<">
+                            </td>
+
+                            <td>
+                                <input asp-for="@Model[i].IsChecked" type="checkbox" class="form-check-label" />
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+
+                </table>
+
+            }
+            else
+            {
+                <p> Il n'y a pas de contacts</p>
+            }
+
+     
+
+            <div class="form-group">
+                <input type="submit" value="Suivant" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+
+    <br /><br />
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

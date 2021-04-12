@@ -1,0 +1,137 @@
+﻿@model AppAfpaBrive.Web.ModelView.AnnuaireModelView.LigneAnnuaireEtape1ModelView;
+@{
+    ViewData["Title"] = "CreateLigneAnnuaire";
+}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<h1>Create</h1>
+
+<h4>LigneAnnuaire</h4>
+<hr />
+<div class="row">
+
+    <div class="col-md-4">
+
+        <form asp-action="CreateLigneAnnuaires">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="PublicConcerne" class="control-label"></label>
+                <input asp-for="PublicConcerne" class="form-control" />
+                <span asp-validation-for="PublicConcerne" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ServiceAbrege" class="control-label"></label>
+                <input asp-for="ServiceAbrege" class="form-control" />
+                <span asp-validation-for="ServiceAbrege" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Service" class="control-label"></label>
+                <input asp-for="Service" class="form-control" />
+                <span asp-validation-for="Service" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Conditions" class="control-label"></label>
+                <input asp-for="Conditions" class="form-control" />
+                <span asp-validation-for="Conditions" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                @if (Model.listCategories.Count() > 0)
+                {
+                    @for (var i = 0; i < Model.listCategories.Count(); i++)
+                    {
+                <div class="form-check">
+
+
+                    @Html.CheckBoxFor(model => model.listCategories[i].IsChecked, new { @class = "form-check-input" })
+                    <label class="control-label">@Model.listCategories[i].LibelleCategorie</label>
+                    <input type="hidden" asp-for="@Model.listCategories[i].IdCategorie" />
+                    <input type="hidden" asp-for="@Model.listCategories[i].LibelleCategorie" />
+
+                </div>
+                    }
+                }
+                else
+                {
+
+                    <p>Aucune catégorie trouvée</p>
+
+                }
+           
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdStructure" class="control-label"></label>
+                <input id="searchStructure" class="form-control" />
+                <input asp-for="IdStructure" class="form-control" type="hidden" />
+                <span asp-validation-for="IdStructure" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Suivant" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="LigneAnnuaires">Retour</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $('#searchStructure').autocomplete({
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: "/api/structures/getByName",
+                        type: "GET",
+                        data: request,
+                        dataType: "json",
+                        success: function (data) {
+
+                            response($.map(data, function (item) {
+                                console.log(item.nom)
+                                return {
+                                    label: item.nomStructure,
+                                    value: item.idStructure
+                                }
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 1,
+                select: function (event, ui) {
+                    $('#IdStructure').val(ui.item.value);
+                    $('#searchStructure').val(ui.item.label);
+
+                    return false;
+                }
+
+
+            });
+
+
+        })
+
+    </script>
+}
+
+
+
+
+

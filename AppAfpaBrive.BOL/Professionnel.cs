@@ -19,12 +19,14 @@ namespace AppAfpaBrive.BOL
         public int IdProfessionnel { get; set; }
         public string NomProfessionnel { get; set; }
         public string PrenomProfessionnel { get; set; }
-        public int CodeTitreCiviliteProfessionnel { get; set; }
 
+        public int CodeTitreCiviliteProfessionnel { get; set; }
         public virtual TitreCivilite TitreCiviliteNavigation { get; set; }
+
         public virtual ICollection<Pee> PeeIdResponsableJuridiqueNavigations { get; set; }
         
         public virtual ICollection<Pee> PeeIdTuteurNavigations { get; set; }
         public virtual ICollection<EntrepriseProfessionnel> EntrepriseProfessionnels { get; set; }
+
     }
 }

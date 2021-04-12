@@ -1,0 +1,42 @@
+﻿@model AppAfpaBrive.Web.ModelView.AnnuaireModelView.CategorieModelView;
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>Modification d'une categorie</h1>
+
+<h4>Categorie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditCategorie">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="IdCategorie" class="form-control" type="hidden" />
+                <span asp-validation-for="IdCategorie" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LibelleCategorie" class="control-label"></label>
+                <input asp-for="LibelleCategorie" class="form-control" />
+                <span asp-validation-for="LibelleCategorie" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Valider" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Categories">Retour</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
