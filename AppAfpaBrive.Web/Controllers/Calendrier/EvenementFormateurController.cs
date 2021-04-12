@@ -41,6 +41,7 @@ namespace AppAfpaBrive.Web.Controllers.Calendrier
                 evenement.Titre = modelView.Titre;
                 evenement.DétailsEvent = modelView.DétailsEvent;
                 evenement.IdEtablissement = _config.GetSection("Etablissement").Value;
+                evenement.Heure = modelView.Heure;
 
                 if (recurrent == "True")
                 {
@@ -63,6 +64,7 @@ namespace AppAfpaBrive.Web.Controllers.Calendrier
                         evenementRecurrent.DétailsEvent = modelView.DétailsEvent;
                         evenementRecurrent.IdEtablissement = _config.GetSection("Etablissement").Value;
                         evenementRecurrent.IdGroupe = evenement.IdGroupe;
+                        evenementRecurrent.Heure = evenement.Heure;
 
                         evenementRecurrent.DateEvent = nouvelleDate;                       
                         _evenementLayer.AddEvenement(evenementRecurrent);

@@ -21,15 +21,20 @@ namespace AppAfpaBrive.Web.Layers.Calendar
         #region Méthode publique
         public ICollection<Evenement> GetEvenements(int? month, int year)
         {
-            return _context.Evenements.Where(e => e.DateEvent.Year == year && e.DateEvent.Month == month)
+            var x = _context.Evenements.Where(e => e.DateEvent.Year == year && e.DateEvent.Month == month)
                 .Where(e => e.IdEtablissement == "19011")
                 .ToList();
+            return x;
             #endregion
         }
         public void AddEvenement(Evenement evenement)
         {
             _context.Evenements.Add(evenement);
             _context.SaveChanges();
+        }
+        public Evenement GetEventById(int id)
+        {
+            return _context.Evenements.Where(e => e.IdEvent == id).FirstOrDefault();
         }
 
     }

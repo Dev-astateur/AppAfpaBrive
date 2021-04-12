@@ -16,7 +16,7 @@
 
     <label for="offreFormation">Offre de Formation :</label>
   
-    <select id="listeoffre"
+    <select class="custom-select"id="listeoffre"
             asp-items="@Model.SelectListItems">
         <option> Sélectionnez une offre de formation</option>
             @*@Html.DropDownListFor(m => m.IdOffreFormation, new SelectList(Model.OffreFormations, "IdOffreFormation", "LibelleOffreFormation"),"Veuillez sélectionner votre offre")*@

@@ -15,6 +15,7 @@ namespace AppAfpaBrive.BOL
 
         public decimal IdEvent { get; set; }
         public string IdCategorieEvent { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy.MM.dd.HH.mm}", ApplyFormatInEditMode = true)]
         public DateTime DateEvent { get; set; }
         public string IdEtablissement { get; set; }
         public string DétailsEvent { get; set; }
@@ -25,8 +26,9 @@ namespace AppAfpaBrive.BOL
         public string Titre { get; set; }
         
         public Guid? IdGroupe { get; set; }
+        public string Heure { get; set; }
 
-      
+       
 
 
         

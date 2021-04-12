@@ -14,7 +14,7 @@
 
 
         </select>
-        <span asp-validation-for="@Model.IdCategorieEvent"style="color:red"></span>
+        <span asp-validation-for="@Model.IdCategorieEvent" style="color:red"></span>
 
     </div>
     <div class="form-group">
@@ -36,7 +36,16 @@
     <div class="form-group">
         <h3>Veuillez renseigner la date de l'évènement:</h3>
         <input type="date" asp-for="@Model.DateEvent" />
+
         <span asp-validation-for="@Model.DateEvent" style="color:red"></span>
+        <br />
+        <br />
+    </div>
+    <div class="form-group">
+        <h3>Veuillez préciser l'heure exacte de l'évènement:</h3>
+        <input type="time" asp-for="@Model.Heure"/>
+        <span asp-validation-for="@Model.Heure" style="color:red"></span>
+
         <br />
         <br />
     </div>
@@ -82,7 +91,7 @@
 }
 @section Scripts
 {
-    <script defer type="text/javascript">
+    <script type="text/javascript">
 
         $(document).ready(function () {
             $('#True').on('click', function (e) {
