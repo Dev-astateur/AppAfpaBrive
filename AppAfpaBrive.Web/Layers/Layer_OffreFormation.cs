@@ -1,4 +1,5 @@
-﻿using AppAfpaBrive.DAL;
+﻿using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Layers
 {
-    public class OffreDeFormationLayer
+    public class Layer_OffreFormation
     {
         private readonly AFPANADbContext _context;
 
         #region Constructeur
-        public OffreDeFormationLayer(AFPANADbContext context)
+        public Layer_OffreFormation(AFPANADbContext context)
         {
             this._context = context;
         }
@@ -34,8 +35,21 @@ namespace AppAfpaBrive.Web.Layers
                 .ToList();
                
         }
-       
-        
+
+        public List<OffreFormation> GetAllOffreFormation()
+        {
+            return _context.OffreFormations.ToList();
+        }
+
+        public async Task<List<OffreFormation>> GetOffreFormationByContainsAsync(string query)
+        {
+            return await _context.OffreFormations.Where(x => x.LibelleOffreFormation.Contains(query)).ToListAsync();
+        }
+
+        public List<OffreFormation> GetOffreFormationStartsWith(string query)
+        {
+            return _context.OffreFormations.Where(x => x.LibelleOffreFormation.StartsWith(query)).ToList();
+        }
         #endregion
     }
 }
