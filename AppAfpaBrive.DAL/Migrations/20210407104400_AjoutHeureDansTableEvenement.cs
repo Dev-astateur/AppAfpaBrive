@@ -16,13 +16,13 @@ namespace AppAfpaBrive.DAL.Migrations
                 type: "nvarchar(50)",
                 nullable: true);
 
-            //migrationBuilder.AddForeignKey(
-            //    name: "CodeTitreCiviliteProfessionnel",
-            //    table: "Professionnel",
-            //    column: "CodeTitreCiviliteProfessionnel",
-            //    principalTable: "TitreCivilite",
-            //    principalColumn: "CodeTitreCivilite",
-            //    onDelete: ReferentialAction.Restrict);
+            migrationBuilder.AddForeignKey(
+                name: "CodeTitreCiviliteProfessionnel",
+                table: "Professionnel",
+                column: "CodeTitreCiviliteProfessionnel",
+                principalTable: "TitreCivilite",
+                principalColumn: "CodeTitreCivilite",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -35,13 +35,13 @@ namespace AppAfpaBrive.DAL.Migrations
                 name: "Heure",
                 table: "Evenement");
 
-            //migrationBuilder.AddForeignKey(
-            //    name: "FK_Professionnel_TitreCivilite",
-            //    table: "Professionnel",
-            //    column: "CodeTitreCiviliteProfessionnel",
-            //    principalTable: "TitreCivilite",
-            //    principalColumn: "CodeTitreCivilite",
-            //    onDelete: ReferentialAction.Restrict);
+            migrationBuilder.AddForeignKey(
+                name: "FK_Professionnel_TitreCivilite",
+                table: "Professionnel",
+                column: "CodeTitreCiviliteProfessionnel",
+                principalTable: "TitreCivilite",
+                principalColumn: "CodeTitreCivilite",
+                onDelete: ReferentialAction.Restrict);
         }
     }
 }

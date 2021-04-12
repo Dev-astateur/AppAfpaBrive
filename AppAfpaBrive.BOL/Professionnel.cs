@@ -24,7 +24,6 @@ namespace AppAfpaBrive.BOL
         public virtual TitreCivilite TitreCiviliteNavigation { get; set; }
 
         public virtual ICollection<Pee> PeeIdResponsableJuridiqueNavigations { get; set; }
-        
         public virtual ICollection<Pee> PeeIdTuteurNavigations { get; set; }
         public virtual ICollection<EntrepriseProfessionnel> EntrepriseProfessionnels { get; set; }
 

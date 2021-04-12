@@ -1691,7 +1691,8 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.HasOne("AppAfpaBrive.BOL.TitreCivilite", "TitreCiviliteNavigation")
                         .WithMany("Professionnels")
                         .HasForeignKey("CodeTitreCiviliteProfessionnel")
-                        .HasConstraintName("FK_Professionnel_TitreCivilite")
+                        //.HasConstraintName("FK_Professionnel_TitreCivilite")
+                        .HasConstraintName("CodeTitreCiviliteProfessionnel")
                         .IsRequired();
 
                     b.Navigation("TitreCiviliteNavigation");

@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ModelView;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+    [Authorize(Roles = "Bénéficiaire")]
     public class NavigationStagiaireController : Controller
     {
         private readonly BeneficiaireLayer _layerBeneficaire = null;
