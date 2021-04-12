@@ -28,7 +28,7 @@ namespace AppAfpaBrive.Web
 {
     public class Startup
     {
-        public IConfiguration _configuration { get; }
+        private IConfiguration _configuration { get; }
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;

@@ -13,9 +13,9 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
 {
     public class OffreDeFormationBeneficiaireController : Controller
     {
-        private Layer_OffreFormation _offreDeFormationLayer;
-        private BeneficiaireOffreFormationLayer _beneficiaireOffreFormationLayer;
-        private BeneficiaireLayer _beneficiaireLayer;
+        private readonly Layer_OffreFormation _offreDeFormationLayer;
+        private readonly BeneficiaireOffreFormationLayer _beneficiaireOffreFormationLayer;
+        private readonly BeneficiaireLayer _beneficiaireLayer;
 
 
         public OffreDeFormationBeneficiaireController(AFPANADbContext context)

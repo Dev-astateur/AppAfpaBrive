@@ -20,21 +20,20 @@ namespace AppAfpaBrive.Web.Controllers
     {
 
 
-        private CategorieLayer _categorieLayer;
-        private StructureLayer _structureLayer;
-        private ContactLayer _contactLayer;
-        private LigneAnnuaireLayer _ligneAnnuaireLayer;
-
+        private readonly CategorieLayer _categorieLayer;
+        private readonly StructureLayer _structureLayer;
+        private readonly ContactLayer _contactLayer;
+        private readonly LigneAnnuaireLayer _ligneAnnuaireLayer;
         private readonly AFPANADbContext _context;
 
 
         public GestionAnnuaireController(AFPANADbContext context)
         {
             _context = context;
-            _categorieLayer = new CategorieLayer(_context);
-            _structureLayer = new StructureLayer(_context);
-            _contactLayer = new ContactLayer(_context);
-            _ligneAnnuaireLayer = new LigneAnnuaireLayer(_context);
+            _categorieLayer = new CategorieLayer(context);
+            _structureLayer = new StructureLayer(context);
+            _contactLayer = new ContactLayer(context);
+            _ligneAnnuaireLayer = new LigneAnnuaireLayer(context);
         }
 
 
