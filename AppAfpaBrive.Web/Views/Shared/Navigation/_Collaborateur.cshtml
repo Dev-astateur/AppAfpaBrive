@@ -4,7 +4,7 @@
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="" asp-controller="NavigationCollaborateur" asp-action="Index">Fonctionnalités</a>
     </li>
-    @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+    @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA") || User.IsInRole("Formateur") )
     {
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -26,6 +26,10 @@
                 @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
                 {
                     <a class="dropdown-item text-dark" asp-area="" asp-controller="Entreprise" asp-action="ListeEntreprisePourModification">Entreprise</a>
+                }
+                @if (User.IsInRole("Formateur") || User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="EvenementFormateur" asp-action="Create">Evènement</a>
                 }
             </div>
         </li>

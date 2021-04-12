@@ -1,5 +1,6 @@
 ﻿using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+    [Authorize(Roles = "Formateur,CollaborateurAFPA,Administrateur")]
     public class NavigationCollaborateurController : Controller
     {
         private readonly CollaborateurAfpaLayer _collaborateurAfpaLayer = null;

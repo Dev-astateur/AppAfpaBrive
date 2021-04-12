@@ -43,7 +43,7 @@
                                 <div class="col-sm-2"><a asp-controller="Etablissement" asp-action="Index" class="w-100 btn btn-primary">Etablissement</a></div>
                             </div>
                         </div>
-                        
+
                     </div>
                 }
                 @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
@@ -55,7 +55,7 @@
                                 <div class="col-sm-10">Liste des collaborateurs, possibilités de modifier.</div>
                                 <div class="col-sm-2"><a asp-controller="CollaborateurAfpa" asp-action="Index" class="w-100 btn btn-primary">Collaborateur</a></div>
                             </div>
-                        </div>        
+                        </div>
                     </div>
                 }
                 @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
@@ -67,10 +67,22 @@
                                 <div class="col-sm-10">Liste des entreprises, possibilités de modifier, créer.</div>
                                 <div class="col-sm-2"><a asp-controller="Entreprise" asp-action="ListeEntreprisePourModification" class="w-100 btn btn-primary">Entreprise</a></div>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 }
-</p>
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA") || User.IsInRole("Formateur"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0 text-primary">Evènement</h5>
+                            <div class="row">
+                                <div class="col-sm-10">Saisie d'un évènement pour qu'il soit afficher dans le calendrier.</div>
+                                <div class="col-sm-2"><a asp-controller="EvenementFormateur" asp-action="Create" class="w-100 btn btn-primary">Evènement</a></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </p>
         </div>
         @if (User.IsInRole("Formateur"))
         {

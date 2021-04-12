@@ -9,9 +9,7 @@ using System;
 
 namespace AppAfpaBrive.Web.Controllers.Calendrier
 {
-    [Authorize(Roles= "Administrateur")]
-    [Authorize(Roles = "CollaborateurAFPA")]
-    [Authorize(Roles = "Formateur")]
+    [Authorize(Roles = "Formateur,CollaborateurAFPA,Administrateur")]
     public class EvenementFormateurController : Controller
     {
         private readonly Layer_CategorieEvenement _categorieEvenementLayer;
