@@ -47,7 +47,7 @@ namespace AppAfpaBrive.Web.Layers.StatsLayer
             {
                 throw new Exception("Doublons");
             }
-            }
+        }
 
 
 
