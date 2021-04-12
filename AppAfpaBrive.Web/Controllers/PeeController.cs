@@ -109,7 +109,12 @@ namespace AppAfpaBrive.Web.Controllers
         #endregion
 
         #region Document accompagnement Beneficiaire
-        
+        /// <summary>
+        /// Action pour génerer et télécharger les documents d'accompagnement des stagiaires pendand la période en entreprise
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="PeecheckBox"></param>
+        /// <returns></returns>
         public async Task<IActionResult> GetDocumentForPrint(int id, int[] PeecheckBox)
         {
             if(PeecheckBox.Length == 0)
@@ -211,8 +216,12 @@ namespace AppAfpaBrive.Web.Controllers
 
         #region action pour avoir des traces des suivis de la période en entreprise
        
-        
-
+       
+        /// <summary>
+        /// action pour afficher la view pour la traçabilité des suivis des stagiaires en entreprise
+        /// </summary>
+        /// <param name="PeecheckBox"></param>
+        /// <returns></returns>
         public IActionResult ConsignezLeSuiviDuPee(List<int> PeecheckBox)
         {
             
@@ -234,20 +243,24 @@ namespace AppAfpaBrive.Web.Controllers
             
 
         }
-        
+        /// <summary>
+        /// Action pour l'enregistrement des données du suivi
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePeriodePeeSuivi(PeriodePeeSuiviCreateViewModel model)
         {
-
+            var listcheckBox = HttpContext.Session.GetObjectFromJson<List<int>>("checkBox");
             string filePath = null;
             if (ModelState.IsValid)
             {
                 string onlyOneFileName = null;
 
                 var numOrd = _dbContext.PeeDocuments.OrderBy(d => d.NumOrdre).Select(d => d.NumOrdre).LastOrDefault();
-               
-                
+
+
                 if (model.Fichier != null)
                 {
                     string uploadFolder = Path.Combine(_env.ContentRootPath, "wwwroot/UploadFiles/" + model.IdPee + "/");
@@ -264,7 +277,7 @@ namespace AppAfpaBrive.Web.Controllers
                     DateDeSuivi = model.DateDeSuivi,
                     ObjetSuivi = model.ObjetSuivi,
                     TexteSuivi = model.TexteSuivi,
-                    
+
 
                 };
                 _dbContext.Add(periodePeeSuivi);
@@ -275,18 +288,17 @@ namespace AppAfpaBrive.Web.Controllers
                     IdPeriodePeeSuivi = _dbContext.PeriodePeeSuivis.OrderBy(p => p.IdPeriodePeeSuivi).Select(p => p.IdPeriodePeeSuivi).LastOrDefault(),
                     PathDocument = filePath,
                     NumOrdre = numOrd + 1
-                    
+
                 };
                 _dbContext.Add(peeDocument);
                 await _dbContext.SaveChangesAsync();
                 var idOffre = HttpContext.Session.GetInt32(SessionIdOffreFormation);
-                    var IdEtablissemnt = HttpContext.Session.GetString(SessionIdEtablissemnt);
-                
-                return RedirectToAction("AfficheBeneficiairePee", new {idOffreFormation = idOffre, IdEtablissement = IdEtablissemnt });
-            }
-            var listcheckBox = HttpContext.Session.GetObjectFromJson<List<int>>("checkBox");
+                var IdEtablissemnt = HttpContext.Session.GetString(SessionIdEtablissemnt);
 
-            return RedirectToAction("ConsignezLeSuiviDuPee", listcheckBox);
+                
+            }
+
+            return RedirectToAction("ConsignezLeSuiviDuPee", new { PeecheckBox = listcheckBox });
         }
 
         #endregion
