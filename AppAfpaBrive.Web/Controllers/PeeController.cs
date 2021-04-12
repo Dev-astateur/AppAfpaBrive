@@ -229,7 +229,7 @@ namespace AppAfpaBrive.Web.Controllers
                 List<Pee> ListPee = new List<Pee>();
                 foreach (var item in PeecheckBox)
                 {
-                    ListPee.Add(_dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation).FirstOrDefault(p => p.IdPee == item));
+                     ListPee.Add(_dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation).FirstOrDefault(p => p.IdPee == item));
                 }
                 HttpContext.Session.SetObjectAsJson("checkBox", PeecheckBox);
             var idOffreFormation = HttpContext.Session.GetInt32(SessionIdOffreFormation);
