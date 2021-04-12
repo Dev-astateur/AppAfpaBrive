@@ -2,12 +2,16 @@
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers.Calendar;
 using AppAfpaBrive.Web.ModelView;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 
 namespace AppAfpaBrive.Web.Controllers.Calendrier
 {
+    [Authorize(Roles= "Administrateur")]
+    [Authorize(Roles = "CollaborateurAFPA")]
+    [Authorize(Roles = "Formateur")]
     public class EvenementFormateurController : Controller
     {
         private readonly Layer_CategorieEvenement _categorieEvenementLayer;

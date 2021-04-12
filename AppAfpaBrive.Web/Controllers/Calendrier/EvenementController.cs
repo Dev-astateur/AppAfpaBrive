@@ -2,6 +2,7 @@
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers.Calendar;
 using AppAfpaBrive.Web.ModelView;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Controllers.Calendrier
 {
+    [AllowAnonymous]
     public class EvenementController : Controller
     {
         private Layer_Evenement _layer;

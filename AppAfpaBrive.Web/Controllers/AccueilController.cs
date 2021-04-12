@@ -22,7 +22,6 @@ namespace AppAfpaBrive.Web.Controllers
             _etablissementLayer = new EtablissementLayer(dbContext);
         }
 
-        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var accueilModelView = await _etablissementLayer.GetEtablissementByIdAsync(_configuration.GetSection("Etablissement").Value);

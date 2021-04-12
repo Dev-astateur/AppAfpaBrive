@@ -6,9 +6,9 @@ namespace AppAfpaBrive.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Professionnel_TitreCivilite",
-                table: "Professionnel");
+            //migrationBuilder.DropForeignKey(
+            //    name: "FK_Professionnel_TitreCivilite",
+            //    table: "Professionnel");
 
             migrationBuilder.AddColumn<string>(
                 name: "Heure",
@@ -16,32 +16,32 @@ namespace AppAfpaBrive.DAL.Migrations
                 type: "nvarchar(50)",
                 nullable: true);
 
-            migrationBuilder.AddForeignKey(
-                name: "CodeTitreCiviliteProfessionnel",
-                table: "Professionnel",
-                column: "CodeTitreCiviliteProfessionnel",
-                principalTable: "TitreCivilite",
-                principalColumn: "CodeTitreCivilite",
-                onDelete: ReferentialAction.Restrict);
+            //migrationBuilder.AddForeignKey(
+            //    name: "CodeTitreCiviliteProfessionnel",
+            //    table: "Professionnel",
+            //    column: "CodeTitreCiviliteProfessionnel",
+            //    principalTable: "TitreCivilite",
+            //    principalColumn: "CodeTitreCivilite",
+            //    onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "CodeTitreCiviliteProfessionnel",
-                table: "Professionnel");
+            //migrationBuilder.DropForeignKey(
+            //    name: "CodeTitreCiviliteProfessionnel",
+            //    table: "Professionnel");
 
             migrationBuilder.DropColumn(
                 name: "Heure",
                 table: "Evenement");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Professionnel_TitreCivilite",
-                table: "Professionnel",
-                column: "CodeTitreCiviliteProfessionnel",
-                principalTable: "TitreCivilite",
-                principalColumn: "CodeTitreCivilite",
-                onDelete: ReferentialAction.Restrict);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_Professionnel_TitreCivilite",
+            //    table: "Professionnel",
+            //    column: "CodeTitreCiviliteProfessionnel",
+            //    principalTable: "TitreCivilite",
+            //    principalColumn: "CodeTitreCivilite",
+            //    onDelete: ReferentialAction.Restrict);
         }
     }
 }
