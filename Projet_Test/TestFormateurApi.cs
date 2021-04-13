@@ -26,15 +26,18 @@ namespace Projet_Test
         [SetUp]
         public void Setup()
         {
-            db = DbContextMocker.GetAFPANADbContext("test");
-
-            db.CollaborateurAfpas.Add(new CollaborateurAfpa()
+            if ( db is null )
             {
-                NomCollaborateur = "Titi",
-                MatriculeCollaborateurAfpa = "96AA011",
-            });
+                db = DbContextMocker.GetAFPANADbContext("test");
 
-            db.SaveChanges();
+                db.CollaborateurAfpas.Add(new CollaborateurAfpa()
+                {
+                    NomCollaborateur = "Titi",
+                    MatriculeCollaborateurAfpa = "96AA011",
+                });
+
+                db.SaveChanges();
+            }
 
         }
 
@@ -84,5 +87,6 @@ namespace Projet_Test
             //Assert.That(actualResult.ContainsKey("Nom"));
             
         }
+
     }
 }

@@ -79,24 +79,6 @@ namespace Projet_Test
         }
 
         [Test]
-        public void ListePeeAValiderIdNoFound()
-        {
-            HttpMock.MockHTTPContext contextMock = new();
-            PeeController controller = new PeeController(_dbContext, _configuration, _hostEnvironment, _mailSenderMock)
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = contextMock.Http.Object,
-                }
-            };
-
-            //contextMock.Request.Setup(r => r.Query["id"]).Returns(string.Empty);
-            var result = controller.ListePeeAValider(null).Result as NotFoundResult;
-
-            Assert.That((HttpStatusCode)result.StatusCode == HttpStatusCode.NotFound);
-        }
-
-        [Test]
         public void PeeEntrepriseValidationEntreprise()
         {
             HttpMock.MockHTTPContext contextMock = new();

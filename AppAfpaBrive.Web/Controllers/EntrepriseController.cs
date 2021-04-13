@@ -19,11 +19,11 @@ namespace AppAfpaBrive.Web.Controllers
     public class EntrepriseController : Controller
     {
       
-        private readonly EntrepriseLayer _layer;
+        private readonly Layer_Entreprise _layer;
 
         public EntrepriseController(AFPANADbContext Db)
         {
-            _layer = new EntrepriseLayer(Db);
+            _layer = new Layer_Entreprise(Db);
         }
 
        
