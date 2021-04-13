@@ -18,17 +18,17 @@ namespace AppAfpaBrive.Web.Controllers.Etablissement
     public class EtablissementController : Controller
     {
         
-        private readonly AFPANADbContext _db;
+        private readonly Layer_Etablissement _etablissementLayer;
 
         public EtablissementController(AFPANADbContext db)
         {
-            _db = db;
+            _etablissementLayer = new Layer_Etablissement(db);
         }
 
         // GET: Etablissement
         public async Task<IActionResult> Index(string filter, int page, string sortExpression = "NomEtablissement")
         {
-            EtablissementLayer _etablissementLayer = new EtablissementLayer(_db);
+            //Layer_Etablissement _etablissementLayer = new Layer_Etablissement(_db); // -- modification de Aurélien
 
             var model = await _etablissementLayer.GetPage(filter, page, sortExpression);
             model.RouteValue = new RouteValueDictionary
@@ -43,7 +43,7 @@ namespace AppAfpaBrive.Web.Controllers.Etablissement
         [ValidateAntiForgeryToken]
         public IActionResult Create(EtablissementModelView obj)
         {
-            EtablissementLayer _etablissementLayer = new EtablissementLayer(_db);
+            //Layer_Etablissement _etablissementLayer = new Layer_Etablissement(_db);
             var check = _etablissementLayer.CheckIdEtablissementExiste(obj.IdEtablissement);
             if (check == false)
             {
@@ -61,7 +61,7 @@ namespace AppAfpaBrive.Web.Controllers.Etablissement
         // GET: EtablissementController/Edit/5
         public IActionResult Edit(string id)
         {
-            EtablissementLayer _etablissementLayer = new EtablissementLayer(_db);
+            //Layer_Etablissement _etablissementLayer = new Layer_Etablissement(_db);
             if (id == null)
             {
                 return NotFound();
@@ -79,7 +79,7 @@ namespace AppAfpaBrive.Web.Controllers.Etablissement
         [ValidateAntiForgeryToken]
         public IActionResult Edit(EtablissementModelView obj)
         {
-            EtablissementLayer _etablissementLayer = new EtablissementLayer(_db); 
+            //Layer_Etablissement _etablissementLayer = new Layer_Etablissement(_db); 
             if (ModelState.IsValid)
             {
                 _etablissementLayer.Update(obj.GetEtablissement());
@@ -91,7 +91,7 @@ namespace AppAfpaBrive.Web.Controllers.Etablissement
         // GET: EtablissementController/Delete/5
         public IActionResult Delete(string id)
         {
-            EtablissementLayer _etablissementLayer = new EtablissementLayer(_db);
+            //Layer_Etablissement _etablissementLayer = new Layer_Etablissement(_db);
             if (id == null )
             {
                 return NotFound();
@@ -109,7 +109,7 @@ namespace AppAfpaBrive.Web.Controllers.Etablissement
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            EtablissementLayer _etablissementLayer = new EtablissementLayer(_db);
+            //Layer_Etablissement _etablissementLayer = new Layer_Etablissement(_db);
             EtablissementModelView obj = _etablissementLayer.GetByIdEtablissement(id.ToString());
             if (obj == null)
             {

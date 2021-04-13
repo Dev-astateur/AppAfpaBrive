@@ -26,7 +26,7 @@ namespace Projet_Test
         Mock<IHostEnvironment> mockEnvironment;
         Mock<IConfiguration> IConfigMok;
         List<string> listFilesMok = new List<string>();
-        ImpressionFicheSuivi ficheSuivi;
+        Layer_ImpressionFicheSuivi ficheSuivi;
         MailSenderMock mail = new MailSenderMock();
 
         [SetUp]
@@ -38,7 +38,7 @@ namespace Projet_Test
             IConfigMok = new Mock<IConfiguration>();
             IConfigMok.SetupAllProperties();
 
-            ficheSuivi = new ImpressionFicheSuivi(Context, mockEnvironment.Object);
+            ficheSuivi = new Layer_ImpressionFicheSuivi(Context, mockEnvironment.Object);
         }
 
 
@@ -139,7 +139,7 @@ namespace Projet_Test
         public async Task TestGetPathFile_ReturnFilesIsCopied(int id, int value)
         {
             //Arrange
-            ficheSuivi = new ImpressionFicheSuivi(Context, mockEnvironment.Object);
+            ficheSuivi = new Layer_ImpressionFicheSuivi(Context, mockEnvironment.Object);
             //Act
             listFilesMok = await ficheSuivi.GetPathFile(id, value);
             //Assert

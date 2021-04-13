@@ -14,12 +14,12 @@ namespace AppAfpaBrive.Web.Controllers
     public class AccueilController : Controller
     {
         private readonly IConfiguration _configuration = null;
-        private readonly EtablissementLayer _etablissementLayer = null;
+        private readonly Layer_Etablissement _etablissementLayer = null;
 
         public AccueilController(AFPANADbContext dbContext , IConfiguration configuration )
         {
             _configuration = configuration;
-            _etablissementLayer = new EtablissementLayer(dbContext);
+            _etablissementLayer = new Layer_Etablissement(dbContext);
         }
 
         public async Task<IActionResult> Index()

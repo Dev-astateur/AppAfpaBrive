@@ -101,7 +101,7 @@ namespace AppAfpaBrive.Web.Controllers
         {
             ///PeecheckBox est un tableau des valeur des IdPee
             /// id est le Id du input 
-            ImpressionFicheSuivi PrintWord = new ImpressionFicheSuivi(_dbContext, _env);
+            Layer_ImpressionFicheSuivi PrintWord = new Layer_ImpressionFicheSuivi(_dbContext, _env);
             byte[] contenu = null;
             FileStreamResult result;
 

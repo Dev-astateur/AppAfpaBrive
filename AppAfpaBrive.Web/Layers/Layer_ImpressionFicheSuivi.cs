@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Layers
 {
-    public class ImpressionFicheSuivi /*: Controller*/
+    public class Layer_ImpressionFicheSuivi /*: Controller*/
     {
         //private string _pathFile = null;
 
@@ -30,7 +30,7 @@ namespace AppAfpaBrive.Web.Layers
         //    _dbContext = context;
         //}
 
-        public ImpressionFicheSuivi(AFPANADbContext context, IHostEnvironment env)
+        public Layer_ImpressionFicheSuivi(AFPANADbContext context, IHostEnvironment env)
         {
             _dbContext = context;
             
