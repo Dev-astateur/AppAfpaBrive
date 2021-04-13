@@ -8,8 +8,7 @@ using AppAfpaBrive.DAL;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
-using AppAfpaBrive.DAL.Layers;
-using AppAfpaBrive.Web.Layer;
+using AppAfpaBrive.Web.Layers;
 
 namespace AppAfpaBrive.Web.Controllers
 {
