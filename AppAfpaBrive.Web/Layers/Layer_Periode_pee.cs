@@ -3,11 +3,11 @@ using AppAfpaBrive.DAL;
 
 namespace AppAfpaBrive.Web.Layers
 {
-    public class Periode_pee_Layer
+    public class Layer_Periode_pee
     {
         private readonly AFPANADbContext _dbContext = null;
 
-        public Periode_pee_Layer(AFPANADbContext context)
+        public Layer_Periode_pee(AFPANADbContext context)
         {
             _dbContext = context;
         }

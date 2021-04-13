@@ -3,12 +3,12 @@ using AppAfpaBrive.BOL;
 using System.Linq;
 using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.Web.Layer
+namespace AppAfpaBrive.Web.Layers
 {
-    public class Layer_Code_Produit_Formation
+    public class Layer_Produit_Formation
     {
         private readonly AFPANADbContext _db;
-        public Layer_Code_Produit_Formation(AFPANADbContext context)
+        public Layer_Produit_Formation(AFPANADbContext context)
         {
             _db = context;
         }

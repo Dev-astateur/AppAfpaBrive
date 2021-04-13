@@ -12,12 +12,12 @@ using AppAfpaBrive.Web.ModelView;
 
 namespace AppAfpaBrive.Web.Layers
 {
-    public class ProduitDeFormationLayer
+    public class Layer_ProduitDeFormation
     {
         private readonly AFPANADbContext _context;
 
         #region Constructeur
-        public ProduitDeFormationLayer(AFPANADbContext context)
+        public Layer_ProduitDeFormation(AFPANADbContext context)
         {
             _context = context;
         }

@@ -14,7 +14,6 @@ using AppAfpaBrive.Web.ModelView;
 using DocumentFormat.OpenXml;
 using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.Utilitaires;
-using AppAfpaBrive.Web.Layer;
 using System.IO;
 using static AppAfpaBrive.Web.Layers.Layer_Pee;
 using Microsoft.EntityFrameworkCore;
@@ -24,29 +23,29 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 {
     public class ConventionController : Controller
     {
-        private Layer_Offres_Formation _beneficiaireOffre = null;
+        private Layer_BeneficiaireOffreFormation _beneficiaireOffre = null;
         private Layer_Etablissement _Etablissement = null;
-        private Layer_Code_Produit_Formation _Produit_Formation = null;
+        private Layer_Produit_Formation _Produit_Formation = null;
         private Layer_Entreprise _Entreprise = null;
         private Layer_Pays _Pays = null;
         private Layer_Professionnel _pro = null;
         private Layer_EntrepriseProfessionnel _entreprisepro = null;
         private Layer_Pee _peelayer = null;
-        private Periode_pee_Layer _periode = null;
+        private Layer_Periode_pee _periode = null;
         private Layer_PeeDocument _PeeDocument = null;
         private readonly IConfiguration _config;
 
         public ConventionController(AFPANADbContext context, IConfiguration config)
         {
-            _beneficiaireOffre = new Layer_Offres_Formation(context);
+            _beneficiaireOffre = new Layer_BeneficiaireOffreFormation(context);
             _Etablissement = new Layer_Etablissement(context);
-            _Produit_Formation = new Layer_Code_Produit_Formation(context);
+            _Produit_Formation = new Layer_Produit_Formation(context);
             _Entreprise = new Layer_Entreprise(context);
             _Pays = new Layer_Pays(context);
             _pro = new Layer_Professionnel(context);
             _entreprisepro = new Layer_EntrepriseProfessionnel(context);
             _peelayer = new Layer_Pee(context);
-            _periode = new Periode_pee_Layer(context);
+            _periode = new Layer_Periode_pee(context);
             _PeeDocument = new Layer_PeeDocument(context);
             _config = config;
         }

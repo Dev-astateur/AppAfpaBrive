@@ -21,7 +21,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
         {
             try
             {
-                ProduitDeFormationLayer produitLayer = new ProduitDeFormationLayer(db);
+                Layer_ProduitDeFormation produitLayer = new Layer_ProduitDeFormation(db);
                 string term = HttpContext.Request.Query["term"].ToString();
                 var offre = produitLayer.GetProduitFormationStartWith(term).Select(x => new { Id = x.CodeProduitFormation, Libelle = x.LibelleProduitFormation });
 

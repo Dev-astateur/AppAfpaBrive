@@ -3,12 +3,12 @@ using AppAfpaBrive.BOL;
 using System.Linq;
 using AppAfpaBrive.DAL;
 
-namespace AppAfpaBrive.Web.Layer
+namespace AppAfpaBrive.Web.Layers
 {
-    public class Layer_Offres_Formation
+    public class Layer_BeneficiaireOffreFormation
     {
         private readonly AFPANADbContext _db;
-        public Layer_Offres_Formation(AFPANADbContext context)
+        public Layer_BeneficiaireOffreFormation(AFPANADbContext context)
         {
             _db = context;
         }
