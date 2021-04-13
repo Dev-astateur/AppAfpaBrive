@@ -19,6 +19,7 @@ namespace Projet_Test
     {
         private readonly AFPANADbContext db = DbContextMocker.GetAFPANADbContext("bloub");
 
+
         [Test]
         public void IdEtablissementRequis()
         {
@@ -384,13 +385,15 @@ namespace Projet_Test
                 CodePostal = "37700",
                 Ville = "Tours"
             };
-
-
-            db.Etablissements.Add(bloub.GetEtablissement());
+            var toto = db.Etablissements.Find(bloub.IdEtablissement);
+            if ( toto is null)
+            {
+                db.Etablissements.Add(bloub.GetEtablissement());
+                db.SaveChanges();
+                
+            }
 
             EtablissementController controleur = new EtablissementController(db);
-
-
             bloub.NomEtablissement = "EtablissementCentral";
 
             var view = controleur.Edit(bloub);

@@ -50,6 +50,7 @@ namespace Projet_Test
         public void ListePeeAValiderIsValide()
         {
             HttpMock.MockHTTPContext contextMock = new();
+            contextMock.Http.SetupGet(e => e.User.Identity.Name).Returns("96GB011");
             PeeController controller = new PeeController(_dbContext, _configuration, _hostEnvironment, _mailSenderMock) {
                 ControllerContext = new ControllerContext()
                 {
@@ -66,6 +67,7 @@ namespace Projet_Test
         public void ListePeeAValiderIsValidePagination()
         {
             HttpMock.MockHTTPContext contextMock = new();
+            contextMock.Http.SetupGet(e => e.User.Identity.Name).Returns("96GB011");
             PeeController controller = new PeeController(_dbContext, _configuration, _hostEnvironment, _mailSenderMock)
             {
                 ControllerContext = new ControllerContext()

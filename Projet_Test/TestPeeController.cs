@@ -21,18 +21,22 @@ namespace Projet_Test
     public class TestPeeController
     {
 
-        AFPANADbContext Context;
-        PeeDocumentTest peeDocumentTest = new PeeDocumentTest();
-        Mock<IHostEnvironment> mockEnvironment;
-        Mock<IConfiguration> IConfigMok;
-        List<string> listFilesMok = new List<string>();
-        Layer_ImpressionFicheSuivi ficheSuivi;
-        MailSenderMock mail = new MailSenderMock();
+        private AFPANADbContext Context = null;
+        private PeeDocumentTest peeDocumentTest = new PeeDocumentTest();
+        private Mock<IHostEnvironment> mockEnvironment;
+        private Mock<IConfiguration> IConfigMok;
+        private List<string> listFilesMok = new List<string>();
+        private Layer_ImpressionFicheSuivi ficheSuivi;
+        private MailSenderMock mail = new MailSenderMock();
 
         [SetUp]
         public void LoadContext()
         {
-            Context = peeDocumentTest.GetPee();
+            if ( Context is null )
+            {
+                Context = peeDocumentTest.GetPee();
+            }
+         
             mockEnvironment = new Mock<IHostEnvironment>();
             mockEnvironment.Setup(m => m.ContentRootPath).Returns(@"C:\Users\CDA\Desktop\ProjetPee_V5\ProjetPEE\AppAfpaBrive.Web\");
             IConfigMok = new Mock<IConfiguration>();
