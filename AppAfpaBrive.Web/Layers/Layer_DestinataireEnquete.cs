@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AppAfpaBrive.BOL;
 using System.Linq;
+using AppAfpaBrive.DAL;
 
 namespace AppAfpaBrive.Web.Layers
 {
