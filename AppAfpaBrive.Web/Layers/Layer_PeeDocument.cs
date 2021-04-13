@@ -3,7 +3,7 @@ using AppAfpaBrive.DAL;
 
 namespace AppAfpaBrive.Web.Layers
 {
-    public partial class PeeLayer
+    public partial class Layer_Pee
     {
         public class Layer_PeeDocument
         {

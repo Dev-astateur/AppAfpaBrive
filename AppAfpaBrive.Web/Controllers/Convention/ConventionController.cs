@@ -16,7 +16,7 @@ using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.Utilitaires;
 using AppAfpaBrive.Web.Layer;
 using System.IO;
-using static AppAfpaBrive.Web.Layers.PeeLayer;
+using static AppAfpaBrive.Web.Layers.Layer_Pee;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -31,7 +31,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_Pays _Pays = null;
         private Layer_Professionnel _pro = null;
         private Layer_EntrepriseProfessionnel _entreprisepro = null;
-        private PeeLayer _peelayer = null;
+        private Layer_Pee _peelayer = null;
         private Periode_pee_Layer _periode = null;
         private Layer_PeeDocument _PeeDocument = null;
         private readonly IConfiguration _config;
@@ -45,7 +45,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _Pays = new Layer_Pays(context);
             _pro = new Layer_Professionnel(context);
             _entreprisepro = new Layer_EntrepriseProfessionnel(context);
-            _peelayer = new PeeLayer(context);
+            _peelayer = new Layer_Pee(context);
             _periode = new Periode_pee_Layer(context);
             _PeeDocument = new Layer_PeeDocument(context);
             _config = config;

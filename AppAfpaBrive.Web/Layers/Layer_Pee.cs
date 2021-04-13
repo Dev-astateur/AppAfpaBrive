@@ -11,11 +11,11 @@ using AppAfpaBrive.Web.ModelView.ValidationPee;
 
 namespace AppAfpaBrive.Web.Layers
 {
-    public partial class PeeLayer
+    public partial class Layer_Pee
     {
         private readonly AFPANADbContext _dbContext = null;
 
-        public PeeLayer (AFPANADbContext context) 
+        public Layer_Pee (AFPANADbContext context) 
         {
             _dbContext = context;
         }

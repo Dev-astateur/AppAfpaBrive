@@ -51,7 +51,7 @@ namespace Projet_Test
 
 
 
-            var controller = new PeeLayer(Context);
+            var controller = new Layer_Pee(Context);
             //Act 
             IEnumerable<Pee> result = await controller.GetPeeEntrepriseWithBeneficiaireBy(20101, "19011");
 
@@ -65,7 +65,7 @@ namespace Projet_Test
         {
             //Arrange
 
-            var controller = new PeeLayer(Context);
+            var controller = new Layer_Pee(Context);
             //Act 
             IEnumerable<PeriodePee> periodePees = await controller.GetListPeriodePeeByIdPee(20101, "19011");
             //Assert

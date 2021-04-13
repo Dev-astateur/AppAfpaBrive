@@ -32,7 +32,7 @@ namespace AppAfpaBrive.Web.Controllers
     public class PeeController : Controller
     {
         #region champ privé
-        private readonly PeeLayer _peeLayer = null;
+        private readonly Layer_Pee _peeLayer = null;
         private readonly AFPANADbContext _dbContext;
         
         private readonly IConfiguration _config;
@@ -55,7 +55,7 @@ namespace AppAfpaBrive.Web.Controllers
             _dbContext = context;
             _config = config;
             _env = env;
-            _peeLayer = new PeeLayer(context);
+            _peeLayer = new Layer_Pee(context);
             _emailSender = emailSender;
         }
         #endregion

@@ -24,7 +24,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
 
         [Produces("application/json")]
         [HttpGet("getByName")]
-        public async Task<IActionResult> GetStructureNameStartWith()
+        public IActionResult GetStructureNameStartWith()
         {
             try
             {
@@ -44,7 +44,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
 
         [Produces("application/json")]
         [HttpGet("getByLocation")]
-        public async Task<IActionResult> GetStructureByLocation()
+        public IActionResult GetStructureByLocation()
         {
             try
             {

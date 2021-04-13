@@ -336,7 +336,7 @@ namespace AppAfpaBrive.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateLigneAnnuaires(LigneAnnuaireEtape1ModelView ligneAnnuaire)
+        public IActionResult CreateLigneAnnuaires(LigneAnnuaireEtape1ModelView ligneAnnuaire)
         {
 
             ligneAnnuaire.categories = new List<Categorie>();
@@ -367,7 +367,7 @@ namespace AppAfpaBrive.Web.Controllers
 
 
 
-        public async Task<IActionResult> CreateLigneAnnuaireAddContact()
+        public IActionResult CreateLigneAnnuaireAddContact()
         {
 
             var model = _contactLayer.Contacts();
@@ -379,7 +379,7 @@ namespace AppAfpaBrive.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateLigneAnnuaireAddContact(List<ContactModelView> modelViews)
+        public IActionResult CreateLigneAnnuaireAddContact(List<ContactModelView> modelViews)
         {
 
             string str = this.HttpContext.Session.GetString("ligneAnnuaire");
