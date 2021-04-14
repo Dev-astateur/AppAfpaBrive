@@ -243,7 +243,8 @@ namespace AppAfpaBrive.Web.Utilitaires
                 //userResult.Wait();
                 if (userResult.Result.Succeeded)
                 {
-                    Task<IdentityResult> newUserRole = _userManager.AddToRoleAsync(user, "Bénéficiaire");
+                    await _userManager.AddToRoleAsync(user, "Bénéficiaire");
+                    //Task<IdentityResult> newUserRole = _userManager.AddToRoleAsync(user, "Bénéficiaire");
                     //newUserRole.Wait();
                 }
             }
