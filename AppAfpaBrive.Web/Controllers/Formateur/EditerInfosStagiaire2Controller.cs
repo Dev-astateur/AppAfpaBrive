@@ -14,13 +14,13 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {
     public class EditerInfosStagiaire2Controller : Controller
     {
-        private readonly StagiaireLayer _stagiaireLayer;
+        private readonly Layer_Stagiaire _stagiaireLayer;
         //private AFPANADbContext _context = null;
         private readonly Layer_Pays _paysLayer;
 
         public EditerInfosStagiaire2Controller(AFPANADbContext context)
         {
-            _stagiaireLayer = new StagiaireLayer(context);
+            _stagiaireLayer = new Layer_Stagiaire(context);
             _paysLayer = new Layer_Pays(context);
         }
 

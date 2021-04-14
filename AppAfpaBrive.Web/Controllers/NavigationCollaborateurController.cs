@@ -12,11 +12,11 @@ namespace AppAfpaBrive.Web.Controllers
     [Authorize(Roles = "Formateur,CollaborateurAFPA,Administrateur")]
     public class NavigationCollaborateurController : Controller
     {
-        private readonly CollaborateurAfpaLayer _collaborateurAfpaLayer = null;
+        private readonly Layer_CollaborateurAfpa _collaborateurAfpaLayer = null;
 
         public NavigationCollaborateurController( AFPANADbContext context )
         {
-            _collaborateurAfpaLayer = new CollaborateurAfpaLayer(context);
+            _collaborateurAfpaLayer = new Layer_CollaborateurAfpa(context);
         }
 
         public IActionResult Index()

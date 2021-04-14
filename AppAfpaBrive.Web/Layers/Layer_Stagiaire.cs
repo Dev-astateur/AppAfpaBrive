@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 namespace AppAfpaBrive.Web.Layers
 {
 
-    public class StagiaireLayer
+    public class Layer_Stagiaire
     {
         private readonly AFPANADbContext _context;
-        public StagiaireLayer(AFPANADbContext context)
+        public Layer_Stagiaire(AFPANADbContext context)
         {
             _context = context;
         }

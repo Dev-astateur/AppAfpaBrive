@@ -34,7 +34,7 @@ namespace AppAfpaBrive.Web.Controllers.ApiControllers
             try
             {
                 string term = HttpContext.Request.Query["term"].ToString();
-                CollaborateurAfpaLayer ofl = new CollaborateurAfpaLayer(db);
+                Layer_CollaborateurAfpa ofl = new Layer_CollaborateurAfpa(db);
                 Debug.WriteLine(term);
                 var names = ofl.GetCollaborateurStartWith(term).Select(x => new { Nom = x.NomCollaborateur, Id = x.MatriculeCollaborateurAfpa });
               

@@ -13,12 +13,12 @@ using AppAfpaBrive.Web.Areas.Identity.Data;
 
 namespace AppAfpaBrive.Web.Layers
 {
-    public class CollaborateurAfpaLayer
+    public class Layer_CollaborateurAfpa
     {
 
         private readonly AFPANADbContext _context;
        
-        public CollaborateurAfpaLayer(AFPANADbContext context)
+        public Layer_CollaborateurAfpa(AFPANADbContext context)
         {
             _context = context;
             

@@ -18,7 +18,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
     public class EditerInfosStagiaireController : Controller
     {
         //private AFPANADbContext _context = null;
-        private readonly StagiaireLayer _stagiaireLayer;
+        private readonly Layer_Stagiaire _stagiaireLayer;
         private readonly Layer_OffreFormation _offreFormation;
         //private readonly BeneficiaireLayer _beneficiaireLayer;
 
@@ -26,7 +26,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         public EditerInfosStagiaireController(AFPANADbContext context)
         {
             _offreFormation = new Layer_OffreFormation(context);
-            _stagiaireLayer = new StagiaireLayer(context);
+            _stagiaireLayer = new Layer_Stagiaire(context);
         }
 
         //GET: EditerInfosStagiaireController

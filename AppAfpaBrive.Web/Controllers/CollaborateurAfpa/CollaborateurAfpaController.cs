@@ -40,7 +40,7 @@ namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
         // GET: CollaborateurAfpaController
         public async Task<IActionResult> Index(string filter, int pageIndex, string sortExpression = "NomCollaborateur")
         {
-            CollaborateurAfpaLayer _collaborateurLayer = new CollaborateurAfpaLayer(_db);
+            Layer_CollaborateurAfpa _collaborateurLayer = new Layer_CollaborateurAfpa(_db);
 
             var model = await _collaborateurLayer.GetPage(filter, pageIndex, sortExpression);
             model.Action = "Index";
@@ -69,7 +69,7 @@ namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
         public IActionResult Create(CollaborateurAfpaModelView obj)
         {
             var x = Request.Form["TitreCivilite"].ToString();
-            CollaborateurAfpaLayer _collaborateurLayer = new CollaborateurAfpaLayer(_db);
+            Layer_CollaborateurAfpa _collaborateurLayer = new Layer_CollaborateurAfpa(_db);
             var check = _collaborateurLayer.CheckMatriculeCollaborateurExiste(obj.MatriculeCollaborateurAfpa);
             if (check)
             {
@@ -228,7 +228,7 @@ namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
         // GET: CollaborateurAfpaController/Edit/5
         public IActionResult Edit(string id)
         {
-            CollaborateurAfpaLayer _collaborateurLayer = new CollaborateurAfpaLayer(_db);
+            Layer_CollaborateurAfpa _collaborateurLayer = new Layer_CollaborateurAfpa(_db);
             if (id == null)
             {
                 return NotFound();
@@ -246,7 +246,7 @@ namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
         [ValidateAntiForgeryToken]
         public IActionResult Edit(CollaborateurAfpaModelView obj)
         {
-            CollaborateurAfpaLayer _collaborateurLayer = new CollaborateurAfpaLayer(_db);
+            Layer_CollaborateurAfpa _collaborateurLayer = new Layer_CollaborateurAfpa(_db);
             if (ModelState.IsValid)
             {
                 _collaborateurLayer.Update(obj.GetCollaborateur());
@@ -258,7 +258,7 @@ namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
         // GET: CollaborateurAfpaController/Delete/5
         public IActionResult Delete(string id)
         {
-            CollaborateurAfpaLayer _collaborateurLayer = new CollaborateurAfpaLayer(_db);
+            Layer_CollaborateurAfpa _collaborateurLayer = new Layer_CollaborateurAfpa(_db);
             if (id == null)
             {
                 return NotFound();
@@ -277,7 +277,7 @@ namespace AppAfpaBrive.Web.Controllers.CollaborateurAfpa
         public IActionResult DeleteCollaborateur(string id)
         {
 
-            CollaborateurAfpaLayer _collaborateurLayer = new CollaborateurAfpaLayer(_db);
+            Layer_CollaborateurAfpa _collaborateurLayer = new Layer_CollaborateurAfpa(_db);
             CollaborateurAfpaModelView obj = _collaborateurLayer.GetByMatriculeCollaborateur(id);
             if (obj == null)
             {
