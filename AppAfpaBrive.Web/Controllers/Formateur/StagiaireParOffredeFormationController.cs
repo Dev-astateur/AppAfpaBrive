@@ -11,12 +11,12 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
 {
     public class StagiaireParOffredeFormationController : Controller
     {
-        private BeneficiaireLayer _beneficiaireLayer = null;
+        private Layer_Beneficiaire _beneficiaireLayer = null;
       
 
         public StagiaireParOffredeFormationController (AFPANADbContext context)
         {
-          _beneficiaireLayer  = new BeneficiaireLayer(context)  ;
+          _beneficiaireLayer  = new Layer_Beneficiaire(context)  ;
             
         } 
         // GET: StagiaireParOffredeFormationController

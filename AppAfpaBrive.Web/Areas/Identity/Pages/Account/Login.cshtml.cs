@@ -23,7 +23,7 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
         private readonly UserManager<AppAfpaBriveUser> _userManager;
         private readonly SignInManager<AppAfpaBriveUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly BeneficiaireLayer _layer = null;
+        private readonly Layer_Beneficiaire _layer = null;
 
         public LoginModel(SignInManager<AppAfpaBriveUser> signInManager, 
             ILogger<LoginModel> logger,
@@ -33,7 +33,7 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _layer = new BeneficiaireLayer(dbContext);
+            _layer = new Layer_Beneficiaire(dbContext);
         }
 
         [BindProperty]

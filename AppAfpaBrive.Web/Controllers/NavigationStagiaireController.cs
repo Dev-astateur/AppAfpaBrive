@@ -13,11 +13,11 @@ namespace AppAfpaBrive.Web.Controllers
     [Authorize(Roles = "Bénéficiaire")]
     public class NavigationStagiaireController : Controller
     {
-        private readonly BeneficiaireLayer _layerBeneficaire = null;
+        private readonly Layer_Beneficiaire _layerBeneficaire = null;
 
         public NavigationStagiaireController(AFPANADbContext dbContext)
         {
-            _layerBeneficaire = new BeneficiaireLayer(dbContext);
+            _layerBeneficaire = new Layer_Beneficiaire(dbContext);
         }
 
         /// <summary>

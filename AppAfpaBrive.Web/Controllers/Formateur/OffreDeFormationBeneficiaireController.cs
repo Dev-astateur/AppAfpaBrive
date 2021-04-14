@@ -15,14 +15,14 @@ namespace AppAfpaBrive.Web.Controllers.Formateur
     {
         private readonly Layer_OffreFormation _offreDeFormationLayer;
         private readonly BeneficiaireOffreFormationLayer _beneficiaireOffreFormationLayer;
-        private readonly BeneficiaireLayer _beneficiaireLayer;
+        private readonly Layer_Beneficiaire _beneficiaireLayer;
 
 
         public OffreDeFormationBeneficiaireController(AFPANADbContext context)
         {
             _offreDeFormationLayer = new Layer_OffreFormation(context);
             _beneficiaireOffreFormationLayer = new BeneficiaireOffreFormationLayer(context);
-            _beneficiaireLayer = new BeneficiaireLayer(context);
+            _beneficiaireLayer = new Layer_Beneficiaire(context);
 
         }
         // GET: StagiaireParOffredeFormationController

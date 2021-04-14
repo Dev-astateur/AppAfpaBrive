@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Layers
 {
-    public class BeneficiaireLayer
+    public class Layer_Beneficiaire
     {
         private readonly AFPANADbContext _context;
 
         #region Constructeur
-        public BeneficiaireLayer(AFPANADbContext context)
+        public Layer_Beneficiaire(AFPANADbContext context)
         {
             this._context = context;
         }
