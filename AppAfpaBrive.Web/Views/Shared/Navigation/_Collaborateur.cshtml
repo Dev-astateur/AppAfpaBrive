@@ -27,6 +27,14 @@
                 {
                     <a class="dropdown-item text-dark" asp-area="" asp-controller="Entreprise" asp-action="ListeEntreprisePourModification">Entreprise</a>
                 }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="FileUpload" asp-action="Index">Intégration offre de formations</a>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="IntegrationExcelOffres" asp-action="Create">Ajout Bénéficiaires</a>
+                }
                 @if (User.IsInRole("Formateur") || User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
                 {
                     <a class="dropdown-item text-dark" asp-area="" asp-controller="EvenementFormateur" asp-action="Create">Evènement</a>

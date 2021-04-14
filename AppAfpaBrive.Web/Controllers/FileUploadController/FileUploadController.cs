@@ -15,9 +15,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using AppAfpaBrive.Web.Areas.Identity.Data;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+    [Authorize(Roles = "Administrateur,CollaborateurAFPA")]
     public class FileUploadController : Controller
     {
 

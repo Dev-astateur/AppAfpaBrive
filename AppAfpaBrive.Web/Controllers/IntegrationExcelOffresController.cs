@@ -8,9 +8,11 @@ using AppAfpaBrive.Web.ViewModels.IntegrationExcelOffre;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using AppAfpaBrive.Web.Areas.Identity.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+    [Authorize(Roles = "Administrateur,CollaborateurAFPA")]
     public class IntegrationExcelOffresController : Controller
     {
         private readonly AFPANADbContext _context;

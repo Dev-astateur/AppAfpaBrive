@@ -188,8 +188,8 @@ namespace AppAfpaBrive.Web.Utilitaires
 
 
                     _context.Entry<Beneficiaire>(beneficiaire).State = (EntityState)beneficiaire.Etat;
-                   
-                    AjouterCompteUtilisateur(beneficiaire);
+                    
+                    Task.WaitAll(AjouterCompteUtilisateur(beneficiaire));
                     beneficiaireOffre = _context.BeneficiaireOffreFormations.Find(new object[] { numeroClient, idOffre, idEtab });
                     if (beneficiaireOffre == null)
                     {
@@ -221,13 +221,12 @@ namespace AppAfpaBrive.Web.Utilitaires
 
         }
 
-        private async void AjouterCompteUtilisateur(Beneficiaire beneficiaire)
+        private async Task AjouterCompteUtilisateur(Beneficiaire beneficiaire)
         {
             var user = await _userManager.FindByNameAsync(beneficiaire.MatriculeBeneficiaire);
+
             if (user == null)
             {
-
-
                 user = new AppAfpaBriveUser
                 {
                     UserName = beneficiaire.MatriculeBeneficiaire,
@@ -241,11 +240,11 @@ namespace AppAfpaBrive.Web.Utilitaires
                 };
 
                 Task<IdentityResult> userResult = _userManager.CreateAsync(user, $"Afpa{beneficiaire.MatriculeBeneficiaire}!");
-                userResult.Wait();
+                //userResult.Wait();
                 if (userResult.Result.Succeeded)
                 {
                     Task<IdentityResult> newUserRole = _userManager.AddToRoleAsync(user, "Bénéficiaire");
-                    newUserRole.Wait();
+                    //newUserRole.Wait();
                 }
             }
 
