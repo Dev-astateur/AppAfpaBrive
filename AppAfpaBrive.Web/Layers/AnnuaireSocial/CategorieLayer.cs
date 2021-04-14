@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AppAfpaBrive.Web.Layers.AnnuaireSocialLayer
+namespace AppAfpaBrive.Web.Layers.AnnuaireSocial
 {
     public class CategorieLayer
     {

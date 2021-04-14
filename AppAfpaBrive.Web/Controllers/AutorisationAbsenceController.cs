@@ -21,7 +21,7 @@ namespace AppAfpaBrive.Web.Controllers
     public class AutorisationAbsenceController : Controller
     {
         
-       private readonly AutorisationAbsenceLayer _autorisationAbsenceLayer;
+       private readonly Layer_AutorisationAbsence _autorisationAbsenceLayer;
         private readonly IConfiguration _config;
         private readonly IHostEnvironment _env;
         public AutorisationAbsenceController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
@@ -29,7 +29,7 @@ namespace AppAfpaBrive.Web.Controllers
            
             _config = config;
             _env = env;
-            _autorisationAbsenceLayer =  new AutorisationAbsenceLayer(context);
+            _autorisationAbsenceLayer =  new Layer_AutorisationAbsence(context);
         }
         [HttpGet]
         public ActionResult CompleterInfoAbsence()

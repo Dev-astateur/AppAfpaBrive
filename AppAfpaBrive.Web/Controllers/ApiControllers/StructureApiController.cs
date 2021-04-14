@@ -1,5 +1,5 @@
 ﻿using AppAfpaBrive.DAL;
-using AppAfpaBrive.Web.Layers.AnnuaireSocialLayer;
+using AppAfpaBrive.Web.Layers.AnnuaireSocial;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

@@ -1,6 +1,6 @@
 ﻿using AppAfpaBrive.BOL.AnnuaireSocial;
 using AppAfpaBrive.DAL;
-using AppAfpaBrive.Web.Layers.AnnuaireSocialLayer;
+using AppAfpaBrive.Web.Layers.AnnuaireSocial;
 using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

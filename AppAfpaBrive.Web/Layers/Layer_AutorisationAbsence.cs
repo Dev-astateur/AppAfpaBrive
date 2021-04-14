@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Layers
 {
-    public class AutorisationAbsenceLayer
+    public class Layer_AutorisationAbsence
     {
-
         private readonly AFPANADbContext _db;
-        public AutorisationAbsenceLayer(AFPANADbContext context)
+        public Layer_AutorisationAbsence(AFPANADbContext context)
         {
             _db = context;
         }
