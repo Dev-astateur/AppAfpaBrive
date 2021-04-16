@@ -39,9 +39,9 @@ namespace AppAfpaBrive.Web.Controllers
         private readonly IHostEnvironment _env;
         private readonly IEmailSender _emailSender;
 
-        string SessionIdOffreFormation = "IdOffreFormation";
-        string SessionIdEtablissemnt = "idEtablissement";
-        List<int> checkBox = new List<int>();
+        private readonly string SessionIdOffreFormation = "IdOffreFormation";
+        private readonly string SessionIdEtablissemnt = "idEtablissement";
+        private readonly List<int> checkBox;
 
         #endregion
 
@@ -126,7 +126,7 @@ namespace AppAfpaBrive.Web.Controllers
             }
             ///PeecheckBox est un tableau des valeur des IdPee
             /// id est le Id du input 
-            ImpressionFicheSuivi PrintWord = new ImpressionFicheSuivi(_dbContext, _env);
+            ImpressionFicheSuivi PrintWord = new(_dbContext, _env);
             byte[] contenu = null;
             FileStreamResult result;
 
@@ -134,8 +134,8 @@ namespace AppAfpaBrive.Web.Controllers
             var outPutStream = new MemoryStream();
             string FileNameZip = null;
             string fichierDoc = null;
-            List<string> ListFiles = new List<string>();
-            Pee pee = new Pee();
+            List<string> ListFiles = new();
+            Pee pee = new();
             string PathDoc = Path.Combine(_env.ContentRootPath);
 
             ///itération sur le tableau des Id des Pee via les checkBox
@@ -147,16 +147,16 @@ namespace AppAfpaBrive.Web.Controllers
                 ListFiles.AddRange(await PrintWord.GetPathFile(value, id));
             }
             ///s'il y a plusieurs Fichiers on crée un fichier Zip avec les fichiers Word
-                    if (ListFiles.Count() > 1)
+                    if (ListFiles.Count > 1)
                     {
                         using (var ZipDoc = new ZipFile())
                         {
                             FileNameZip = $"Document_Suivi_Pee_{value}";
-                            for (int j = 0; j < ListFiles.Count(); j++)
+                            for (int j = 0; j < ListFiles.Count; j++)
                             {
 
                                 string nomFichier = $"{pee.MatriculeBeneficiaireNavigation.MatriculeBeneficiaire}-{pee.MatriculeBeneficiaireNavigation.NomBeneficiaire}-{pee.IdEtablissement}-{pee.IdOffreFormation}";
-                                ContentDisposition content = new ContentDisposition()
+                                ContentDisposition content = new()
                                 {
                                     FileName = $"{nomFichier}.docx",
 
@@ -193,7 +193,7 @@ namespace AppAfpaBrive.Web.Controllers
                             fichierDoc = item;
 
                         }
-                        ContentDisposition content = new ContentDisposition()
+                        ContentDisposition content = new()
                         {
                             FileName = nomFichier,
 
@@ -226,7 +226,7 @@ namespace AppAfpaBrive.Web.Controllers
         {
             
             
-                List<Pee> ListPee = new List<Pee>();
+                List<Pee> ListPee = new();
                 foreach (var item in PeecheckBox)
                 {
                      ListPee.Add(_dbContext.Pees.Include(P => P.MatriculeBeneficiaireNavigation).FirstOrDefault(p => p.IdPee == item));
@@ -237,6 +237,8 @@ namespace AppAfpaBrive.Web.Controllers
             ViewBag.idOf = idOffreFormation;
             ViewBag.IdEtab = IdEtablissement;
             ViewBag.IdPee = ListPee;
+            ViewBag.MessageSuccess = HttpContext.Session.GetString("MessageSuccess");
+            ViewBag.objecValid = HttpContext.Session.GetString("ValidObjectSuivi");
                 return View();
 
            
@@ -250,7 +252,7 @@ namespace AppAfpaBrive.Web.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePeriodePeeSuivi(PeriodePeeSuiviCreateViewModel model)
+        public async Task<IActionResult> ConsignezLeSuiviDuPee(PeriodePeeSuiviCreateViewModel model)
         {
             var listcheckBox = HttpContext.Session.GetObjectFromJson<List<int>>("checkBox");
             string filePath = null;
@@ -271,7 +273,7 @@ namespace AppAfpaBrive.Web.Controllers
                 }
 
 
-                PeriodePeeSuivi periodePeeSuivi = new PeriodePeeSuivi
+                PeriodePeeSuivi periodePeeSuivi = new()
                 {
                     IdPee = model.IdPee,
                     DateDeSuivi = model.DateDeSuivi,
@@ -282,7 +284,7 @@ namespace AppAfpaBrive.Web.Controllers
                 };
                 _dbContext.Add(periodePeeSuivi);
                 await _dbContext.SaveChangesAsync();
-                PeeDocument peeDocument = new PeeDocument
+                PeeDocument peeDocument = new()
                 {
                     IdPee = model.IdPee,
                     IdPeriodePeeSuivi = _dbContext.PeriodePeeSuivis.OrderBy(p => p.IdPeriodePeeSuivi).Select(p => p.IdPeriodePeeSuivi).LastOrDefault(),
@@ -294,8 +296,13 @@ namespace AppAfpaBrive.Web.Controllers
                 await _dbContext.SaveChangesAsync();
                 var idOffre = HttpContext.Session.GetInt32(SessionIdOffreFormation);
                 var IdEtablissemnt = HttpContext.Session.GetString(SessionIdEtablissemnt);
+                 HttpContext.Session.SetString("MessageSuccess", "Enregistrement réussi");
+               
 
-                
+            }
+            if(model.ObjetSuivi==null)
+            {
+                HttpContext.Session.SetString("ValidObjectSuivi", "Le champ est requis");
             }
 
             return RedirectToAction("ConsignezLeSuiviDuPee", new { PeecheckBox = listcheckBox });
@@ -306,7 +313,7 @@ namespace AppAfpaBrive.Web.Controllers
         
         public IActionResult ConsultationSuivi(List<int> PeecheckBox)
         {
-            List<Pee> selectListPee = new List<Pee>();
+            List<Pee> selectListPee = new();
             foreach(var item in PeecheckBox)
             {
                 selectListPee.AddRange(_dbContext.Pees
@@ -342,14 +349,14 @@ namespace AppAfpaBrive.Web.Controllers
             
         }
 
-        private string GetContentType(string path)
+        private static string GetContentType(string path)
         {
             var types = GetMimeTypes();
             var ext = Path.GetExtension(path).ToLowerInvariant();
             return types[ext];
         }
 
-        private Dictionary<string, string> GetMimeTypes()
+        private static Dictionary<string, string> GetMimeTypes()
         {
             return new Dictionary<string, string>
             {
@@ -499,12 +506,12 @@ namespace AppAfpaBrive.Web.Controllers
             IEnumerable<PeeDocumentModelView> peeDocument = await _peeLayer.GetPeeDocumentByIdAsync((decimal)id);
             if ( page is not null )
             {
-                return peeDocument.Count() == 0 ? RedirectToAction(nameof(PeeEntrepriseValidation), new { id })
+                return !peeDocument.Any() ? RedirectToAction(nameof(PeeEntrepriseValidation), new { id })
                 : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
             }
             else
             {
-                return peeDocument.Count()==0 ? RedirectToAction(nameof(EnregistrementPeeInfo), new { id })
+                return !peeDocument.Any() ? RedirectToAction(nameof(EnregistrementPeeInfo), new { id })
                 : PartialView("~/Views/Shared/Pee/_ListeDocumentPeePartial.cshtml", peeDocument);
             }
         }

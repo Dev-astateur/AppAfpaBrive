@@ -5,37 +5,46 @@
     List<Pee> ListPee = new List<Pee>();
     ListPee = ViewBag.IdPee;
 
-    var listItem = ListPee.Select(P => new SelectListItem() { Text = P.MatriculeBeneficiaireNavigation.NomBeneficiaire + "  "+ P.MatriculeBeneficiaireNavigation.PrenomBeneficiaire, Value = P.IdPee.ToString() }).ToList();
-   var idOff = ViewBag.idOf ;
-   var IdEtab = ViewBag.IdEtab;
+    var listItem = ListPee.Select(P => new SelectListItem() { Text = P.MatriculeBeneficiaireNavigation.NomBeneficiaire + "  " + P.MatriculeBeneficiaireNavigation.PrenomBeneficiaire, Value = P.IdPee.ToString() }).ToList();
+    var idOff = ViewBag.idOf;
+    var IdEtab = ViewBag.IdEtab;
 }
+@{ 
+    if(ViewBag.MessageSuccess != null)
+            {
+    <div id="hideSuccess">
+        @ViewBag.MessageSuccess
+    </div>
+    
+            }
+}
+<h4>Renseigner les suivis des Pee de vos stagiaires</h4>
 
-<h4>PeriodePeeSuivi</h4>
 <hr />
 <div class="row">
-    <div class="col-md-8">
-        <form enctype="multipart/form-data" asp-action="CreatePeriodePeeSuivi" asp-controller="Pee">
+    <div class="col-md-12">
+        <form enctype="multipart/form-data" asp-action="ConsignezLeSuiviDuPee" asp-controller="Pee" method="post">
 
 
-            <div class="form-group">
-                <label asp-for="IdPee" class="control-label"></label>
+            <div class="form-group col-sm-12 col-md-8">
+                <label asp-for="IdPee" class="control-label">Sélectionnez le stagiaire</label>
                 <select asp-for="IdPee" class="form-control" required asp-items=listItem></select>
 
             </div>
-            
-            <div class="form-group col-md-10">
-                <label asp-for="ObjetSuivi" class="control-label">Objet</label>
-                <input asp-for="ObjetSuivi" class="form-control" required value="" />
-                <span asp-validation-for="ObjetSuivi" class="text-danger"></span>
+
+            <div class="form-group col-sm-12 col-md-8">
+                <label asp-for="ObjetSuivi" class="control-label">séléctionnez l'objet</label>
+                <input asp-for="ObjetSuivi" class="form-control" required value="" placeholder="...saisissez l'objet de votre suivi" />
+                <span asp-validation-for="ObjetSuivi" id="messageError" class="text-danger">@ViewBag.objecValid</span><span id="countChar">10</span>
             </div>
-            <div class="ckeditorPee form-group w-100">
+            <div class="ckeditorPee form-group w-100 d-block">
                 <label asp-for="TexteSuivi" class="control-label">renseigner vos appréciations </label>
-                @Html.TextAreaFor(model => model.TexteSuivi, new {id = "textareaCk", @class = "ckeditor" })
-               
+                @Html.TextAreaFor(model => model.TexteSuivi, new { id = "textareaCk", @class = "ckeditor", cols = "80", rows = "10" })
+
             </div>
 
 
-            <div class="form-group col-md-10">
+            <div class="form-group col-sm-12 col-md-8">
                 <label asp-for="Fichier" class="col-sm-12 col-md-6 col-lg-6 ">Importer un Fichier(facultatif)</label>
                 <div class="custom-file">
                     <input asp-for="Fichier" class="form-control custom-file-input" />
@@ -45,43 +54,77 @@
 
             </div>
             <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group ">
-                <input type="submit" value="enregistrer" class="btn btn-primary btn-lg w-50" />
+            <div class="form-group col-sm-12 col-md-8 ">
+                <input id="submitBtn" type="submit" value="enregistrer" class="btn btn-primary btn-block " />
+            </div>
+            <div class="form-group col-sm-12 col-md-8">
+                @Html.ActionLink("Vers la liste Pee", "AfficheBeneficiairePee", "Pee",
+
+                new
+                    {
+                        IdOffreFormation = idOff,
+                    idEtablissement = IdEtab
+                },
+                new { @class = "btn btn-primary" }
+
+                )
             </div>
         </form>
+       
     </div>
+    
 </div>
 
-<div>
-    @Html.ActionLink("Vers la liste Pee", "AfficheBeneficiairePee", "Pee",
 
-    new {
-        IdOffreFormation = idOff,
-        idEtablissement = IdEtab
-    },
-    new {@class = "btn btn-primary"}
 
-    )
-</div>
 
 @section Scripts{
     <script type="text/javascript">
-        CKEDITOR.replace('textareaCk');
-        
-           
+
+       
         $(document).ready(function () {
+            CKEDITOR.replace('textareaCk', {
+                uiColor: '#14B8C4'
+            });
             $('.custom-file-input').on('change', function () {
                 //get the file name
                 var fileName = $(this).val().split('\\').pop();
                 //replace the "Choose a file" label
                 $(this).next('.custom-file-label').html(fileName);
             });
-
+            
+            
         });
+        
+        $(document).ready(() => {
+            $("#countChar").css({ "float": "right" });
+            var dialogViewBag = $("#hideSuccess");
+            dialogViewBag.show();
+            dialogViewBag.css({
+                "text-align": "center",
+                "font-size": "20px",
+                "padding":"10px",
+                "color": "white",
+                "background-color":"forestgreen"
+            });
+            dialogViewBag.fadeOut(4000);
+            
+        });
+        $("#ObjetSuivi").keyup(function () {
 
+            if ($(this).val().length > 10) {
+                $("#countChar").text(""); 
+                $("#messageError").hide();
+            }
+            else{
+                
+                var countCh = nbChar - $(this).val().length;
+               
+                $("#countChar").text(countCh) ;
+            }
+        });
+   
     </script>
-    
-
 }
 
 

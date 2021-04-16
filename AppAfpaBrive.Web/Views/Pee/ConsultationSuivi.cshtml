@@ -18,7 +18,7 @@
 </head>
 <body>
 
-    <h4>Les données des suivis de la période en entreprise</h4>
+    <h4>Les données des suivis de la période en entreprise des stagiaires</h4>
     <hr />
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
@@ -36,7 +36,9 @@
                         @Html.DropDownListFor(m => m.IdPeriodePeeSuivi, new SelectList(""), ".....Seléctionnez l'objet du suivi........", new { @class = "form-control" })
                     }
                 </div>
-                <div id="textArea" class="jumbotron col-sm-12 col-md-8 col-lg-8"></div>
+                <div id="textArea" class="form-group col-md-12">
+                    <textarea id="textContent"  value=""></textarea>
+                </div>
             </form>
             <div class="form-group col-sm-12 col-md-8 col-lg-8">
                 <a id="DownLoadDoc" class="btn btn-primary btn-block " href="">Télécharger le document</a>
@@ -63,6 +65,7 @@
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
+            CKEDITOR.replace('textContent');
             $("#IdPee").change(function () {
                 var peeId = $(this).val();
                 var listObjectSuivi = $("#IdPeriodePeeSuivi");
@@ -88,11 +91,13 @@
             });
             $("#IdPeriodePeeSuivi").change(function () {
                 var IdPeriodePeeSuivi = $("#IdPeriodePeeSuivi").val();
-                var TextAreaCk = $("#textArea");
-                TextAreaCk.empty();
-                
+                var TextAreaCk = $("#textContent").val();
+                /*TextAreaCk.empty();*/
+                CKEDITOR.instances.textContent.destroy();
                 $.getJSON("/Pee/GetPeriodePeeSuiviTextCkEditor?IdPeriodePeeSuivi=" + IdPeriodePeeSuivi, function ( obj) {
-                    TextAreaCk.append("<p>" + obj.texteSuivi + "</p>")
+                    $("#textContent").val(obj.texteSuivi);
+                    CKEDITOR.replace('textContent');
+                    
                 });
 
 
