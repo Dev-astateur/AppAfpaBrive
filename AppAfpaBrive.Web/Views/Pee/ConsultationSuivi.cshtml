@@ -42,6 +42,7 @@
             </form>
             <div class="form-group col-sm-12 col-md-8 col-lg-8">
                 <a id="DownLoadDoc" class="btn btn-primary btn-block " href="">Télécharger le document</a>
+                <span id="FileNotExist" ></span>
             </div>
         </div>
     </div>
@@ -85,34 +86,48 @@
             });
             $("#IdPeriodePeeSuivi").change(function () {
                 var IdPeriodePeeSuivi = $(this).val();
-                var BtnDownLoad = $("#DownLoadDoc");
-                BtnDownLoad.attr("href", "/Pee/DownLoadDocument?IdPeeDoc=" + IdPeriodePeeSuivi);
+               
+                
+                $.ajax({
+                    method: "Post",
+                    url: "/Pee/VerifyFileExist",
+                    data: { "IdPeriodePeeSuivi": IdPeriodePeeSuivi},
+                    success: function (response) {
+                        
+                        if (response == "Il n'y a pas de document à télécharger") {
+                            $("#FileNotExist").text(response).css({
+                                "color": "red"
+                            });
+                        }
+                        else {
+                            $("#FileNotExist").text("");
+                            var BtnDownLoad = $("#DownLoadDoc");
+                            BtnDownLoad.attr("href", "/Pee/DownLoadDocument?IdPeeDoc=" + IdPeriodePeeSuivi);
+                        }
+                    }
 
-            });
-            $("#IdPeriodePeeSuivi").change(function () {
-                var IdPeriodePeeSuivi = $("#IdPeriodePeeSuivi").val();
-                var TextAreaCk = $("#TexteSuivi").val();
-                /*TextAreaCk.empty();*/
+
+                });
                 CKEDITOR.instances.TexteSuivi.destroy();
-                $.getJSON("/Pee/GetPeriodePeeSuiviTextCkEditor?IdPeriodePeeSuivi=" + IdPeriodePeeSuivi, function ( obj) {
+                $.getJSON("/Pee/GetPeriodePeeSuiviTextCkEditor?IdPeriodePeeSuivi=" + IdPeriodePeeSuivi, function (obj) {
                     $("#TexteSuivi").val(obj.texteSuivi);
                     CKEDITOR.replace('TexteSuivi', {
                         on: {
                             save: function (evt) {
-                               
                                 $("#TexteSuivi").val(evt.editor.getData());
-                                
-                                /*return false;*/
+
                             }
                         }
 
                     });
-                    
-                    
-                    
-                });
+
+
+
+                });   
+               
 
             });
+          
            
         });
        

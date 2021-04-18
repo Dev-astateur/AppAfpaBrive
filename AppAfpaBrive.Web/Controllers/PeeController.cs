@@ -98,7 +98,7 @@ namespace AppAfpaBrive.Web.Controllers
                 IEnumerable<Pee> PeeSansDoublons = pees.Distinct(new PeeComparer());
                 
                 ViewData["ListPeeSansDoublons"] =  PeeSansDoublons;
-
+                HttpContext.Session.SetString("MessageSuccess", "");
                 HttpContext.Session.SetInt32(SessionIdOffreFormation, IdOffreFormation);
                 HttpContext.Session.SetString(SessionIdEtablissemnt, idEtablissement);
             }
@@ -334,20 +334,34 @@ namespace AppAfpaBrive.Web.Controllers
         #endregion
         public async Task<IActionResult> DownLoadDocument(int IdPeeDoc)
         {
-            var pathDoc = _dbContext.PeeDocuments.FirstOrDefault(p => p.IdPeriodePeeSuivi == IdPeeDoc);
-            if(pathDoc.PathDocument == null)
+            var listcheckBox = HttpContext.Session.GetObjectFromJson<List<int>>("checkBox");
+            string pathDoc = VerifyFileExist(IdPeeDoc);
+            bool fileExist = System.IO.File.Exists(pathDoc);
+            if (pathDoc == null || fileExist == false)
             {
-                return Content("Fichier non présent");
+                return Content("Le fichier n'existe pas");
+                
             }
             var memory = new MemoryStream();
-            using(var stream = new FileStream(pathDoc.PathDocument, FileMode.Open))
+
+            using(var stream = new FileStream(pathDoc, FileMode.Open))
             {
                 await stream.CopyToAsync(memory);
             }
             memory.Position = 0;
-            return File(memory, GetContentType(pathDoc.PathDocument), Path.GetFileName(pathDoc.PathDocument));
+            return File(memory, GetContentType(pathDoc), Path.GetFileName(pathDoc));
 
             
+        }
+        public string VerifyFileExist(int IdPeriodePeeSuivi)
+        {
+            var pathDoc = _dbContext.PeeDocuments.FirstOrDefault(p => p.IdPeriodePeeSuivi == IdPeriodePeeSuivi);
+            bool fileExist = System.IO.File.Exists(pathDoc.PathDocument);
+            if(pathDoc.PathDocument == null || fileExist == false)
+            {
+                return "Il n'y a pas de document à télécharger";
+            }
+            return pathDoc.PathDocument;
         }
         #region methode pour séléctionner le type des fichiers
         private static string GetContentType(string path)
@@ -366,7 +380,10 @@ namespace AppAfpaBrive.Web.Controllers
                 {".doc", "application/vnd.ms-word"},
                 {".docx", "application/vnd.ms-word"},
                 {".xls", "application/vnd.ms-excel"},
-                {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}, 
+                {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+                {".odt","application/vnd.oasis.opendocument.text" },
+                {".rtf","application/rtf" },
+                {".zip" ,"application/zip"},
                 {".png", "image/png"},
                 {".jpg", "image/jpeg"},
                 {".jpeg", "image/jpeg"},

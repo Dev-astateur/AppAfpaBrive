@@ -10,7 +10,7 @@
     var IdEtab = ViewBag.IdEtab;
 }
 @{ 
-    if(ViewBag.MessageSuccess != null)
+    if(!string.IsNullOrEmpty(ViewBag.MessageSuccess))
             {
     <div id="hideSuccess">
         @ViewBag.MessageSuccess
