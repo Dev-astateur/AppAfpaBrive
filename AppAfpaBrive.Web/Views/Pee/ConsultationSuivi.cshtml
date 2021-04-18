@@ -1,4 +1,4 @@
-﻿@model AppAfpaBrive.BOL.PeeDocument
+﻿@model AppAfpaBrive.Web.ModelView.PeriodePeeSuiviCreateViewModel
 @using AppAfpaBrive.BOL;
 @using Microsoft.AspNetCore.Http;
 @{ 
@@ -37,7 +37,7 @@
                     }
                 </div>
                 <div id="textArea" class="form-group col-md-12">
-                    <textarea id="textContent"  value=""></textarea>
+                    <textarea asp-for="TexteSuivi"  ></textarea>
                 </div>
             </form>
             <div class="form-group col-sm-12 col-md-8 col-lg-8">
@@ -65,7 +65,7 @@
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
-            CKEDITOR.replace('textContent');
+            CKEDITOR.replace('TexteSuivi');
             $("#IdPee").change(function () {
                 var peeId = $(this).val();
                 var listObjectSuivi = $("#IdPeriodePeeSuivi");
@@ -91,20 +91,31 @@
             });
             $("#IdPeriodePeeSuivi").change(function () {
                 var IdPeriodePeeSuivi = $("#IdPeriodePeeSuivi").val();
-                var TextAreaCk = $("#textContent").val();
+                var TextAreaCk = $("#TexteSuivi").val();
                 /*TextAreaCk.empty();*/
-                CKEDITOR.instances.textContent.destroy();
+                CKEDITOR.instances.TexteSuivi.destroy();
                 $.getJSON("/Pee/GetPeriodePeeSuiviTextCkEditor?IdPeriodePeeSuivi=" + IdPeriodePeeSuivi, function ( obj) {
-                    $("#textContent").val(obj.texteSuivi);
-                    CKEDITOR.replace('textContent');
+                    $("#TexteSuivi").val(obj.texteSuivi);
+                    CKEDITOR.replace('TexteSuivi', {
+                        on: {
+                            save: function (evt) {
+                               
+                                $("#TexteSuivi").val(evt.editor.getData());
+                                
+                                /*return false;*/
+                            }
+                        }
+
+                    });
+                    
+                    
                     
                 });
 
-
             });
            
-     
-            });
+        });
+       
     </script>
     
 

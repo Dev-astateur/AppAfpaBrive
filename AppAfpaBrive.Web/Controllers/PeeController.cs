@@ -322,7 +322,7 @@ namespace AppAfpaBrive.Web.Controllers
                .Include(p => p.PeriodePeeSuivis)
                .Include(b => b.MatriculeBeneficiaireNavigation));
             }
-
+            HttpContext.Session.SetObjectAsJson("checkBox", PeecheckBox);
             var idOffre = HttpContext.Session.GetInt32(SessionIdOffreFormation);
             var IdEtablissemnt = HttpContext.Session.GetString(SessionIdEtablissemnt);
             ViewBag.ideOffre = idOffre;
@@ -331,6 +331,7 @@ namespace AppAfpaBrive.Web.Controllers
             return View();
         }
         [HttpGet]
+        #endregion
         public async Task<IActionResult> DownLoadDocument(int IdPeeDoc)
         {
             var pathDoc = _dbContext.PeeDocuments.FirstOrDefault(p => p.IdPeriodePeeSuivi == IdPeeDoc);
@@ -348,7 +349,7 @@ namespace AppAfpaBrive.Web.Controllers
 
             
         }
-
+        #region methode pour séléctionner le type des fichiers
         private static string GetContentType(string path)
         {
             var types = GetMimeTypes();
@@ -373,7 +374,8 @@ namespace AppAfpaBrive.Web.Controllers
                 {".csv", "text/csv"}
             };
         }
-
+        #endregion
+        #region méthode pour la séléction les objets du texte de suivi
         public List<SelectListItem> GetListObject(int IdPee)
         {
             var listObject = _dbContext.PeriodePeeSuivis.Include(o => o.PeeDocuments).Where(o => o.IdPee == IdPee).ToList();
@@ -381,6 +383,8 @@ namespace AppAfpaBrive.Web.Controllers
              
             return listsuivi;
         }
+        #endregion
+        #region méthode pour le séléction le texte du suivi
         public PeriodePeeSuivi  GetPeriodePeeSuiviTextCkEditor(int IdPeriodePeeSuivi)
         {
             var suiviPeriodePee = _dbContext.PeriodePeeSuivis
@@ -388,6 +392,18 @@ namespace AppAfpaBrive.Web.Controllers
             
            
             return suiviPeriodePee; 
+        }
+        #endregion
+        #region update du texte du suivi
+        [HttpPost]
+        public async Task<IActionResult> ConsultationSuivi(PeriodePeeSuiviCreateViewModel model)
+        {
+            var listcheckBox = HttpContext.Session.GetObjectFromJson<List<int>>("checkBox");
+            var obj = _dbContext.PeriodePeeSuivis.FirstOrDefaultAsync(p => p.IdPeriodePeeSuivi == model.IdPeriodePeeSuivi).Result;
+            obj.TexteSuivi = model.TexteSuivi;
+            _dbContext.Update(obj);
+           await _dbContext.SaveChangesAsync();
+            return RedirectToAction("ConsultationSuivi", new { PeecheckBox = listcheckBox });
         }
         #endregion
 
