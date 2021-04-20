@@ -53,11 +53,11 @@ namespace AppAfpaBrive.Web.ModelView
         [Display(Name = "Téléphone")]
         public string TelEntreprise { get; set; }
 
-        [Display(Name = "Adresse")]
+        [Display(Name = "Batiment")]
         public string Ligne1Adresse { get; set; }
         [Display(Name = "Complément")]
         public string Ligne2Adresse { get; set; }
-        [Display(Name = "Batiment")]
+        [Display(Name = "adresse")]
         public string Ligne3Adresse { get; set; }
 
         [Required]

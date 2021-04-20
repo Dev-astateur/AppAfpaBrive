@@ -33,7 +33,11 @@
                 }
                 @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
                 {
-                    <a class="dropdown-item text-dark" asp-area="" asp-controller="IntegrationExcelOffres" asp-action="Create">Ajout Bénéficiaires</a>
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="IntegrationExcelOffres" asp-action="Create">Intégration fichier excel</a>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="GestionAnnuaire" asp-action="LigneAnnuaires">Gestion de l'annuaire</a>
                 }
                 @if (User.IsInRole("Formateur") || User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
                 {
