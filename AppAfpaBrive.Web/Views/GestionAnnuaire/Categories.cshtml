@@ -17,6 +17,7 @@
             <a asp-controller="GestionAnnuaire" asp-action="CreateCategorie" class="btn btn-primary">
                 <i class="fas fa-plus-square"></i> &nbsp; Ajouter une nouvelle categorie
             </a>
+            <a asp-controller="GestionAnnuaire" asp-action="LigneAnnuaires">Retour</a>
         </div>
         <form method="get" class="form-inline">
             <input name="filter" class="form-control" placeholder="filtre" value="@Model.RouteValue["filter"]" />
