@@ -94,6 +94,18 @@
                         </div>
                     </div>
                 }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="mt-0 text-primary">Gestion annuaire</h5>
+                            <div class="row">
+                                <div class="col-sm-10">Partie pour gérer l'annuaire de l'application</div>
+                                <div class="col-sm-2"><a asp-controller="GestionAnnuaire" asp-action="LigneAnnuaires" class="w-100 btn btn-primary">Annuaire</a></div>
+                            </div>
+                        </div>
+                    </div>
+                }
                 @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA") || User.IsInRole("Formateur"))
                 {
                     <div class="media">
