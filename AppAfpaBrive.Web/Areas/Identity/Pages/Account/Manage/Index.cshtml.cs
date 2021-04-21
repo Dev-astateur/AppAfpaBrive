@@ -78,9 +78,12 @@ namespace AppAfpaBrive.Web.Areas.Identity.Pages.Account.Manage
                 Theme = user.Theme,
                 ListeOffresFavorites = user.ListeOffresFavorites.OrderByDescending(o => o.DateDebutOffreFormation).ToList()
             };
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.NullValueHandling = NullValueHandling.Ignore;
-            user.ListeOffresFavorites = JsonConvert.DeserializeObject<List<OffreFavorite>>(user.OffresFavorites, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            if (user.OffresFavorites is not null) {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+                user.ListeOffresFavorites = JsonConvert.DeserializeObject<List<OffreFavorite>>(user.OffresFavorites, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            } 
+            
             Input.ListeThemes = _config.GetSection("Themes").GetChildren().Select(sc => new SelectListItem() { Text = sc.Value, Value = sc.Value, Selected = sc.Value == user.Theme }).ToList();
         }
 
