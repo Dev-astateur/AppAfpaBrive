@@ -37,38 +37,38 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-            @if (User.IsInRole("Bénéficiaire"))
-            {
-                @await Html.PartialAsync("~/Views/Shared/Navigation/_Beneficiaire.cshtml");
-            }
-            else
-            {
-                @await Html.PartialAsync("~/Views/Shared/Navigation/_Collaborateur.cshtml",User);
-            }
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bonjour @user.Prenom @user.Nom !</a>
-                    </li>
-                    <li class="nav-item">
-                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                            <button type="submit" class="nav-link btn btn-link text-dark">Se déconnecter</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        @if (User.IsInRole("Bénéficiaire"))
+                        {
+                            @await Html.PartialAsync("~/Views/Shared/Navigation/_Beneficiaire.cshtml");
+                        }
+                        else
+                        {
+                            @await Html.PartialAsync("~/Views/Shared/Navigation/_Collaborateur.cshtml", User);
+                        }
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Bonjour @user.Prenom @user.Nom !</a>
+                            </li>
+                            <li class="nav-item">
+                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Se déconnecter</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
 
-        }
-        else
-        {
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Se connecter</a>
-                </li>
-            </ul>
-        }
+                }
+                else
+                {
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Se connecter</a>
+                        </li>
+                    </ul>
+                }
 
             </div>
         </nav>
@@ -84,9 +84,10 @@
             &copy; 2021 - AppAfpaBrive - <a href="https://metis.afpa.fr/login/index.php" target="_self">Afpa</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
