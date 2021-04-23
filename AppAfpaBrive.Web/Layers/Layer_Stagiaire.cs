@@ -102,7 +102,7 @@ namespace AppAfpaBrive.Web.Layers
         
         public BeneficiaireModelView UpdateBeneficiaire(BeneficiaireModelView beneficiaire)
         {
-            Beneficiaire benef = new Beneficiaire()
+            Beneficiaire benef = new ()
             {
                 MatriculeBeneficiaire = beneficiaire.MatriculeBeneficiaire,
                 CodeTitreCivilite = beneficiaire.CodeTitreCivilite,

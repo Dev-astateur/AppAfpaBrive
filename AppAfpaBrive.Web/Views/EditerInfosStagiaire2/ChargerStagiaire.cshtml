@@ -54,7 +54,7 @@
                 <div class="row">
                     <div class="col-md-4 form-group">
                         <label asp-for="DateNaissanceBeneficiaire" class="control-label">Date de naissance</label>
-                        <input asp-for="DateNaissanceBeneficiaire" class="form-control" />
+                        <input asp-for="DateNaissanceBeneficiaire" asp-format="" class="form-control" />
                         <span asp-validation-for="DateNaissanceBeneficiaire" class="text-danger"></span>
                     </div>
                 </div>
@@ -75,14 +75,14 @@
                 <div class="row">
                     <div class="col-md-4 form-group">
                         <label asp-for="Ligne1Adresse" class="control-label">Adresse</label>
-                        <input asp-for="Ligne1Adresse" class="form-control" /><br />
+                        <input asp-for="Ligne1Adresse" class="form-control" placeholder="Batiment"/><br />
                         <span asp-validation-for="Ligne1Adresse" class="text-danger"></span>
                         <div>
-                            <input asp-for="Ligne2Adresse" class="form-control" placeholder="Adresse 2" /><br />
+                            <input asp-for="Ligne2Adresse" class="form-control" placeholder="Complément" /><br />
                             <span asp-validation-for="Ligne2Adresse" class="text-danger"></span>
                         </div>
                         <div>
-                            <input asp-for="Ligne3Adresse" class="form-control" placeholder="Adresse 3" />
+                            <input asp-for="Ligne3Adresse" class="form-control" placeholder="Adresse" />
                             <span asp-validation-for="Ligne3Adresse" class="text-danger"></span>
                         </div>
                     </div>

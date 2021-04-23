@@ -42,7 +42,7 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
             }
 
                 var beneficiaire = _stagiaireLayer.FinByMatricule(id);
-                BeneficiaireModelView beneficiaireModelView = new BeneficiaireModelView(beneficiaire);
+                BeneficiaireModelView beneficiaireModelView = new (beneficiaire);
                 IEnumerable<string> listePays = _paysLayer.GetAllLibelle();
                 ViewBag.LibellePays = listePays;
             

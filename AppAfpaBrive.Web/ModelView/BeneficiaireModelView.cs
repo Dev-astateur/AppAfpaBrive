@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.ModelView
 {
-    public class BeneficiaireModelView
+    public class BeneficiaireModelView : ModelViewBase
     {
         public BeneficiaireModelView()
         {
@@ -21,8 +21,7 @@ namespace AppAfpaBrive.Web.ModelView
         {
             if ( beneficiaire is not null )
             {
-                
-                MailBeneficiaire = beneficiaire.MatriculeBeneficiaire;
+                MatriculeBeneficiaire = beneficiaire.MatriculeBeneficiaire;
                 CodeTitreCivilite = beneficiaire.CodeTitreCivilite;
                 NomBeneficiaire = beneficiaire.NomBeneficiaire;
                 PrenomBeneficiaire = beneficiaire.PrenomBeneficiaire;
@@ -55,7 +54,8 @@ namespace AppAfpaBrive.Web.ModelView
 
         [Required(ErrorMessage = "Veuillez saisir un prénom")]
         public string PrenomBeneficiaire { get; set; }
-        
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateNaissanceBeneficiaire { get; set; }
 
         [Required]
