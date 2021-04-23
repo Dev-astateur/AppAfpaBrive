@@ -2,6 +2,7 @@
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers.AnnuaireSocial;
 using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,10 +17,9 @@ using System.Threading.Tasks;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+    [Authorize(Roles = "CollaborateurAFPA,Administrateur")]
     public class GestionAnnuaireController : Controller
     {
-
-
         private readonly CategorieLayer _categorieLayer;
         private readonly StructureLayer _structureLayer;
         private readonly ContactLayer _contactLayer;

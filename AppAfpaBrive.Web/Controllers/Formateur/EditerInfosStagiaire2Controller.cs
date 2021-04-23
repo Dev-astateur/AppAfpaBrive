@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AppAfpaBrive.Web.ModelView;
 using AppAfpaBrive.Web.Layers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {
+    [Authorize(Roles = "Formateur,CollaborateurAFPA,Administrateur")]
     public class EditerInfosStagiaire2Controller : Controller
     {
         private readonly Layer_Stagiaire _stagiaireLayer;
@@ -58,8 +60,11 @@ namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
         // Enregistrement des modifications
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChargerStagiaire(Beneficiaire beneficiaire)
+        public ActionResult ChargerStagiaire(string MatriculeBeneficiaire, BeneficiaireModelView beneficiaire)
         {
+            if (MatriculeBeneficiaire != beneficiaire.MatriculeBeneficiaire)
+                return BadRequest();
+
             var btnRadioGenre = Request.Form["Genre"].ToString();
             var btnRadioMailing = Request.Form["Mailing"].ToString();
 

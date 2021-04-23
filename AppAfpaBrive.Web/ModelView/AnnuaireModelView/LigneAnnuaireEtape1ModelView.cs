@@ -33,6 +33,15 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
         public IEnumerable<ContactsCheckBox> listContacts { get; set; }
         public ICollection<Contact> contacts { get; set; }
 
+        public LigneAnnuaireEtape1ModelView ()
+        {
+            //categories = new HashSet<Categorie>();
+            //listCategories = new List<CategorieModelView>();
+            //listStructures = new List<SelectListItem>();
+            //listContacts = new List<ContactsCheckBox>();
+            contacts = new HashSet<Contact>();
+        }
+
         public LigneAnnuaire ToLigneAnnuaire()
         {
             LigneAnnuaire la = new LigneAnnuaire

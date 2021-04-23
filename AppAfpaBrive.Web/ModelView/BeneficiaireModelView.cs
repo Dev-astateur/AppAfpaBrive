@@ -14,14 +14,14 @@ namespace AppAfpaBrive.Web.ModelView
             BeneficiaireOffreFormations = new HashSet<BeneficiaireOffreFormation>();
             Contrats = new HashSet<ContratModelView>();
             //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
-            Pees = new HashSet<PeeModelView>();
-            
+            Pees = new HashSet<PeeModelView>();    
         }
             
         public BeneficiaireModelView( Beneficiaire beneficiaire  )
         {
             if ( beneficiaire is not null )
             {
+                
                 MailBeneficiaire = beneficiaire.MatriculeBeneficiaire;
                 CodeTitreCivilite = beneficiaire.CodeTitreCivilite;
                 NomBeneficiaire = beneficiaire.NomBeneficiaire;
@@ -50,8 +50,6 @@ namespace AppAfpaBrive.Web.ModelView
 
         public int? CodeTitreCivilite { get; set; }
 
-
-
         [Required(ErrorMessage = "Veuillez saisir un nom")]
         public string NomBeneficiaire { get; set; }
 
@@ -67,9 +65,11 @@ namespace AppAfpaBrive.Web.ModelView
         [Required(ErrorMessage ="Veuillez saisir un numéro de téléphone")]
         [RegularExpression(@"(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}", ErrorMessage ="Veuillez saisir un numéro de téléphone valide")]
         public string TelBeneficiaire { get; set; }
-
+        [Display(Name ="Batiment")]
         public string Ligne1Adresse { get; set; }
+        [Display(Name = "Complement")]
         public string Ligne2Adresse { get; set; }
+        [Display(Name = "Adresse")]
         public string Ligne3Adresse { get; set; }
 
         [Required(ErrorMessage ="Veuillez saisir un code postal")]

@@ -29,6 +29,10 @@
                 }
                 @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
                 {
+                    <a class="dropdown-item text-dark" asp-area="" asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation">Offre de formation</a>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
                     <a class="dropdown-item text-dark" asp-area="" asp-controller="FileUpload" asp-action="Index">Intégration offre de formations</a>
                 }
                 @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))

@@ -2,6 +2,7 @@
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.Layers;
 using AppAfpaBrive.Web.ModelView;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ReflectionIT.Mvc.Paging;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 namespace AppAfpaBrive.Web.Controllers.Formateur.EditerInfosStagiaire_Romgb
 {
 
-
+    [Authorize(Roles = "Formateur,CollaborateurAFPA,Administrateur")]
     public class EditerInfosStagiaireController : Controller
     {
         //private AFPANADbContext _context = null;

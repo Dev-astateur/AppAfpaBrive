@@ -1,5 +1,6 @@
 ﻿using AppAfpaBrive.BOL;
 using AppAfpaBrive.DAL;
+using AppAfpaBrive.Web.ModelView;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,33 @@ namespace AppAfpaBrive.Web.Layers
         {
             _context.Beneficiaires.Update(beneficiaire);
             _context.SaveChanges();
+        }
+        
+        public BeneficiaireModelView UpdateBeneficiaire(BeneficiaireModelView beneficiaire)
+        {
+            Beneficiaire benef = new Beneficiaire()
+            {
+                MatriculeBeneficiaire = beneficiaire.MatriculeBeneficiaire,
+                CodeTitreCivilite = beneficiaire.CodeTitreCivilite,
+                NomBeneficiaire = beneficiaire.NomBeneficiaire,
+                PrenomBeneficiaire = beneficiaire.PrenomBeneficiaire,
+                DateNaissanceBeneficiaire = beneficiaire.DateNaissanceBeneficiaire,
+                MailBeneficiaire = beneficiaire.MailBeneficiaire,
+                TelBeneficiaire = beneficiaire.TelBeneficiaire,
+                Ligne1Adresse = beneficiaire.Ligne1Adresse,
+                Ligne2Adresse = beneficiaire.Ligne2Adresse,
+                Ligne3Adresse = beneficiaire.Ligne3Adresse,
+                CodePostal = beneficiaire.CodePostal,
+                Ville = beneficiaire.Ville,
+                UserId = beneficiaire.UserId,
+                IdPays2 = beneficiaire.IdPays2,
+                PathPhoto = beneficiaire.PathPhoto,
+                MailingAutorise = beneficiaire.MailingAutorise
+
+            };
+            _context.Beneficiaires.Update(benef);
+            _context.SaveChanges();
+            return beneficiaire;
         }
 
     }

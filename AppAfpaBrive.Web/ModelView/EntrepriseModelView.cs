@@ -57,7 +57,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string Ligne1Adresse { get; set; }
         [Display(Name = "Complément")]
         public string Ligne2Adresse { get; set; }
-        [Display(Name = "adresse")]
+        [Display(Name = "Adresse")]
         public string Ligne3Adresse { get; set; }
 
         [Required]
