@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ReflectionIT.Mvc.Paging;
 using System;
@@ -401,9 +402,18 @@ namespace AppAfpaBrive.Web.Controllers
 
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
-            return View();
+            if ( id is null )
+            {
+                return BadRequest();
+            }
+            LigneAnnuaire annuaire = _context.LigneAnnuaires.Where(e=>e.IdLigneAnnuaire == (int)id)
+                .Include(e=>e.Structure)
+                .Include(e=>e.CategorieLigneAnnuaires).ThenInclude(e=>e.Categorie)
+                .Include(e=>e.ContactLigneAnnuaires).ThenInclude(e=>e.Contact)
+                .FirstOrDefault();
+            return View(annuaire);
         }
         #endregion
 

@@ -35,10 +35,10 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
 
         public LigneAnnuaireEtape1ModelView ()
         {
-            //categories = new HashSet<Categorie>();
-            //listCategories = new List<CategorieModelView>();
-            //listStructures = new List<SelectListItem>();
-            //listContacts = new List<ContactsCheckBox>();
+            categories = new HashSet<Categorie>();
+            listCategories = new List<CategorieModelView>();
+            listStructures = new List<SelectListItem>();
+            listContacts = new List<ContactsCheckBox>();
             contacts = new HashSet<Contact>();
         }
 
