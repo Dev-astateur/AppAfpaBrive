@@ -59,10 +59,11 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocial
             return _context.LigneAnnuaires.Find(id);
         }
 
-        public void Insert(LigneAnnuaire ligneAnnuaire)
+        public LigneAnnuaire Insert(LigneAnnuaire ligneAnnuaire)
         {
             _context.LigneAnnuaires.Add(ligneAnnuaire);
             _context.SaveChanges();
+            return ligneAnnuaire;
         }
 
         public void Update(LigneAnnuaire ligneAnnuaire)

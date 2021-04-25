@@ -74,6 +74,18 @@
                 {
                     <div class="media">
                         <div class="media-body">
+                            <h5 class="mt-0 text-primary">Bénéficaire par offre de formation</h5>
+                            <div class="row">
+                                <div class="col-sm-10">Liste des bénéficiaires par offre de formation</div>
+                                <div class="col-sm-2"><a asp-controller="EditerInfosStagiaire" asp-action="ListeOffreFormation" class="w-100 btn btn-primary">Bénéficiaires</a></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (User.IsInRole("Administrateur") || User.IsInRole("CollaborateurAFPA"))
+                {
+                    <div class="media">
+                        <div class="media-body">
                             <h5 class="mt-0 text-primary">Intégration offre</h5>
                             <div class="row">
                                 <div class="col-sm-10">Intégration offre de formations</div>

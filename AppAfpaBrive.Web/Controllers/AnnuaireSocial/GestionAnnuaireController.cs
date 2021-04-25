@@ -384,7 +384,6 @@ namespace AppAfpaBrive.Web.Controllers
 
             string str = this.HttpContext.Session.GetString("ligneAnnuaire");
             LigneAnnuaireEtape1ModelView ligne = JsonConvert.DeserializeObject<LigneAnnuaireEtape1ModelView>(str);
-
             ligne.structure = _structureLayer.GetStructureById(ligne.IdStructure).GetStructure();
 
             foreach (var el in modelViews)
@@ -396,9 +395,15 @@ namespace AppAfpaBrive.Web.Controllers
             }
 
             LigneAnnuaire final = ligne.ToLigneAnnuaire();
-            _context.LigneAnnuaires.Add(final);
+            _ligneAnnuaireLayer.Insert(final);
+
             return RedirectToAction("LigneAnnuaires");
 
+        }
+
+        public IActionResult Edit(int id)
+        {
+            return View();
         }
         #endregion
 

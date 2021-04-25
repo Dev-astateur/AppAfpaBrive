@@ -50,18 +50,21 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
                 PublicConcerne = this.PublicConcerne,
                 Service = this.Service,
                 ServiceAbrege = this.ServiceAbrege,
-                Structure = this.structure,
+                //Structure = this.structure,
                 IdStructure = this.structure.IdStructure
             };
 
-            foreach(var cat in this.categories)
+
+            foreach (var cat in this.categories)
             {
-                la.CategorieLigneAnnuaires.Add(new CategorieLigneAnnuaire { Categorie = cat, IdCategorie = cat.IdCategorie, IdLigneAnnuaire = la.IdLigneAnnuaire, LigneAnnuaire = la });
+                //la.CategorieLigneAnnuaires.Add(new CategorieLigneAnnuaire { Categorie = cat, IdCategorie = cat.IdCategorie, IdLigneAnnuaire = la.IdLigneAnnuaire, LigneAnnuaire = la });
+                la.CategorieLigneAnnuaires.Add(new CategorieLigneAnnuaire { IdCategorie = cat.IdCategorie, IdLigneAnnuaire = la.IdLigneAnnuaire});
             }
 
-            foreach(var contact in this.contacts)
+
+            foreach (var contact in this.contacts)
             {
-                la.ContactLigneAnnuaires.Add(new ContactLigneAnnuaire { Contact = contact, IdContact = contact.IdContact, IdLigneAnnuaire = la.IdLigneAnnuaire, LigneAnnuaire = la });
+                la.ContactLigneAnnuaires.Add(new ContactLigneAnnuaire { IdContact = contact.IdContact, IdLigneAnnuaire = la.IdLigneAnnuaire});
             }
 
             return la;
