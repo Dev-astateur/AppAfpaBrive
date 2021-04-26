@@ -1,4 +1,4 @@
-﻿@model AppAfpaBrive.Web.ModelView.AnnuaireModelView.LigneAnnuaireEtape1ModelView
+﻿@model ICollection<AppAfpaBrive.Web.ModelView.AnnuaireModelView.ContactModelView>
 @{
     ViewData["Title"] = "Modification des contacts pour une ligne d'annuaire";
 }
@@ -15,8 +15,7 @@
         </div>
 
         <form method="post" class="form-inline">
-
-            @if (Model.listContacts.Count() > 0)
+            @if (Model.Count() > 0)
             {
                 <table class="table table-bordered table-striped" style="width:100%">
                     <thead>
@@ -43,7 +42,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.listContacts)
+                        @foreach (var item in Model)
                         {
                             <tr id="ligne" class="model">
                                 <td>@item.TitreCivilite.TitreCiviliteAbrege</td>
@@ -51,8 +50,6 @@
                                 <td>@item.Prenom</td>
                                 <td>@item.Mail</td>
                                 <td>@item.Telephone</td>
-
-
                                 <td>
                                     <input type="hidden" asp-for="@item.IdContact" />
                                     <input type="hidden" asp-for="@item.Nom">

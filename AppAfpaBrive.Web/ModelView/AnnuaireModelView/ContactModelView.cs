@@ -33,6 +33,12 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
 
         public bool IsChecked { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            return obj is ContactModelView view &&
+                   IdContact == view.IdContact;
+        }
+
         public Contact GetContact()
         {
             return new Contact
@@ -47,6 +53,11 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
                 ContactLigneAnnuaires = this.ContactLigneAnnuaires,
                 ContactStructures = this.ContactStructures
             };
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(IdContact);
         }
     }
 }

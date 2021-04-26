@@ -327,7 +327,7 @@ namespace AppAfpaBrive.Web.Controllers
         public IActionResult CreateLigneAnnuaires()
         {
 
-            LigneAnnuaireEtape1ModelView ligne = new LigneAnnuaireEtape1ModelView
+            LigneAnnuaireEtape1ModelView ligne = new()
             {
                 listCategories = _categorieLayer.categories()
             };
@@ -397,7 +397,6 @@ namespace AppAfpaBrive.Web.Controllers
             _ligneAnnuaireLayer.Insert(final);
 
             return RedirectToAction("LigneAnnuaires");
-
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -423,9 +422,10 @@ namespace AppAfpaBrive.Web.Controllers
 
             if(ModelState.IsValid)
             {
-                //string annuaire = JsonConvert.SerializeObject(ligneAnnuaire);
-                //HttpContext.Session.SetString("ligneAnnuaire", annuaire);
-                return RedirectToAction("UpdateContactLigneAnnuaire", ligneAnnuaire);
+                string annuaire = JsonConvert.SerializeObject(ligneAnnuaire);
+                HttpContext.Session.SetString("ligneAnnuaire", annuaire);
+
+                return RedirectToAction("UpdateContactLigneAnnuaire");
             }
             else
             {
@@ -433,22 +433,54 @@ namespace AppAfpaBrive.Web.Controllers
             }               
         }
 
-        [HttpGet]
-        public IActionResult UpdateContactLigneAnnuaire (LigneAnnuaireEtape1ModelView ligneAnnuaire)
+        public IActionResult UpdateContactLigneAnnuaire ()
         {
+            string str = this.HttpContext.Session.GetString("ligneAnnuaire");
+            LigneAnnuaireEtape1ModelView ligneAnnuaire = JsonConvert.DeserializeObject<LigneAnnuaireEtape1ModelView>(str);
             if (ligneAnnuaire is null)
             {
                 return BadRequest();
             }
-            ligneAnnuaire.listContacts = _contactLigneAnnuaireLayer.GetContactsCheckByIdLigneAnnuaire(ligneAnnuaire.IdLigneAnnuaire);
+            ICollection<ContactModelView> listeContacts = _contactLigneAnnuaireLayer.GetContactsByIdLigneAnnuaire(ligneAnnuaire.IdLigneAnnuaire);
             var contacts = _contactLayer.GetContactsChecksAll();
-            foreach(ContactsCheckBox item in contacts)
+            foreach(ContactModelView item in contacts)
             {
-                if ( !ligneAnnuaire.listContacts.Contains(item) )
-                    ligneAnnuaire.listContacts.Add(item);
+                if ( !listeContacts.Contains(item) )
+                    listeContacts.Add(item);
             }
 
-            return View(ligneAnnuaire);
+            return View(listeContacts);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateContactLigneAnnuaire(ICollection<ContactModelView> modelViews)
+        {
+
+            string str = this.HttpContext.Session.GetString("ligneAnnuaire");
+            LigneAnnuaireEtape1ModelView ligneAnnuaire = JsonConvert.DeserializeObject<LigneAnnuaireEtape1ModelView>(str);
+            if (ligneAnnuaire is null)
+                return BadRequest();
+
+            ligneAnnuaire.structure = _structureLayer.GetStructureById(ligneAnnuaire.IdStructure).GetStructure();
+            var contacts = _contactLigneAnnuaireLayer.GetContactsByIdLigneAnnuaire(ligneAnnuaire.IdLigneAnnuaire);
+
+            foreach (ContactModelView item in modelViews)
+            {
+                if (item.IsChecked)
+                {
+                    if(!contacts.Contains(item))
+                    {
+                        ligneAnnuaire.contacts.Add(item.GetContact());
+                    }
+                    //ligne.contacts.Add(el.GetContact());
+                }
+            }
+
+            LigneAnnuaire final = ligneAnnuaire.ToLigneAnnuaire();
+            _ligneAnnuaireLayer.Update(final);
+
+            return RedirectToAction("LigneAnnuaires");
         }
 
         #endregion

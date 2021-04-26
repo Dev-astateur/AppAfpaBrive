@@ -85,10 +85,10 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocial
             _context.SaveChanges();
         }
 
-        public ICollection<ContactsCheckBox> GetContactsChecksAll()
+        public ICollection<ContactModelView> GetContactsChecksAll()
         {
             return _context.Contacts
-                .Select(e => new ContactsCheckBox()
+                .Select(e => new ContactModelView()
                 {
                     IdContact = e.IdContact,
                     IdTitreCivilite = e.IdTitreCivilite,
