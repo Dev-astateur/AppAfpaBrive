@@ -1,7 +1,7 @@
-﻿@model AppAfpaBrive.BOL.AnnuaireSocial.LigneAnnuaire
-
+﻿@model AppAfpaBrive.Web.ModelView.AnnuaireModelView.LigneAnnuaireEtape1ModelView
 @{
     ViewData["Title"] = "Modification";
+    ViewBag.ListStructure = Model.listStructures;
 }
 
 <h1>Modification</h1>
@@ -34,19 +34,19 @@
                 <span asp-validation-for="Conditions" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdStructure" class="control-label"></label>
-                <select asp-for="IdStructure" class="form-control" asp-items="ViewBag.IdStructure"></select>
+                <label asp-for="IdStructure" class="control-label">Structure</label>
+                <select asp-for="IdStructure" class="form-control" asp-items="ViewBag.ListStructure"></select>
                 <span asp-validation-for="IdStructure" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Suivant" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="LigneAnnuaires">Retour</a>
 </div>
 
 @section Scripts {

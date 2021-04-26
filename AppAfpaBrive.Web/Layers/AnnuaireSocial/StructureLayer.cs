@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL.AnnuaireSocial;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
@@ -82,6 +83,15 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocial
             return _context.Structures.Where(x => x.CodePostal.StartsWith(town));
         }
 
+        public ICollection<SelectListItem> GetListStructure (int? idStructure )
+        {
+            return _context.Structures.Select(e => new SelectListItem()
+            {
+                Text = e.NomStructure,
+                Value = e.IdStructure.ToString(),
+                Selected = idStructure == e.IdStructure,
+            }).ToList();
+        }
         
     }
 }

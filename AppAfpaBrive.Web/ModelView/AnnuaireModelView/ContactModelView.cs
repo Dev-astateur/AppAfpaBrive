@@ -22,7 +22,7 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
         public string Telephone { get; set; }
 
 
-        [Required(ErrorMessage = "Titre de civilité obligatoire")]
+        //[Required(ErrorMessage = "Titre de civilité obligatoire")]
         public int IdTitreCivilite { get; set; }
 
         public TitreCivilite TitreCivilite { get; set; }

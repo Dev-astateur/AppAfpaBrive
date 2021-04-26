@@ -402,19 +402,19 @@ namespace AppAfpaBrive.Web.Controllers
 
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if ( id is null )
             {
                 return BadRequest();
             }
-            LigneAnnuaire annuaire = _context.LigneAnnuaires.Where(e=>e.IdLigneAnnuaire == (int)id)
-                .Include(e=>e.Structure)
-                .Include(e=>e.CategorieLigneAnnuaires).ThenInclude(e=>e.Categorie)
-                .Include(e=>e.ContactLigneAnnuaires).ThenInclude(e=>e.Contact)
-                .FirstOrDefault();
+
+            LigneAnnuaireEtape1ModelView annuaire = await _ligneAnnuaireLayer.GetLigneAnnuaireByIdAsync((int)id);
+            annuaire.listStructures = _structureLayer.GetListStructure(annuaire.IdStructure);
             return View(annuaire);
         }
+        
+
         #endregion
 
 

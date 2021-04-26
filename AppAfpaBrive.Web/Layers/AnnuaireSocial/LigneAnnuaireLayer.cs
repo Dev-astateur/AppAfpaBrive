@@ -1,6 +1,7 @@
 ﻿using AppAfpaBrive.BOL.AnnuaireSocial;
 using AppAfpaBrive.DAL;
 using AppAfpaBrive.Web.ModelView.AnnuaireModelView;
+using Microsoft.EntityFrameworkCore;
 using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
@@ -24,12 +25,12 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocial
         public async Task<PagingList<LigneAnnuaire>> GetPage(string filter, int page = 1, string sortExpression = "PublicConcerne")
         {
 
-            var qry = _context.LigneAnnuaires.AsQueryable();
+            var qry = _context.LigneAnnuaires
+                .Include(e=>e.Structure).AsQueryable();
             if (!string.IsNullOrWhiteSpace(filter))
             {
                 qry = qry.Where(p => p.PublicConcerne.Contains(filter));
             }
-
             return await PagingList.CreateAsync<LigneAnnuaire>(qry, 20, page, sortExpression, "Nom");
         }
 
@@ -78,7 +79,22 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocial
             _context.SaveChanges();
         }
 
-
+        public async Task<LigneAnnuaireEtape1ModelView> GetLigneAnnuaireByIdAsync( int id )
+        {
+            return await _context.LigneAnnuaires.Where(e => e.IdLigneAnnuaire == (int)id)
+                .Include(e => e.Structure)
+                .Select(e => new LigneAnnuaireEtape1ModelView()
+                {
+                    IdLigneAnnuaire = e.IdLigneAnnuaire,
+                    PublicConcerne = e.PublicConcerne,
+                    ServiceAbrege = e.ServiceAbrege,
+                    Service = e.Service,
+                    Conditions = e.Conditions,
+                    IdStructure = e.IdStructure,
+                    structure = e.Structure
+                })
+                .FirstOrDefaultAsync();
+        }
     }
 
    
