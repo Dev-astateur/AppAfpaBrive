@@ -25,8 +25,8 @@ namespace AppAfpaBrive.Web.Controllers
         private readonly StructureLayer _structureLayer;
         private readonly ContactLayer _contactLayer;
         private readonly LigneAnnuaireLayer _ligneAnnuaireLayer;
+        private readonly ContactLigneAnnuaireLayer _contactLigneAnnuaireLayer;
         private readonly AFPANADbContext _context;
-
 
         public GestionAnnuaireController(AFPANADbContext context)
         {
@@ -35,6 +35,7 @@ namespace AppAfpaBrive.Web.Controllers
             _structureLayer = new StructureLayer(context);
             _contactLayer = new ContactLayer(context);
             _ligneAnnuaireLayer = new LigneAnnuaireLayer(context);
+            _contactLigneAnnuaireLayer = new ContactLigneAnnuaireLayer(context);
         }
 
 
@@ -370,11 +371,8 @@ namespace AppAfpaBrive.Web.Controllers
 
         public IActionResult CreateLigneAnnuaireAddContact()
         {
-
             var model = _contactLayer.Contacts();
-
             return View(model);
-
         }
 
 
@@ -413,10 +411,46 @@ namespace AppAfpaBrive.Web.Controllers
             annuaire.listStructures = _structureLayer.GetListStructure(annuaire.IdStructure);
             return View(annuaire);
         }
-        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int? id, LigneAnnuaireEtape1ModelView ligneAnnuaire)
+        {
+            if (id != ligneAnnuaire.IdLigneAnnuaire)
+            {
+                return BadRequest();
+            }
+
+            if(ModelState.IsValid)
+            {
+                //string annuaire = JsonConvert.SerializeObject(ligneAnnuaire);
+                //HttpContext.Session.SetString("ligneAnnuaire", annuaire);
+                return RedirectToAction("UpdateContactLigneAnnuaire", ligneAnnuaire);
+            }
+            else
+            {
+                return View(ligneAnnuaire);
+            }               
+        }
+
+        [HttpGet]
+        public IActionResult UpdateContactLigneAnnuaire (LigneAnnuaireEtape1ModelView ligneAnnuaire)
+        {
+            if (ligneAnnuaire is null)
+            {
+                return BadRequest();
+            }
+            ligneAnnuaire.listContacts = _contactLigneAnnuaireLayer.GetContactsCheckByIdLigneAnnuaire(ligneAnnuaire.IdLigneAnnuaire);
+            var contacts = _contactLayer.GetContactsChecksAll();
+            foreach(ContactsCheckBox item in contacts)
+            {
+                if ( !ligneAnnuaire.listContacts.Contains(item) )
+                    ligneAnnuaire.listContacts.Add(item);
+            }
+
+            return View(ligneAnnuaire);
+        }
 
         #endregion
-
-
     }
 }

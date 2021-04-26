@@ -42,8 +42,6 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocial
 
         }
 
-
-
         public ContactModelView GetContactModelViewById(int id)
         {
 
@@ -87,6 +85,21 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocial
             _context.SaveChanges();
         }
 
-
+        public ICollection<ContactsCheckBox> GetContactsChecksAll()
+        {
+            return _context.Contacts
+                .Select(e => new ContactsCheckBox()
+                {
+                    IdContact = e.IdContact,
+                    IdTitreCivilite = e.IdTitreCivilite,
+                    Nom = e.Nom,
+                    Prenom = e.Prenom,
+                    Mail = e.Mail,
+                    Telephone = e.Telephone,
+                    TitreCivilite = e.TitreCivilite,
+                    IsChecked = false
+                })
+                .ToList();
+        }
     }
 }

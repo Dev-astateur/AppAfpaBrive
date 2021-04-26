@@ -25,6 +25,17 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
 
         public bool IsChecked { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            return obj is ContactsCheckBox box &&
+                   IdContact == box.IdContact;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(IdContact);
+        }
+
         public Contact GetContact()
         {
             return new Contact
@@ -41,6 +52,6 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
             };
         }
 
-
+        
     }
 }

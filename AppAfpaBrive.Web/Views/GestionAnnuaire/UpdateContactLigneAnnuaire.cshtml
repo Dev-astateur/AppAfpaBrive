@@ -1,6 +1,12 @@
-﻿@model List<AppAfpaBrive.Web.ModelView.AnnuaireModelView.ContactModelView>
-@using ReflectionIT.Mvc.Paging
-@addTagHelper *, ReflectionIT.Mvc.Paging
+﻿@model AppAfpaBrive.Web.ModelView.AnnuaireModelView.LigneAnnuaireEtape1ModelView
+@{
+    ViewData["Title"] = "Modification des contacts pour une ligne d'annuaire";
+}
+
+<h1>Modification</h1>
+
+<h4>LigneAnnuaire</h4>
+<hr />
 
 <div class="container p-3">
     <div class="row pt-4">
@@ -10,7 +16,7 @@
 
         <form method="post" class="form-inline">
 
-            @if (Model.Count() > 0)
+            @if (Model.listContacts.Count() > 0)
             {
                 <table class="table table-bordered table-striped" style="width:100%">
                     <thead>
@@ -37,30 +43,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for (var i = 0; i < Model.Count(); i++)
+                        @foreach (var item in Model.listContacts)
                         {
-                        <tr id="ligne" class="model">
-                            <td>@Model[i].TitreCivilite.TitreCiviliteAbrege</td>
-                            <td>@Model[i].Nom</td>
-                            <td>@Model[i].Prenom</td>
-                            <td>@Model[i].Mail</td>
-                            <td>@Model[i].Telephone</td>
+                            <tr id="ligne" class="model">
+                                <td>@item.TitreCivilite.TitreCiviliteAbrege</td>
+                                <td>@item.Nom</td>
+                                <td>@item.Prenom</td>
+                                <td>@item.Mail</td>
+                                <td>@item.Telephone</td>
 
-                          
-                            <td>
-                                <input type="hidden" asp-for="@Model[i].IdContact"/>
-                                <input type="hidden" asp-for="@Model[i].Nom">
-                                <input type="hidden" asp-for="@Model[i].IdTitreCivilite">
-                                <input type="hidden" asp-for="@Model[i].TitreCivilite">
-                                <input type="hidden" asp-for="@Model[i].Prenom">
-                                <input type="hidden" asp-for="@Model[i].Mail">
-                                <input type="hidden" asp-for="@Model[i].Telephone<">
-                            </td>
 
-                            <td>
-                                <input asp-for="@Model[i].IsChecked" type="checkbox" class="form-check-label" />
-                            </td>
-                        </tr>
+                                <td>
+                                    <input type="hidden" asp-for="@item.IdContact" />
+                                    <input type="hidden" asp-for="@item.Nom">
+                                    <input type="hidden" asp-for="@item.IdTitreCivilite">
+                                    <input type="hidden" asp-for="@item.TitreCivilite">
+                                    <input type="hidden" asp-for="@item.Prenom">
+                                    <input type="hidden" asp-for="@item.Mail">
+                                    <input type="hidden" asp-for="@item.Telephone<">
+                                </td>
+
+                                <td>
+                                    <input asp-for="@item.IsChecked" type="checkbox" class="form-check-label" />
+                                </td>
+                            </tr>
                         }
                     </tbody>
 
@@ -72,7 +78,7 @@
                 <p> Il n'y a pas de contacts</p>
             }
 
-     
+
 
             <div class="form-group">
                 <input type="submit" value="Suivant" class="btn btn-primary" />
@@ -88,5 +94,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
-

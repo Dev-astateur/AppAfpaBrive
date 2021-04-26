@@ -30,7 +30,7 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
         public int IdStructure { get; set; }
         public Structure structure;
         
-        public IEnumerable<ContactsCheckBox> listContacts { get; set; }
+        public ICollection<ContactsCheckBox> listContacts { get; set; }
         public ICollection<Contact> contacts { get; set; }
 
         public LigneAnnuaireEtape1ModelView ()
@@ -38,7 +38,7 @@ namespace AppAfpaBrive.Web.ModelView.AnnuaireModelView
             categories = new HashSet<Categorie>();
             listCategories = new List<CategorieModelView>();
             listStructures = new List<SelectListItem>();
-            listContacts = new List<ContactsCheckBox>();
+            listContacts = new HashSet<ContactsCheckBox>();
             contacts = new HashSet<Contact>();
         }
 
