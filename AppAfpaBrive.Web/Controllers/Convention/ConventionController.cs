@@ -170,7 +170,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         public IActionResult Entreprise_creation()
         {
             string siret = this.HttpContext.Session.GetString("siret");
-            Entreprise_Creation_ViewModel entreprise = new Entreprise_Creation_ViewModel
+            Entreprise_Creation_ViewModel entreprise = new Entreprise_Creation_ViewModel()
             {
                 NumeroSiret = siret
             };

@@ -1,12 +1,12 @@
 ﻿using AppAfpaBrive.BOL;
 using System.ComponentModel.DataAnnotations;
 using AppAfpaBrive.Web.CustomValidator;
+using AppAfpaBrive.DAL;
 
 namespace AppAfpaBrive.Web.ModelView
 {
     public class Entreprise_Creation_ViewModel
     {
-        
         public int IdEntreprise { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
         [Display(Name = "Raison sociale")]
@@ -17,9 +17,10 @@ namespace AppAfpaBrive.Web.ModelView
         public string NumeroSiret { get; set; }
         public string MailEntreprise { get; set; }
         public string TelEntreprise { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
+        
         public string Ligne1Adresse { get; set; }
         public string Ligne2Adresse { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
         public string Ligne3Adresse { get; set; }
 
         [RegularExpression("^[0-9]*$", ErrorMessage = "Le code postal doit etre composé uniquement de chiffres")]
@@ -30,10 +31,9 @@ namespace AppAfpaBrive.Web.ModelView
         [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
         public string Ville { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
-        [CustomValidator_Pays(ErrorMessage ="Veuillez selectionnez un pays valide.")]
+        [CustomValidator_Pays(ErrorMessage = "Veuillez selectionnez un pays valide.")]
         public string Idpays2 { get; set; }
 
         public virtual Pays Idpays2Navigation { get; set; }
-
     }
 }

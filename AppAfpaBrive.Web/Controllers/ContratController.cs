@@ -15,14 +15,14 @@ namespace AppAfpaBrive.Web.Controllers
 {
     public class ContratController : Controller
     {
-        private Layer_Entreprise _Entreprise = null;
-        private Layer_DestinataireEnquete _DestinataireEnquete = null;
-        private Layer_Contrat _Contrat = null;
-        private Layer_TypeContrat _TypeContrat = null;
-        private Layer_Pays _Pays = null;
-        private Layer_AppelationRomes _AppelationRomes = null ;
-        private Layer_Code_Produit_Formation _Code_Produit_Formation = null;
-        private AFPANADbContext _Db = new AFPANADbContext(); 
+        private readonly Layer_Entreprise _Entreprise = null;
+        private readonly Layer_DestinataireEnquete _DestinataireEnquete = null;
+        private readonly Layer_Contrat _Contrat = null;
+        private readonly Layer_TypeContrat _TypeContrat = null;
+        private readonly Layer_Pays _Pays = null;
+        private readonly Layer_AppelationRomes _AppelationRomes = null ;
+        private readonly Layer_Code_Produit_Formation _Code_Produit_Formation = null;
+        private readonly AFPANADbContext _Db = null; 
 
         public ContratController(AFPANADbContext context)
         {
@@ -32,7 +32,8 @@ namespace AppAfpaBrive.Web.Controllers
             _TypeContrat = new Layer_TypeContrat(context);
             _Pays = new Layer_Pays(context);
             _AppelationRomes = new Layer_AppelationRomes(context);
-            _Code_Produit_Formation = new Layer_Code_Produit_Formation(context); 
+            _Code_Produit_Formation = new Layer_Code_Produit_Formation(context);
+            _Db = context;
         }
 
        //le point de départ est le destinataire de l'enquête et son identifiant unique

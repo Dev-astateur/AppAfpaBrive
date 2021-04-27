@@ -59,7 +59,6 @@ namespace AppAfpaBrive.Web
 
             ConfigurerAutorisations(services);
             
-
             services.AddControllersWithViews();
             services.AddTransient<IEmailSender, SendinBlueEmailSender>();
             services.AddMvc();

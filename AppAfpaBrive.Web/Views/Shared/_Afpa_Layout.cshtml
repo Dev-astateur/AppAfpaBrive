@@ -40,6 +40,7 @@
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        
                         @if (User.IsInRole("Bénéficiaire"))
                         {
                             @await Html.PartialAsync("~/Views/Shared/Navigation/_Beneficiaire.cshtml");

@@ -262,7 +262,7 @@ namespace AppAfpaBrive.Web.Layers
 
         public List<string> GetAllSirets()
         {
-            return _db.Entreprises.Select(entr=>entr.NumeroSiret).ToList(); 
+            return _context.Entreprises.Select(entr=>entr.NumeroSiret).ToList(); 
         }
     }
 }

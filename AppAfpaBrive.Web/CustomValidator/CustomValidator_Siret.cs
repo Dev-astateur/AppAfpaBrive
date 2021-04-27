@@ -72,7 +72,6 @@ namespace AppAfpaBrive.Web.CustomValidator
 
     public class CustomValidator_Pays : ValidationAttribute
     {
-
         protected override ValidationResult IsValid(object value, ValidationContext context)
         {
             AFPANADbContext _db = new AFPANADbContext();
