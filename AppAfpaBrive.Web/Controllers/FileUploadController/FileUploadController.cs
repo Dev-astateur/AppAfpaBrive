@@ -46,7 +46,7 @@ namespace AppAfpaBrive.Web.Controllers
 
 
         [HttpPost]
-        public IActionResult IntegrerOffre(IntegrationExcelOffreCreate uploadFile)
+        public async Task<IActionResult> IntegrerOffre(IntegrationExcelOffreCreate uploadFile)
         {
 
             if (ModelState.IsValid)
@@ -54,7 +54,7 @@ namespace AppAfpaBrive.Web.Controllers
                 var postedFile = uploadFile.fileModel.file;
                 try
                 {
-                    var response = UploadFiles.UploadFile(postedFile, Path);
+                    var response = await UploadFiles.UploadFile(postedFile, Path);
 
                     if (response.Done)
                     {
@@ -63,7 +63,7 @@ namespace AppAfpaBrive.Web.Controllers
 
                         integration.IntegrerDonnees(uploadFile.MatriculeCollaborateurAfpa, uploadFile.CodeProduitFormation, pathFile);
 
-                        Response.WriteAsync("<script>alert('Réussi!')</script>");
+                        await Response.WriteAsync("<script>alert('Réussi!')</script>");
 
                         return View(viewName: "Index");
                     }
@@ -75,7 +75,7 @@ namespace AppAfpaBrive.Web.Controllers
 
                 catch (Exception e)
                 {
-                    Response.WriteAsync("<script>alert('" + e + "')</script>");
+                    await Response.WriteAsync("<script>alert('" + e + "')</script>");
                     return View(viewName: "Index");
                 }
             }

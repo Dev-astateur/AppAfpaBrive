@@ -63,7 +63,7 @@
               enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input asp-for="file" multiple="multiple" />
+            <input asp-for="file" type="file" multiple="multiple" />
             <span asp-validation-for="file" class="text-danger"></span>
             <div class="text-center m-1">
                 <a asp-action="date" class="btn btn-info m-2"> Retour</a>

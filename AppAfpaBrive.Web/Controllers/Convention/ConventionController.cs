@@ -430,7 +430,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
         //post Recapitulatif
         [HttpPost]
-        public IActionResult Recapitulatif(FilesModelConvention uploadFile)
+        public async Task<IActionResult> Recapitulatif(FilesModelConvention uploadFile)
         {
             if (ModelState.IsValid)
             {
@@ -613,7 +613,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                                 {
                                     Directory.CreateDirectory(Path);
                                 }
-                                var Response = UploadFiles.UploadFile(postedFile, Path);
+                                var Response = await UploadFiles.UploadFile(postedFile, Path);
 
                                 if (Response.Done)
                                 {

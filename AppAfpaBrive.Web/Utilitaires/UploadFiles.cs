@@ -49,7 +49,7 @@ namespace AppAfpaBrive.Web.Utilitaires
         /// <param name="postedFile"></param>
         /// <returns></returns>
         [HttpPost]
-        public static InfoUpload UploadFile(IFormFile postedFile, string path)
+        public async static Task<InfoUpload> UploadFile(IFormFile postedFile, string path)
         {
 
             string name = "";
@@ -62,7 +62,7 @@ namespace AppAfpaBrive.Web.Utilitaires
             {
                 using (var stream = new FileStream(name, FileMode.Create))
                 {
-                    postedFile.CopyToAsync(stream);
+                    await postedFile.CopyToAsync(stream);
                 }
             }
             catch (Exception)
@@ -81,7 +81,7 @@ namespace AppAfpaBrive.Web.Utilitaires
         /// </summary>
         /// <param name="listFiles"></param>
         [HttpPost]
-        public static InfoUpload UploadFile(List<IFormFile> listFiles, string path)
+        public async static Task<InfoUpload> UploadFile(List<IFormFile> listFiles, string path)
         {
             InfoUpload iu = new InfoUpload();
 
@@ -99,7 +99,7 @@ namespace AppAfpaBrive.Web.Utilitaires
                     {
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-                            file.CopyToAsync(stream);
+                            await file.CopyToAsync(stream);
                         }
 
                         iu.Count++;
