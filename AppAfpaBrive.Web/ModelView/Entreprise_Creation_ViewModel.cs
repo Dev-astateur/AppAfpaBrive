@@ -17,10 +17,12 @@ namespace AppAfpaBrive.Web.ModelView
         public string NumeroSiret { get; set; }
         public string MailEntreprise { get; set; }
         public string TelEntreprise { get; set; }
-        
-        public string Ligne1Adresse { get; set; }
-        public string Ligne2Adresse { get; set; }
+        [Display(Name ="Adresse")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez saisir le champ")]
+        public string Ligne1Adresse { get; set; }
+        [Display(Name ="Bâtiment")]
+        public string Ligne2Adresse { get; set; }
+        [Display(Name = "Complément")]
         public string Ligne3Adresse { get; set; }
 
         [RegularExpression("^[0-9]*$", ErrorMessage = "Le code postal doit etre composé uniquement de chiffres")]

@@ -34,6 +34,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         private Layer_Periode_pee _periode = null;
         private Layer_PeeDocument _PeeDocument = null;
         private readonly IConfiguration _config;
+        private readonly AFPANADbContext _context = null;
 
         public ConventionController(AFPANADbContext context, IConfiguration config)
         {
@@ -48,6 +49,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
             _periode = new Layer_Periode_pee(context);
             _PeeDocument = new Layer_PeeDocument(context);
             _config = config;
+            _context = context;
         }
 
 
@@ -428,7 +430,6 @@ namespace AppAfpaBrive.Web.Controllers.Convention
         [HttpPost]
         public IActionResult Recapitulatif(FilesModelConvention uploadFile)
         {
-            AFPANADbContext context = new AFPANADbContext();
             if (ModelState.IsValid)
             {
                 string str = this.HttpContext.Session.GetString("convention");
@@ -439,12 +440,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 EntrepriseProfessionnel tuteur_entr = new EntrepriseProfessionnel();
                 Professionnel Responsable = new Professionnel();
                 EntrepriseProfessionnel Responsable_entr = new EntrepriseProfessionnel();
-
-
                 PeriodePee periodePee = new PeriodePee();
-
-
-
                 entreprise = new Entreprise
                 {
                     Ligne1Adresse = convention.Entreprise_Ligne1Adresse,
@@ -503,12 +499,12 @@ namespace AppAfpaBrive.Web.Controllers.Convention
 
                 if (convention.Entreprise_Create == true)
                 {
-                    context.Entry(entreprise).State = EntityState.Added;
+                    _context.Entry(entreprise).State = EntityState.Added;
                 }
                 else
                 {
                     entreprise.IdEntreprise = convention.IdEntreprise;
-                    context.Entry(entreprise).State = EntityState.Unchanged;
+                    _context.Entry(entreprise).State = EntityState.Unchanged;
                 }
 
 
@@ -523,7 +519,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                         DateFinPeriodePee = item.Date2,
                         NumOrdre = item.Iddate
                     };
-                    context.Entry(periodePee).State = EntityState.Added;
+                    _context.Entry(periodePee).State = EntityState.Added;
                 }
 
                 if (convention.Tuteur_create == true)
@@ -540,8 +536,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                         tuteur_entr.IdEntreprise = entreprise.IdEntreprise;
                     }
 
-                    context.Entry(Tuteur).State = EntityState.Added;
-                    context.Entry(tuteur_entr).State = EntityState.Added;
+                    _context.Entry(Tuteur).State = EntityState.Added;
+                    _context.Entry(tuteur_entr).State = EntityState.Added;
                 }
                 else
                 {
@@ -574,8 +570,8 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                     }
                     else
                     {
-                        context.Entry(Responsable).State = EntityState.Added;
-                        context.Entry(Responsable_entr).State = EntityState.Added;
+                        _context.Entry(Responsable).State = EntityState.Added;
+                        _context.Entry(Responsable_entr).State = EntityState.Added;
                     }
                 }
                 else
@@ -584,14 +580,15 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                 }
 
 
-                context.Entry(pee).State = EntityState.Added;
-                context.Entry(periodePee).State = EntityState.Added;
+                _context.Entry(pee).State = EntityState.Added;
+                _context.Entry(periodePee).State = EntityState.Added;
                 try
                 {
-                    context.SaveChanges();
+                    _context.SaveChanges();
                 }
                 catch (Exception)
                 {
+
                     return RedirectToAction("Erreur");
                 }
 
