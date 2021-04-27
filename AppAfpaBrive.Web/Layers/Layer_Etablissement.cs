@@ -17,7 +17,7 @@ namespace AppAfpaBrive.Web.Layers
             _context = context;
         }
 
-        public string Get_Etablissement_Nom(string Id)
+        public IEnumerable<Etablissement> Get_Etablissement_Nom(string Id)
         {
             return _context.Etablissements.Where(x=>x.IdEtablissement == Id).FirstOrDefault().NomEtablissement;
         }

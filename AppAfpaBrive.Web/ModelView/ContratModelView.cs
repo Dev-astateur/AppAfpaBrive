@@ -1,31 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AppAfpaBrive.BOL;
+using AppAfpaBrive.DAL ;
+using AppAfpaBrive.Web.CustomValidator;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AppAfpaBrive.Web.ModelView
 {
     public class ContratModelView
     {
-        public ContratModelView()
-        {
-            //DestinataireEnquetes = new HashSet<DestinataireEnquete>();
-        }
-
-        public int IdContrat { get; set; }
-        public int IdEntreprise { get; set; }
-        public string MatriculeBeneficiaire { get; set; }
-        public int? CodeAppellation { get; set; }
+        [DataType(DataType.Date)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez indiquer votre date d'entée en fonction")]
+        [DateDebutDeContratValidator()]
         public DateTime DateEntreeFonction { get; set; }
+        [DataType(DataType.Date)]
+        [DateDeFinDeContratValidator()]
         public DateTime? DateSortieFonction { get; set; }
-        public int TypeContrat { get; set; }
-        public int DureeContratMois { get; set; }
-        public bool EnLienMetierFormation { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez indiquer votre intitulé de poste")]
+        [LibelleFonctionContratValidator()]
         public string LibelleFonction { get; set; }
-
-        public virtual EntrepriseModelView IdEntrepriseNavigation { get; set; }
-        public virtual BeneficiaireModelView MatriculeBeneficiaireNavigation { get; set; }
-        //public virtual TypeContrat TypeContratNavigation { get; set; }
-        //public virtual ICollection<DestinataireEnquete> DestinataireEnquetes { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Veuillez sélectionner un type de contrat dans la liste déroulante")]
+        public string TypeContrat { get; set; }
+        public IEnumerable<SelectListItem>  TypesContrats { get; set; } 
+        public Entreprise Entreprise { get; set; }
     }
 }

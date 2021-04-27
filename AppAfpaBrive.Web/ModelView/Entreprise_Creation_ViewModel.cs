@@ -22,7 +22,7 @@ namespace AppAfpaBrive.Web.ModelView
         public string Ligne2Adresse { get; set; }
         public string Ligne3Adresse { get; set; }
 
-        [RegularExpression("^[0-9]*$", ErrorMessage = "Le code postal doit etre composer uniquement de chiffre")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Le code postal doit etre composé uniquement de chiffres")]
         [Required(AllowEmptyStrings =false,ErrorMessage ="Veuillez saisir le champ")]
         [MinLength(5,ErrorMessage ="Le code postal à 5 chiffres")]
         [MaxLength(5,ErrorMessage = "Le code postal à 5 chiffres")]

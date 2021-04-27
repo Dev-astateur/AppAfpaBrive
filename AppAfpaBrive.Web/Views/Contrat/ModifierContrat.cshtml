@@ -1,0 +1,105 @@
+﻿@model AppAfpaBrive.Web.ModelView.ContratModelView
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<h4 class="text-info font-weight-bold">Complétez les informations sur votre poste actuel :</h4>
+<hr />
+
+<dl class="row align-self-center">
+    <dt class="col-sm-3">Votre entreprise :</dt>
+    <dd class="col-sm-9">
+        Raison sociale : @Model.Entreprise.RaisonSociale<br />
+        Siret : @Model.Entreprise.NumeroSiret <br />
+        Adresse : @Model.Entreprise.Ligne1Adresse,
+
+        @{
+            if (Model.Entreprise.Ligne2Adresse is not null)
+            {
+                @: @Model.Entreprise.Ligne2Adresse,;
+            }
+            if (Model.Entreprise.Ligne3Adresse is not null)
+            {
+                @: @Model.Entreprise.Ligne3Adresse,;
+            }
+        }
+
+        @Model.Entreprise.CodePostal @Model.Entreprise.Ville <br />
+
+        @{
+            if (Model.Entreprise.TelEntreprise is not null)
+            {
+                @:Téléphone : @Model.Entreprise.TelEntreprise
+            }
+            if (Model.Entreprise.MailEntreprise is not null)
+            {
+                @: Mail : @Model.Entreprise.MailEntreprise
+            }
+        }
+    </dd>
+</dl>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ModifierContrat" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TypeContrat" class="control-label">Type de contrat</label>
+                @Html.DropDownListFor(m => m.TypeContrat, Model.TypesContrats, new { @class = "form-control" })
+                <span asp-validation-for="TypeContrat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LibelleFonction" class="control-label">Intitulé du poste</label>
+                <input asp-for="LibelleFonction" class="form-control" id="appellationsRome" />
+                <span asp-validation-for="LibelleFonction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateEntreeFonction" class="control-label">Date d'embauche</label>
+                <input asp-for="DateEntreeFonction" class="form-control" />
+                <span asp-validation-for="DateEntreeFonction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateSortieFonction" class="control-label">Date de fin de contrat</label>
+                <label class="small font-italic text-info">Vous pouvez laisser ce champ vide dans le cas d'un CDI</label>
+                <input asp-for="DateSortieFonction" class="form-control" />
+                <span asp-validation-for="DateSortieFonction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Valider" class="btn btn-info" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            $('#appellationsRome').autocomplete({
+                source: function (request, response) {
+
+                    $.ajax({
+                        url: '/api/appelationsRome/search',
+                        type: "GET",
+                        data: request,
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data)
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item
+                                }
+                            }))
+                        }
+
+                    })
+                },
+                minLength: 3
+            });
+        });
+
+    </script>
+}

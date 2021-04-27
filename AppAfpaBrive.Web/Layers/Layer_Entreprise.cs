@@ -259,5 +259,10 @@ namespace AppAfpaBrive.Web.Layers
             return PagingList.Create(query, 20, page);
         }
         #endregion
+
+        public List<string> GetAllSirets()
+        {
+            return _db.Entreprises.Select(entr=>entr.NumeroSiret).ToList(); 
+        }
     }
 }

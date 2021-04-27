@@ -41,11 +41,11 @@ namespace AppAfpaBrive.Web.Layers.StatsLayer
                 Alternance = x.Alternance,
                 SansEmploie = x.SansEmploie,
                 Autres = x.Autres
-            }).ToList<IInsertion>();    
+            }).ToList<IInsertion>();
         }
         public List<IInsertion> GetInsertionDouzeMois()
         {
-            List <IInsertion> list = new List<IInsertion>();
+            List<IInsertion> list = new List<IInsertion>();
             return _dbContext.InsertionDouzeMois.Where(x => x.EnLienAvecFormation).Select(x => new InsertionsDouzeMois
             {
                 IdEtablissement = x.IdEtablissement,

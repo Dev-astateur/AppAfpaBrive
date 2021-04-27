@@ -1,24 +1,63 @@
-﻿@model AppAfpaBrive.BOL.Contrat
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-<div class="text-center">
-    <h4>- Recapitualatif - </h4>
-    <h4>Votre situation actuelle</h4>
-</div>
+﻿@model AppAfpaBrive.Web.ModelView.RecapModelView
 
-<br />
-@await Html.PartialAsync("_ContratPartial")
-<br />
+    <div>
+        <h4 class="text-info font-weight-bold">Récapitulatif :</h4>
+    </div>
+    <hr />
+    <form asp-action="DisplayRecap" method="post">
+        <dl class="row align-self-center">
+            <dt class="col-sm-3">Votre entreprise :</dt>
+            <dd class="col-sm-9">
+                Raison sociale : @Model.Entreprise.RaisonSociale<br />
+                Siret : @Model.Entreprise.NumeroSiret <br />
+                Adresse : @Model.Entreprise.Ligne1Adresse,
 
-<div class="text-center">
-    <button type="button" class="btn btn-outline-primary btn-sm text-center">Valider</button> 
-    @*To do : enregistrement en bdd et redirection vers page au revoir*@
-</div>
-<br />
-<div>
-    <button type="button" class="btn btn-outline-primary btn-sm float-left" id="same_entreprise"><< Précédent</button>
-    @*To do : en fonction du chemin emprunté par le client, le btn renvoie vers "Display" ou vers la modification de contrat*@
-</div>
+                @{
+                    if (Model.Entreprise.Ligne2Adresse is not null)
+                    {
+                        @: @Model.Entreprise.Ligne2Adresse,;
+                    }
+                    if (Model.Entreprise.Ligne3Adresse is not null)
+                    {
+                        @: @Model.Entreprise.Ligne3Adresse,;
+                    }
+                }
+
+                @Model.Entreprise.CodePostal @Model.Entreprise.Ville <br />
+
+                @{
+                    if (Model.Entreprise.TelEntreprise is not null)
+                    {
+                        @:Téléphone : @Model.Entreprise.TelEntreprise
+                    }
+                    if (Model.Entreprise.MailEntreprise is not null)
+                    {
+                        @: Mail : @Model.Entreprise.MailEntreprise
+                    }
+                }
+            </dd>
+
+            <dt class="col-sm-3">Votre situation actuelle : </dt>
+            <dd class="col-sm-9">
+                Intitulé de poste : @Model.Contrat.LibelleFonction <br />
+                Type de contrat : @Model.Contrat.TypeContratNavigation.DesignationTypeContrat<br />
+                Début du contrat : @Model.Contrat.DateEntreeFonction.ToShortDateString()<br />
+                Fin du contrat :
+                @{
+                    if (Model.Contrat.DateSortieFonction is null)
+                    {
+                        @: contrat en cours
+                    }
+                    else
+                    {
+                        @: @Model.Contrat.DateSortieFonction.Value.ToShortDateString()
+                    }
+                }
+            </dd>
+        </dl>
+        <div class="form-group">
+            <input type="submit" value="Valider" class="btn btn-info" />
+        </div>
+    </form>
+   
+
