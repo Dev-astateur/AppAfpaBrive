@@ -25,16 +25,16 @@ namespace AppAfpaBrive.Web.Controllers.Convention
     [Authorize(Roles = "Bénéficiaire")]
     public class ConventionController : Controller
     {
-        private Layer_BeneficiaireOffreFormation _beneficiaireOffre = null;
-        private Layer_Etablissement _Etablissement = null;
-        private Layer_Produit_Formation _Produit_Formation = null;
-        private Layer_Entreprise _Entreprise = null;
-        private Layer_Pays _Pays = null;
-        private Layer_Professionnel _pro = null;
-        private Layer_EntrepriseProfessionnel _entreprisepro = null;
-        private Layer_Pee _peelayer = null;
-        private Layer_Periode_pee _periode = null;
-        private Layer_PeeDocument _PeeDocument = null;
+        private readonly Layer_BeneficiaireOffreFormation _beneficiaireOffre = null;
+        private readonly Layer_Etablissement _Etablissement = null;
+        private readonly Layer_Produit_Formation _Produit_Formation = null;
+        private readonly Layer_Entreprise _Entreprise = null;
+        private readonly Layer_Pays _Pays = null;
+        private readonly Layer_Professionnel _pro = null;
+        private readonly Layer_EntrepriseProfessionnel _entreprisepro = null;
+        private readonly Layer_Pee _peelayer = null;
+        private readonly Layer_Periode_pee _periode = null;
+        private readonly Layer_PeeDocument _PeeDocument = null;
         private readonly IConfiguration _config;
         private readonly AFPANADbContext _context = null;
 
