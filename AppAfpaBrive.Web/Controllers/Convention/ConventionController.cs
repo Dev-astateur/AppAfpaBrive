@@ -620,7 +620,7 @@ namespace AppAfpaBrive.Web.Controllers.Convention
                                     PeeDocument peeDocument = new PeeDocument
                                     {
                                         IdPee = pee.IdPee,
-                                        PathDocument = Path + "/" + item.FileName,
+                                        PathDocument = Path.Substring(9) + "/" + item.FileName,
                                         NumOrdre = i
                                     };
                                     _PeeDocument.create(peeDocument);
