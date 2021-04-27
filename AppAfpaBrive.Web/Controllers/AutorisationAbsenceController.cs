@@ -15,13 +15,14 @@ using System.Net.Mime;
 using System.Text;
 using AppAfpaBrive.Web.Data;
 using AppAfpaBrive.Web.Layers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers
 {
+    [Authorize(Roles = "Bénéficiaire")]
     public class AutorisationAbsenceController : Controller
     {
-        
-       private readonly Layer_AutorisationAbsence _autorisationAbsenceLayer;
+        private readonly Layer_AutorisationAbsence _autorisationAbsenceLayer;
         private readonly IConfiguration _config;
         private readonly IHostEnvironment _env;
         public AutorisationAbsenceController(AFPANADbContext context, IConfiguration config, IHostEnvironment env)
@@ -43,9 +44,6 @@ namespace AppAfpaBrive.Web.Controllers
         {
             // Test avec les donnees stockées dans appJSON 
             string motif = _config.GetSection("Motif").GetSection(motifAbsence).Value;
-           
-           
-            
             string motifSpecial= Request.Form["motifSpecial"];
 
             if (!(DateTime.TryParse(dateDebut, out DateTime dateDebutConverti))|| !(DateTime.TryParse(dateFin, out DateTime dateFinConverti))||(dateFinConverti< dateDebutConverti))
@@ -78,7 +76,7 @@ namespace AppAfpaBrive.Web.Controllers
 
                // a decommenter dans la version finale, quand les bénéfiaciaaires pourront se connecter
               //  string matricule = User.Identity.Name;
-                string matricule = "16174318";
+                string matricule = HttpContext.User.Identity.Name;
                 string nom = _autorisationAbsenceLayer.GetNomStagiaireByMatricule(matricule);
                 string prenom = _autorisationAbsenceLayer.GetPrenomStagiaireByMatricule(matricule);
                 string formation = _autorisationAbsenceLayer.GetFormationStagiaireByMatricule(matricule);

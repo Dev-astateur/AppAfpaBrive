@@ -18,9 +18,11 @@ using System.IO;
 using static AppAfpaBrive.Web.Layers.Layer_Pee;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppAfpaBrive.Web.Controllers.Convention
 {
+    [Authorize(Roles = "Bénéficiaire")]
     public class ConventionController : Controller
     {
         private Layer_BeneficiaireOffreFormation _beneficiaireOffre = null;
