@@ -419,7 +419,6 @@ namespace AppAfpaBrive.Web.Controllers
             {
                 return BadRequest();
             }
-
             if(ModelState.IsValid)
             {
                 string annuaire = JsonConvert.SerializeObject(ligneAnnuaire);
@@ -441,7 +440,7 @@ namespace AppAfpaBrive.Web.Controllers
             {
                 return BadRequest();
             }
-            ICollection<ContactModelView> listeContacts = _contactLigneAnnuaireLayer.GetContactsByIdLigneAnnuaire(ligneAnnuaire.IdLigneAnnuaire);
+            List<ContactModelView> listeContacts = _contactLigneAnnuaireLayer.GetContactsByIdLigneAnnuaire(ligneAnnuaire.IdLigneAnnuaire);
             var contacts = _contactLayer.GetContactsChecksAll();
             foreach(ContactModelView item in contacts)
             {
@@ -454,9 +453,8 @@ namespace AppAfpaBrive.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UpdateContactLigneAnnuaire(ICollection<ContactModelView> modelViews)
+        public IActionResult UpdateContactLigneAnnuaire(List<ContactModelView> modelViews)
         {
-
             string str = this.HttpContext.Session.GetString("ligneAnnuaire");
             LigneAnnuaireEtape1ModelView ligneAnnuaire = JsonConvert.DeserializeObject<LigneAnnuaireEtape1ModelView>(str);
             if (ligneAnnuaire is null)
@@ -473,7 +471,6 @@ namespace AppAfpaBrive.Web.Controllers
                     {
                         ligneAnnuaire.contacts.Add(item.GetContact());
                     }
-                    //ligne.contacts.Add(el.GetContact());
                 }
             }
 

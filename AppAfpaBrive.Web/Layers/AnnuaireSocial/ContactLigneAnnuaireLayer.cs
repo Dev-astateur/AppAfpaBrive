@@ -35,7 +35,7 @@ namespace AppAfpaBrive.Web.Layers.AnnuaireSocial
                 }).ToList();
         }
 
-        public ICollection<ContactModelView> GetContactsByIdLigneAnnuaire(int id)
+        public List<ContactModelView> GetContactsByIdLigneAnnuaire(int id)
         {
             return _context.ContactLigneAnnuaires
                 .Where(e => e.IdLigneAnnuaire == id)
