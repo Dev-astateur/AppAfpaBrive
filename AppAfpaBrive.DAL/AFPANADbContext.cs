@@ -43,7 +43,7 @@ namespace AppAfpaBrive.DAL
         public virtual DbSet<Pee> Pees { get; set; }
         public virtual DbSet<PeeDocument> PeeDocuments { get; set; }
         public virtual DbSet<PeriodePee> PeriodePees { get; set; }
-        public virtual DbSet<PeriodePeeEvenement> PeriodePeeEvenements { get; set; }
+        public virtual DbSet<PeriodePeeSuivi> PeriodePeeSuivis { get; set; }
         public virtual DbSet<PlanificationCampagneMail> PlanificationCampagneMails { get; set; }
         public virtual DbSet<ProduitFormation> ProduitFormations { get; set; }
         public virtual DbSet<ProduitFormationAppellationRome> ProduitFormationAppellationRomes { get; set; }
@@ -185,8 +185,8 @@ namespace AppAfpaBrive.DAL
                       .WithMany(p => p.Beneficiaires)
                       .HasForeignKey(d => d.IdPays2)
                       .HasConstraintName("FK_Beneficiaire_Pays");
-                // });
-            });
+           
+        });
             modelBuilder.Entity<InsertionsTroisMois>(entity =>
             {
                 entity.HasKey(e => new { e.IdEtablissement, e.IdOffreFormation, e.EnLienAvecFormation, e.Annee });
@@ -886,23 +886,34 @@ namespace AppAfpaBrive.DAL
 
             modelBuilder.Entity<PeeDocument>(entity =>
             {
-                entity.HasKey(e => new { e.IdPee, e.NumOrdre });
+                entity.HasKey(e => new { e.IdPeeDocument });
 
                 entity.ToTable("Pee_Document");
 
+
+                entity.Property(e => e.IdPeriodePeeSuivi)
+                .HasColumnType("decimal(18, 0)");
+
                 entity.Property(e => e.IdPee)
-                    .HasColumnType("numeric(18, 0)");
+                .HasColumnType("decimal(18, 0)");
 
                 entity.Property(e => e.PathDocument)
                     .IsRequired()
                     .HasMaxLength(2048)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.idPeeNavigation)
-                    .WithMany(p => p.PeeDocument)
-                    .HasForeignKey(d => d.IdPee)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Pee_Document_Pee");
+                entity.HasOne(d => d.IdPeeNavigation)
+                   .WithMany(p => p.PeeDocument)
+                   .HasForeignKey(d => d.IdPee)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("FK_Pee_Document_Pee");
+
+                entity.HasOne(d => d.IdPeriodePeeSuiviNavigation)
+                   .WithMany(p => p.PeeDocuments)
+                   .HasForeignKey(d => d.IdPeriodePeeSuivi)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("FK_Pee_Document_Periode_Pee_Suivi");
+
             });
 
             modelBuilder.Entity<PeriodePee>(entity =>
@@ -925,15 +936,32 @@ namespace AppAfpaBrive.DAL
                     .HasConstraintName("FK_Periode_Pee_Pee");
             });
 
-            modelBuilder.Entity<PeriodePeeEvenement>(entity =>
+            modelBuilder.Entity<PeriodePeeSuivi>(entity =>
             {
-                entity.HasKey(e => new { e.IdPee, e.NumOrdre, e.IdEvent });
+                entity.HasKey(e => new { e.IdPeriodePeeSuivi });
 
-                entity.ToTable("Periode_Pee_Evenement");
+                entity.ToTable("Periode_Pee_Suivi");
 
                 entity.Property(e => e.IdPee).HasColumnType("decimal(18, 0)");
 
-                entity.Property(e => e.IdEvent).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.IdPeriodePeeSuivi).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.ObjetSuivi)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TexteSuivi)
+                    .HasMaxLength(4096)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DateDeSuivi)
+                .HasColumnType("date")
+                .HasDefaultValueSql("getdate()");
+
+                entity.HasOne(d => d.IdPeeNavigation)
+                    .WithMany(p => p.PeriodePeeSuivis)
+                    .HasForeignKey(d => d.IdPee)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("Fk_Periode_Pee_Suivi_Pee");
             });
 
             modelBuilder.Entity<PlanificationCampagneMail>(entity =>

@@ -1,0 +1,138 @@
+﻿@model AppAfpaBrive.Web.ModelView.PeriodePeeSuiviCreateViewModel
+@using AppAfpaBrive.BOL;
+@using Microsoft.AspNetCore.Http;
+@{ 
+    List<Pee> pees = new List<Pee>();
+    pees = ViewBag.Pee;
+    var ListPeeItem = pees.Select(p => new SelectListItem() { Text = p.MatriculeBeneficiaireNavigation.NomBeneficiaire + "  " + p.MatriculeBeneficiaireNavigation.PrenomBeneficiaire, Value = p.IdPee.ToString() }).ToList();
+   var idOffre = ViewBag.ideOffre;
+   var IdEtablissemnt = ViewBag.IdEtab;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>View</title>
+</head>
+<body>
+
+    <h4>Les données des suivis de la période en entreprise des stagiaires</h4>
+    <hr />
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <form asp-action="ConsultationSuivi">
+               
+                <div class="form-group col-sm-12 col-md-8 col-lg-8">
+                    @if (ListPeeItem != null)
+                    {
+                        @Html.DropDownListFor(p => p.IdPee, ListPeeItem, "...............Seléctionnez le Stagiaire............", new { @class = "form-control" })
+                    }
+                </div>
+                <div class="form-group col-sm-12 col-md-8 col-lg-8">
+                    @if (ViewBag.Pee != null)
+                    {
+                        @Html.DropDownListFor(m => m.IdPeriodePeeSuivi, new SelectList(""), ".....Seléctionnez l'objet du suivi........", new { @class = "form-control" })
+                    }
+                </div>
+                <div id="textArea" class="form-group col-md-12">
+                    <textarea asp-for="TexteSuivi"  ></textarea>
+                </div>
+            </form>
+            <div class="form-group col-sm-12 col-md-8 col-lg-8">
+                <a id="DownLoadDoc" class="btn btn-primary btn-block " href="">Télécharger le document</a>
+                <span id="FileNotExist" ></span>
+            </div>
+        </div>
+    </div>
+
+
+    <div>
+       
+        @Html.ActionLink("Vers La Liste Pee", "AfficheBeneficiairePee", "Pee",
+    new
+    {
+        IdOffreFormation = idOffre,
+        idEtablissement = IdEtablissemnt
+    },
+    new { @class = "btn btn-primary " })
+    </div>
+
+</body>
+
+</html>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            CKEDITOR.replace('TexteSuivi');
+            $("#IdPee").change(function () {
+                var peeId = $(this).val();
+                var listObjectSuivi = $("#IdPeriodePeeSuivi");
+                listObjectSuivi.empty();
+
+                listObjectSuivi.append('<option selected="true" disabled>..........Seléctionnez l\'objet du suivi..........</option>');
+                listObjectSuivi.prop('selectedIndex', 0);
+                $.getJSON("/Pee/GetListObject?IdPee=" + peeId, function (data) {
+                    $(data).each(function (index, valeur) {
+                       
+                        listObjectSuivi.append("<option value='" + data[index].value + "' >" + data[index].text + "</option>");
+                    });
+
+                });
+
+
+            });
+            $("#IdPeriodePeeSuivi").change(function () {
+                var IdPeriodePeeSuivi = $(this).val();
+               
+                
+                $.ajax({
+                    method: "Post",
+                    url: "/Pee/VerifyFileExist",
+                    data: { "IdPeriodePeeSuivi": IdPeriodePeeSuivi},
+                    success: function (response) {
+                        
+                        if (response == "Il n'y a pas de document à télécharger") {
+                            $("#FileNotExist").text(response).css({
+                                "color": "red"
+                            });
+                        }
+                        else {
+                            $("#FileNotExist").text("");
+                            var BtnDownLoad = $("#DownLoadDoc");
+                            BtnDownLoad.attr("href", "/Pee/DownLoadDocument?IdPeeDoc=" + IdPeriodePeeSuivi);
+                        }
+                    }
+
+
+                });
+                CKEDITOR.instances.TexteSuivi.destroy();
+                $.getJSON("/Pee/GetPeriodePeeSuiviTextCkEditor?IdPeriodePeeSuivi=" + IdPeriodePeeSuivi, function (obj) {
+                    $("#TexteSuivi").val(obj.texteSuivi);
+                    CKEDITOR.replace('TexteSuivi', {
+                        on: {
+                            save: function (evt) {
+                                $("#TexteSuivi").val(evt.editor.getData());
+
+                            }
+                        }
+
+                    });
+
+
+
+                });   
+               
+
+            });
+          
+           
+        });
+       
+    </script>
+    
+
+    
+}

@@ -16,7 +16,7 @@ namespace AppAfpaBrive.Web.ModelView
             NumOrdre = peeDocument.NumOrdre;
             PathDocument = peeDocument.PathDocument;
             if ( peeDocument is not null )
-                IdPeeNavigation = new PeeModelView(peeDocument.idPeeNavigation);
+                IdPeeNavigation = new PeeModelView(peeDocument.IdPeeNavigation);
         }
 
         public decimal IdPee { get; set; }

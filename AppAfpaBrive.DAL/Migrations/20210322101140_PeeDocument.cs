@@ -6,13 +6,13 @@ namespace AppAfpaBrive.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            //migrationBuilder.DropForeignKey(
-            //    name: "FK_Pee_Entreprise_FK_Pee_Entreprise",
-            //    table: "Pee");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Pee_Entreprise_FK_Pee_Entreprise",
+                table: "Pee");
 
-            //migrationBuilder.DropColumn(
-            //    name: "FK_Pee_Entreprise",
-            //    table: "Pee");
+            migrationBuilder.DropColumn(
+                name: "FK_Pee_Entreprise",
+                table: "Pee");
 
             migrationBuilder.RenameColumn(
                 name: "Etat",
@@ -38,51 +38,51 @@ namespace AppAfpaBrive.DAL.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_Pee_IdEntreprise",
-            //    table: "Pee",
-            //    column: "IdEntreprise");
+            migrationBuilder.CreateIndex(
+                name: "IX_Pee_IdEntreprise",
+                table: "Pee",
+                column: "IdEntreprise");
 
-            //migrationBuilder.AddForeignKey(
-            //    name: "FK_Pee_Entreprise",
-            //    table: "Pee",
-            //    column: "IdEntreprise",
-            //    principalTable: "Entreprise",
-            //    principalColumn: "IdEntreprise",
-            //    onDelete: ReferentialAction.Restrict);
+            migrationBuilder.AddForeignKey(
+                name: "FK_Pee_Entreprise",
+                table: "Pee",
+                column: "IdEntreprise",
+                principalTable: "Entreprise",
+                principalColumn: "IdEntreprise",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            //migrationBuilder.DropForeignKey(
-            //    name: "FK_Pee_Entreprise",
-            //    table: "Pee");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Pee_Entreprise",
+                table: "Pee");
 
             migrationBuilder.DropTable(
                 name: "Pee_Document");
 
-            //migrationBuilder.DropIndex(
-            //    name: "IX_Pee_IdEntreprise",
-            //    table: "Pee");
+            migrationBuilder.DropIndex(
+                name: "IX_Pee_IdEntreprise",
+                table: "Pee");
 
             migrationBuilder.RenameColumn(
                 name: "EtatPee",
                 table: "Pee",
                 newName: "Etat");
 
-            //migrationBuilder.AddColumn<int>(
-            //    name: "FK_Pee_Entreprise",
-            //    table: "Pee",
-            //    type: "int",
-            //    nullable: true);
+            migrationBuilder.AddColumn<int>(
+                name: "FK_Pee_Entreprise",
+                table: "Pee",
+                type: "int",
+                nullable: true);
 
-            //migrationBuilder.AddForeignKey(
-            //    name: "FK_Pee_Entreprise_FK_Pee_Entreprise",
-            //    table: "Pee",
-            //    column: "FK_Pee_Entreprise",
-            //    principalTable: "Entreprise",
-            //    principalColumn: "IdEntreprise",
-            //    onDelete: ReferentialAction.Restrict);
+            migrationBuilder.AddForeignKey(
+                name: "FK_Pee_Entreprise_FK_Pee_Entreprise",
+                table: "Pee",
+                column: "FK_Pee_Entreprise",
+                principalTable: "Entreprise",
+                principalColumn: "IdEntreprise",
+                onDelete: ReferentialAction.Restrict);
         }
     }
 }

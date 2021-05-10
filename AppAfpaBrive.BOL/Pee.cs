@@ -32,6 +32,7 @@ namespace AppAfpaBrive.BOL
         public virtual Beneficiaire MatriculeBeneficiaireNavigation { get; set; }
         public virtual ICollection<PeriodePee> PeriodePees { get; set; }
         public virtual ICollection<PeeDocument> PeeDocument { get; set; }
+        public virtual ICollection<PeriodePeeSuivi> PeriodePeeSuivis { get; set; }
 
         public override bool Equals(object obj)
         {

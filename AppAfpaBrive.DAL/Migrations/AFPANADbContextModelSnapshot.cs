@@ -1223,8 +1223,16 @@ namespace AppAfpaBrive.DAL.Migrations
 
             modelBuilder.Entity("AppAfpaBrive.BOL.PeeDocument", b =>
                 {
+                    b.Property<decimal>("IdPeeDocument")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<decimal>("IdPee")
-                        .HasColumnType("numeric(18,0)");
+                        .HasColumnType("decimal(18,0)");
+
+                    b.Property<decimal>("IdPeriodePeeSuivi")
+                        .HasColumnType("decimal(18,0)");
 
                     b.Property<int>("NumOrdre")
                         .HasColumnType("int");
@@ -1235,7 +1243,11 @@ namespace AppAfpaBrive.DAL.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(2048)");
 
-                    b.HasKey("IdPee", "NumOrdre");
+                    b.HasKey("IdPeeDocument");
+
+                    b.HasIndex("IdPee");
+
+                    b.HasIndex("IdPeriodePeeSuivi");
 
                     b.ToTable("Pee_Document");
                 });
@@ -1260,20 +1272,36 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.ToTable("Periode_Pee");
                 });
 
-            modelBuilder.Entity("AppAfpaBrive.BOL.PeriodePeeEvenement", b =>
+            modelBuilder.Entity("AppAfpaBrive.BOL.PeriodePeeSuivi", b =>
                 {
+                    b.Property<decimal>("IdPeriodePeeSuivi")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,0)")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateDeSuivi")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("date")
+                        .HasDefaultValueSql("getdate()");
+
                     b.Property<decimal>("IdPee")
                         .HasColumnType("decimal(18,0)");
 
-                    b.Property<int>("NumOrdre")
-                        .HasColumnType("int");
+                    b.Property<string>("ObjetSuivi")
+                        .HasMaxLength(255)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(255)");
 
-                    b.Property<decimal>("IdEvent")
-                        .HasColumnType("decimal(18,0)");
+                    b.Property<string>("TexteSuivi")
+                        .HasMaxLength(4096)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(4096)");
 
-                    b.HasKey("IdPee", "NumOrdre", "IdEvent");
+                    b.HasKey("IdPeriodePeeSuivi");
 
-                    b.ToTable("Periode_Pee_Evenement");
+                    b.HasIndex("IdPee");
+
+                    b.ToTable("Periode_Pee_Suivi");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.PlanificationCampagneMail", b =>
@@ -1942,13 +1970,21 @@ namespace AppAfpaBrive.DAL.Migrations
 
             modelBuilder.Entity("AppAfpaBrive.BOL.PeeDocument", b =>
                 {
-                    b.HasOne("AppAfpaBrive.BOL.Pee", "idPeeNavigation")
+                    b.HasOne("AppAfpaBrive.BOL.Pee", "IdPeeNavigation")
                         .WithMany("PeeDocument")
                         .HasForeignKey("IdPee")
                         .HasConstraintName("FK_Pee_Document_Pee")
                         .IsRequired();
 
-                    b.Navigation("idPeeNavigation");
+                    b.HasOne("AppAfpaBrive.BOL.PeriodePeeSuivi", "IdPeriodePeeSuiviNavigation")
+                        .WithMany("PeeDocuments")
+                        .HasForeignKey("IdPeriodePeeSuivi")
+                        .HasConstraintName("FK_Pee_Document_Periode_Pee_Suivi")
+                        .IsRequired();
+
+                    b.Navigation("IdPeeNavigation");
+
+                    b.Navigation("IdPeriodePeeSuiviNavigation");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.PeriodePee", b =>
@@ -1957,6 +1993,17 @@ namespace AppAfpaBrive.DAL.Migrations
                         .WithMany("PeriodePees")
                         .HasForeignKey("IdPee")
                         .HasConstraintName("FK_Periode_Pee_Pee")
+                        .IsRequired();
+
+                    b.Navigation("IdPeeNavigation");
+                });
+
+            modelBuilder.Entity("AppAfpaBrive.BOL.PeriodePeeSuivi", b =>
+                {
+                    b.HasOne("AppAfpaBrive.BOL.Pee", "IdPeeNavigation")
+                        .WithMany("PeriodePeeSuivis")
+                        .HasForeignKey("IdPee")
+                        .HasConstraintName("Fk_Periode_Pee_Suivi_Pee")
                         .IsRequired();
 
                     b.Navigation("IdPeeNavigation");
@@ -2155,6 +2202,13 @@ namespace AppAfpaBrive.DAL.Migrations
                     b.Navigation("PeeDocument");
 
                     b.Navigation("PeriodePees");
+
+                    b.Navigation("PeriodePeeSuivis");
+                });
+
+            modelBuilder.Entity("AppAfpaBrive.BOL.PeriodePeeSuivi", b =>
+                {
+                    b.Navigation("PeeDocuments");
                 });
 
             modelBuilder.Entity("AppAfpaBrive.BOL.PlanificationCampagneMail", b =>
